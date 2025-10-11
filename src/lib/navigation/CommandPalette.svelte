@@ -56,7 +56,7 @@
 		currentPage = 1,
 		totalPages = 1,
 		totalResults = 0,
-		context = $state(''),
+		context = "",
 		emptyMessage = 'Type to search or use /p for products, /o for orders, /u for users, /i for invoices',
 		placeholder = 'Search products, orders, users... (try /p, /o, /u)',
 		onSearch,

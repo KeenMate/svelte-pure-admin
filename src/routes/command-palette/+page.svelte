@@ -221,7 +221,7 @@
 	{/snippet}
 
 	<h4>Basic Implementation</h4>
-	<Code language="javascript">{`<script>
+	<Code language="javascript">{`< script>
   import { CommandPalette } from '@pure-admin/svelte';
 
   let showPalette = $state(false);
@@ -235,7 +235,7 @@
 <CommandPalette bind:show={showPalette} {items} />`}</Code>
 
 	<h4 class="mt-4">With Keyboard Shortcut</h4>
-	<Code language="javascript">{`<script>
+	<Code language="javascript">{`< script>
   import { onMount } from 'svelte';
 
   onMount(() => {

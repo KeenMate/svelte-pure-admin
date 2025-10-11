@@ -10,9 +10,10 @@
 		children?: import('svelte').Snippet;
 		/** Additional CSS classes */
 		class?: string;
+		language?: string
 	}
 
-	let { children, class: className = '' }: Props = $props();
+	let { children, class: className = '', language = undefined }: Props = $props();
 </script>
 
 <code class={className}>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Alert, Card, Input, Select, FormGroup, FormLabel } from '$lib';
+	import { Button, Alert, Card, Input, Select, FormLabel } from '$lib';
 	import ConfigDisplay from './ConfigDisplay.svelte';
 </script>
 
@@ -27,7 +27,7 @@
 
 	<h4 style="margin-top: 1rem;">Usage Example:</h4>
 	<pre
-		style="background: #f5f5f5; padding: 1rem; border-radius: 4px; overflow-x: auto;"><code>{`<script>
+		style="background: #f5f5f5; padding: 1rem; border-radius: 4px; overflow-x: auto;"><code>{`< script>
   import { PureAdminProvider } from '@pure-admin/svelte';
 
   const config = {
