@@ -2,11 +2,14 @@
 	import {
 		PureAdminProvider,
 		Layout,
-		Header,
+		LayoutInner,
+		LayoutContent,
+		Navbar,
 		Sidebar,
 		SidebarItem,
-		Content,
-		Footer
+		Main,
+		Footer,
+		PopoverContainer
 	} from '$lib';
 	import type { PureAdminConfig } from '$lib';
 	import '@pure-admin/core/css';
@@ -40,14 +43,17 @@
 </script>
 
 <PureAdminProvider config={myConfig}>
-	<Layout>
-		<Header onBurgerClick={toggleSidebar} showBurger={true}>
-			{#snippet brand()}
-				<h1>Pure Admin</h1>
-			{/snippet}
-		</Header>
+	<PopoverContainer />
 
-		<Sidebar>
+	<Navbar onBurgerClick={toggleSidebar} showBurger={true}>
+		{#snippet brand()}
+			<h1>Pure Admin</h1>
+		{/snippet}
+	</Navbar>
+
+	<Layout>
+		<LayoutInner>
+			<Sidebar>
 			<SidebarItem href="/" label="Dashboard">
 				{#snippet icon()}
 					📊
@@ -153,12 +159,15 @@
 			</SidebarItem>
 		</Sidebar>
 
-		<Content>
-			{@render children()}
-		</Content>
+		<LayoutContent>
+			<Main>
+				{@render children()}
+			</Main>
+		</LayoutContent>
+	</LayoutInner>
 
-		<Footer>
-			<p>Pure Admin Svelte Demo - Powered by Pure.css</p>
-		</Footer>
+	<Footer>
+		<p>Pure Admin Svelte Demo - Powered by Pure.css</p>
+	</Footer>
 	</Layout>
 </PureAdminProvider>

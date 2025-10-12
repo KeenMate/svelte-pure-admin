@@ -1,21 +1,23 @@
 # Makefile for @pure-admin/svelte
 # Pure Admin Svelte 5 Component Library
 
-.PHONY: help install dev build package check publish publish-dry clean
+.PHONY: help install dev build package check publish publish-dry clean sync-snippets sync-snippets-update
 
 # Default target
 help:
 	@echo "Pure Admin Svelte - Available targets:"
 	@echo ""
-	@echo "  make install        - Install dependencies"
-	@echo "  make dev            - Start development server (port 5173)"
-	@echo "  make build          - Build + package library"
-	@echo "  make package        - Package library for publishing"
-	@echo "  make check          - Run TypeScript type checking"
-	@echo "  make check-watch    - Run type checking in watch mode"
-	@echo "  make publish        - Publish package to npm"
-	@echo "  make publish-dry    - Dry run publish (test without publishing)"
-	@echo "  make clean          - Remove build artifacts"
+	@echo "  make install              - Install dependencies"
+	@echo "  make dev                  - Start development server (port 5173)"
+	@echo "  make build                - Build + package library"
+	@echo "  make package              - Package library for publishing"
+	@echo "  make check                - Run TypeScript type checking"
+	@echo "  make check-watch          - Run type checking in watch mode"
+	@echo "  make sync-snippets        - Check for snippet changes"
+	@echo "  make sync-snippets-update - Update snippet manifest"
+	@echo "  make publish              - Publish package to npm"
+	@echo "  make publish-dry          - Dry run publish (test without publishing)"
+	@echo "  make clean                - Remove build artifacts"
 	@echo ""
 
 # Install dependencies
@@ -41,6 +43,14 @@ check:
 # Type check with watch
 check-watch:
 	npm run check:watch
+
+# Check for snippet changes
+sync-snippets:
+	npm run sync:snippets
+
+# Update snippet manifest
+sync-snippets-update:
+	npm run sync:snippets:update
 
 # Publish to npm (requires npm login)
 publish:

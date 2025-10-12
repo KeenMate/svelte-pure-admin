@@ -9,10 +9,12 @@ export { usePureAdminConfig } from './config/hooks';
 
 // Layout Components
 export { default as Layout } from './layout/Layout.svelte';
-export { default as Header } from './layout/Header.svelte';
+export { default as LayoutInner } from './layout/LayoutInner.svelte';
+export { default as LayoutContent } from './layout/LayoutContent.svelte';
+export { default as Navbar } from './layout/Navbar.svelte';
 export { default as Sidebar } from './layout/Sidebar.svelte';
 export { default as SidebarItem } from './layout/SidebarItem.svelte';
-export { default as Content } from './layout/Content.svelte';
+export { default as Main } from './layout/Main.svelte';
 export { default as Footer } from './layout/Footer.svelte';
 export { default as Grid } from './layout/Grid.svelte';
 export { default as Column } from './layout/Column.svelte';
@@ -35,7 +37,7 @@ export { default as SmallText } from './forms/SmallText.svelte';
 export { default as Button } from './buttons/Button.svelte';
 export { default as ButtonGroup } from './buttons/ButtonGroup.svelte';
 
-// Feedback Components (Alerts, Modals, Toasts, Spinners, Tooltips, Popovers)
+// Feedback Components (Alerts, Modals, Toasts, Spinners, Tooltips, Popovers, Popconfirm)
 export { default as Alert } from './feedback/Alert.svelte';
 export { default as Modal } from './feedback/Modal.svelte';
 export { default as Toast } from './feedback/Toast.svelte';
@@ -43,6 +45,8 @@ export { default as ToastContainer } from './feedback/ToastContainer.svelte';
 export { default as Spinner } from './feedback/Spinner.svelte';
 export { default as Tooltip } from './feedback/Tooltip.svelte';
 export { default as Popover } from './feedback/Popover.svelte';
+export { default as PopoverContainer } from './feedback/PopoverContainer.svelte';
+export { default as Popconfirm } from './feedback/Popconfirm.svelte';
 
 // Display Components (Cards, Badges, Tables, Stats, Lists, Code, Timeline)
 export { default as Card } from './display/Card.svelte';

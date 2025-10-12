@@ -4,21 +4,23 @@
 	 * Based on @pure-admin/core snippets/layout.html
 	 */
 
+	type SidebarMode = 'sticky' | 'icon-collapse';
+
 	interface Props {
-		/** Enable scrolling mode (scrolls with content) */
-		scrolling?: boolean;
+		/** Sidebar mode modifier */
+		mode?: SidebarMode;
 		/** Additional CSS classes */
 		class?: string;
 		/** Children content */
 		children?: import('svelte').Snippet;
 	}
 
-	let { scrolling = false, class: className = '', children }: Props = $props();
+	let { mode, class: className = '', children }: Props = $props();
 
 	// Build class string
 	const classes = $derived(() => {
 		const base = ['pa-layout__sidebar'];
-		if (scrolling) base.push('pa-layout__sidebar--scrolling');
+		if (mode) base.push(`pa-layout__sidebar--${mode}`);
 		if (className) base.push(className);
 		return base.join(' ');
 	});

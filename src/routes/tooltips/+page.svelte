@@ -185,7 +185,7 @@
 					<Column size="1-2" md="1-4" class="mb-3 text-center" style="padding: 0.5rem;">
 						<label class="text-sm">
 							Basic
-							<Popover title="Help" position="bottom">
+							<Popover title="Help" placement="bottom">
 								<p>
 									Basic popover with <strong>bold</strong>, <em>italic</em>, and <a href="#"
 										>links</a
@@ -197,7 +197,7 @@
 					<Column size="1-2" md="1-4" class="mb-3 text-center" style="padding: 0.5rem;">
 						<label class="text-sm">
 							With List
-							<Popover title="Options" position="bottom">
+							<Popover title="Options" placement="bottom">
 								<p>Select from:</p>
 								<ul>
 									<li>Option A</li>
@@ -210,7 +210,7 @@
 					<Column size="1-2" md="1-4" class="mb-3 text-center" style="padding: 0.5rem;">
 						<label class="text-sm">
 							Large
-							<Popover title="Documentation" position="bottom" size="lg">
+							<Popover title="Documentation" placement="bottom" size="lg">
 								<p>Use <code>size="lg"</code> prop for wider content (up to 28rem).</p>
 								<p>
 									Perfect for detailed explanations and <a href="/components">documentation</a>.
@@ -221,7 +221,7 @@
 					<Column size="1-2" md="1-4" class="mb-3 text-center" style="padding: 0.5rem;">
 						<label class="text-sm">
 							Small
-							<Popover title="Tip" position="bottom" size="sm">
+							<Popover title="Tip" placement="bottom" size="sm">
 								<p>Brief hints use <code>size="sm"</code>.</p>
 							</Popover>
 						</label>
@@ -243,19 +243,19 @@
 					</Column>
 					<Column size="1-2" md="1-4" class="text-center mb-3" style="padding: 1rem;">
 						<span class="text-sm">Right </span>
-					<Popover title="Right" position="right">
+					<Popover title="Right" placement="right">
 						<p>Appears to the right.</p>
 					</Popover>
 					</Column>
 					<Column size="1-2" md="1-4" class="text-center mb-3" style="padding: 1rem;">
 						<span class="text-sm">Bottom </span>
-					<Popover title="Bottom" position="bottom">
+					<Popover title="Bottom" placement="bottom">
 						<p>Appears below trigger.</p>
 					</Popover>
 					</Column>
 					<Column size="1-2" md="1-4" class="text-center mb-3" style="padding: 1rem;">
 						<span class="text-sm">Left </span>
-					<Popover title="Left" position="left">
+					<Popover title="Left" placement="left">
 						<p>Appears to the left.</p>
 					</Popover>
 					</Column>
@@ -290,7 +290,7 @@
 					<h4 class="mb-2 text-sm">Popovers</h4>
 					<pre class="mb-3 text-sm"><code
 							>&lt;!-- Basic --&gt;
-&lt;Popover title="Title" position="bottom"&gt;
+&lt;Popover title="Title" placement="bottom"&gt;
   &lt;p&gt;Rich &lt;strong&gt;HTML&lt;/strong&gt; content.&lt;/p&gt;
 &lt;/Popover&gt;
 
