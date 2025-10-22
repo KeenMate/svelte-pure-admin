@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { Grid, Column, Card, Button, Alert, Badge, Input, Select } from '$lib';
+	import Heading from '$lib/typography/Heading.svelte';
+	import Paragraph from '$lib/typography/Paragraph.svelte';
 </script>
 
 <svelte:head>
@@ -7,8 +9,8 @@
 </svelte:head>
 
 <div class="pa-layout-container">
-	<h1 class="mb-4">Components</h1>
-	<p class="mb-6">A comprehensive library of reusable components for building admin interfaces.</p>
+	<Heading level={1} class="mb-4">Components</Heading>
+	<Paragraph class="mb-6">A comprehensive library of reusable components for building admin interfaces.</Paragraph>
 
 	<!-- Component Categories Overview -->
 	<Grid>
@@ -16,9 +18,9 @@
 		<Column size="1" md="1-2" lg="1-3">
 			<Card>
 				{#snippet header()}
-					<h3>Form Components</h3>
+					<Heading level={3}>Form Components</Heading>
 				{/snippet}
-				<p class="mb-3">Input elements, selects, checkboxes, radio buttons, and form layouts.</p>
+				<Paragraph class="mb-3">Input elements, selects, checkboxes, radio buttons, and form layouts.</Paragraph>
 				<ul class="mb-4" style="list-style: disc; padding-left: 1.5rem;">
 					<li>Form Groups</li>
 					<li>Text Inputs</li>
@@ -36,9 +38,9 @@
 		<Column size="1" md="1-2" lg="1-3">
 			<Card>
 				{#snippet header()}
-					<h3>Buttons</h3>
+					<Heading level={3}>Buttons</Heading>
 				{/snippet}
-				<p class="mb-3">Various button styles, sizes, and states for user interactions.</p>
+				<Paragraph class="mb-3">Various button styles, sizes, and states for user interactions.</Paragraph>
 				<ul class="mb-4" style="list-style: disc; padding-left: 1.5rem;">
 					<li>8 Color Variants</li>
 					<li>Multiple Sizes</li>
@@ -55,9 +57,9 @@
 		<Column size="1" md="1-2" lg="1-3">
 			<Card>
 				{#snippet header()}
-					<h3>Cards</h3>
+					<Heading level={3}>Cards</Heading>
 				{/snippet}
-				<p class="mb-3">Flexible content containers with headers, footers, and custom styling.</p>
+				<Paragraph class="mb-3">Flexible content containers with headers, footers, and custom styling.</Paragraph>
 				<ul class="mb-4" style="list-style: disc; padding-left: 1.5rem;">
 					<li>Basic Cards</li>
 					<li>Colored Cards</li>
@@ -74,9 +76,9 @@
 		<Column size="1" md="1-2" lg="1-3">
 			<Card>
 				{#snippet header()}
-					<h3>Badges & Labels</h3>
+					<Heading level={3}>Badges & Labels</Heading>
 				{/snippet}
-				<p class="mb-3">Small count and labeling components for UI indicators.</p>
+				<Paragraph class="mb-3">Small count and labeling components for UI indicators.</Paragraph>
 				<ul class="mb-4" style="list-style: disc; padding-left: 1.5rem;">
 					<li>8 Color Variants</li>
 					<li>Pill Style</li>
@@ -93,9 +95,9 @@
 		<Column size="1" md="1-2" lg="1-3">
 			<Card>
 				{#snippet header()}
-					<h3>Alerts</h3>
+					<Heading level={3}>Alerts</Heading>
 				{/snippet}
-				<p class="mb-3">Contextual feedback messages for user actions and notifications.</p>
+				<Paragraph class="mb-3">Contextual feedback messages for user actions and notifications.</Paragraph>
 				<ul class="mb-4" style="list-style: disc; padding-left: 1.5rem;">
 					<li>8 Alert Types</li>
 					<li>With Icons</li>
@@ -112,9 +114,9 @@
 		<Column size="1" md="1-2" lg="1-3">
 			<Card>
 				{#snippet header()}
-					<h3>Tooltips & Popovers</h3>
+					<Heading level={3}>Tooltips & Popovers</Heading>
 				{/snippet}
-				<p class="mb-3">Hover tooltips and click popovers for contextual information.</p>
+				<Paragraph class="mb-3">Hover tooltips and click popovers for contextual information.</Paragraph>
 				<ul class="mb-4" style="list-style: disc; padding-left: 1.5rem;">
 					<li>4 Positions</li>
 					<li>5 Color Themes</li>
@@ -131,9 +133,9 @@
 		<Column size="1" md="1-2" lg="1-3">
 			<Card>
 				{#snippet header()}
-					<h3>Modal Windows</h3>
+					<Heading level={3}>Modal Windows</Heading>
 				{/snippet}
-				<p class="mb-3">Dialog boxes and overlays for focused user interactions.</p>
+				<Paragraph class="mb-3">Dialog boxes and overlays for focused user interactions.</Paragraph>
 				<ul class="mb-4" style="list-style: disc; padding-left: 1.5rem;">
 					<li>Multiple Sizes</li>
 					<li>Scrollable Content</li>
@@ -149,9 +151,9 @@
 		<Column size="1" md="1-2" lg="1-3">
 			<Card>
 				{#snippet header()}
-					<h3>Loaders & Spinners</h3>
+					<Heading level={3}>Loaders & Spinners</Heading>
 				{/snippet}
-				<p class="mb-3">Loading indicators and progress animations.</p>
+				<Paragraph class="mb-3">Loading indicators and progress animations.</Paragraph>
 				<ul class="mb-4" style="list-style: disc; padding-left: 1.5rem;">
 					<li>Spinner Animations</li>
 					<li>Multiple Sizes</li>
@@ -167,9 +169,9 @@
 		<Column size="1" md="1-2" lg="1-3">
 			<Card>
 				{#snippet header()}
-					<h3>Tables</h3>
+					<Heading level={3}>Tables</Heading>
 				{/snippet}
-				<p class="mb-3">Data tables with sorting, filtering, and pagination.</p>
+				<Paragraph class="mb-3">Data tables with sorting, filtering, and pagination.</Paragraph>
 				<ul class="mb-4" style="list-style: disc; padding-left: 1.5rem;">
 					<li>Basic Tables</li>
 					<li>Striped Rows</li>
@@ -184,14 +186,14 @@
 	</Grid>
 
 	<!-- Quick Examples -->
-	<h2 class="mt-6 mb-4">Quick Examples</h2>
+	<Heading level={2} class="mt-6 mb-4">Quick Examples</Heading>
 
 	<Grid>
 		<!-- Form Example -->
 		<Column size="1" lg="1-2">
 			<Card>
 				{#snippet header()}
-					<h3>Basic Form</h3>
+					<Heading level={3}>Basic Form</Heading>
 				{/snippet}
 				<form>
 					<div class="pa-form-group mb-3">
@@ -233,7 +235,7 @@
 		<Column size="1" lg="1-2">
 			<Card>
 				{#snippet header()}
-					<h3>Alert Messages</h3>
+					<Heading level={3}>Alert Messages</Heading>
 				{/snippet}
 				<div class="pa-alert pa-alert--success mb-3">
 					<span class="pa-alert__icon">✓</span>
@@ -267,15 +269,15 @@
 	</Grid>
 
 	<!-- Component Showcase -->
-	<h2 class="mt-6 mb-4">Component Showcase</h2>
+	<Heading level={2} class="mt-6 mb-4">Component Showcase</Heading>
 
 	<Card>
 		{#snippet header()}
-			<h3>Buttons & Badges</h3>
+			<Heading level={3}>Buttons & Badges</Heading>
 		{/snippet}
 		<Grid>
 			<Column size="1" md="1-2">
-				<h4 class="mb-3 text-sm">Button Variants</h4>
+				<Heading level={4} class="mb-3 text-sm">Button Variants</Heading>
 				<div class="mb-4" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
 					<button class="pa-btn pa-btn--primary pa-btn--sm">Primary</button>
 					<button class="pa-btn pa-btn--secondary pa-btn--sm">Secondary</button>
@@ -287,7 +289,7 @@
 			</Column>
 
 			<Column size="1" md="1-2">
-				<h4 class="mb-3 text-sm">Badge Variants</h4>
+				<Heading level={4} class="mb-3 text-sm">Badge Variants</Heading>
 				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;">
 					<span class="pa-badge pa-badge--primary">Primary</span>
 					<span class="pa-badge pa-badge--secondary">Secondary</span>

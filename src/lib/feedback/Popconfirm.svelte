@@ -58,6 +58,7 @@
 
 	let popconfirmEl: HTMLDivElement;
 	let actualPosition = $state<Position>(position);
+	let mounted = $state(false);
 
 	// Build class string
 	const classes = $derived(() => {
@@ -143,8 +144,9 @@
 	});
 
 	$effect(() => {
-		if (show) {
-			updatePosition();
+		if (show && trigger) {
+			// Use setTimeout to ensure DOM is ready and trigger is positioned
+			setTimeout(() => updatePosition(), 0);
 		}
 	});
 

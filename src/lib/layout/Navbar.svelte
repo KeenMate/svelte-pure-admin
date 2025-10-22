@@ -81,7 +81,9 @@
 
 		{#if navLeft}
 			<nav class="pa-header__nav pa-header__nav--left">
-				{@render navLeft()}
+				<ul>
+					{@render navLeft()}
+				</ul>
 			</nav>
 		{/if}
 
@@ -93,7 +95,9 @@
 
 		{#if navRight}
 			<nav class="pa-header__nav pa-header__nav--right">
-				{@render navRight()}
+				<ul>
+					{@render navRight()}
+				</ul>
 			</nav>
 		{/if}
 

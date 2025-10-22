@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { Button, ButtonGroup, Card, Grid, Column } from '$lib';
 	import { onMount } from 'svelte';
+	import Heading from '$lib/typography/Heading.svelte';
+	import Paragraph from '$lib/typography/Paragraph.svelte';
 
 	onMount(() => {
 		function addRippleEffect(button: HTMLElement) {
@@ -61,8 +63,8 @@
 	/>
 </svelte:head>
 
-<h1>Buttons</h1>
-<p>Various button styles and sizes for actions and navigation.</p>
+<Heading level={1}>Buttons</Heading>
+<Paragraph>Various button styles and sizes for actions and navigation.</Paragraph>
 
 <!-- Button Variants and Sizes Grid -->
 <Grid>
@@ -70,7 +72,7 @@
 	<Column size="1" lg="1-2">
 		<Card>
 			{#snippet header()}
-				<h3>Button Variants</h3>
+				<Heading level={3}>Button Variants</Heading>
 			{/snippet}
 
 			<ButtonGroup>
@@ -90,7 +92,7 @@
 	<Column size="1" lg="1-2">
 		<Card>
 			{#snippet header()}
-				<h3>Button Sizes</h3>
+				<Heading level={3}>Button Sizes</Heading>
 			{/snippet}
 
 			<ButtonGroup>
@@ -110,7 +112,7 @@
 	<Column size="1" lg="1-2">
 		<Card>
 			{#snippet header()}
-				<h3>Outline Buttons</h3>
+				<Heading level={3}>Outline Buttons</Heading>
 			{/snippet}
 
 			<ButtonGroup>
@@ -128,7 +130,7 @@
 	<Column size="1" lg="1-2">
 		<Card>
 			{#snippet header()}
-				<h3>Button States</h3>
+				<Heading level={3}>Button States</Heading>
 			{/snippet}
 
 			<ButtonGroup>
@@ -146,7 +148,7 @@
 <!-- Block Buttons -->
 <Card>
 	{#snippet header()}
-		<h3>Block Buttons</h3>
+		<Heading level={3}>Block Buttons</Heading>
 	{/snippet}
 
 	<div class="pa-btn-group pa-btn-group--vertical">
@@ -158,17 +160,17 @@
 <!-- Button Groups -->
 <Card>
 	{#snippet header()}
-		<h3>Button Groups</h3>
+		<Heading level={3}>Button Groups</Heading>
 	{/snippet}
 
-	<h4>Horizontal Button Group</h4>
+	<Heading level={4}>Horizontal Button Group</Heading>
 	<ButtonGroup>
 		<Button variant="secondary">Left</Button>
 		<Button variant="secondary">Middle</Button>
 		<Button variant="secondary">Right</Button>
 	</ButtonGroup>
 
-	<h4>Vertical Button Group</h4>
+	<Heading level={4}>Vertical Button Group</Heading>
 	<div class="pa-btn-group pa-btn-group--vertical">
 		<Button variant="secondary">Top</Button>
 		<Button variant="secondary">Middle</Button>
@@ -182,12 +184,12 @@
 	<Column size="1" lg="1-2">
 		<Card>
 			{#snippet header()}
-				<h3>Buttons with Text Icons</h3>
+				<Heading level={3}>Buttons with Text Icons</Heading>
 			{/snippet}
 
-			<p class="mb-1">
+			<Paragraph class="mb-1">
 				Buttons with icons are automatically left-aligned with fixed-width icon container:
-			</p>
+			</Paragraph>
 			<ButtonGroup>
 				<button class="pa-btn pa-btn--primary">
 					<span class="pa-btn__icon">→</span>
@@ -213,10 +215,10 @@
 	<Column size="1" lg="1-2">
 		<Card>
 			{#snippet header()}
-				<h3>Icon Only Buttons</h3>
+				<Heading level={3}>Icon Only Buttons</Heading>
 			{/snippet}
 
-			<p class="mb-2">Icon-only button sizes (XS → XL):</p>
+			<Paragraph class="mb-2">Icon-only button sizes (XS → XL):</Paragraph>
 			<Grid class="mb-2">
 				<Column size="1">
 					<ButtonGroup>
@@ -242,7 +244,7 @@
 					</ButtonGroup>
 				</Column>
 			</Grid>
-			<p class="mb-2">Various colors - default size:</p>
+			<Paragraph class="mb-2">Various colors - default size:</Paragraph>
 			<Grid class="mb-2">
 				<Column size="1">
 					<ButtonGroup>
@@ -267,7 +269,7 @@
 					</ButtonGroup>
 				</Column>
 			</Grid>
-			<p class="mb-2">Compact (XS) - perfect for table actions:</p>
+			<Paragraph class="mb-2">Compact (XS) - perfect for table actions:</Paragraph>
 			<Grid class="mb-2">
 				<Column size="1">
 					<ButtonGroup>
@@ -292,7 +294,7 @@
 					</ButtonGroup>
 				</Column>
 			</Grid>
-			<p class="mb-2">With ripple and loading states (click to test):</p>
+			<Paragraph class="mb-2">With ripple and loading states (click to test):</Paragraph>
 			<Grid>
 				<Column size="1">
 					<ButtonGroup>
@@ -330,12 +332,12 @@
 <!-- Fixed Width Buttons -->
 <Card>
 	{#snippet header()}
-		<h3>Fixed Width Buttons</h3>
+		<Heading level={3}>Fixed Width Buttons</Heading>
 	{/snippet}
 
-	<p class="mb-1">
+	<Paragraph class="mb-1">
 		Use fixed-width classes for consistent button sizing regardless of text length:
-	</p>
+	</Paragraph>
 	<div class="pa-btn-group pa-btn-group--vertical">
 		<button class="pa-btn pa-btn--primary pa-btn--w-6x">
 			<span class="pa-btn__icon">✓</span>
@@ -351,7 +353,7 @@
 		</button>
 	</div>
 
-	<h4 style="margin-top: 1.5rem;">Different Width Multipliers (1x = 1rem)</h4>
+	<Heading level={4} style="margin-top: 1.5rem;">Different Width Multipliers (1x = 1rem)</Heading>
 	<div class="pa-btn-group pa-btn-group--vertical">
 		<button class="pa-btn pa-btn--primary pa-btn--w-3x">
 			<span class="pa-btn__icon">📄</span>
@@ -382,12 +384,12 @@
 	<Column size="1" lg="1-2">
 		<Card>
 			{#snippet header()}
-				<h3>Button Text Alignment</h3>
+				<Heading level={3}>Button Text Alignment</Heading>
 			{/snippet}
 
-			<p class="mb-1">Control text alignment within fixed-width buttons:</p>
+			<Paragraph class="mb-1">Control text alignment within fixed-width buttons:</Paragraph>
 
-			<h4>Left Aligned (icon has no left padding)</h4>
+			<Heading level={4}>Left Aligned (icon has no left padding)</Heading>
 			<div class="pa-btn-group pa-btn-group--vertical">
 				<button class="pa-btn pa-btn--primary pa-btn--w-8x pa-btn--align-left">
 					<span class="pa-btn__icon">✓</span>
@@ -403,7 +405,7 @@
 				</button>
 			</div>
 
-			<h4 style="margin-top: 1.5rem;">Right Aligned (icon has no right padding)</h4>
+			<Heading level={4} style="margin-top: 1.5rem;">Right Aligned (icon has no right padding)</Heading>
 			<div class="pa-btn-group pa-btn-group--vertical">
 				<button class="pa-btn pa-btn--primary pa-btn--w-8x pa-btn--align-right">
 					Save
@@ -419,7 +421,7 @@
 				</button>
 			</div>
 
-			<h4 style="margin-top: 1.5rem;">Center Aligned</h4>
+			<Heading level={4} style="margin-top: 1.5rem;">Center Aligned</Heading>
 			<div class="pa-btn-group pa-btn-group--vertical">
 				<button class="pa-btn pa-btn--primary pa-btn--w-8x pa-btn--align-center">
 					<span class="pa-btn__icon">✓</span>
@@ -429,7 +431,7 @@
 				<button class="pa-btn pa-btn--secondary pa-btn--w-8x pa-btn--align-center"> Cancel </button>
 			</div>
 
-			<h4 style="margin-top: 1.5rem;">Justified</h4>
+			<Heading level={4} style="margin-top: 1.5rem;">Justified</Heading>
 			<div class="pa-btn-group pa-btn-group--vertical">
 				<button class="pa-btn pa-btn--primary pa-btn--w-8x pa-btn--align-justify">
 					<span class="pa-btn__icon">✓</span>
@@ -451,12 +453,12 @@
 	<Column size="1" lg="1-2">
 		<Card>
 			{#snippet header()}
-				<h3>Font Awesome Icons</h3>
+				<Heading level={3}>Font Awesome Icons</Heading>
 			{/snippet}
 
-			<p class="mb-1">Demonstrating Font Awesome icons with alignments:</p>
+			<Paragraph class="mb-1">Demonstrating Font Awesome icons with alignments:</Paragraph>
 
-			<h4>Left Aligned</h4>
+			<Heading level={4}>Left Aligned</Heading>
 			<div class="pa-btn-group pa-btn-group--vertical">
 				<button class="pa-btn pa-btn--primary pa-btn--w-10x pa-btn--align-left">
 					<span class="pa-btn__icon"><i class="fa-solid fa-floppy-disk"></i></span>
@@ -472,7 +474,7 @@
 				</button>
 			</div>
 
-			<h4 style="margin-top: 1.5rem;">Right Aligned</h4>
+			<Heading level={4} style="margin-top: 1.5rem;">Right Aligned</Heading>
 			<div class="pa-btn-group pa-btn-group--vertical">
 				<button class="pa-btn pa-btn--primary pa-btn--w-10x pa-btn--align-right">
 					Save Changes
@@ -488,7 +490,7 @@
 				</button>
 			</div>
 
-			<h4 style="margin-top: 1.5rem;">Center Aligned</h4>
+			<Heading level={4} style="margin-top: 1.5rem;">Center Aligned</Heading>
 			<div class="pa-btn-group pa-btn-group--vertical">
 				<button class="pa-btn pa-btn--primary pa-btn--w-10x pa-btn--align-center">
 					<span class="pa-btn__icon"><i class="fa-solid fa-upload"></i></span>
@@ -504,7 +506,7 @@
 				</button>
 			</div>
 
-			<h4 style="margin-top: 1.5rem;">Justified</h4>
+			<Heading level={4} style="margin-top: 1.5rem;">Justified</Heading>
 			<div class="pa-btn-group pa-btn-group--vertical">
 				<button class="pa-btn pa-btn--primary pa-btn--w-10x pa-btn--align-justify">
 					<span class="pa-btn__icon"><i class="fa-solid fa-user"></i></span>
@@ -529,10 +531,10 @@
 	<Column size="1" lg="1-2">
 		<Card>
 			{#snippet header()}
-				<h3>Ripple Effect Buttons</h3>
+				<Heading level={3}>Ripple Effect Buttons</Heading>
 			{/snippet}
 
-			<p class="mb-1">Click buttons to see ripple animation effect:</p>
+			<Paragraph class="mb-1">Click buttons to see ripple animation effect:</Paragraph>
 			<ButtonGroup>
 				<button class="pa-btn pa-btn--primary pa-btn--ripple" data-ripple>Primary Ripple</button>
 				<button class="pa-btn pa-btn--secondary pa-btn--ripple" data-ripple
@@ -549,10 +551,10 @@
 	<Column size="1" lg="1-2">
 		<Card>
 			{#snippet header()}
-				<h3>Loading State Buttons</h3>
+				<Heading level={3}>Loading State Buttons</Heading>
 			{/snippet}
 
-			<p class="mb-1">Click buttons to simulate loading states:</p>
+			<Paragraph class="mb-1">Click buttons to simulate loading states:</Paragraph>
 			<ButtonGroup>
 				<button class="pa-btn pa-btn--primary pa-btn--ripple" data-loading-demo data-ripple>
 					Save Changes
@@ -577,22 +579,22 @@
 <!-- Usage Examples -->
 <Card>
 	{#snippet header()}
-		<h3>Usage Guide</h3>
+		<Heading level={3}>Usage Guide</Heading>
 	{/snippet}
 
-	<h4>Ripple Effect</h4>
-	<p>
+	<Heading level={4}>Ripple Effect</Heading>
+	<Paragraph>
 		Add <code>pa-btn--ripple</code> class and <code>data-ripple</code> attribute to any button for
 		click animation feedback.
-	</p>
+	</Paragraph>
 
-	<h4>Loading States</h4>
-	<p>
+	<Heading level={4}>Loading States</Heading>
+	<Paragraph>
 		Use <code>pa-btn--loading</code> class to show spinner. JavaScript can toggle this class during
 		async operations.
-	</p>
+	</Paragraph>
 
-	<h4>Best Practices</h4>
+	<Heading level={4}>Best Practices</Heading>
 	<ul>
 		<li>
 			<strong>Fast Sites:</strong> Always show loading feedback, even for quick operations (200-500ms

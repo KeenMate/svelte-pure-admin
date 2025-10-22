@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Heading from '$lib/typography/Heading.svelte';
+	import Paragraph from '$lib/typography/Paragraph.svelte';
 	import { Grid, Column, Card, Button, ButtonGroup, Tooltip, Popover } from '$lib';
 </script>
 
@@ -11,8 +13,8 @@
 </svelte:head>
 
 <div class="pa-layout-container">
-	<h1 class="mb-4">Tooltips & Popovers</h1>
-	<p class="mb-6">Hover tooltips for quick info, click popovers for rich interactive content.</p>
+	<Heading level={1} class="mb-4">Tooltips & Popovers</Heading>
+	<Paragraph class="mb-6">Hover tooltips for quick info, click popovers for rich interactive content.</Paragraph>
 
 	<Grid>
 		<!-- Left Column -->
@@ -20,7 +22,7 @@
 			<!-- Tooltip Positions & Colors -->
 			<Card class="mb-4">
 				{#snippet header()}
-					<h3>Tooltip Positions & Colors</h3>
+					<Heading level={3}>Tooltip Positions & Colors</Heading>
 				{/snippet}
 				<Grid>
 					<Column size="1-2" md="1-4" class="text-center mb-3" style="padding: 1rem;">
@@ -59,9 +61,9 @@
 			<!-- Buttons with Tooltips -->
 			<Card class="mb-4">
 				{#snippet header()}
-					<h3>Buttons & Icon-Only</h3>
+					<Heading level={3}>Buttons & Icon-Only</Heading>
 				{/snippet}
-				<p class="mb-3 text-sm">Regular buttons:</p>
+				<Paragraph class="mb-3 text-sm">Regular buttons:</Paragraph>
 				<div class="text-center mb-4">
 					<ButtonGroup>
 						<Tooltip text="Save your changes" position="left">
@@ -81,7 +83,7 @@
 						</Tooltip>
 					</ButtonGroup>
 				</div>
-				<p class="mb-3 text-sm">Icon-only buttons:</p>
+				<Paragraph class="mb-3 text-sm">Icon-only buttons:</Paragraph>
 				<div class="text-center">
 					<ButtonGroup>
 						<Tooltip text="Edit" position="bottom">
@@ -121,11 +123,11 @@
 			<!-- Multiline Tooltips -->
 			<Card class="mb-4">
 				{#snippet header()}
-					<h3>Multiline Tooltips</h3>
+					<Heading level={3}>Multiline Tooltips</Heading>
 				{/snippet}
-				<p class="mb-3 text-sm">
+				<Paragraph class="mb-3 text-sm">
 					Use <code>multiline</code> prop for longer text (20rem width, left-aligned):
-				</p>
+				</Paragraph>
 				<div class="text-center">
 					<ButtonGroup>
 						<Tooltip
@@ -153,9 +155,9 @@
 			<!-- Inline Text Tooltips -->
 			<Card class="mb-4">
 				{#snippet header()}
-					<h3>Inline Text Tooltips</h3>
+					<Heading level={3}>Inline Text Tooltips</Heading>
 				{/snippet}
-				<p>
+				<Paragraph>
 					Tooltips can explain <Tooltip
 						text="Application Programming Interface"
 						variant="primary"
@@ -167,7 +169,7 @@
 					<Tooltip text="HyperText Markup Language" variant="danger" class="border-bottom: 1px dotted;"
 						>HTML</Tooltip
 					> abbreviations.
-				</p>
+				</Paragraph>
 			</Card>
 		</Column>
 
@@ -176,21 +178,21 @@
 			<!-- Popovers -->
 			<Card class="mb-4">
 				{#snippet header()}
-					<h3>Popovers - Interactive Help</h3>
+					<Heading level={3}>Popovers - Interactive Help</Heading>
 				{/snippet}
-				<p class="mb-3 text-sm">
+				<Paragraph class="mb-3 text-sm">
 					Rich content with links, formatting. Click <strong>?</strong> to open:
-				</p>
+				</Paragraph>
 				<Grid>
 					<Column size="1-2" md="1-4" class="mb-3 text-center" style="padding: 0.5rem;">
 						<label class="text-sm">
 							Basic
 							<Popover title="Help" placement="bottom">
-								<p>
+								<Paragraph>
 									Basic popover with <strong>bold</strong>, <em>italic</em>, and <a href="#"
 										>links</a
 									>.
-								</p>
+								</Paragraph>
 							</Popover>
 						</label>
 					</Column>
@@ -198,7 +200,7 @@
 						<label class="text-sm">
 							With List
 							<Popover title="Options" placement="bottom">
-								<p>Select from:</p>
+								<Paragraph>Select from:</Paragraph>
 								<ul>
 									<li>Option A</li>
 									<li>Option B</li>
@@ -211,10 +213,10 @@
 						<label class="text-sm">
 							Large
 							<Popover title="Documentation" placement="bottom" size="lg">
-								<p>Use <code>size="lg"</code> prop for wider content (up to 28rem).</p>
-								<p>
+								<Paragraph>Use <code>size="lg"</code> prop for wider content (up to 28rem).</Paragraph>
+								<Paragraph>
 									Perfect for detailed explanations and <a href="/components">documentation</a>.
-								</p>
+								</Paragraph>
 							</Popover>
 						</label>
 					</Column>
@@ -222,7 +224,7 @@
 						<label class="text-sm">
 							Small
 							<Popover title="Tip" placement="bottom" size="sm">
-								<p>Brief hints use <code>size="sm"</code>.</p>
+								<Paragraph>Brief hints use <code>size="sm"</code>.</Paragraph>
 							</Popover>
 						</label>
 					</Column>
@@ -232,31 +234,31 @@
 			<!-- Popover Positions -->
 			<Card class="mb-4">
 				{#snippet header()}
-					<h3>Popover Positions</h3>
+					<Heading level={3}>Popover Positions</Heading>
 				{/snippet}
 				<Grid>
 					<Column size="1-2" md="1-4" class="text-center mb-3" style="padding: 1rem;">
 						<span class="text-sm">Top </span>
 					<Popover title="Top">
-						<p>Appears above trigger.</p>
+						<Paragraph>Appears above trigger.</Paragraph>
 					</Popover>
 					</Column>
 					<Column size="1-2" md="1-4" class="text-center mb-3" style="padding: 1rem;">
 						<span class="text-sm">Right </span>
 					<Popover title="Right" placement="right">
-						<p>Appears to the right.</p>
+						<Paragraph>Appears to the right.</Paragraph>
 					</Popover>
 					</Column>
 					<Column size="1-2" md="1-4" class="text-center mb-3" style="padding: 1rem;">
 						<span class="text-sm">Bottom </span>
 					<Popover title="Bottom" placement="bottom">
-						<p>Appears below trigger.</p>
+						<Paragraph>Appears below trigger.</Paragraph>
 					</Popover>
 					</Column>
 					<Column size="1-2" md="1-4" class="text-center mb-3" style="padding: 1rem;">
 						<span class="text-sm">Left </span>
 					<Popover title="Left" placement="left">
-						<p>Appears to the left.</p>
+						<Paragraph>Appears to the left.</Paragraph>
 					</Popover>
 					</Column>
 				</Grid>
@@ -267,11 +269,11 @@
 	<!-- Usage Examples -->
 	<Card>
 		{#snippet header()}
-			<h3>Code Examples</h3>
+			<Heading level={3}>Code Examples</Heading>
 		{/snippet}
 		<Grid>
 				<Column size="1" md="1-2">
-					<h4 class="mb-2 text-sm">Tooltips</h4>
+					<Heading level={4} class="mb-2 text-sm">Tooltips</Heading>
 					<pre class="mb-3 text-sm"><code
 							>&lt;!-- Basic --&gt;
 &lt;Tooltip text="Tooltip text"&gt;Hover&lt;/Tooltip&gt;
@@ -287,7 +289,7 @@
 						></pre>
 				</Column>
 				<Column size="1" md="1-2">
-					<h4 class="mb-2 text-sm">Popovers</h4>
+					<Heading level={4} class="mb-2 text-sm">Popovers</Heading>
 					<pre class="mb-3 text-sm"><code
 							>&lt;!-- Basic --&gt;
 &lt;Popover title="Title" placement="bottom"&gt;

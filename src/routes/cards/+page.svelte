@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Heading from '$lib/typography/Heading.svelte';
+	import Paragraph from '$lib/typography/Paragraph.svelte';
 	import {
 		Card,
 		CardTab,
@@ -40,8 +42,8 @@
 	<title>Cards - Pure Admin Svelte</title>
 </svelte:head>
 
-<h1>Cards</h1>
-<p>Flexible content containers for organizing and displaying information.</p>
+<Heading level={1}>Cards</Heading>
+<Paragraph>Flexible content containers for organizing and displaying information.</Paragraph>
 
 <!-- Basic Cards -->
 <Section title="Basic Cards">
@@ -49,8 +51,8 @@
 		<!-- Simple Card -->
 		<Column size="1" md="1-2">
 			<Card>
-				<h4>Simple Card</h4>
-				<p>This is a basic card with just a body. Perfect for simple content display.</p>
+				<Heading level={4}>Simple Card</Heading>
+				<Paragraph>This is a basic card with just a body. Perfect for simple content display.</Paragraph>
 			</Card>
 		</Column>
 
@@ -58,17 +60,17 @@
 		<Column size="1" md="1-2">
 			<Card>
 				{#snippet header()}
-					<h4>Card with Header</h4>
+					<Heading level={4}>Card with Header</Heading>
 				{/snippet}
-				<p>This card includes a header section for titles and actions.</p>
+				<Paragraph>This card includes a header section for titles and actions.</Paragraph>
 			</Card>
 		</Column>
 
 		<!-- Card with Footer -->
 		<Column size="1" md="1-2">
 			<Card>
-				<h4>Card with Footer</h4>
-				<p>This card includes a footer section for actions or meta information.</p>
+				<Heading level={4}>Card with Footer</Heading>
+				<Paragraph>This card includes a footer section for actions or meta information.</Paragraph>
 				{#snippet footer()}
 					<Button variant="primary" size="sm">Action</Button>
 				{/snippet}
@@ -81,7 +83,7 @@
 				{#snippet tools()}
 					<Button variant="secondary" size="xs">⚙</Button>
 				{/snippet}
-				<p>A complete card with header, body, and footer sections.</p>
+				<Paragraph>A complete card with header, body, and footer sections.</Paragraph>
 				{#snippet meta()}Updated 2 hours ago{/snippet}
 				{#snippet actions()}
 					<Button variant="secondary" size="sm">Cancel</Button>
@@ -99,9 +101,9 @@
 		<Column size="1" md="1-2">
 			<Card variant="primary">
 				{#snippet header()}
-					<h4>Primary Card</h4>
+					<Heading level={4}>Primary Card</Heading>
 				{/snippet}
-				<p>Card with primary color theme.</p>
+				<Paragraph>Card with primary color theme.</Paragraph>
 			</Card>
 		</Column>
 
@@ -109,9 +111,9 @@
 		<Column size="1" md="1-2">
 			<Card variant="success">
 				{#snippet header()}
-					<h4>Success Card</h4>
+					<Heading level={4}>Success Card</Heading>
 				{/snippet}
-				<p>Card with success color theme.</p>
+				<Paragraph>Card with success color theme.</Paragraph>
 			</Card>
 		</Column>
 
@@ -119,9 +121,9 @@
 		<Column size="1" md="1-2">
 			<Card variant="warning">
 				{#snippet header()}
-					<h4>Warning Card</h4>
+					<Heading level={4}>Warning Card</Heading>
 				{/snippet}
-				<p>Card with warning color theme.</p>
+				<Paragraph>Card with warning color theme.</Paragraph>
 			</Card>
 		</Column>
 
@@ -129,9 +131,9 @@
 		<Column size="1" md="1-2">
 			<Card variant="danger">
 				{#snippet header()}
-					<h4>Danger Card</h4>
+					<Heading level={4}>Danger Card</Heading>
 				{/snippet}
-				<p>Card with danger color theme.</p>
+				<Paragraph>Card with danger color theme.</Paragraph>
 			</Card>
 		</Column>
 	</Grid>
@@ -187,10 +189,10 @@
 				{#snippet tools()}
 					<Button variant="secondary" size="xs" onClick={toggleCard}>−</Button>
 				{/snippet}
-				<p>
+				<Paragraph>
 					This card can be collapsed and expanded. Click the minus/plus button in the header.
-				</p>
-				<p>Content that can be hidden to save space when not needed.</p>
+				</Paragraph>
+				<Paragraph>Content that can be hidden to save space when not needed.</Paragraph>
 			</Card>
 		</Column>
 
@@ -198,7 +200,7 @@
 		<Column size="1" md="1-2">
 			<Card>
 				{#snippet header()}
-					<h4>Card with Tabs</h4>
+					<Heading level={4}>Card with Tabs</Heading>
 				{/snippet}
 				{#snippet tabs()}
 					<CardTab active={activeTab === 'tab1'} onclick={() => showTab('tab1')}>Overview</CardTab>
@@ -206,13 +208,13 @@
 					<CardTab active={activeTab === 'tab3'} onclick={() => showTab('tab3')}>Settings</CardTab>
 				{/snippet}
 				<CardTabContent id="tab1" active={activeTab === 'tab1'}>
-					<p>Overview content goes here. This is the default active tab.</p>
+					<Paragraph>Overview content goes here. This is the default active tab.</Paragraph>
 				</CardTabContent>
 				<CardTabContent id="tab2" active={activeTab === 'tab2'}>
-					<p>Detailed information is displayed in this tab.</p>
+					<Paragraph>Detailed information is displayed in this tab.</Paragraph>
 				</CardTabContent>
 				<CardTabContent id="tab3" active={activeTab === 'tab3'}>
-					<p>Settings and configuration options would be shown here.</p>
+					<Paragraph>Settings and configuration options would be shown here.</Paragraph>
 				</CardTabContent>
 			</Card>
 		</Column>
@@ -231,10 +233,10 @@
 					<Button variant="secondary" size="xs" title="Settings">⚙</Button>
 					<Button variant="secondary" size="xs" title="More options">⋯</Button>
 				{/snippet}
-				<p>
+				<Paragraph>
 					This card demonstrates icon in title with tool buttons. The title will truncate with
 					ellipsis when it's too long.
-				</p>
+				</Paragraph>
 			</Card>
 		</Column>
 
@@ -250,10 +252,10 @@
 					<Button variant="secondary" size="xs" title="Export">⬇️</Button>
 					<Button variant="secondary" size="xs" title="Share">📤</Button>
 				{/snippet}
-				<p>
+				<Paragraph>
 					Notice how the title truncates with ellipsis (...) when there's not enough space due to
 					the tool buttons.
-				</p>
+				</Paragraph>
 			</Card>
 		</Column>
 
@@ -265,7 +267,7 @@
 					<Button variant="primary" size="xs">+ Add</Button>
 					<Button variant="secondary" size="xs" title="Filter">🔍</Button>
 				{/snippet}
-				<p>Different combinations of icons and tool button styles work well together.</p>
+				<Paragraph>Different combinations of icons and tool button styles work well together.</Paragraph>
 			</Card>
 		</Column>
 
@@ -276,7 +278,7 @@
 				{#snippet tools()}
 					<Button variant="secondary" size="xs" title="Maximize">⛶</Button>
 				{/snippet}
-				<p>Even with fewer tools, the title still truncates appropriately to maintain layout.</p>
+				<Paragraph>Even with fewer tools, the title still truncates appropriately to maintain layout.</Paragraph>
 			</Card>
 		</Column>
 	</Grid>

@@ -4,23 +4,9 @@
 	 * Based on @pure-admin/core snippets/badges.html
 	 */
 
-	type BadgeVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark';
-	type BadgeSize = 'sm' | 'lg';
-	type BadgeWidth = '1x' | '2x' | '3x' | '4x' | '5x' | '6x' | '7x' | '8x' | '9x' | '10x';
+	import type { BaseBadgeProps } from './badge-types';
 
-	interface Props {
-		/** Badge variant */
-		variant?: BadgeVariant;
-		/** Badge size */
-		size?: BadgeSize;
-		/** Pill style */
-		pill?: boolean;
-		/** Fixed width */
-		width?: BadgeWidth;
-		/** Ellipsis on left side instead of right */
-		ellipsisLeft?: boolean;
-		/** Additional CSS classes */
-		class?: string;
+	interface Props extends BaseBadgeProps {
 		/** Icon snippet */
 		icon?: import('svelte').Snippet;
 		/** Children content */
@@ -34,6 +20,7 @@
 		width,
 		ellipsisLeft = false,
 		class: className = '',
+		onclick,
 		icon,
 		children
 	}: Props = $props();
@@ -51,7 +38,7 @@
 	});
 </script>
 
-<span class={classes()}>
+<span class={classes()} {onclick}>
 	{#if icon}
 		<span class="pa-badge__icon">
 			{@render icon()}

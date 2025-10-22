@@ -3,13 +3,14 @@
 	 * Pure Admin TimelineItem Component (Svelte 5)
 	 * Based on @pure-admin/core snippets/timeline.html
 	 * Individual timeline entry - adapts to parent timeline variant
+	 * IMPORTANT: Uses clear naming - iconText (not icon), avatarUrl (not avatar)
 	 */
 
-	type TimelineVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
+	import type { TimelineItemVariant } from './timeline-types';
 
 	interface Props {
 		/** Color variant (for simple timeline) */
-		variant?: TimelineVariant;
+		variant?: TimelineItemVariant;
 		/** Filled marker instead of outline (for simple timeline) */
 		filled?: boolean;
 		/** Date header (for feed timeline with date sections) */
@@ -18,18 +19,22 @@
 		time?: string;
 		/** Date text (alternating timeline) */
 		date?: string;
-		/** Icon (alternating timeline) */
-		icon?: string;
+		/** Icon text content (alternating timeline) - string only */
+		iconText?: string;
+		/** Icon template snippet (for custom icon rendering) */
+		iconTemplate?: import('svelte').Snippet;
 		/** Avatar image URL (feed timeline) */
-		avatar?: string;
+		avatarUrl?: string;
 		/** Avatar alt text */
 		avatarAlt?: string;
+		/** Click handler */
+		onclick?: (event: MouseEvent) => void;
 		/** Additional CSS classes */
 		class?: string;
 		/** Content snippet */
 		children?: import('svelte').Snippet;
 		/** Comment snippet (feed timeline) */
-		comment?: import('svelte').Snippet;
+		commentTemplate?: import('svelte').Snippet;
 	}
 
 	let {
@@ -38,12 +43,14 @@
 		dateHeader = false,
 		time,
 		date,
-		icon,
-		avatar,
+		iconText,
+		iconTemplate,
+		avatarUrl,
 		avatarAlt = 'User',
+		onclick,
 		class: className = '',
 		children,
-		comment
+		commentTemplate
 	}: Props = $props();
 
 	// Build class string
@@ -64,33 +71,45 @@
 	});
 </script>
 
-<li class={classes()}>
+<li class={classes()} {onclick}>
 	{#if dateHeader}
 		<!-- Date header (for feed timeline) -->
-		{#if icon}
-			<div class="pa-timeline__date-icon">{icon}</div>
+		{#if iconText || iconTemplate}
+			<div class="pa-timeline__date-icon">
+				{#if iconTemplate}
+					{@render iconTemplate()}
+				{:else}
+					{iconText}
+				{/if}
+			</div>
 		{/if}
 		<div class="pa-timeline__date-label">{@render children?.()}</div>
-	{:else if date && icon}
+	{:else if date && (iconText || iconTemplate)}
 		<!-- Alternating timeline -->
 		<div class="pa-timeline__date">{date}</div>
-		<div class="pa-timeline__icon">{icon}</div>
+		<div class="pa-timeline__icon">
+			{#if iconTemplate}
+				{@render iconTemplate()}
+			{:else}
+				{iconText}
+			{/if}
+		</div>
 		<div class="pa-timeline__content">
 			{@render children?.()}
 		</div>
-	{:else if avatar}
+	{:else if avatarUrl}
 		<!-- Feed timeline with avatar -->
 		{#if time}
 			<div class="pa-timeline__time">{time}</div>
 		{/if}
 		<div class="pa-timeline__content">
 			<div class="pa-timeline__avatar">
-				<img src={avatar} alt={avatarAlt} />
+				<img src={avatarUrl} alt={avatarAlt} />
 			</div>
 			{@render children?.()}
-			{#if comment}
+			{#if commentTemplate}
 				<div class="pa-timeline__comment">
-					{@render comment()}
+					{@render commentTemplate()}
 				</div>
 			{/if}
 		</div>

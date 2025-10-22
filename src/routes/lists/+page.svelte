@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Heading from '$lib/typography/Heading.svelte';
+	import Paragraph from '$lib/typography/Paragraph.svelte';
 	import { Card, Grid, Column, BasicList, OrderedList, DefinitionList, List, ListItem } from '$lib';
 </script>
 
@@ -6,8 +8,8 @@
 	<title>Lists - Pure Admin Svelte</title>
 </svelte:head>
 
-<h1>Lists</h1>
-<p>Styled lists for content organization - from basic bullets to icon lists and definition lists.</p>
+<Heading level={1}>Lists</Heading>
+<Paragraph>Styled lists for content organization - from basic bullets to icon lists and definition lists.</Paragraph>
 
 <Grid>
 	<!-- Left Column -->
@@ -15,10 +17,10 @@
 		<!-- Basic Unordered Lists -->
 		<Card class="mb-8">
 			{#snippet header()}
-				<h3>Basic Unordered Lists</h3>
+				<Heading level={3}>Basic Unordered Lists</Heading>
 			{/snippet}
 
-			<h4>Default Spacing</h4>
+			<Heading level={4}>Default Spacing</Heading>
 			<BasicList>
 				<li>Dashboard with real-time metrics</li>
 				<li>User management and permissions</li>
@@ -27,7 +29,7 @@
 				<li>Multi-language support</li>
 			</BasicList>
 
-			<h4 style="margin-top: 2rem;">Compact Spacing</h4>
+			<Heading level={4} style="margin-top: 2rem;">Compact Spacing</Heading>
 			<BasicList compact>
 				<li>Reduced vertical spacing</li>
 				<li>Perfect for dense content</li>
@@ -35,7 +37,7 @@
 				<li>Easy to scan quickly</li>
 			</BasicList>
 
-			<h4 style="margin-top: 2rem;">Spacious Layout</h4>
+			<Heading level={4} style="margin-top: 2rem;">Spacious Layout</Heading>
 			<BasicList spacious>
 				<li>More breathing room between items</li>
 				<li>Better for longer content blocks</li>
@@ -46,10 +48,10 @@
 		<!-- Ordered Lists -->
 		<Card class="mb-8">
 			{#snippet header()}
-				<h3>Ordered Lists</h3>
+				<Heading level={3}>Ordered Lists</Heading>
 			{/snippet}
 
-			<h4>Numeric (Default)</h4>
+			<Heading level={4}>Numeric (Default)</Heading>
 			<OrderedList>
 				<li>Create a new project</li>
 				<li>Configure basic settings</li>
@@ -58,7 +60,7 @@
 				<li>Launch and monitor</li>
 			</OrderedList>
 
-			<h4 style="margin-top: 2rem;">Roman Numerals</h4>
+			<Heading level={4} style="margin-top: 2rem;">Roman Numerals</Heading>
 			<OrderedList style="roman">
 				<li>Executive summary</li>
 				<li>Market analysis</li>
@@ -66,7 +68,7 @@
 				<li>Implementation roadmap</li>
 			</OrderedList>
 
-			<h4 style="margin-top: 2rem;">Alphabetical</h4>
+			<Heading level={4} style="margin-top: 2rem;">Alphabetical</Heading>
 			<OrderedList style="alpha">
 				<li>Appendix A: Technical specifications</li>
 				<li>Appendix B: User testimonials</li>
@@ -77,10 +79,10 @@
 		<!-- Definition Lists -->
 		<Card class="mb-8">
 			{#snippet header()}
-				<h3>Definition Lists</h3>
+				<Heading level={3}>Definition Lists</Heading>
 			{/snippet}
 
-			<h4>Standard Layout</h4>
+			<Heading level={4}>Standard Layout</Heading>
 			<DefinitionList>
 				<dt>API Key</dt>
 				<dd>A unique identifier used to authenticate requests to the API</dd>
@@ -92,7 +94,7 @@
 				<dd>Industry-standard protocol for authorization allowing third-party access</dd>
 			</DefinitionList>
 
-			<h4 style="margin-top: 2rem;">Inline Layout</h4>
+			<Heading level={4} style="margin-top: 2rem;">Inline Layout</Heading>
 			<DefinitionList inline>
 				<dt>Status</dt>
 				<dd>Active</dd>
@@ -111,10 +113,10 @@
 		<!-- Icon Lists -->
 		<Card class="mb-8">
 			{#snippet header()}
-				<h3>Icon Lists</h3>
+				<Heading level={3}>Icon Lists</Heading>
 			{/snippet}
 
-			<h4>Success (Checkmarks)</h4>
+			<Heading level={4}>Success (Checkmarks)</Heading>
 			<BasicList icon>
 				<li>SSL/TLS encryption enabled</li>
 				<li>Automatic daily backups</li>
@@ -122,14 +124,14 @@
 				<li>24/7 customer support</li>
 			</BasicList>
 
-			<h4 style="margin-top: 2rem;">Danger (X marks)</h4>
+			<Heading level={4} style="margin-top: 2rem;">Danger (X marks)</Heading>
 			<BasicList icon variant="danger">
 				<li>Deprecated API endpoint</li>
 				<li>Unsupported browser version</li>
 				<li>Missing required permissions</li>
 			</BasicList>
 
-			<h4 style="margin-top: 2rem;">Info (Arrows)</h4>
+			<Heading level={4} style="margin-top: 2rem;">Info (Arrows)</Heading>
 			<BasicList icon variant="info">
 				<li>Navigate to Settings panel</li>
 				<li>Select Integration options</li>
@@ -137,7 +139,7 @@
 				<li>Complete authentication</li>
 			</BasicList>
 
-			<h4 style="margin-top: 2rem;">Warning (Exclamation)</h4>
+			<Heading level={4} style="margin-top: 2rem;">Warning (Exclamation)</Heading>
 			<BasicList icon variant="warning">
 				<li>Rate limit approaching threshold</li>
 				<li>Certificate expires in 30 days</li>
@@ -148,10 +150,10 @@
 		<!-- Bordered & Striped Lists -->
 		<Card class="mb-8">
 			{#snippet header()}
-				<h3>Bordered & Striped Lists</h3>
+				<Heading level={3}>Bordered & Striped Lists</Heading>
 			{/snippet}
 
-			<h4>Bordered List</h4>
+			<Heading level={4}>Bordered List</Heading>
 			<BasicList bordered>
 				<li>User Management Module</li>
 				<li>Content Management System</li>
@@ -160,7 +162,7 @@
 				<li>Reporting Engine</li>
 			</BasicList>
 
-			<h4 style="margin-top: 2rem;">Striped List</h4>
+			<Heading level={4} style="margin-top: 2rem;">Striped List</Heading>
 			<BasicList striped>
 				<li>Monthly subscription: $99/month</li>
 				<li>Annual subscription: $990/year (2 months free)</li>
@@ -172,10 +174,10 @@
 		<!-- Inline & Unstyled Lists -->
 		<Card class="mb-8">
 			{#snippet header()}
-				<h3>Inline & Unstyled Lists</h3>
+				<Heading level={3}>Inline & Unstyled Lists</Heading>
 			{/snippet}
 
-			<h4>Inline List</h4>
+			<Heading level={4}>Inline List</Heading>
 			<BasicList inline>
 				<li><a href="#home">Home</a></li>
 				<li><a href="#about">About</a></li>
@@ -183,7 +185,7 @@
 				<li><a href="#contact">Contact</a></li>
 			</BasicList>
 
-			<h4 style="margin-top: 2rem;">Unstyled List</h4>
+			<Heading level={4} style="margin-top: 2rem;">Unstyled List</Heading>
 			<BasicList unstyled>
 				<li>No bullets or numbers</li>
 				<li>Just plain text items</li>
@@ -195,7 +197,7 @@
 		<!-- Complex Lists -->
 		<Card class="mb-8">
 			{#snippet header()}
-				<h3>Complex Lists with Avatars</h3>
+				<Heading level={3}>Complex Lists with Avatars</Heading>
 			{/snippet}
 
 			<div class="pa-card__body pa-card__body--no-padding">
@@ -212,12 +214,12 @@
 <!-- Implementation Notes -->
 <Card>
 	{#snippet header()}
-		<h3>Implementation Guide</h3>
+		<Heading level={3}>Implementation Guide</Heading>
 	{/snippet}
 
-	<h4>Available Classes</h4>
+	<Heading level={4}>Available Classes</Heading>
 
-	<h5 style="margin-top: 1rem;">Unordered Lists (ul)</h5>
+	<Heading level={5} style="margin-top: 1rem;">Unordered Lists (ul)</Heading>
 	<BasicList compact>
 		<li><code>pa-list-basic</code> - Base unordered list</li>
 		<li><code>pa-list-basic--compact</code> - Reduced spacing</li>
@@ -232,20 +234,20 @@
 		<li><code>pa-list-basic--icon pa-list-basic--warning</code> - Exclamation marks</li>
 	</BasicList>
 
-	<h5 style="margin-top: 1rem;">Ordered Lists (ol)</h5>
+	<Heading level={5} style="margin-top: 1rem;">Ordered Lists (ol)</Heading>
 	<BasicList compact>
 		<li><code>pa-list-ordered</code> - Base ordered list (numeric)</li>
 		<li><code>pa-list-ordered--roman</code> - Roman numerals (I, II, III)</li>
 		<li><code>pa-list-ordered--alpha</code> - Lowercase letters (a, b, c)</li>
 	</BasicList>
 
-	<h5 style="margin-top: 1rem;">Definition Lists (dl)</h5>
+	<Heading level={5} style="margin-top: 1rem;">Definition Lists (dl)</Heading>
 	<BasicList compact>
 		<li><code>pa-list-definition</code> - Standard definition list</li>
 		<li><code>pa-list-definition--inline</code> - Horizontal key-value pairs</li>
 	</BasicList>
 
-	<h5 style="margin-top: 1rem;">Complex Lists</h5>
+	<Heading level={5} style="margin-top: 1rem;">Complex Lists</Heading>
 	<BasicList compact>
 		<li><code>pa-list</code> - Container for complex list items</li>
 		<li><code>pa-list__item</code> - Individual list item with avatar/content</li>

@@ -5,10 +5,12 @@
 	 * Individual tab button within Tabs container
 	 */
 
+	import type { HTMLButtonAttributes } from 'svelte/elements';
+
 	type TabWidth = '1x' | '2x' | '3x' | '4x' | '5x' | '6x' | '7x' | '8x' | '9x' | '10x';
 	type TabHeight = '1x' | '2x' | '3x' | '4x' | '5x' | '6x' | '7x' | '8x' | '9x' | '10x';
 
-	interface Props {
+	interface Props extends HTMLButtonAttributes {
 		/** Active state */
 		active?: boolean;
 		/** Fixed width */
@@ -32,7 +34,8 @@
 		class: className = '',
 		icon,
 		children,
-		onclick
+		onclick,
+		...restProps
 	}: Props = $props();
 
 	// Build class string
@@ -55,7 +58,7 @@
 	});
 </script>
 
-<button class={classes()} {onclick}>
+<button class={classes()} {onclick} {...restProps}>
 	{#if icon}
 		{@render icon()}
 	{/if}

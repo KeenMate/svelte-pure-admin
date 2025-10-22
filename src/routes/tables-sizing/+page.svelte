@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Heading from '$lib/typography/Heading.svelte';
+	import Paragraph from '$lib/typography/Paragraph.svelte';
 	import { Card, Table } from '$lib';
 </script>
 
@@ -6,16 +8,16 @@
 	<title>Table Sizing - Pure Admin Svelte</title>
 </svelte:head>
 
-<h1>Table Sizing</h1>
-<p>Different table density options for various use cases - from compact data grids to spacious presentation tables.</p>
+<Heading level={1}>Table Sizing</Heading>
+<Paragraph>Different table density options for various use cases - from compact data grids to spacious presentation tables.</Paragraph>
 
 <!-- Default (Compact) Table -->
 <Card>
 	{#snippet header()}
-		<h3>Default (Compact) - ~31px rows</h3>
+		<Heading level={3}>Default (Compact) - ~31px rows</Heading>
 	{/snippet}
 
-	<p>Best for data-heavy tables where you need to scan hundreds of rows efficiently.</p>
+	<Paragraph>Best for data-heavy tables where you need to scan hundreds of rows efficiently.</Paragraph>
 	<div class="pa-table-container">
 		<Table>
 			{#snippet children()}
@@ -79,10 +81,10 @@
 <!-- 2x Spacing Table -->
 <Card>
 	{#snippet header()}
-		<h3>2x Spacing - ~62px rows</h3>
+		<Heading level={3}>2x Spacing - ~62px rows</Heading>
 	{/snippet}
 
-	<p>Balanced spacing for better readability when you have moderate amounts of data.</p>
+	<Paragraph>Balanced spacing for better readability when you have moderate amounts of data.</Paragraph>
 	<div class="pa-table-container">
 		<Table spacing="2x">
 			{#snippet children()}
@@ -130,10 +132,10 @@
 <!-- 3x Spacing Table -->
 <Card>
 	{#snippet header()}
-		<h3>3x Spacing - ~93px rows</h3>
+		<Heading level={3}>3x Spacing - ~93px rows</Heading>
 	{/snippet}
 
-	<p>Spacious layout for presentation tables or when emphasis and clarity are priorities.</p>
+	<Paragraph>Spacious layout for presentation tables or when emphasis and clarity are priorities.</Paragraph>
 	<div class="pa-table-container">
 		<Table spacing="3x">
 			{#snippet children()}
@@ -181,25 +183,25 @@
 <!-- Usage Guide -->
 <Card>
 	{#snippet header()}
-		<h3>Usage Guide</h3>
+		<Heading level={3}>Usage Guide</Heading>
 	{/snippet}
 
-	<h4>Default (Compact)</h4>
+	<Heading level={4}>Default (Compact)</Heading>
 	<pre><code>&lt;table class="pa-table"&gt;
   ...
 &lt;/table&gt;</code></pre>
 
-	<h4>2x Spacing</h4>
+	<Heading level={4}>2x Spacing</Heading>
 	<pre><code>&lt;table class="pa-table pa-table--2x"&gt;
   ...
 &lt;/table&gt;</code></pre>
 
-	<h4>3x Spacing</h4>
+	<Heading level={4}>3x Spacing</Heading>
 	<pre><code>&lt;table class="pa-table pa-table--3x"&gt;
   ...
 &lt;/table&gt;</code></pre>
 
-	<h4>When to use each size:</h4>
+	<Heading level={4}>When to use each size:</Heading>
 	<ul>
 		<li><strong>Default (Compact):</strong> Data grids, logs, transaction lists, any table with 50+ rows</li>
 		<li><strong>2x Spacing:</strong> Reports, dashboards, summary tables with 10-50 rows</li>

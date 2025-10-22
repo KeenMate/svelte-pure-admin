@@ -16,6 +16,8 @@
 		Grid,
 		Column
 	} from '$lib';
+	import Heading from '$lib/typography/Heading.svelte';
+	import Paragraph from '$lib/typography/Paragraph.svelte';
 
 	let username = $state('');
 	let email = $state('');
@@ -31,15 +33,15 @@
 	let horizontalPassword = $state('');
 </script>
 
-<h1>Forms</h1>
-<p>Comprehensive form components with validation, sizing, and responsive layouts.</p>
+<Heading level={1}>Forms</Heading>
+<Paragraph>Comprehensive form components with validation, sizing, and responsive layouts.</Paragraph>
 
 <!-- Two-column card layout for basic forms -->
 <Grid>
 	<Column size="1" md="1-2">
 		<Card>
 			{#snippet header()}
-				<h3>Basic Form Elements</h3>
+				<Heading level={3}>Basic Form Elements</Heading>
 			{/snippet}
 
 			<FormGroup>
@@ -62,7 +64,7 @@
 	<Column size="1" md="1-2">
 		<Card>
 			{#snippet header()}
-				<h3>Textarea & Select</h3>
+				<Heading level={3}>Textarea & Select</Heading>
 			{/snippet}
 
 			<FormGroup>
@@ -88,7 +90,7 @@
 	<Column size="1" lg="1-3">
 		<Card>
 			{#snippet header()}
-				<h3>Small Inputs</h3>
+				<Heading level={3}>Small Inputs</Heading>
 			{/snippet}
 
 			<FormGroup>
@@ -106,7 +108,7 @@
 	<Column size="1" lg="1-3">
 		<Card>
 			{#snippet header()}
-				<h3>Medium Inputs</h3>
+				<Heading level={3}>Medium Inputs</Heading>
 			{/snippet}
 
 			<FormGroup>
@@ -127,7 +129,7 @@
 	<Column size="1" lg="1-3">
 		<Card>
 			{#snippet header()}
-				<h3>Large Inputs</h3>
+				<Heading level={3}>Large Inputs</Heading>
 			{/snippet}
 
 			<FormGroup>
@@ -148,7 +150,7 @@
 	<Column size="1" md="1-2">
 		<Card>
 			{#snippet header()}
-				<h3>Validation States</h3>
+				<Heading level={3}>Validation States</Heading>
 			{/snippet}
 
 			<FormGroup hasSuccess={true}>
@@ -174,7 +176,7 @@
 	<Column size="1" md="1-2">
 		<Card>
 			{#snippet header()}
-				<h3>Input States</h3>
+				<Heading level={3}>Input States</Heading>
 			{/snippet}
 
 			<FormGroup>
@@ -203,7 +205,7 @@
 	<Column size="1" md="1-2">
 		<Card>
 			{#snippet header()}
-				<h3>Checkboxes</h3>
+				<Heading level={3}>Checkboxes</Heading>
 			{/snippet}
 
 			<Checkbox id="check1" label="Check me out" bind:checked />
@@ -215,7 +217,7 @@
 	<Column size="1" md="1-2">
 		<Card>
 			{#snippet header()}
-				<h3>Radio Buttons</h3>
+				<Heading level={3}>Radio Buttons</Heading>
 			{/snippet}
 
 			<Radio
@@ -248,7 +250,7 @@
 	<Column size="1" md="1-2">
 		<Card>
 			{#snippet header()}
-				<h3>Input Groups - Prepend</h3>
+				<Heading level={3}>Input Groups - Prepend</Heading>
 			{/snippet}
 
 			<FormGroup>
@@ -272,7 +274,7 @@
 	<Column size="1" md="1-2">
 		<Card>
 			{#snippet header()}
-				<h3>Input Groups - Append</h3>
+				<Heading level={3}>Input Groups - Append</Heading>
 			{/snippet}
 
 			<FormGroup>
@@ -296,7 +298,7 @@
 	<Column size="1">
 		<Card>
 			{#snippet header()}
-				<h3>Input Groups - Both Prepend & Append</h3>
+				<Heading level={3}>Input Groups - Both Prepend & Append</Heading>
 			{/snippet}
 
 			<FormGroup>
@@ -315,12 +317,12 @@
 <div style="margin-top: 2rem;">
 	<Card>
 		{#snippet header()}
-			<h3>Horizontal Form Layout (using Grid)</h3>
+			<Heading level={3}>Horizontal Form Layout (using Grid)</Heading>
 		{/snippet}
 
-		<p style="margin-bottom: 1rem; color: #666;">
+		<Paragraph style="margin-bottom: 1rem; color: #666;">
 			Using Grid and Column components to create horizontal form layouts with labels on the left.
-		</p>
+		</Paragraph>
 
 		<Grid>
 			<Column size="1" md="1-3">

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Heading from '$lib/typography/Heading.svelte';
+	import Paragraph from '$lib/typography/Paragraph.svelte';
 	import {
 		Card,
 		Table,
@@ -14,13 +16,13 @@
 	<title>Tables - Pure Admin Svelte</title>
 </svelte:head>
 
-<h1>Tables</h1>
-<p>Data tables with sorting, pagination, and various styling options.</p>
+<Heading level={1}>Tables</Heading>
+<Paragraph>Data tables with sorting, pagination, and various styling options.</Paragraph>
 
 <!-- Basic Table with Pager -->
 <Card>
 	{#snippet header()}
-		<h3>Basic Table with Pagination</h3>
+		<Heading level={3}>Basic Table with Pagination</Heading>
 	{/snippet}
 
 	<!-- Pager Above Table (Center) -->
@@ -130,7 +132,7 @@
 <!-- Striped Table -->
 <Card>
 	{#snippet header()}
-		<h3>Striped Table</h3>
+		<Heading level={3}>Striped Table</Heading>
 	{/snippet}
 
 	<div class="pa-table-container">
@@ -183,7 +185,7 @@
 <!-- 2x Spacing Table -->
 <Card>
 	{#snippet header()}
-		<h3>2x Spacing Table</h3>
+		<Heading level={3}>2x Spacing Table</Heading>
 	{/snippet}
 
 	<!-- Left-aligned pager -->
@@ -266,10 +268,10 @@
 <!-- Load More Examples -->
 <Card>
 	{#snippet header()}
-		<h3>Load More Positioning</h3>
+		<Heading level={3}>Load More Positioning</Heading>
 	{/snippet}
 
-	<h4>Table with Left-aligned Load More</h4>
+	<Heading level={4}>Table with Left-aligned Load More</Heading>
 	<div class="pa-table-container">
 		<Table>
 			{#snippet children()}
@@ -312,7 +314,7 @@
 		showCount={true}
 	/>
 
-	<h4 style="margin-top: 2rem;">Table with Center Load More</h4>
+	<Heading level={4} style="margin-top: 2rem;">Table with Center Load More</Heading>
 	<div class="pa-table-container">
 		<Table>
 			{#snippet children()}
@@ -355,7 +357,7 @@
 		showCount={true}
 	/>
 
-	<h4 style="margin-top: 2rem;">Table with Right Load More</h4>
+	<Heading level={4} style="margin-top: 2rem;">Table with Right Load More</Heading>
 	<div class="pa-table-container">
 		<Table>
 			{#snippet children()}

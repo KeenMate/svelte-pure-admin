@@ -4,15 +4,7 @@
 	 * Based on @pure-admin/core snippets/badges.html
 	 */
 
-	type BadgeVariant =
-		| 'primary'
-		| 'secondary'
-		| 'success'
-		| 'danger'
-		| 'warning'
-		| 'info'
-		| 'light'
-		| 'dark';
+	import type { BadgeVariant } from './badge-types';
 
 	interface Props {
 		/** Badge variant (main background) */

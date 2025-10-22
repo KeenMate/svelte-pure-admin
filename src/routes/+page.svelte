@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Heading from '$lib/typography/Heading.svelte';
+	import Paragraph from '$lib/typography/Paragraph.svelte';
 	import { Button, Alert, Card, Input, Select, FormLabel } from '$lib';
 	import ConfigDisplay from './ConfigDisplay.svelte';
 </script>
@@ -9,23 +11,23 @@
 
 <ConfigDisplay />
 
-<h1>@pure-admin/svelte</h1>
-<p>Svelte 5 component library for Pure Admin</p>
+<Heading level={1}>@pure-admin/svelte</Heading>
+<Paragraph>Svelte 5 component library for Pure Admin</Paragraph>
 
 <!-- Configuration -->
 <Card>
 	{#snippet header()}
-		<h3>Configuration System</h3>
+		<Heading level={3}>Configuration System</Heading>
 	{/snippet}
 
-	<p>
+	<Paragraph>
 		This demo uses <code>PureAdminProvider</code> to set custom configuration values. All child
 		components can access the config using <code>usePureAdminConfig()</code>.
-	</p>
+	</Paragraph>
 
-	<p>See the fixed panel in the top-right corner showing current config values.</p>
+	<Paragraph>See the fixed panel in the top-right corner showing current config values.</Paragraph>
 
-	<h4 style="margin-top: 1rem;">Usage Example:</h4>
+	<Heading level={4} style="margin-top: 1rem;">Usage Example:</Heading>
 	<pre
 		style="background: #f5f5f5; padding: 1rem; border-radius: 4px; overflow-x: auto;"><code>{`< script>
   import { PureAdminProvider } from '@pure-admin/svelte';
@@ -45,7 +47,7 @@
 <!-- Buttons -->
 <Card>
 	{#snippet header()}
-		<h3>Buttons</h3>
+		<Heading level={3}>Buttons</Heading>
 	{/snippet}
 
 	<div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
@@ -57,7 +59,7 @@
 		<Button variant="info">Info</Button>
 	</div>
 
-	<h4 style="margin-top: 1rem;">Sizes</h4>
+	<Heading level={4} style="margin-top: 1rem;">Sizes</Heading>
 	<div style="display: flex; gap: 0.5rem; align-items: center;">
 		<Button variant="primary" size="xs">Extra Small</Button>
 		<Button variant="primary" size="sm">Small</Button>
@@ -66,14 +68,14 @@
 		<Button variant="primary" size="xl">Extra Large</Button>
 	</div>
 
-	<h4 style="margin-top: 1rem;">Outline</h4>
+	<Heading level={4} style="margin-top: 1rem;">Outline</Heading>
 	<div style="display: flex; gap: 0.5rem;">
 		<Button variant="primary" outline>Primary</Button>
 		<Button variant="success" outline>Success</Button>
 		<Button variant="danger" outline>Danger</Button>
 	</div>
 
-	<h4 style="margin-top: 1rem;">Block</h4>
+	<Heading level={4} style="margin-top: 1rem;">Block</Heading>
 	<Button variant="primary" block>Full Width Button</Button>
 </Card>
 
@@ -81,7 +83,7 @@
 <div style="margin-top: 2rem;">
 	<Card>
 		{#snippet header()}
-			<h3>Alerts</h3>
+			<Heading level={3}>Alerts</Heading>
 		{/snippet}
 
 		<Alert variant="success">
@@ -100,7 +102,7 @@
 			<strong>Info!</strong> This alert is dismissible (click the X).
 		</Alert>
 
-		<h4 style="margin-top: 1rem;">Outline</h4>
+		<Heading level={4} style="margin-top: 1rem;">Outline</Heading>
 		<Alert variant="success" outline>
 			<strong>Outline!</strong> This is an outline alert.
 		</Alert>
@@ -111,14 +113,14 @@
 <div style="margin-top: 2rem;">
 	<Card>
 		{#snippet header()}
-			<h3>Card Examples</h3>
+			<Heading level={3}>Card Examples</Heading>
 		{/snippet}
 
 		<div class="pure-g" style="margin: -1rem;">
 			<div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-3" style="padding: 1rem;">
 				<Card>
 					{#snippet header()}
-						<h4>Simple Card</h4>
+						<Heading level={4}>Simple Card</Heading>
 					{/snippet}
 					This is a simple card with a header.
 				</Card>
@@ -127,7 +129,7 @@
 			<div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-3" style="padding: 1rem;">
 				<Card>
 					{#snippet header()}
-						<h4>Card with Footer</h4>
+						<Heading level={4}>Card with Footer</Heading>
 					{/snippet}
 					This card has header, body, and footer.
 					{#snippet footer()}
@@ -139,7 +141,7 @@
 			<div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-3" style="padding: 1rem;">
 				<Card>
 					{#snippet header()}
-						<h4>Another Card</h4>
+						<Heading level={4}>Another Card</Heading>
 					{/snippet}
 					Cards can contain any content!
 					{#snippet footer()}
@@ -158,7 +160,7 @@
 <div style="margin-top: 2rem;">
 	<Card>
 		{#snippet header()}
-			<h3>Horizontal Form Example</h3>
+			<Heading level={3}>Horizontal Form Example</Heading>
 		{/snippet}
 
 		<form>
@@ -295,10 +297,10 @@
 		</form>
 
 		{#snippet footer()}
-			<p style="margin: 0; color: #666; font-size: 0.875rem;">
+			<Paragraph style="margin: 0; color: #666; font-size: 0.875rem;">
 				<strong>Form Layout:</strong> Line 1 has equal widths. Line 2 has varying sizes (1/4 + 5/12 + 1/3).
 				Line 3 has very different sizes (1/2 + 1/3 + 1/6).
-			</p>
+			</Paragraph>
 		{/snippet}
 	</Card>
 </div>

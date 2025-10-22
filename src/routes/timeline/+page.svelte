@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Heading from '$lib/typography/Heading.svelte';
+	import Paragraph from '$lib/typography/Paragraph.svelte';
 	import { Card, Timeline, TimelineItem, Button } from '$lib';
 </script>
 
@@ -6,13 +8,13 @@
 	<title>Timeline Feed - Pure Admin Svelte</title>
 </svelte:head>
 
-<h1>Timeline Feed</h1>
-<p>Activity feed timeline with avatars and user actions - perfect for social feeds, notifications, and audit logs.</p>
+<Heading level={1}>Timeline Feed</Heading>
+<Paragraph>Activity feed timeline with avatars and user actions - perfect for social feeds, notifications, and audit logs.</Paragraph>
 
 <!-- Activity Feed -->
 <Card>
 	{#snippet header()}
-		<h3>Activity Feed</h3>
+		<Heading level={3}>Activity Feed</Heading>
 	{/snippet}
 
 	<Timeline variant="feed">
@@ -58,9 +60,9 @@
 				<div
 					style="margin-top: 0.75rem; padding: 0.75rem; background-color: #f9fafb; border-left: 3px solid #3b82f6; border-radius: 0.25rem;"
 				>
-					<p style="margin: 0; font-size: 0.875rem; color: #4b5563;">
+					<Paragraph style="margin: 0; font-size: 0.875rem; color: #4b5563;">
 						"I've reviewed the candidate's technical test submission. The code quality is excellent and demonstrates strong understanding of React patterns. I recommend moving forward with the next interview stage."
-					</p>
+					</Paragraph>
 				</div>
 			{/snippet}
 		</TimelineItem>
@@ -121,9 +123,9 @@
 				<div
 					style="margin-top: 0.75rem; padding: 0.75rem; background-color: #fef2f2; border-left: 3px solid #dc2626; border-radius: 0.25rem;"
 				>
-					<p style="margin: 0; font-size: 0.875rem; color: #4b5563;">
+					<Paragraph style="margin: 0; font-size: 0.875rem; color: #4b5563;">
 						<strong style="color: #dc2626;">URGENT:</strong> Payment processing fails when cart total exceeds $1000. Multiple customers affected. Needs immediate attention.
-					</p>
+					</Paragraph>
 				</div>
 			{/snippet}
 		</TimelineItem>
@@ -147,7 +149,7 @@
 <!-- Team Collaboration Feed -->
 <Card>
 	{#snippet header()}
-		<h3>Team Collaboration Feed</h3>
+		<Heading level={3}>Team Collaboration Feed</Heading>
 	{/snippet}
 
 	<Timeline variant="feed">
@@ -204,10 +206,10 @@
 <!-- Usage Examples -->
 <Card>
 	{#snippet header()}
-		<h3>Usage Examples</h3>
+		<Heading level={3}>Usage Examples</Heading>
 	{/snippet}
 
-	<h4>Basic Feed Timeline</h4>
+	<Heading level={4}>Basic Feed Timeline</Heading>
 	<pre class="mb-4"><code>&lt;Timeline variant="feed"&gt;
   &lt;TimelineItem
     avatar="https://ui-avatars.com/api/?name=User+Name"
@@ -222,7 +224,7 @@
   &lt;/TimelineItem&gt;
 &lt;/Timeline&gt;</code></pre>
 
-	<h4>With Comment/Additional Content</h4>
+	<Heading level={4}>With Comment/Additional Content</Heading>
 	<pre class="mb-4"><code>&lt;TimelineItem avatar="..." variant="info"&gt;
   {#snippet content()}
     &lt;div&gt;&lt;strong&gt;User&lt;/strong&gt; commented&lt;/div&gt;
@@ -233,11 +235,11 @@
   {/snippet}
 &lt;/TimelineItem&gt;</code></pre>
 
-	<h4>UI Avatars Integration</h4>
-	<p>Generate avatars dynamically using UI Avatars API:</p>
+	<Heading level={4}>UI Avatars Integration</Heading>
+	<Paragraph>Generate avatars dynamically using UI Avatars API:</Paragraph>
 	<pre class="mb-4"><code>https://ui-avatars.com/api/?name=First+Last&background=3b82f6&color=fff</code></pre>
 
-	<h4>Best Practices</h4>
+	<Heading level={4}>Best Practices</Heading>
 	<ul>
 		<li>Use <code>variant="feed"</code> for social activity feeds and audit logs</li>
 		<li>Include user avatars for better visual identification</li>

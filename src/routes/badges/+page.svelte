@@ -1,15 +1,58 @@
 <script lang="ts">
+	import Heading from '$lib/typography/Heading.svelte';
+	import Paragraph from '$lib/typography/Paragraph.svelte';
 	import {
 		Badge,
 		Label,
 		BadgeGroup,
 		CompositeBadge,
+		CompositeBadgeGroup,
 		Card,
 		Grid,
 		Column,
 		Alert,
 		Tooltip
 	} from '$lib';
+
+	// Badge data for interactive groups
+	const projectTags = [
+		{ variant: 'primary' as const, label: 'React' },
+		{ variant: 'info' as const, label: 'TypeScript' },
+		{ variant: 'success' as const, label: 'Node.js' },
+		{ variant: 'warning' as const, label: 'Express' },
+		{ variant: 'secondary' as const, label: 'PostgreSQL' },
+		{ variant: 'primary' as const, label: 'Redux' },
+		{ variant: 'info' as const, label: 'Sass' },
+		{ variant: 'success' as const, label: 'Docker' },
+		{ variant: 'warning' as const, label: 'AWS' },
+		{ variant: 'danger' as const, label: 'Redis' },
+		{ variant: 'secondary' as const, label: 'GraphQL' },
+		{ variant: 'primary' as const, label: 'Jest' },
+		{ variant: 'info' as const, label: 'Webpack' },
+		{ variant: 'success' as const, label: 'ESLint' },
+		{ variant: 'dark' as const, label: 'GitHub Actions' }
+	];
+
+	const userSkills = [
+		{ variant: 'primary' as const, label: 'JavaScript', pill: true },
+		{ variant: 'info' as const, label: 'Python', pill: true },
+		{ variant: 'success' as const, label: 'Java', pill: true },
+		{ variant: 'warning' as const, label: 'C++', pill: true },
+		{ variant: 'secondary' as const, label: 'Ruby', pill: true },
+		{ variant: 'primary' as const, label: 'Go', pill: true },
+		{ variant: 'info' as const, label: 'Rust', pill: true }
+	];
+
+	const statusBadges = [
+		{ variant: 'success' as const, label: 'Approved', size: 'sm' as const },
+		{ variant: 'warning' as const, label: 'Pending', size: 'sm' as const },
+		{ variant: 'danger' as const, label: 'Rejected', size: 'sm' as const },
+		{ variant: 'info' as const, label: 'Review', size: 'sm' as const },
+		{ variant: 'secondary' as const, label: 'Draft', size: 'sm' as const },
+		{ variant: 'primary' as const, label: 'Published', size: 'sm' as const },
+		{ variant: 'light' as const, label: 'Archived', size: 'sm' as const },
+		{ variant: 'dark' as const, label: 'Deleted', size: 'sm' as const }
+	];
 
 	function handleLabelClick(label: string) {
 		console.log('Label clicked:', label);
@@ -36,24 +79,103 @@
 		console.log('Download clicked for:', version);
 		alert(`Downloading ${version}...`);
 	}
+
+	// Example: Database/API response data (generic objects)
+	interface Product {
+		id: number;
+		name: string;
+		category: 'featured' | 'new' | 'sale' | 'bestseller';
+		stock: number;
+	}
+
+	const products: Product[] = [
+		{ id: 1, name: 'Premium Widget', category: 'featured', stock: 15 },
+		{ id: 2, name: 'Deluxe Gadget', category: 'new', stock: 8 },
+		{ id: 3, name: 'Standard Tool', category: 'sale', stock: 3 },
+		{ id: 4, name: 'Pro Device', category: 'bestseller', stock: 25 },
+		{ id: 5, name: 'Ultra Kit', category: 'featured', stock: 12 },
+		{ id: 6, name: 'Basic Set', category: 'sale', stock: 5 },
+		{ id: 7, name: 'Advanced System', category: 'new', stock: 18 }
+	];
+
+	// Map category to badge variant
+	function getCategoryVariant(product: Product) {
+		const map = {
+			featured: 'primary' as const,
+			new: 'success' as const,
+			sale: 'danger' as const,
+			bestseller: 'warning' as const
+		};
+		return map[product.category];
+	}
+
+	// Custom display with stock count
+	function getProductDisplay(product: Product) {
+		return `${product.name} (${product.stock} in stock)`;
+	}
+
+	// Handle product badge click
+	function handleProductClick(product: Product, event: MouseEvent) {
+		console.log('Product clicked:', product);
+		alert(`Product: ${product.name}\nCategory: ${product.category}\nStock: ${product.stock}`);
+	}
+
+	// Example: Task/Issue data for composite badges
+	interface Task {
+		id: number;
+		name: string;
+		status: 'open' | 'in-progress' | 'completed' | 'blocked';
+		commentCount: number;
+	}
+
+	const tasks: Task[] = [
+		{ id: 1, name: 'Update documentation', status: 'open', commentCount: 3 },
+		{ id: 2, name: 'Fix login bug', status: 'in-progress', commentCount: 7 },
+		{ id: 3, name: 'Add dark mode', status: 'completed', commentCount: 12 },
+		{ id: 4, name: 'Refactor API', status: 'blocked', commentCount: 5 },
+		{ id: 5, name: 'Write tests', status: 'open', commentCount: 2 }
+	];
+
+	// Map status to badge variant
+	function getTaskVariant(task: Task) {
+		const map = {
+			open: 'info' as const,
+			'in-progress': 'warning' as const,
+			completed: 'success' as const,
+			blocked: 'danger' as const
+		};
+		return map[task.status];
+	}
+
+	// Handle task label click
+	function handleTaskLabelClick(task: Task, event: MouseEvent) {
+		console.log('Task label clicked:', task);
+		alert(`Opening task: ${task.name}`);
+	}
+
+	// Handle task button click (view comments)
+	function handleTaskButtonClick(task: Task, event: MouseEvent) {
+		console.log('Task comments clicked:', task);
+		alert(`Viewing ${task.commentCount} comments for: ${task.name}`);
+	}
 </script>
 
 <svelte:head>
 	<title>Badges - Pure Admin Svelte</title>
 </svelte:head>
 
-<h1>Badges</h1>
+<Heading level={1}>Badges</Heading>
 
 <!-- Basic Badges -->
 <Card>
 	{#snippet header()}
-		<h3>Basic Badges</h3>
-		<p>Simple badges for status indication and categorization</p>
+		<Heading level={3}>Basic Badges</Heading>
+		<Paragraph>Simple badges for status indication and categorization</Paragraph>
 	{/snippet}
 
 	<Grid>
 		<Column size="1" md="1-2">
-			<h4>Default Badges</h4>
+			<Heading level={4}>Default Badges</Heading>
 			<div class="component-showcase">
 				<Badge>Default</Badge>
 				<Badge variant="primary">Primary</Badge>
@@ -67,7 +189,7 @@
 			</div>
 		</Column>
 		<Column size="1" md="1-2">
-			<h4>Small Badges</h4>
+			<Heading level={4}>Small Badges</Heading>
 			<div class="component-showcase">
 				<Badge size="sm">Default</Badge>
 				<Badge size="sm" variant="primary">Primary</Badge>
@@ -86,13 +208,13 @@
 <!-- Pill Badges -->
 <Card>
 	{#snippet header()}
-		<h3>Pill Badges</h3>
-		<p>Rounded badges for a softer, modern appearance</p>
+		<Heading level={3}>Pill Badges</Heading>
+		<Paragraph>Rounded badges for a softer, modern appearance</Paragraph>
 	{/snippet}
 
 	<Grid>
 		<Column size="1" md="1-2">
-			<h4>Regular Pills</h4>
+			<Heading level={4}>Regular Pills</Heading>
 			<div class="component-showcase">
 				<Badge pill>Default</Badge>
 				<Badge pill variant="primary">Primary</Badge>
@@ -104,7 +226,7 @@
 			</div>
 		</Column>
 		<Column size="1" md="1-2">
-			<h4>Small Pills</h4>
+			<Heading level={4}>Small Pills</Heading>
 			<div class="component-showcase">
 				<Badge pill size="sm">Default</Badge>
 				<Badge pill size="sm" variant="primary">Primary</Badge>
@@ -121,8 +243,8 @@
 <!-- Badges with Icons -->
 <Card>
 	{#snippet header()}
-		<h3>Badges with Icons</h3>
-		<p>Enhanced badges with icon indicators</p>
+		<Heading level={3}>Badges with Icons</Heading>
+		<Paragraph>Enhanced badges with icon indicators</Paragraph>
 	{/snippet}
 
 	<div class="component-showcase">
@@ -156,13 +278,13 @@
 <!-- Labels -->
 <Card>
 	{#snippet header()}
-		<h3>Labels</h3>
-		<p>Text labels for categorization and tagging</p>
+		<Heading level={3}>Labels</Heading>
+		<Paragraph>Text labels for categorization and tagging</Paragraph>
 	{/snippet}
 
 	<Grid>
 		<Column size="1" md="1-2">
-			<h4>Basic Labels</h4>
+			<Heading level={4}>Basic Labels</Heading>
 			<div class="component-showcase">
 				<Label>Frontend</Label>
 				<Label variant="primary">React</Label>
@@ -174,7 +296,7 @@
 			</div>
 		</Column>
 		<Column size="1" md="1-2">
-			<h4>Outlined Labels</h4>
+			<Heading level={4}>Outlined Labels</Heading>
 			<div class="component-showcase">
 				<Label outline>Frontend</Label>
 				<Label outline variant="primary">React</Label>
@@ -191,83 +313,46 @@
 <!-- Badge Groups with Limits -->
 <Card>
 	{#snippet header()}
-		<h3>Badge Groups with Limits</h3>
-		<p>
+		<Heading level={3}>Badge Groups with Limits</Heading>
+		<Paragraph>
 			Display many badges with automatic overflow handling - shows 5 badges and "... N more"
 			indicator
-		</p>
+		</Paragraph>
 	{/snippet}
-		<Grid>
-			<Column size="1">
-				<h4>Project Tags (15 total, showing 5)</h4>
-				<BadgeGroup class="mb-3">
-					<Badge variant="primary">React</Badge>
-					<Badge variant="info">TypeScript</Badge>
-					<Badge variant="success">Node.js</Badge>
-					<Badge variant="warning">Express</Badge>
-					<Badge variant="secondary">PostgreSQL</Badge>
-					<Badge variant="primary">Redux</Badge>
-					<Badge variant="info">Sass</Badge>
-					<Badge variant="success">Docker</Badge>
-					<Badge variant="warning">AWS</Badge>
-					<Badge variant="danger">Redis</Badge>
-					<Badge variant="secondary">GraphQL</Badge>
-					<Badge variant="primary">Jest</Badge>
-					<Badge variant="info">Webpack</Badge>
-					<Badge variant="success">ESLint</Badge>
-					<Badge variant="dark">GitHub Actions</Badge>
-					<Badge variant="secondary">
-						{#snippet icon()}»{/snippet}
-						10 more
-					</Badge>
-				</BadgeGroup>
+	<Grid>
+		<Column size="1">
+			<Heading level={4}>Legacy Mode: Project Tags (15 total)</Heading>
+			<BadgeGroup badges={projectTags} limit={5} class="mb-3" />
 
-				<h4>User Skills (34 total, showing 5)</h4>
-				<BadgeGroup class="mb-3">
-					<Badge pill variant="primary">JavaScript</Badge>
-					<Badge pill variant="info">Python</Badge>
-					<Badge pill variant="success">Java</Badge>
-					<Badge pill variant="warning">C++</Badge>
-					<Badge pill variant="secondary">Ruby</Badge>
-					<Badge pill variant="primary">Go</Badge>
-					<Badge pill variant="info">Rust</Badge>
-					<Badge pill variant="secondary">
-						{#snippet icon()}»{/snippet}
-						29 more
-					</Badge>
-				</BadgeGroup>
+			<Heading level={4}>Legacy Mode: User Skills (7 total, pill style)</Heading>
+			<BadgeGroup badges={userSkills} limit={5} class="mb-3" />
 
-				<h4>Small Badges (8 total, showing 5)</h4>
-				<BadgeGroup>
-					<Badge size="sm" variant="success">Approved</Badge>
-					<Badge size="sm" variant="warning">Pending</Badge>
-					<Badge size="sm" variant="danger">Rejected</Badge>
-					<Badge size="sm" variant="info">Review</Badge>
-					<Badge size="sm" variant="secondary">Draft</Badge>
-					<Badge size="sm" variant="primary">Published</Badge>
-					<Badge size="sm" variant="light">Archived</Badge>
-					<Badge size="sm" variant="dark">Deleted</Badge>
-					<Badge size="sm" variant="secondary">
-						{#snippet icon()}»{/snippet}
-						3 more
-					</Badge>
-				</BadgeGroup>
-			</Column>
-		</Grid>
+			<Heading level={4}>Status Badges (8 total, small size)</Heading>
+			<BadgeGroup badges={statusBadges} limit={5} />
+		</Column>
+	</Grid>
 
-		<Alert variant="info" style="margin-top: 1rem;">
-			<small
-				><strong>Note:</strong> The visible limit is controlled by
-				<code>$badge-group-visible-limit</code>
-				SCSS variable (default: 5). Future Svelte component will make this configurable per instance.</small
-			>
-		</Alert>
+	<Alert variant="info">
+		<small
+			><strong>Interactive Badge Groups:</strong> Click "» N more" to expand all badges. Click "« Collapse" to return to limited view. The visible limit defaults to 5 badges but can be customized with the <code>limit</code> prop (e.g., <code>&lt;BadgeGroup limit={10}&gt;</code>).</small
+		>
+	</Alert>
 
-		<Grid style="margin-top: 1.5rem;">
-			<Column size="1" md="1-6">
-				<h4>Wrapping Demo</h4>
-				<p style="font-size: 0.75rem; margin-bottom: 0.5rem;">29 badges in narrow container</p>
-				<BadgeGroup showAll>
+	<Grid>
+		<Column size="1" md="1-3">
+			<Heading level={4}>Narrow Container Demo</Heading>
+			<BadgeGroup badges={projectTags} limit={5} />
+		</Column>
+		<Column size="1" md="2-3">
+			<Heading level={4}>Full Width Comparison</Heading>
+			<BadgeGroup badges={projectTags} limit={5} />
+		</Column>
+	</Grid>
+
+	<Grid>
+		<Column size="1" md="1-6">
+			<Heading level={4}>Wrapping Demo (Static)</Heading>
+			<BadgeGroup showAll>
 					<Badge size="sm" variant="primary">React</Badge>
 					<Badge size="sm" variant="info">Vue</Badge>
 					<Badge size="sm" variant="success">Angular</Badge>
@@ -299,10 +384,9 @@
 					<Badge size="sm" variant="dark">MATLAB</Badge>
 				</BadgeGroup>
 			</Column>
-			<Column size="1" md="5-6">
-				<h4>Full Width Comparison</h4>
-				<p style="font-size: 0.75rem; margin-bottom: 0.5rem;">Same 29 badges with full width</p>
-				<BadgeGroup showAll>
+		<Column size="1" md="5-6">
+			<Heading level={4}>Full Width Comparison</Heading>
+			<BadgeGroup showAll>
 					<Badge size="sm" variant="primary">React</Badge>
 					<Badge size="sm" variant="info">Vue</Badge>
 					<Badge size="sm" variant="success">Angular</Badge>
@@ -337,18 +421,64 @@
 		</Grid>
 </Card>
 
+<!-- Data-Driven Badge Groups (KeenMate Pattern) -->
+<Card>
+	{#snippet header()}
+		<Heading level={3}>Data-Driven Badge Groups (KeenMate Pattern)</Heading>
+		<Paragraph>
+			Use generic data from database/API with member mappings - no need to transform data first!
+		</Paragraph>
+	{/snippet}
+
+	<Grid>
+		<Column size="1">
+			<Heading level={4}>Simple Member Mapping (Non-clickable)</Heading>
+			<Paragraph>Map properties from your data objects directly (category maps to variant colors)</Paragraph>
+			<BadgeGroup
+				data={products}
+				displayValueMember="name"
+				variantMember="category"
+				idMember="id"
+				limit={3}
+				class="mb-3"
+			/>
+
+			<Heading level={4}>Custom Callbacks with Click Handling</Heading>
+			<Paragraph>Click badges to see product details! Callbacks handle transformations and clicks.</Paragraph>
+			<BadgeGroup
+				data={products}
+				getDisplayValueCallback={getProductDisplay}
+				getVariantCallback={getCategoryVariant}
+				onBadgeClick={handleProductClick}
+				idMember="id"
+				limit={4}
+			/>
+		</Column>
+	</Grid>
+
+	<Alert variant="success">
+		<small
+			><strong>KeenMate Pattern:</strong> Use <code>displayValueMember</code>,
+			<code>variantMember</code>, <code>pillMember</code>, <code>sizeMember</code> to map
+			properties, or use callbacks like <code>getDisplayValueCallback</code> for custom logic.
+			Add <code>onBadgeClick</code> to handle clicks and get the full data item back! Works with
+			any data structure from your API/database.</small
+		>
+	</Alert>
+</Card>
+
 <!-- Fixed-Width Badges with Ellipsis -->
 <Card>
 	{#snippet header()}
-		<h3>Fixed-Width Badges with Ellipsis</h3>
-		<p>
+		<Heading level={3}>Fixed-Width Badges with Ellipsis</Heading>
+		<Paragraph>
 			Badges with constrained width show ellipsis for overflow text. Hover for tooltip with full
 			text.
-		</p>
+		</Paragraph>
 	{/snippet}
 		<Grid>
 			<Column size="1" md="1-2">
-				<h4>Various Fixed Widths</h4>
+				<Heading level={4}>Various Fixed Widths</Heading>
 				<div class="component-showcase">
 					<Tooltip text="Short" position="bottom">
 						<Badge variant="primary" width="3x">Short</Badge>
@@ -370,7 +500,7 @@
 				</div>
 			</Column>
 			<Column size="1" md="1-2">
-				<h4>Small Fixed-Width Badges</h4>
+				<Heading level={4}>Small Fixed-Width Badges</Heading>
 				<div class="component-showcase">
 					<Tooltip text="OK" position="bottom">
 						<Badge size="sm" variant="primary" width="2x">OK</Badge>
@@ -393,7 +523,7 @@
 
 		<Grid style="margin-top: 1rem;">
 			<Column size="1">
-				<h4>Practical Example: Tags with Consistent Width</h4>
+				<Heading level={4}>Practical Example: Tags with Consistent Width</Heading>
 				<div class="component-showcase">
 					<Tooltip text="JavaScript" position="bottom">
 						<Badge pill variant="secondary" width="5x">JavaScript</Badge>
@@ -419,10 +549,10 @@
 
 		<Grid style="margin-top: 1rem;">
 			<Column size="1">
-				<h4>Left-Side Ellipsis (Path/Hierarchy Display)</h4>
-				<p style="font-size: 0.75rem; margin-bottom: 0.5rem;">
+				<Heading level={4}>Left-Side Ellipsis (Path/Hierarchy Display)</Heading>
+				<Paragraph style="font-size: 0.75rem; margin-bottom: 0.5rem;">
 					When the important part is at the end (breadcrumbs, file paths, etc.)
-				</p>
+				</Paragraph>
 				<div class="component-showcase">
 					<Tooltip
 						text="Settings > User Preferences > Notifications > Email"
@@ -474,15 +604,50 @@
 		</Alert>
 </Card>
 
+<!-- Composite Badge Groups (Data-Driven) -->
+<Card>
+	{#snippet header()}
+		<Heading level={3}>Composite Badge Groups (Data-Driven)</Heading>
+		<Paragraph>
+			Display composite badges from database/API data with member mappings and click handlers
+		</Paragraph>
+	{/snippet}
+
+	<Grid>
+		<Column size="1">
+			<Heading level={4}>Task List with Comment Counts</Heading>
+			<Paragraph>Click task name to open, click comment count to view comments</Paragraph>
+			<CompositeBadgeGroup
+				data={tasks}
+				labelMember="name"
+				buttonTextMember="commentCount"
+				getVariantCallback={getTaskVariant}
+				interactiveMember="interactive"
+				onLabelClick={handleTaskLabelClick}
+				onButtonClick={handleTaskButtonClick}
+				idMember="id"
+			/>
+		</Column>
+	</Grid>
+
+	<Alert variant="info">
+		<small
+			><strong>Composite Badges:</strong> Perfect for items with two parts - a label and a
+			count/action. Use <code>onLabelClick</code> and <code>onButtonClick</code> to handle
+			interactions separately. Works with any data structure!</small
+		>
+	</Alert>
+</Card>
+
 <!-- Usage Examples -->
 <Card>
 	{#snippet header()}
-		<h3>Usage Examples</h3>
-		<p>Real-world examples of badges and labels in context</p>
+		<Heading level={3}>Usage Examples</Heading>
+		<Paragraph>Real-world examples of badges and labels in context</Paragraph>
 	{/snippet}
 		<Grid>
 			<Column size="1" md="1-2">
-				<h4>User Status</h4>
+				<Heading level={4}>User Status</Heading>
 				<div class="usage-example">
 					<div class="user-item">
 						<span class="user-name">John Doe</span>
@@ -499,10 +664,10 @@
 				</div>
 			</Column>
 			<Column size="1" md="1-2">
-				<h4>Project Tags</h4>
+				<Heading level={4}>Project Tags</Heading>
 				<div class="usage-example">
 					<div class="project-item">
-						<h5>Website Redesign</h5>
+						<Heading level={5}>Website Redesign</Heading>
 						<div class="project-tags">
 							<Label size="sm" variant="primary">Frontend</Label>
 							<Label size="sm" variant="info">Design</Label>
@@ -510,7 +675,7 @@
 						</div>
 					</div>
 					<div class="project-item">
-						<h5>API Integration</h5>
+						<Heading level={5}>API Integration</Heading>
 						<div class="project-tags">
 							<Label size="sm" variant="secondary">Backend</Label>
 							<Label size="sm" variant="success">REST API</Label>
@@ -525,12 +690,12 @@
 <!-- Composite Badges -->
 <Card>
 	{#snippet header()}
-		<h3>Composite Badges</h3>
-		<p>Three-part badges with separate icon, label, and button sections</p>
+		<Heading level={3}>Composite Badges</Heading>
+		<Paragraph>Three-part badges with separate icon, label, and button sections</Paragraph>
 	{/snippet}
 		<Grid>
 			<Column size="1" md="1-2">
-				<h4>Standard Color Variations</h4>
+				<Heading level={4}>Standard Color Variations</Heading>
 				<div class="component-showcase">
 					<CompositeBadge variant="primary" label="Primary" buttonText="×" interactive>
 						{#snippet icon()}✓{/snippet}
@@ -566,7 +731,7 @@
 				</div>
 			</Column>
 			<Column size="1" md="1-2">
-				<h4>More Examples</h4>
+				<Heading level={4}>More Examples</Heading>
 				<div class="component-showcase">
 					<CompositeBadge variant="danger" label="Critical" buttonText="×" interactive>
 						{#snippet icon()}🔥{/snippet}
@@ -585,10 +750,10 @@
 
 		<Grid style="margin-top: 1rem;">
 			<Column size="1">
-				<h4>Advanced: Mixed Section Colors</h4>
-				<p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+				<Heading level={4}>Advanced: Mixed Section Colors</Heading>
+				<Paragraph style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
 					For advanced customization, you can mix individual section colors using separate classes.
-				</p>
+				</Paragraph>
 				<div class="component-showcase">
 					<CompositeBadge
 						variant="primary"
@@ -641,8 +806,8 @@
 <!-- Interactive Examples -->
 <Card>
 	{#snippet header()}
-		<h3>Interactive Composite Badges</h3>
-		<p>Examples with click handlers and dynamic behavior</p>
+		<Heading level={3}>Interactive Composite Badges</Heading>
+		<Paragraph>Examples with click handlers and dynamic behavior</Paragraph>
 	{/snippet}
 		<div class="component-showcase">
 			<CompositeBadge
