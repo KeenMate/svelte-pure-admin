@@ -11,10 +11,10 @@
 		subtitle?: string;
 		/** Meta text */
 		meta?: string;
+		/** Avatar content (string) or snippet */
+		avatar?: string | import('svelte').Snippet;
 		/** Additional CSS classes */
 		class?: string;
-		/** Avatar snippet */
-		avatar?: import('svelte').Snippet;
 		/** Content snippet (for custom layouts) */
 		children?: import('svelte').Snippet;
 	}
@@ -31,7 +31,11 @@
 <div class={classes()}>
 	{#if avatar}
 		<div class="pa-list__avatar">
-			{@render avatar()}
+			{#if typeof avatar === 'string'}
+				{avatar}
+			{:else}
+				{@render avatar()}
+			{/if}
 		</div>
 	{/if}
 	{#if children}

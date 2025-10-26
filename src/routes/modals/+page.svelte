@@ -15,6 +15,8 @@
 		Select,
 		Checkbox
 	} from '$lib';
+	import Heading from '$lib/typography/Heading.svelte';
+	import Paragraph from '$lib/typography/Paragraph.svelte';
 
 	// Modal visibility state
 	let showSmall = $state(false);
@@ -38,19 +40,19 @@
 	<title>Modal Windows - Pure Admin Svelte</title>
 </svelte:head>
 
-<h1>Modal Windows</h1>
-<p>Dialog boxes and overlays for focused user interactions.</p>
+<Heading level={1}>Modal Windows</Heading>
+<Paragraph>Dialog boxes and overlays for focused user interactions.</Paragraph>
 
 <!-- Basic Modal Examples -->
 <Card>
 	{#snippet header()}
-		<h3>Basic Modals</h3>
-		<p>Standard modal dialogs for user interactions</p>
+		<Heading level={3}>Basic Modals</Heading>
+		<Paragraph>Standard modal dialogs for user interactions</Paragraph>
 	{/snippet}
 
 	<Grid>
 		<Column size="1" md="1-2">
-			<h4>Standard Sizes</h4>
+			<Heading level={4}>Standard Sizes</Heading>
 			<div class="component-showcase">
 				<Button variant="primary" onClick={() => (showSmall = true)}>Small Modal</Button>
 				<Button variant="primary" onClick={() => (showMedium = true)}>Medium Modal</Button>
@@ -61,7 +63,7 @@
 			</div>
 		</Column>
 		<Column size="1" md="1-2">
-			<h4>Modal Types</h4>
+			<Heading level={4}>Modal Types</Heading>
 			<div class="component-showcase">
 				<Button variant="success" onClick={() => (showSuccess = true)}>Success Modal</Button>
 				<Button variant="warning" onClick={() => (showWarning = true)}>Warning Modal</Button>
@@ -74,8 +76,8 @@
 <!-- Form Modals -->
 <Card>
 	{#snippet header()}
-		<h3>Form Modals</h3>
-		<p>Modals containing forms and interactive content</p>
+		<Heading level={3}>Form Modals</Heading>
+		<Paragraph>Modals containing forms and interactive content</Paragraph>
 	{/snippet}
 
 	<div class="component-showcase">
@@ -88,8 +90,8 @@
 <!-- Confirmation Modals -->
 <Card>
 	{#snippet header()}
-		<h3>Confirmation Modals</h3>
-		<p>Action confirmation and decision dialogs</p>
+		<Heading level={3}>Confirmation Modals</Heading>
+		<Paragraph>Action confirmation and decision dialogs</Paragraph>
 	{/snippet}
 
 	<div class="component-showcase">
@@ -107,7 +109,7 @@
 
 <!-- Small Modal -->
 <Modal bind:show={showSmall} size="sm" title="Small Modal">
-	<p>This is a small modal dialog. Perfect for quick notifications or simple confirmations.</p>
+	<Paragraph>This is a small modal dialog. Perfect for quick notifications or simple confirmations.</Paragraph>
 	{#snippet footer()}
 		<Button variant="secondary" onClick={() => (showSmall = false)}>Close</Button>
 		<Button variant="primary">Save</Button>
@@ -116,8 +118,8 @@
 
 <!-- Medium Modal -->
 <Modal bind:show={showMedium} title="Medium Modal">
-	<p>This is a medium-sized modal dialog. Great for forms and detailed content.</p>
-	<p>You can include multiple paragraphs, lists, and other content here.</p>
+	<Paragraph>This is a medium-sized modal dialog. Great for forms and detailed content.</Paragraph>
+	<Paragraph>You can include multiple paragraphs, lists, and other content here.</Paragraph>
 	<ul>
 		<li>Feature 1</li>
 		<li>Feature 2</li>
@@ -133,13 +135,13 @@
 <Modal bind:show={showLarge} size="lg" title="Large Modal">
 	<Grid>
 		<Column size="1" md="1-2">
-			<h5>Column 1</h5>
-			<p>Large modals are perfect for complex content layouts with multiple columns.</p>
-			<p>You can use the PureCSS grid system inside modals to create sophisticated layouts.</p>
+			<Heading level={5}>Column 1</Heading>
+			<Paragraph>Large modals are perfect for complex content layouts with multiple columns.</Paragraph>
+			<Paragraph>You can use the PureCSS grid system inside modals to create sophisticated layouts.</Paragraph>
 		</Column>
 		<Column size="1" md="1-2">
-			<h5>Column 2</h5>
-			<p>This second column demonstrates how you can organize content in larger modal dialogs.</p>
+			<Heading level={5}>Column 2</Heading>
+			<Paragraph>This second column demonstrates how you can organize content in larger modal dialogs.</Paragraph>
 			<Alert variant="info">
 				<strong>Tip:</strong> Large modals work great for dashboards and detailed forms.
 			</Alert>
@@ -155,21 +157,21 @@
 <Modal bind:show={showXL} size="xl" title="Extra Large Modal">
 	<Grid>
 		<Column size="1" md="1-3">
-			<h5>Column 1</h5>
-			<p>Extra large modals provide ample space for comprehensive content displays.</p>
-			<p>Perfect for data tables, reports, and detailed analytics dashboards.</p>
+			<Heading level={5}>Column 1</Heading>
+			<Paragraph>Extra large modals provide ample space for comprehensive content displays.</Paragraph>
+			<Paragraph>Perfect for data tables, reports, and detailed analytics dashboards.</Paragraph>
 		</Column>
 		<Column size="1" md="1-3">
-			<h5>Column 2</h5>
-			<p>You can display complex data structures, charts, and visualizations.</p>
+			<Heading level={5}>Column 2</Heading>
+			<Paragraph>You can display complex data structures, charts, and visualizations.</Paragraph>
 			<Alert variant="info">
 				<strong>Note:</strong> XL modals are 70rem wide (1120px).
 			</Alert>
 		</Column>
 		<Column size="1" md="1-3">
-			<h5>Column 3</h5>
-			<p>Three-column layouts work beautifully in extra large modals.</p>
-			<p>Ideal for comparison views and side-by-side content.</p>
+			<Heading level={5}>Column 3</Heading>
+			<Paragraph>Three-column layouts work beautifully in extra large modals.</Paragraph>
+			<Paragraph>Ideal for comparison views and side-by-side content.</Paragraph>
 		</Column>
 	</Grid>
 	{#snippet footer()}
@@ -182,20 +184,20 @@
 <Modal bind:show={showXXL} size="xxl" title="XXL Modal - Maximum Size">
 	<Grid>
 		<Column size="1" md="1-4">
-			<h5>Section 1</h5>
-			<p>XXL modals are the largest available size at 90rem (1440px) wide.</p>
-			<p>Perfect for full-featured application interfaces within a modal.</p>
+			<Heading level={5}>Section 1</Heading>
+			<Paragraph>XXL modals are the largest available size at 90rem (1440px) wide.</Paragraph>
+			<Paragraph>Perfect for full-featured application interfaces within a modal.</Paragraph>
 		</Column>
 		<Column size="1" md="1-4">
-			<h5>Section 2</h5>
-			<p>Ideal for complex workflows that require maximum screen real estate.</p>
+			<Heading level={5}>Section 2</Heading>
+			<Paragraph>Ideal for complex workflows that require maximum screen real estate.</Paragraph>
 			<Alert variant="success">
 				<strong>Great for:</strong> Data grids, reporting tools, and analytics.
 			</Alert>
 		</Column>
 		<Column size="1" md="1-4">
-			<h5>Section 3</h5>
-			<p>Four-column layouts provide exceptional flexibility for content organization.</p>
+			<Heading level={5}>Section 3</Heading>
+			<Paragraph>Four-column layouts provide exceptional flexibility for content organization.</Paragraph>
 			<ul>
 				<li>Dashboard views</li>
 				<li>Complex forms</li>
@@ -203,8 +205,8 @@
 			</ul>
 		</Column>
 		<Column size="1" md="1-4">
-			<h5>Section 4</h5>
-			<p>On smaller screens, these columns will stack responsively.</p>
+			<Heading level={5}>Section 4</Heading>
+			<Paragraph>On smaller screens, these columns will stack responsively.</Paragraph>
 			<Alert variant="warning">
 				<strong>Note:</strong> Consider viewport size when using XXL modals.
 			</Alert>
@@ -212,16 +214,16 @@
 	</Grid>
 	<Grid style="margin-top: 2rem;">
 		<Column size="1">
-			<h5>Full Width Content Area</h5>
-			<p>
+			<Heading level={5}>Full Width Content Area</Heading>
+			<Paragraph>
 				You can also use the full width for single-column content when needed. This is
 				particularly useful for wide tables, code editors, or visual design tools.
-			</p>
+			</Paragraph>
 			<Card style="margin-top: 1rem;">
-				<p>
+				<Paragraph>
 					Nested cards and components work seamlessly within XXL modals, allowing you to create
 					rich, interactive interfaces.
-				</p>
+				</Paragraph>
 			</Card>
 		</Column>
 	</Grid>
@@ -246,7 +248,7 @@
 		<Column size="1" lg="1-5">
 			<Card>
 				{#snippet header()}
-					<h5>Navigation</h5>
+					<Heading level={5}>Navigation</Heading>
 				{/snippet}
 				<ul style="list-style: none; padding: 0;">
 					<li style="padding: 0.5rem 0;">Dashboard</li>
@@ -259,12 +261,12 @@
 		<Column size="1" lg="3-5">
 			<Card>
 				{#snippet header()}
-					<h5>Main Content Area</h5>
+					<Heading level={5}>Main Content Area</Heading>
 				{/snippet}
-				<p>
+				<Paragraph>
 					Full-width modals are perfect for complex applications that need to run within a modal
 					context. Examples include:
-				</p>
+				</Paragraph>
 				<ul>
 					<li><strong>Code Editors:</strong> Full IDE-like experiences</li>
 					<li><strong>Design Tools:</strong> Canvas-based applications</li>
@@ -305,7 +307,7 @@
 		<Column size="1" lg="1-5">
 			<Card>
 				{#snippet header()}
-					<h5>Properties</h5>
+					<Heading level={5}>Properties</Heading>
 				{/snippet}
 				<FormGroup>
 					<FormLabel for="fw-width">Width</FormLabel>
@@ -332,9 +334,9 @@
 <!-- Success Modal -->
 <Modal bind:show={showSuccess} headerVariant="success">
 	{#snippet header()}
-		<h4>✓ Success!</h4>
+		<Heading level={4}>✓ Success!</Heading>
 	{/snippet}
-	<p>Your action has been completed successfully!</p>
+	<Paragraph>Your action has been completed successfully!</Paragraph>
 	<Alert variant="success">Operation completed without any errors.</Alert>
 	{#snippet footer()}
 		<Button variant="success" onClick={() => (showSuccess = false)}>Great!</Button>
@@ -344,9 +346,9 @@
 <!-- Warning Modal -->
 <Modal bind:show={showWarning} headerVariant="warning">
 	{#snippet header()}
-		<h4>⚠ Warning</h4>
+		<Heading level={4}>⚠ Warning</Heading>
 	{/snippet}
-	<p>Please review your action before proceeding.</p>
+	<Paragraph>Please review your action before proceeding.</Paragraph>
 	<Alert variant="warning">
 		This action may have consequences that cannot be undone.
 	</Alert>
@@ -359,9 +361,9 @@
 <!-- Danger Modal -->
 <Modal bind:show={showDanger} headerVariant="danger">
 	{#snippet header()}
-		<h4>🔥 Danger Zone</h4>
+		<Heading level={4}>🔥 Danger Zone</Heading>
 	{/snippet}
-	<p>This action is potentially destructive.</p>
+	<Paragraph>This action is potentially destructive.</Paragraph>
 	<Alert variant="danger">
 		<strong>Warning:</strong> This action cannot be undone and may result in data loss.
 	</Alert>
@@ -434,7 +436,7 @@
 <Modal bind:show={showSettings} size="lg" title="Settings">
 	<Grid>
 		<Column size="1" md="1-2">
-			<h5>General Settings</h5>
+			<Heading level={5}>General Settings</Heading>
 			<form>
 				<FormGroup>
 					<FormLabel for="settings-theme">Theme</FormLabel>
@@ -450,7 +452,7 @@
 			</form>
 		</Column>
 		<Column size="1" md="1-2">
-			<h5>Privacy Settings</h5>
+			<Heading level={5}>Privacy Settings</Heading>
 			<form>
 				<FormGroup>
 					<Checkbox id="settings-analytics">Share analytics data</Checkbox>
@@ -469,7 +471,7 @@
 
 <!-- Delete Confirmation Modal -->
 <Modal bind:show={showConfirmDelete} size="sm" headerVariant="danger" title="Confirm Delete">
-	<p>Are you sure you want to delete this item?</p>
+	<Paragraph>Are you sure you want to delete this item?</Paragraph>
 	<Alert variant="danger">
 		<strong>This action cannot be undone.</strong>
 	</Alert>
@@ -481,8 +483,8 @@
 
 <!-- Action Confirmation Modal -->
 <Modal bind:show={showConfirmAction} size="sm" title="Confirm Action">
-	<p>Do you want to proceed with this action?</p>
-	<p>This will update your preferences and may affect other users.</p>
+	<Paragraph>Do you want to proceed with this action?</Paragraph>
+	<Paragraph>This will update your preferences and may affect other users.</Paragraph>
 	{#snippet footer()}
 		<Button variant="secondary" onClick={() => (showConfirmAction = false)}>Cancel</Button>
 		<Button variant="warning">Confirm</Button>
@@ -491,7 +493,7 @@
 
 <!-- Information Dialog -->
 <Modal bind:show={showInfo} headerVariant="info" title="Information">
-	<p>Here's some important information you should know:</p>
+	<Paragraph>Here's some important information you should know:</Paragraph>
 	<Alert variant="info">
 		Your subscription will expire in 7 days. Consider renewing to continue enjoying all features.
 	</Alert>

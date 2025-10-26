@@ -1,18 +1,20 @@
 <script lang="ts">
 	import { Alert, Card, Button, Grid, Column } from '$lib';
+	import Heading from '$lib/typography/Heading.svelte';
+	import Paragraph from '$lib/typography/Paragraph.svelte';
 </script>
 
 <svelte:head>
 	<title>Alerts - Pure Admin Svelte</title>
 </svelte:head>
 
-<h1>Alerts</h1>
-<p>Contextual feedback messages for typical user actions with flexible alert messages.</p>
+<Heading level={1}>Alerts</Heading>
+<Paragraph>Contextual feedback messages for typical user actions with flexible alert messages.</Paragraph>
 
 <!-- Basic Alerts -->
 <Card>
 	{#snippet header()}
-		<h3>Basic Alerts</h3>
+		<Heading level={3}>Basic Alerts</Heading>
 	{/snippet}
 
 	<Alert variant="primary">
@@ -51,7 +53,7 @@
 <!-- Alerts with Icons -->
 <Card>
 	{#snippet header()}
-		<h3>Alerts with Icons</h3>
+		<Heading level={3}>Alerts with Icons</Heading>
 	{/snippet}
 
 	<Alert variant="success">
@@ -78,7 +80,7 @@
 <!-- Dismissible Alerts -->
 <Card>
 	{#snippet header()}
-		<h3>Dismissible Alerts</h3>
+		<Heading level={3}>Dismissible Alerts</Heading>
 	{/snippet}
 
 	<Alert dismissible variant="success">
@@ -101,27 +103,27 @@
 <!-- Alerts with Additional Content -->
 <Card>
 	{#snippet header()}
-		<h3>Alerts with Additional Content</h3>
+		<Heading level={3}>Alerts with Additional Content</Heading>
 	{/snippet}
 
 	<Grid>
 		<Column size="1" md="1-2">
 			<Alert variant="success" heading="Success!">
-				<p>
+				<Paragraph>
 					Aww yeah, you successfully read this important alert message. This example text is
 					going to run a bit longer so that you can see how spacing within an alert works with
 					this kind of content.
-				</p>
+				</Paragraph>
 				<hr />
-				<p class="mb-0">
+				<Paragraph class="mb-0">
 					Whenever you need to, be sure to use margin utilities to keep things nice and tidy.
-				</p>
+				</Paragraph>
 			</Alert>
 		</Column>
 
 		<Column size="1" md="1-2">
 			<Alert variant="info" heading="System Update">
-				<p>A new version of the application is available. This update includes:</p>
+				<Paragraph>A new version of the application is available. This update includes:</Paragraph>
 				<ul class="pa-alert__list">
 					<li>Performance improvements</li>
 					<li>Bug fixes</li>
@@ -139,7 +141,7 @@
 <!-- Outline Alerts -->
 <Card>
 	{#snippet header()}
-		<h3>Outline Alerts</h3>
+		<Heading level={3}>Outline Alerts</Heading>
 	{/snippet}
 
 	<Alert outline variant="primary">
@@ -166,7 +168,7 @@
 <!-- Compact Alerts Grid -->
 <Card>
 	{#snippet header()}
-		<h3>Compact Alerts in Grid</h3>
+		<Heading level={3}>Compact Alerts in Grid</Heading>
 	{/snippet}
 
 	<Grid>

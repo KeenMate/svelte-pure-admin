@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Heading from '$lib/typography/Heading.svelte';
+	import Paragraph from '$lib/typography/Paragraph.svelte';
 	import { Card, Grid, Column, Code, CodeBlock } from '$lib';
 
 	function copyCode(event: MouseEvent) {
@@ -26,29 +28,29 @@
 	<title>Code - Pure Admin Svelte</title>
 </svelte:head>
 
-<h1>Code</h1>
-<p>Display code snippets, JSON data, configuration files, and terminal output with syntax highlighting and copy functionality.</p>
+<Heading level={1}>Code</Heading>
+<Paragraph>Display code snippets, JSON data, configuration files, and terminal output with syntax highlighting and copy functionality.</Paragraph>
 
 <!-- Inline Code -->
 <Card>
 	{#snippet header()}
-		<h3>Inline Code</h3>
+		<Heading level={3}>Inline Code</Heading>
 	{/snippet}
 
-	<p>Use the <code>&lt;code&gt;</code> element for inline code references like <code>npm install</code> or <code>const myVariable = true</code>.</p>
-	<p>Configure the server using <code>config.json</code> and set <code>port: 3000</code> in the configuration file.</p>
-	<p>Import components with <code>import {`{ Button }`} from 'react'</code> syntax.</p>
+	<Paragraph>Use the <code>&lt;code&gt;</code> element for inline code references like <code>npm install</code> or <code>const myVariable = true</code>.</Paragraph>
+	<Paragraph>Configure the server using <code>config.json</code> and set <code>port: 3000</code> in the configuration file.</Paragraph>
+	<Paragraph>Import components with <code>import {`{ Button }`} from 'react'</code> syntax.</Paragraph>
 </Card>
 
 <!-- Basic Code Blocks -->
 <Card>
 	{#snippet header()}
-		<h3>Basic Code Blocks</h3>
+		<Heading level={3}>Basic Code Blocks</Heading>
 	{/snippet}
 
 	<Grid>
 		<Column size="1" md="1-2">
-			<h4>JavaScript</h4>
+			<Heading level={4}>JavaScript</Heading>
 			<Code language="javascript">{`function greet(name) {
     return \`Hello, \${name}!\`;
 }
@@ -58,7 +60,7 @@ console.log(result);`}</Code>
 		</Column>
 
 		<Column size="1" md="1-2">
-			<h4>JSON</h4>
+			<Heading level={4}>JSON</Heading>
 			<Code language="json">{`{
     "name": "Pure Admin",
     "version": "1.0.0",
@@ -72,10 +74,10 @@ console.log(result);`}</Code>
 		</Column>
 
 		<Column size="1" md="1-2">
-			<h4>HTML</h4>
+			<Heading level={4}>HTML</Heading>
 			<Code language="html">{`<div class="pa-card">
     <div class="pa-card__header">
-        <h3>Card Title</h3>
+        <Heading level={3}>Card Title</Heading>
     </div>
     <div class="pa-card__body">
         Content here
@@ -84,7 +86,7 @@ console.log(result);`}</Code>
 		</Column>
 
 		<Column size="1" md="1-2">
-			<h4>CSS</h4>
+			<Heading level={4}>CSS</Heading>
 			<Code language="css">{`.pa-btn {
     padding: 0.5rem 0.75rem;
     border-radius: 0.25rem;
@@ -99,7 +101,7 @@ console.log(result);`}</Code>
 <!-- Code Blocks with Headers and Copy -->
 <Card>
 	{#snippet header()}
-		<h3>Code Blocks with Headers</h3>
+		<Heading level={3}>Code Blocks with Headers</Heading>
 	{/snippet}
 
 	<Grid>
@@ -152,12 +154,12 @@ app.listen(3000);`}</Code>
 <!-- Terminal/Bash Output -->
 <Card>
 	{#snippet header()}
-		<h3>Terminal Output</h3>
+		<Heading level={3}>Terminal Output</Heading>
 	{/snippet}
 
 	<Grid>
 		<Column size="1" md="1-2">
-			<h4>Bash Commands</h4>
+			<Heading level={4}>Bash Commands</Heading>
 			<Code language="bash">{`$ npm install
 $ npm run build
 $ npm start
@@ -166,7 +168,7 @@ Server running on port 3000...`}</Code>
 		</Column>
 
 		<Column size="1" md="1-2">
-			<h4>SQL Query</h4>
+			<Heading level={4}>SQL Query</Heading>
 			<Code language="sql">{`SELECT users.name, orders.total
 FROM users
 INNER JOIN orders
@@ -180,10 +182,10 @@ ORDER BY orders.total DESC;`}</Code>
 <!-- Compact Code Blocks -->
 <Card>
 	{#snippet header()}
-		<h3>Compact Variant</h3>
+		<Heading level={3}>Compact Variant</Heading>
 	{/snippet}
 
-	<p>Use <code>.pa-code--compact</code> for smaller code snippets.</p>
+	<Paragraph>Use <code>.pa-code--compact</code> for smaller code snippets.</Paragraph>
 	<Code language="python" compact>{`def fibonacci(n):
     if n <= 1:
         return n
@@ -193,38 +195,38 @@ ORDER BY orders.total DESC;`}</Code>
 <!-- All Language Variants -->
 <Card>
 	{#snippet header()}
-		<h3>Language Accent Colors</h3>
+		<Heading level={3}>Language Accent Colors</Heading>
 	{/snippet}
 
-	<p>Code blocks with language-specific colored left borders for visual identification.</p>
+	<Paragraph>Code blocks with language-specific colored left borders for visual identification.</Paragraph>
 
 	<Grid>
 		<Column size="1" md="1-3">
-			<h5>JavaScript</h5>
+			<Heading level={5}>JavaScript</Heading>
 			<Code language="javascript" compact>console.log('Hello');</Code>
 		</Column>
 		<Column size="1" md="1-3">
-			<h5>JSON</h5>
+			<Heading level={5}>JSON</Heading>
 			<Code language="json" compact>{`{"key": "value"}`}</Code>
 		</Column>
 		<Column size="1" md="1-3">
-			<h5>HTML</h5>
+			<Heading level={5}>HTML</Heading>
 			<Code language="html" compact>{`<div>Hello</div>`}</Code>
 		</Column>
 		<Column size="1" md="1-3">
-			<h5>CSS</h5>
+			<Heading level={5}>CSS</Heading>
 			<Code language="css" compact>.class {`{ color: red; }`}</Code>
 		</Column>
 		<Column size="1" md="1-3">
-			<h5>Bash</h5>
+			<Heading level={5}>Bash</Heading>
 			<Code language="bash" compact>$ npm install</Code>
 		</Column>
 		<Column size="1" md="1-3">
-			<h5>SQL</h5>
+			<Heading level={5}>SQL</Heading>
 			<Code language="sql" compact>SELECT * FROM users;</Code>
 		</Column>
 		<Column size="1" md="1-3">
-			<h5>Python</h5>
+			<Heading level={5}>Python</Heading>
 			<Code language="python" compact>print("Hello World")</Code>
 		</Column>
 	</Grid>
@@ -233,19 +235,19 @@ ORDER BY orders.total DESC;`}</Code>
 <!-- Usage Examples -->
 <Card>
 	{#snippet header()}
-		<h3>Usage Examples</h3>
+		<Heading level={3}>Usage Examples</Heading>
 	{/snippet}
 
-	<h4>Inline Code</h4>
-	<Code language="html">{`<p>Use <code>inline code</code> for references.</p>`}</Code>
+	<Heading level={4}>Inline Code</Heading>
+	<Code language="html">{`<Paragraph>Use <code>inline code</code> for references.</Paragraph>`}</Code>
 
-	<h4>Basic Code Block</h4>
+	<Heading level={4}>Basic Code Block</Heading>
 	<Code language="html">{`<pre class="pa-code pa-code--javascript">
 const greeting = 'Hello';
 console.log(greeting);
 </pre>`}</Code>
 
-	<h4>Code Block with Header</h4>
+	<Heading level={4}>Code Block with Header</Heading>
 	<Code language="html">{`<div class="pa-code-block">
     <div class="pa-code-block__header">
         <span class="pa-code-block__title">filename.js</span>

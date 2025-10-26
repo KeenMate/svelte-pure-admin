@@ -15,14 +15,14 @@
 
 	// Build class string
 	const classes = $derived(() => {
-		const base = ['admin-footer'];
+		const base = ['pa-layout__footer'];
 		if (className) base.push(className);
 		return base.join(' ');
 	});
 </script>
 
 <footer class={classes()}>
-	<div class="admin-footer__content">
+	<div class="pa-layout__footer__content">
 		{@render children?.()}
 	</div>
 </footer>

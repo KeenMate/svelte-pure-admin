@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Heading from '$lib/typography/Heading.svelte';
+	import Paragraph from '$lib/typography/Paragraph.svelte';
 	import { Card, Code, CommandPalette, Button } from '$lib';
 	import { onMount } from 'svelte';
 
@@ -46,13 +48,13 @@
 	<title>Command Palette - Pure Admin Svelte</title>
 </svelte:head>
 
-<h1>Command Palette</h1>
-<p>MacOS Spotlight-style quick navigation with keyboard shortcuts and context switching.</p>
+<Heading level={1}>Command Palette</Heading>
+<Paragraph>MacOS Spotlight-style quick navigation with keyboard shortcuts and context switching.</Paragraph>
 
 <!-- Live Demo -->
 <Card>
 	{#snippet header()}
-		<h3>Live Demo</h3>
+		<Heading level={3}>Live Demo</Heading>
 	{/snippet}
 
 	<div style="text-align: center; padding: 2rem;">
@@ -64,10 +66,10 @@
 			</span>
 		</Button>
 
-		<p class="mt-4 text-secondary">
+		<Paragraph class="mt-4 text-secondary">
 			Or press <kbd style="padding: 0.25rem 0.5rem; background: #f3f4f6; border-radius: 0.25rem; font-family: monospace;">Ctrl+K</kbd>
 			(or <kbd style="padding: 0.25rem 0.5rem; background: #f3f4f6; border-radius: 0.25rem; font-family: monospace;">Cmd+K</kbd> on Mac) to open
-		</p>
+		</Paragraph>
 	</div>
 
 	<CommandPalette bind:show={showPalette} items={allItems} />
@@ -76,7 +78,7 @@
 <!-- Keyboard Shortcuts -->
 <Card>
 	{#snippet header()}
-		<h3>Keyboard Shortcuts</h3>
+		<Heading level={3}>Keyboard Shortcuts</Heading>
 	{/snippet}
 
 	<div class="pa-table-container">
@@ -130,10 +132,10 @@
 <!-- Context Switching -->
 <Card>
 	{#snippet header()}
-		<h3>Context Switching</h3>
+		<Heading level={3}>Context Switching</Heading>
 	{/snippet}
 
-	<p class="mb-4">Use prefixes to search within specific contexts:</p>
+	<Paragraph class="mb-4">Use prefixes to search within specific contexts:</Paragraph>
 
 	<div class="pa-table-container">
 		<table class="pa-table">
@@ -169,47 +171,47 @@
 		</table>
 	</div>
 
-	<p class="mt-4 text-secondary" style="font-size: 0.875rem;">
+	<Paragraph class="mt-4 text-secondary" style="font-size: 0.875rem;">
 		<strong>Tip:</strong> Start typing a prefix to filter results by context. For example, typing "/p mac" will
 		search only within products for "mac".
-	</p>
+	</Paragraph>
 </Card>
 
 <!-- Key Features -->
 <Card>
 	{#snippet header()}
-		<h3>Key Features</h3>
+		<Heading level={3}>Key Features</Heading>
 	{/snippet}
 
 	<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
 		<div>
-			<h4 style="margin-bottom: 0.5rem;">⚡ Lightning Fast</h4>
-			<p class="text-secondary">Instant search results with optimized fuzzy matching algorithm.</p>
+			<Heading level={4} style="margin-bottom: 0.5rem;">⚡ Lightning Fast</Heading>
+			<Paragraph class="text-secondary">Instant search results with optimized fuzzy matching algorithm.</Paragraph>
 		</div>
 
 		<div>
-			<h4 style="margin-bottom: 0.5rem;">🎯 Context-Aware</h4>
-			<p class="text-secondary">Switch between different data contexts using simple prefixes.</p>
+			<Heading level={4} style="margin-bottom: 0.5rem;">🎯 Context-Aware</Heading>
+			<Paragraph class="text-secondary">Switch between different data contexts using simple prefixes.</Paragraph>
 		</div>
 
 		<div>
-			<h4 style="margin-bottom: 0.5rem;">⌨️ Keyboard Control</h4>
-			<p class="text-secondary">Navigate entirely with keyboard - no mouse required.</p>
+			<Heading level={4} style="margin-bottom: 0.5rem;">⌨️ Keyboard Control</Heading>
+			<Paragraph class="text-secondary">Navigate entirely with keyboard - no mouse required.</Paragraph>
 		</div>
 
 		<div>
-			<h4 style="margin-bottom: 0.5rem;">🔍 Fuzzy Matching</h4>
-			<p class="text-secondary">Find items even with typos or partial matches.</p>
+			<Heading level={4} style="margin-bottom: 0.5rem;">🔍 Fuzzy Matching</Heading>
+			<Paragraph class="text-secondary">Find items even with typos or partial matches.</Paragraph>
 		</div>
 
 		<div>
-			<h4 style="margin-bottom: 0.5rem;">📄 Pagination</h4>
-			<p class="text-secondary">Browse through large result sets with arrow key navigation.</p>
+			<Heading level={4} style="margin-bottom: 0.5rem;">📄 Pagination</Heading>
+			<Paragraph class="text-secondary">Browse through large result sets with arrow key navigation.</Paragraph>
 		</div>
 
 		<div>
-			<h4 style="margin-bottom: 0.5rem;">🎨 Themeable</h4>
-			<p class="text-secondary">Matches your application theme automatically.</p>
+			<Heading level={4} style="margin-bottom: 0.5rem;">🎨 Themeable</Heading>
+			<Paragraph class="text-secondary">Matches your application theme automatically.</Paragraph>
 		</div>
 	</div>
 </Card>
@@ -217,10 +219,10 @@
 <!-- Usage Examples -->
 <Card>
 	{#snippet header()}
-		<h3>Usage Examples</h3>
+		<Heading level={3}>Usage Examples</Heading>
 	{/snippet}
 
-	<h4>Basic Implementation</h4>
+	<Heading level={4}>Basic Implementation</Heading>
 	<Code language="javascript">{`< script>
   import { CommandPalette } from '@pure-admin/svelte';
 
@@ -234,7 +236,7 @@
 
 <CommandPalette bind:show={showPalette} {items} />`}</Code>
 
-	<h4 class="mt-4">With Keyboard Shortcut</h4>
+	<Heading level={4} class="mt-4">With Keyboard Shortcut</Heading>
 	<Code language="javascript">{`< script>
   import { onMount } from 'svelte';
 
@@ -251,7 +253,7 @@
   });
 </script>`}</Code>
 
-	<h4 class="mt-4">Custom Context Prefixes</h4>
+	<Heading level={4} class="mt-4">Custom Context Prefixes</Heading>
 	<Code language="javascript">{`const contextPrefixes = {
   '/p': 'products',
   '/o': 'orders',
@@ -259,7 +261,7 @@
   '/i': 'invoices'
 };`}</Code>
 
-	<h4 class="mt-4">Try These Searches</h4>
+	<Heading level={4} class="mt-4">Try These Searches</Heading>
 	<ul>
 		<li><strong>Products:</strong> Try searching for "macbook", "iphone", or "/p mac"</li>
 		<li><strong>Orders:</strong> Search "1001", "shipped", or "/o john"</li>
@@ -271,10 +273,10 @@
 <!-- Integration Tips -->
 <Card>
 	{#snippet header()}
-		<h3>Integration Tips</h3>
+		<Heading level={3}>Integration Tips</Heading>
 	{/snippet}
 
-	<h4>Best Practices</h4>
+	<Heading level={4}>Best Practices</Heading>
 	<ul>
 		<li>Include the command palette button in your header/navbar for easy access</li>
 		<li>Show the keyboard shortcut hint (Ctrl+K) next to the button</li>
@@ -284,7 +286,7 @@
 		<li>Implement fuzzy matching for typo-tolerant search</li>
 	</ul>
 
-	<h4 class="mt-4">Performance Tips</h4>
+	<Heading level={4} class="mt-4">Performance Tips</Heading>
 	<ul>
 		<li>Index your data in advance for faster search results</li>
 		<li>Limit initial results to 20-50 items, use pagination for more</li>

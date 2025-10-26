@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Heading from '$lib/typography/Heading.svelte';
+	import Paragraph from '$lib/typography/Paragraph.svelte';
 	import { Card, Badge, Button, ButtonGroup } from '$lib';
 </script>
 
@@ -10,8 +12,8 @@
 	/>
 </svelte:head>
 
-<h1>Comparison</h1>
-<p>Two-column and three-column comparison patterns for version control, data changes, and A/B comparisons.</p>
+<Heading level={1}>Comparison</Heading>
+<Paragraph>Two-column and three-column comparison patterns for version control, data changes, and A/B comparisons.</Paragraph>
 
 <!-- NOTE: Comparison tables use special pa-comparison-table classes -->
 <!-- These are not wrapped in a component yet, using raw HTML -->
@@ -20,7 +22,7 @@
 <Card>
 	{#snippet header()}
 		<div style="display: flex; justify-content: space-between; align-items: center;">
-			<h3>Version Detail (2-Column)</h3>
+			<Heading level={3}>Version Detail (2-Column)</Heading>
 			<ButtonGroup>
 				<Button variant="primary" size="sm">
 					<i class="fa-solid fa-table-list"></i> View in form
@@ -176,7 +178,7 @@
 <Card>
 	{#snippet header()}
 		<div style="display: flex; justify-content: space-between; align-items: center;">
-			<h3>Merge Comparison (3-Column)</h3>
+			<Heading level={3}>Merge Comparison (3-Column)</Heading>
 			<ButtonGroup>
 				<Button variant="success" size="sm">
 					<i class="fa-solid fa-code-merge"></i> Accept A

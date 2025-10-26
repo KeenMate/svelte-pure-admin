@@ -2,25 +2,23 @@
 	/**
 	 * Pure Admin Layout Component (Svelte 5)
 	 * Based on @pure-admin/core snippets/layout.html
+	 *
+	 * NOTE: Width constraints are applied via body classes (pa-container-sm/md/lg/xl/2xl),
+	 * not on this component. This component only provides the .pa-layout wrapper.
 	 */
 
-	type LayoutSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-
 	interface Props {
-		/** Container width constraint */
-		size?: LayoutSize;
 		/** Additional CSS classes */
 		class?: string;
 		/** Children content */
 		children?: import('svelte').Snippet;
 	}
 
-	let { size, class: className = '', children }: Props = $props();
+	let { class: className = '', children }: Props = $props();
 
 	// Build class string
 	const classes = $derived(() => {
-		const base = ['pa-layout-container'];
-		if (size) base.push(`pa-layout-container--${size}`);
+		const base = ['pa-layout'];
 		if (className) base.push(className);
 		return base.join(' ');
 	});
