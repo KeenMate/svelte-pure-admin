@@ -28,6 +28,8 @@
 		width?: ButtonWidth;
 		/** Button content alignment (for fixed width buttons) */
 		align?: ButtonAlign;
+		/** Used in input group (adds pa-input-group__button class) */
+		isInputGroupButton?: boolean;
 		/** Disabled state */
 		disabled?: boolean;
 		/** Button type */
@@ -52,6 +54,7 @@
 		ripple = false,
 		width,
 		align,
+		isInputGroupButton = false,
 		disabled = false,
 		type = 'button',
 		onClick,
@@ -85,6 +88,9 @@
 
 		// Alignment
 		if (align) base.push(`pa-btn--align-${align}`);
+
+		// Input group button
+		if (isInputGroupButton) base.push('pa-input-group__button');
 
 		// Custom classes
 		if (className) base.push(className);

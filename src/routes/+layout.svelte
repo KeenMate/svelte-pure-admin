@@ -232,6 +232,11 @@
 					{#snippet icon()}📊{/snippet}
 				</SidebarItem>
 
+				<!-- Forms -->
+				<SidebarItem href="/forms" label="Forms">
+					{#snippet icon()}📝{/snippet}
+				</SidebarItem>
+
 				<!-- Components with submenu -->
 				<SidebarItem label="Components" hasSubmenu={true}>
 					{#snippet icon()}🧩{/snippet}

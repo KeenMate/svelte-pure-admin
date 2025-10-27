@@ -38,14 +38,14 @@
 	}: Props = $props();
 
 	// Build class string for wrapper
-	const wrapperClasses = $derived(() => {
-		const base = ['pa-form-check'];
+	const wrapperClasses = $derived.by(() => {
+		const base = ['pa-checkbox'];
 		if (className) base.push(className);
 		return base.join(' ');
 	});
 </script>
 
-<div class={wrapperClasses()}>
+<div class={wrapperClasses}>
 	<input
 		type="checkbox"
 		class="pa-checkbox"

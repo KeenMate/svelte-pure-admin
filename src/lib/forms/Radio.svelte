@@ -39,7 +39,7 @@
 
 	// Build class string for wrapper
 	const wrapperClasses = $derived(() => {
-		const base = ['pa-form-check'];
+		const base = ['pa-radio'];
 		if (className) base.push(className);
 		return base.join(' ');
 	});
