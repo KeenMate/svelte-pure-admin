@@ -91,7 +91,7 @@
 							</span>
 						{/if}
 						{#if title}
-							<h3 class="pa-card__title-text">{title}</h3>
+							<h4 class="pa-card__title-text">{title}</h4>
 						{/if}
 					</div>
 				{/if}

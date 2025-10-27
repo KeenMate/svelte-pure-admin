@@ -38,12 +38,19 @@ export { default as SmallText } from './forms/SmallText.svelte';
 export { default as Button } from './buttons/Button.svelte';
 export { default as ButtonGroup } from './buttons/ButtonGroup.svelte';
 
-// Feedback Components (Alerts, Modals, Toasts, Spinners, Tooltips, Popovers, Popconfirm)
+// Feedback Components (Alerts, Modals, Toasts, Spinners, Loaders, Tooltips, Popovers, Popconfirm)
 export { default as Alert } from './feedback/Alert.svelte';
 export { default as Modal } from './feedback/Modal.svelte';
 export { default as Toast } from './feedback/Toast.svelte';
 export { default as ToastContainer } from './feedback/ToastContainer.svelte';
 export { default as Spinner } from './feedback/Spinner.svelte';
+export { default as LoaderDots } from './feedback/LoaderDots.svelte';
+export { default as LoaderBars } from './feedback/LoaderBars.svelte';
+export { default as LoaderPulse } from './feedback/LoaderPulse.svelte';
+export { default as LoaderRing } from './feedback/LoaderRing.svelte';
+export { default as LoaderWave } from './feedback/LoaderWave.svelte';
+export { default as LoaderCenter } from './feedback/LoaderCenter.svelte';
+export { default as LoaderOverlay } from './feedback/LoaderOverlay.svelte';
 export { default as Tooltip } from './feedback/Tooltip.svelte';
 export { default as Popover } from './feedback/Popover.svelte';
 export { default as PopoverContainer } from './feedback/PopoverContainer.svelte';

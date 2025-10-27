@@ -1,5 +1,5 @@
 {
-  "generated": "2025-10-11T18:13:31.755Z",
+  "generated": "2025-10-26T16:44:28.373Z",
   "version": "1.0.0",
   "snippets": {
     "alerts.html": {
@@ -108,9 +108,9 @@
       "modified": "2025-10-08T12:25:00.401Z"
     },
     "tooltips.html": {
-      "hash": "331dc04d83d1261324a05e56f111f88a415d7e50577a0bc6c9ba4c1502a43b13",
-      "size": 12144,
-      "modified": "2025-10-08T12:25:00.406Z"
+      "hash": "a904a9e643ae8b32c8fa82ad51bae6bd8cef515c08bcf44cbea5f2eb6aeaf029",
+      "size": 12062,
+      "modified": "2025-10-12T16:04:30.769Z"
     },
     "utilities.html": {
       "hash": "73c1b4849c4167315e43b42bbb53d235cf0fc5edb2a827ba451fcb2e2cdbdca0",
@@ -125,209 +125,229 @@
   },
   "scss": {
     "core-components/_alerts.scss": {
-      "hash": "6612771bfde4406a046fd39ec1cdc6ae5710cf791c3a9e04dc2621b9146a7bee",
-      "size": 4244,
-      "modified": "2025-10-02T12:46:28.938Z"
+      "hash": "a8a761af7443e2c2fafae493648dd3dc6e2d57f11085180d259d3c570a0a5c1c",
+      "size": 4365,
+      "modified": "2025-10-13T15:50:10.115Z"
     },
     "core-components/_badges.scss": {
       "hash": "2db0d007eed6849f64838fbaed282050b9fbe5f7d292a60c00e10da2968e9612",
       "size": 17374,
-      "modified": "2025-10-02T17:45:38.857Z"
+      "modified": "2025-10-13T13:03:54.072Z"
     },
     "core-components/_base.scss": {
-      "hash": "d0218514970a222f031925082811c3dc24bdf7563a7e9f34c394bd38aa27a2d6",
-      "size": 1415,
-      "modified": "2025-10-06T16:16:16.615Z"
+      "hash": "be69210458d34cbf31554ef3c190790691ca918fee168b2191bed4fd5ba2d974",
+      "size": 2575,
+      "modified": "2025-10-14T13:18:19.719Z"
     },
     "core-components/_buttons.scss": {
-      "hash": "b9aba27e243b1d940bff5e2a4ee15041a0e2f3eedb9e21594013c09ac34d8b5d",
-      "size": 8264,
-      "modified": "2025-10-02T16:46:36.100Z"
+      "hash": "e8ba25f0ec8574cbfdac4b0dcace5ad0ca280b18800b25d06717e0941f4435ed",
+      "size": 8941,
+      "modified": "2025-10-23T19:37:36.644Z"
     },
     "core-components/_cards.scss": {
-      "hash": "f6053685126104d8e26da3bf6ac06709354463fd0f5b9c7d5887bcf71f77cb20",
-      "size": 4156,
-      "modified": "2025-10-02T12:32:10.943Z"
+      "hash": "b6d78e794abcb1f56600072582777e000fbd1ce8496dd0fa2b8b257f234e0b68",
+      "size": 4790,
+      "modified": "2025-10-23T19:37:36.645Z"
+    },
+    "core-components/_checkbox-lists.scss": {
+      "hash": "8e945057523b2cc333095c8e827312dd6b6be1a4b7b34c9af10cdc69e15e1aab",
+      "size": 5472,
+      "modified": "2025-10-13T13:03:54.071Z"
     },
     "core-components/_code.scss": {
       "hash": "eaab1e3d2ec59833810863d8920d467605e2de579d38f74408e6eb916246d874",
       "size": 2784,
-      "modified": "2025-10-07T17:02:40.077Z"
+      "modified": "2025-10-13T13:03:54.087Z"
     },
     "core-components/_command-palette.scss": {
-      "hash": "c553d6038ee164ab7d67b269463a27ad4013442481d81f43f2186206ffbffa60",
-      "size": 6484,
-      "modified": "2025-10-08T12:24:54.104Z"
+      "hash": "8b1598174d7043800d90fd1497613620d69f1e9d3f7bf4fe42a4457e98b3afa2",
+      "size": 7613,
+      "modified": "2025-10-13T13:03:54.080Z"
     },
     "core-components/_comparison.scss": {
       "hash": "6f82a91e6131e08c8be1c860c861728cec92fa1f6f7818abb4b8e54ebb19e7dc",
       "size": 3883,
-      "modified": "2025-10-07T17:03:02.961Z"
+      "modified": "2025-10-13T13:03:54.076Z"
     },
     "core-components/_forms.scss": {
-      "hash": "018581754310eafefa821e43bae35e57ca94792aac071fff42deccd9fe9a1eb8",
-      "size": 6077,
-      "modified": "2025-10-04T07:45:43.955Z"
+      "hash": "9a020a0dd30d7f647a6f0a370e2d95d5cff01e21054c17c13b8e4db1a63d4bef",
+      "size": 15365,
+      "modified": "2025-10-14T13:03:17.238Z"
     },
     "core-components/_grid.scss": {
       "hash": "318a4d5abe6dd27cee84ba63b127732d9ed5cf1bc57fe9c0e6bfff0c2c90786a",
       "size": 3316,
-      "modified": "2025-10-02T12:47:12.275Z"
-    },
-    "core-components/_layout-v2.scss": {
-      "hash": "26bf4d5f40b1e4631997eb602b2f2e116d3e290f86da46a8ef1bb332a8ccef2b",
-      "size": 4354,
-      "modified": "2025-10-06T17:57:14.265Z"
+      "modified": "2025-10-13T13:03:54.075Z"
     },
     "core-components/_layout.scss": {
-      "hash": "a7be2b1674e29049ec782b1b330f673e25e48fd6b6e7220ad9ca392d28a36a03",
-      "size": 9314,
-      "modified": "2025-10-08T12:41:26.758Z"
+      "hash": "198327c441fa275294dcc55eae1aaecff4eaf46e4cd4427a3e3619f99f18180d",
+      "size": 22690,
+      "modified": "2025-10-26T16:23:15.880Z"
     },
     "core-components/_lists.scss": {
       "hash": "0baa78a6a3022f9e9289b67615039af49f540927f3eca7f0943d1284e84ae93c",
       "size": 3535,
-      "modified": "2025-10-05T16:44:15.352Z"
+      "modified": "2025-10-13T13:03:54.082Z"
     },
     "core-components/_loaders.scss": {
       "hash": "5aaa76f3a1177780e668124fa7ed38e775dd5205cf5b687ac3dbb565059eacdd",
       "size": 4860,
-      "modified": "2025-10-02T13:09:28.313Z"
+      "modified": "2025-10-13T13:03:54.086Z"
+    },
+    "core-components/_logic-tree.scss": {
+      "hash": "c8bc60f9f634d7795fadaa221a571c321b7af5b1c1eae1902121dd5c7bc69724",
+      "size": 6890,
+      "modified": "2025-10-13T13:03:54.069Z"
     },
     "core-components/_modals.scss": {
-      "hash": "bc487fcb7303eab841712450c9b7aee93799514b2565040e51be0bc256170a89",
-      "size": 5536,
-      "modified": "2025-10-03T12:51:39.650Z"
+      "hash": "bb8902b82c9c5af7b3e89239ce4359ff354424cc1689c00392d864c5dfe1f6bb",
+      "size": 4336,
+      "modified": "2025-10-13T13:03:54.090Z"
+    },
+    "core-components/_notifications.scss": {
+      "hash": "d742c57f591eaa2c3b33e8f56b204384a437c7ff6ef540f45a10b8fe1c2f2bd4",
+      "size": 5170,
+      "modified": "2025-10-13T13:03:54.094Z"
     },
     "core-components/_pagers.scss": {
       "hash": "940196004f2202d333100406e80111b7bfafa3a92c8919aec7db95e6dfcfc55b",
       "size": 2568,
-      "modified": "2025-10-02T12:48:45.888Z"
+      "modified": "2025-10-13T13:03:54.083Z"
+    },
+    "core-components/_popconfirm.scss": {
+      "hash": "90f5161f72d6d89f22da847fa4a90b5829a5476168b4e12fab30300faf558d0b",
+      "size": 3152,
+      "modified": "2025-10-13T13:03:54.087Z"
     },
     "core-components/_profile.scss": {
-      "hash": "17dceec527364336a6892c6ead0ebfb881c45d08e1b90823b55cd6b433493de4",
-      "size": 5897,
-      "modified": "2025-10-04T16:37:22.641Z"
+      "hash": "374f95236f3cbdb01d56b5eda4fd4ed7fc6ec1b27c03255d4a1a7a45334bd221",
+      "size": 6214,
+      "modified": "2025-10-26T16:23:15.881Z"
+    },
+    "core-components/_settings-panel.scss": {
+      "hash": "fbc9de636f8cc2f46835f5cd8a5d94c8531ead81dd6e5071ebfbf760eafc653d",
+      "size": 3229,
+      "modified": "2025-10-13T13:03:54.078Z"
     },
     "core-components/_statistics.scss": {
       "hash": "8bdae1fd662fb90393cf90533eb4405854fcf14a3b8ee2ff2065df2c84656d5f",
       "size": 4792,
-      "modified": "2025-10-02T12:37:12.293Z"
+      "modified": "2025-10-13T13:03:54.093Z"
     },
     "core-components/_tables.scss": {
-      "hash": "79ee9c2baa50e6caf6110574f297ec50b56b011060a4873abc166237fc9c962b",
-      "size": 7432,
-      "modified": "2025-10-02T16:35:14.435Z"
+      "hash": "05c5b43fade9c803cd08924e140e64a0db485faa02d2e9871d521fc417eef146",
+      "size": 13737,
+      "modified": "2025-10-26T16:23:15.882Z"
     },
     "core-components/_tabs.scss": {
-      "hash": "6bab0919ef629fe0a9695df984d51fca5f419df5a90d780c805bbc49c55d5efb",
-      "size": 9446,
-      "modified": "2025-10-05T15:50:56.460Z"
+      "hash": "279107ff93af42f1a6230ff99d7276b83e182f232fe8931bfa21f1a92b4743b5",
+      "size": 9841,
+      "modified": "2025-10-22T22:10:09.656Z"
     },
     "core-components/_timeline.scss": {
-      "hash": "7d89057cac56a11a61dddc84260c2fce1ac9aff3e09d93fe017909f58b09295d",
-      "size": 13083,
-      "modified": "2025-10-07T17:01:38.896Z"
+      "hash": "ef3f2cbff8df10b4932171b9027429bc7857c1919aef3c64d765c5e86d14010b",
+      "size": 16645,
+      "modified": "2025-10-13T14:22:31.843Z"
     },
     "core-components/_toasts.scss": {
       "hash": "2c3ff79b1acfe5b04313575c3f4e57a8c1d63062de0d67238c35a1e8ef61e667",
       "size": 5175,
-      "modified": "2025-10-03T12:56:34.130Z"
+      "modified": "2025-10-13T13:03:54.084Z"
     },
     "core-components/_tooltips.scss": {
-      "hash": "73473aed486a4efea16a58654b0a5a87976d689edff28ff1c63539935e1ff0fe",
-      "size": 15491,
-      "modified": "2025-10-07T17:03:51.457Z"
+      "hash": "e38f0ebf114f1e87dde04418dea388c9dc90ef91d9b102dee27152f36a9e8c02",
+      "size": 12455,
+      "modified": "2025-10-13T13:03:54.068Z"
     },
     "core-components/_utilities.scss": {
-      "hash": "4521c2cd97a7f7a1e97fe7506dcc1ac32dd429bb87a3cf941a7f0aeee3cac237",
-      "size": 5311,
-      "modified": "2025-10-02T14:41:11.467Z"
+      "hash": "aa56a34546eec03d9af8f0be5fa10f7a87f5a835575b64e20fa624f15b58fb49",
+      "size": 4328,
+      "modified": "2025-10-14T11:32:31.496Z"
     },
     "main.scss": {
       "hash": "b216290304dbcaecafc8043e47c985ff537e7eaaed082001e75d63b1fac2f0f4",
       "size": 249,
-      "modified": "2025-10-01T16:46:47.199Z"
+      "modified": "2025-10-13T13:03:54.096Z"
     },
     "themes/audi-light.scss": {
-      "hash": "1a979b5cccd6779e9a8d3a4f1ab0d35ac0aab27c4983577a27ea47c6f60ae992",
-      "size": 7603,
-      "modified": "2025-10-05T15:59:53.510Z"
+      "hash": "a8f43a4847a3f5d11d4fd3ead71ca955da2f732dbdc1c1f52d23bb5172a463ea",
+      "size": 7538,
+      "modified": "2025-10-13T13:03:54.104Z"
     },
     "themes/audi.scss": {
-      "hash": "df8496f2a83ea9ffe4fc7ffd7f0d942591f61dee4bec5ff718e3e83cb302c83d",
-      "size": 7349,
-      "modified": "2025-10-05T18:18:54.486Z"
+      "hash": "093fcc2d2cadfb52f6cd9368d584513d03182b33b727a61ac4c581842b8159d1",
+      "size": 7303,
+      "modified": "2025-10-13T13:03:54.100Z"
     },
     "themes/corporate.scss": {
       "hash": "c2859020f334c9d46dc7c17ebd9ffbef9f6cc7d0c3dbf2d6bf40867b3f268d1c",
       "size": 4610,
-      "modified": "2025-10-05T15:57:04.768Z"
+      "modified": "2025-10-13T13:03:54.104Z"
     },
     "themes/dark-blue.scss": {
       "hash": "54b59b1fe73c814d2ed35d28e80d71d15a9d20355c3c78e6465904aeea1d5a35",
       "size": 2983,
-      "modified": "2025-10-05T16:54:03.987Z"
+      "modified": "2025-10-13T13:03:54.097Z"
     },
     "themes/dark-green.scss": {
       "hash": "299ad35701137be38bcf300ea31aea28d7888075a87df416f22c9b3e836f3188",
       "size": 3055,
-      "modified": "2025-10-05T16:54:25.764Z"
+      "modified": "2025-10-13T13:03:54.107Z"
     },
     "themes/dark-red.scss": {
       "hash": "963726d8864a352e3d0c888fa0e5edf78e31fadb805a3fc533b1aad7a03a6e2e",
       "size": 3037,
-      "modified": "2025-10-05T16:54:41.938Z"
+      "modified": "2025-10-13T13:03:54.106Z"
     },
     "themes/dark.scss": {
       "hash": "29d855abf8ad2cd40913902f83045fa09537ec92e27ea3e8bd3b86cf82afec22",
       "size": 2379,
-      "modified": "2025-10-05T18:19:01.361Z"
+      "modified": "2025-10-13T13:03:54.103Z"
     },
     "themes/express.scss": {
-      "hash": "84673288d3b32ca1910e93512f202c3c8cabc63d6b571edfd2adeba366377398",
-      "size": 6095,
-      "modified": "2025-10-05T18:19:08.579Z"
+      "hash": "c3e68576849805756778afd7bb7c97270d4eae702b8cf1ef6a0287abe3a92064",
+      "size": 6839,
+      "modified": "2025-10-13T13:03:54.099Z"
     },
     "themes/minimal.scss": {
       "hash": "0b4647936a10432884948817cdebb9097e050015b95548c0dbcad22c1abdfe7e",
       "size": 2630,
-      "modified": "2025-10-05T15:57:48.688Z"
+      "modified": "2025-10-13T13:03:54.098Z"
     },
     "themes/_dark-base.scss": {
       "hash": "e383f750029a362210abc29d437cbbae509c3b20817731cea318e5611d5c6de8",
       "size": 5272,
-      "modified": "2025-09-29T07:57:37.892Z"
+      "modified": "2025-10-13T13:03:54.101Z"
     },
     "utilities.scss": {
       "hash": "713acf2f9bc9a9bf0e839e31c01e931ea7f2d155846d23e48f35ab900ae4d7bb",
       "size": 6403,
-      "modified": "2025-09-15T12:49:59.321Z"
+      "modified": "2025-10-13T13:03:54.108Z"
     },
     "_core.scss": {
-      "hash": "cd512c657cd6c4b43ada13d19670fcf5b0a0815baa33c7cbe774251b741f8246",
-      "size": 1883,
-      "modified": "2025-10-08T12:41:26.783Z"
+      "hash": "81147b6c351b39aa40c4fb08aab593394fa8c8f22314786e6f8646b607f2767d",
+      "size": 2230,
+      "modified": "2025-10-13T13:03:54.061Z"
     },
     "_fonts.scss": {
       "hash": "d3c1d55dc9f4157d9b381681d1ae8a6969c76219a60a6d24167ac92047dd8ca1",
       "size": 1486,
-      "modified": "2025-09-29T10:11:21.826Z"
+      "modified": "2025-10-13T13:03:54.063Z"
     },
     "_purecss-grid-responsive.scss": {
       "hash": "c25861720be8edb9581b94f1aedd3c204e617dac3da41ad2a42fce5b83298807",
       "size": 9455,
-      "modified": "2025-10-02T09:57:02.607Z"
+      "modified": "2025-10-13T13:03:54.065Z"
     },
     "_purecss-grid.scss": {
       "hash": "051e1d8bbed9eefe1a17c09d16a4f2c61e19a9fca1d4182da19b4de39c1e1c83",
       "size": 2312,
-      "modified": "2025-10-02T09:56:10.218Z"
+      "modified": "2025-10-13T13:03:54.064Z"
     },
     "_variables.scss": {
-      "hash": "cd6482901f489fdcba1b3721aeffeac75760c20c86236b6a9cd0de2da389df41",
-      "size": 28368,
-      "modified": "2025-10-08T13:48:50.869Z"
+      "hash": "e24de2bd81c0563e858c804104b6403b04127398ae19e13ac5b8a2e59c872b11",
+      "size": 32304,
+      "modified": "2025-10-24T11:35:47.421Z"
     }
   }
 }

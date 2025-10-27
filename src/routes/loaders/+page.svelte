@@ -1,7 +1,19 @@
 <script lang="ts">
 	import Heading from '$lib/typography/Heading.svelte';
 	import Paragraph from '$lib/typography/Paragraph.svelte';
-	import { Card, Grid, Column, Spinner } from '$lib';
+	import {
+		Card,
+		Grid,
+		Column,
+		Spinner,
+		LoaderDots,
+		LoaderBars,
+		LoaderPulse,
+		LoaderRing,
+		LoaderWave,
+		LoaderCenter,
+		LoaderOverlay
+	} from '$lib';
 </script>
 
 <svelte:head>
@@ -10,8 +22,6 @@
 
 <Heading level={1}>Loaders</Heading>
 <Paragraph>Loading spinners and animations for asynchronous content.</Paragraph>
-
-<!-- NOTE: Some loader types use raw HTML as components don't exist yet -->
 
 <!-- Spinner Sizes -->
 <Card class="mb-6">
@@ -88,24 +98,15 @@
 	{/snippet}
 
 	<Paragraph class="mb-4">
-		<span
-			class="pa-spinner pa-spinner--xs pa-spinner--primary"
-			style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;"
-		></span>
+		<Spinner size="xs" variant="primary" class="inline-block align-middle mr-2" />
 		Loading inline content...
 	</Paragraph>
 	<Paragraph class="mb-4">
-		<span
-			class="pa-spinner pa-spinner--sm pa-spinner--success"
-			style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;"
-		></span>
+		<Spinner size="sm" variant="success" class="inline-block align-middle mr-2" />
 		Processing your request...
 	</Paragraph>
 	<Paragraph>
-		<span
-			class="pa-spinner pa-spinner--sm pa-spinner--info"
-			style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;"
-		></span>
+		<Spinner size="sm" variant="info" class="inline-block align-middle mr-2" />
 		Fetching data from server...
 	</Paragraph>
 </Card>
@@ -119,9 +120,9 @@
 	<div
 		style="height: 200px; position: relative; border: 1px dashed #ddd; border-radius: 4px;"
 	>
-		<div class="pa-loader-overlay">
+		<LoaderOverlay>
 			<Spinner size="xl" variant="primary" />
-		</div>
+		</LoaderOverlay>
 	</div>
 </Card>
 
@@ -133,21 +134,19 @@
 
 	<Grid>
 		<Column size="1" md="1-2" class="mb-4">
-			<div
-				class="pa-loader-center"
-				style="height: 150px; border: 1px dashed #ddd; border-radius: 4px;"
-			>
-				<Spinner size="lg" variant="primary" />
-				<Paragraph class="mt-4 text-secondary">Loading data...</Paragraph>
+			<div style="height: 150px; border: 1px dashed #ddd; border-radius: 4px;">
+				<LoaderCenter>
+					<Spinner size="lg" variant="primary" />
+					<Paragraph class="mt-4 text-secondary">Loading data...</Paragraph>
+				</LoaderCenter>
 			</div>
 		</Column>
 		<Column size="1" md="1-2" class="mb-4">
-			<div
-				class="pa-loader-center"
-				style="height: 150px; border: 1px dashed #ddd; border-radius: 4px;"
-			>
-				<Spinner size="lg" variant="success" />
-				<Paragraph class="mt-4 text-secondary">Processing...</Paragraph>
+			<div style="height: 150px; border: 1px dashed #ddd; border-radius: 4px;">
+				<LoaderCenter>
+					<Spinner size="lg" variant="success" />
+					<Paragraph class="mt-4 text-secondary">Processing...</Paragraph>
+				</LoaderCenter>
 			</div>
 		</Column>
 	</Grid>
@@ -166,9 +165,9 @@
 					<Heading level={4}>Loading Card</Heading>
 				{/snippet}
 				<div class="pa-card__body" style="height: 150px; position: relative;">
-					<div class="pa-loader-overlay">
+					<LoaderOverlay>
 						<Spinner size="lg" variant="primary" />
-					</div>
+					</LoaderOverlay>
 				</div>
 			</Card>
 		</Column>
@@ -177,9 +176,11 @@
 				{#snippet header()}
 					<Heading level={4}>Loading with Text</Heading>
 				{/snippet}
-				<div class="pa-card__body pa-loader-center" style="height: 150px;">
-					<Spinner size="lg" variant="info" />
-					<Paragraph class="mt-4 text-secondary">Fetching data...</Paragraph>
+				<div class="pa-card__body" style="height: 150px;">
+					<LoaderCenter>
+						<Spinner size="lg" variant="info" />
+						<Paragraph class="mt-4 text-secondary">Fetching data...</Paragraph>
+					</LoaderCenter>
 				</div>
 			</Card>
 		</Column>
@@ -196,7 +197,6 @@
 </Card>
 
 <!-- Loader Types -->
-<!-- NOTE: Using raw HTML for loader variants not yet componentized -->
 <Card class="mb-6">
 	{#snippet header()}
 		<Heading level={3}>Loader Types</Heading>
@@ -205,60 +205,44 @@
 	<Grid>
 		<!-- Dots Loader -->
 		<Column size="1" md="1-3" class="text-center mb-6">
-			<div class="pa-loader-dots pa-loader-dots--lg" style="color: #007bff;">
-				<span></span>
-				<span></span>
-				<span></span>
-			</div>
+			<LoaderDots size="lg" class="text-primary" />
 			<Paragraph class="mt-2 text-secondary"><strong>Dots Loader</strong></Paragraph>
-			<Paragraph class="mt-2"><code>.pa-loader-dots</code></Paragraph>
+			<Paragraph class="mt-2"><code>&lt;LoaderDots /&gt;</code></Paragraph>
 		</Column>
 
 		<!-- Bars Loader -->
 		<Column size="1" md="1-3" class="text-center mb-6">
-			<div class="pa-loader-bars pa-loader-bars--lg" style="color: #28a745;">
-				<span></span>
-				<span></span>
-				<span></span>
-				<span></span>
-				<span></span>
-			</div>
+			<LoaderBars size="lg" class="text-success" />
 			<Paragraph class="mt-2 text-secondary"><strong>Bars Loader</strong></Paragraph>
-			<Paragraph class="mt-2"><code>.pa-loader-bars</code></Paragraph>
+			<Paragraph class="mt-2"><code>&lt;LoaderBars /&gt;</code></Paragraph>
 		</Column>
 
 		<!-- Pulse Loader -->
 		<Column size="1" md="1-3" class="text-center mb-6">
-			<div class="pa-loader-pulse pa-loader-pulse--lg" style="color: #dc3545;"></div>
+			<LoaderPulse size="lg" class="text-danger" />
 			<Paragraph class="mt-2 text-secondary"><strong>Pulse Loader</strong></Paragraph>
-			<Paragraph class="mt-2"><code>.pa-loader-pulse</code></Paragraph>
+			<Paragraph class="mt-2"><code>&lt;LoaderPulse /&gt;</code></Paragraph>
 		</Column>
 
 		<!-- Ring Loader -->
 		<Column size="1" md="1-3" class="text-center mb-4">
-			<div class="pa-loader-ring pa-loader-ring--lg" style="color: #ffc107;"></div>
+			<LoaderRing size="lg" class="text-warning" />
 			<Paragraph class="mt-2 text-secondary"><strong>Ring Loader</strong></Paragraph>
-			<Paragraph class="mt-2"><code>.pa-loader-ring</code></Paragraph>
+			<Paragraph class="mt-2"><code>&lt;LoaderRing /&gt;</code></Paragraph>
 		</Column>
 
 		<!-- Wave Loader -->
 		<Column size="1" md="1-3" class="text-center mb-4">
-			<div class="pa-loader-wave pa-loader-wave--lg" style="color: #17a2b8;">
-				<span></span>
-				<span></span>
-				<span></span>
-				<span></span>
-				<span></span>
-			</div>
+			<LoaderWave size="lg" class="text-info" />
 			<Paragraph class="mt-2 text-secondary"><strong>Wave Loader</strong></Paragraph>
-			<Paragraph class="mt-2"><code>.pa-loader-wave</code></Paragraph>
+			<Paragraph class="mt-2"><code>&lt;LoaderWave /&gt;</code></Paragraph>
 		</Column>
 
 		<!-- Spinner (existing) -->
 		<Column size="1" md="1-3" class="text-center mb-4">
 			<Spinner size="xl" class="text-secondary" />
 			<Paragraph class="mt-2 text-secondary"><strong>Spinner (Default)</strong></Paragraph>
-			<Paragraph class="mt-2"><code>.pa-spinner</code></Paragraph>
+			<Paragraph class="mt-2"><code>&lt;Spinner /&gt;</code></Paragraph>
 		</Column>
 	</Grid>
 </Card>
@@ -270,53 +254,37 @@
 	{/snippet}
 
 	<Heading level={4} class="mb-2">Basic Spinner</Heading>
-	<pre class="mb-4"><code>&lt;div class="pa-spinner"&gt;&lt;/div&gt;</code></pre>
+	<pre class="mb-4"><code>&lt;Spinner /&gt;</code></pre>
 
 	<Heading level={4} class="mb-2">Sized Spinner</Heading>
-	<pre class="mb-4"><code>&lt;div class="pa-spinner pa-spinner--lg"&gt;&lt;/div&gt;</code></pre>
+	<pre class="mb-4"><code>&lt;Spinner size="lg" /&gt;</code></pre>
 
 	<Heading level={4} class="mb-2">Colored Spinner</Heading>
-	<pre class="mb-4"><code>&lt;div class="pa-spinner pa-spinner--lg pa-spinner--primary"&gt;&lt;/div&gt;</code></pre>
+	<pre class="mb-4"><code>&lt;Spinner size="lg" variant="primary" /&gt;</code></pre>
 
 	<Heading level={4} class="mb-2">Centered Loader with Overlay</Heading>
-	<pre class="mb-4"><code>&lt;div class="pa-loader-overlay"&gt;
-  &lt;div class="pa-spinner pa-spinner--xl"&gt;&lt;/div&gt;
-&lt;/div&gt;</code></pre>
+	<pre class="mb-4"><code>&lt;LoaderOverlay&gt;
+  &lt;Spinner size="xl" /&gt;
+&lt;/LoaderOverlay&gt;</code></pre>
 
 	<Heading level={4} class="mb-2">Centered Loader with Text</Heading>
-	<pre class="mb-4"><code>&lt;div class="pa-loader-center"&gt;
-  &lt;div class="pa-spinner pa-spinner--lg"&gt;&lt;/div&gt;
-  &lt;p class="mt-4"&gt;Loading...&lt;/p&gt;
-&lt;/div&gt;</code></pre>
+	<pre class="mb-4"><code>&lt;LoaderCenter&gt;
+  &lt;Spinner size="lg" /&gt;
+  &lt;Paragraph class="mt-4"&gt;Loading...&lt;/Paragraph&gt;
+&lt;/LoaderCenter&gt;</code></pre>
 
 	<Heading level={4} class="mb-2">Dots Loader</Heading>
-	<pre class="mb-4"><code>&lt;div class="pa-loader-dots"&gt;
-  &lt;span&gt;&lt;/span&gt;
-  &lt;span&gt;&lt;/span&gt;
-  &lt;span&gt;&lt;/span&gt;
-&lt;/div&gt;</code></pre>
+	<pre class="mb-4"><code>&lt;LoaderDots /&gt;</code></pre>
 
 	<Heading level={4} class="mb-2">Bars Loader</Heading>
-	<pre class="mb-4"><code>&lt;div class="pa-loader-bars"&gt;
-  &lt;span&gt;&lt;/span&gt;
-  &lt;span&gt;&lt;/span&gt;
-  &lt;span&gt;&lt;/span&gt;
-  &lt;span&gt;&lt;/span&gt;
-  &lt;span&gt;&lt;/span&gt;
-&lt;/div&gt;</code></pre>
+	<pre class="mb-4"><code>&lt;LoaderBars /&gt;</code></pre>
 
 	<Heading level={4} class="mb-2">Pulse Loader</Heading>
-	<pre class="mb-4"><code>&lt;div class="pa-loader-pulse"&gt;&lt;/div&gt;</code></pre>
+	<pre class="mb-4"><code>&lt;LoaderPulse /&gt;</code></pre>
 
 	<Heading level={4} class="mb-2">Ring Loader</Heading>
-	<pre class="mb-4"><code>&lt;div class="pa-loader-ring"&gt;&lt;/div&gt;</code></pre>
+	<pre class="mb-4"><code>&lt;LoaderRing /&gt;</code></pre>
 
 	<Heading level={4} class="mb-2">Wave Loader</Heading>
-	<pre><code>&lt;div class="pa-loader-wave"&gt;
-  &lt;span&gt;&lt;/span&gt;
-  &lt;span&gt;&lt;/span&gt;
-  &lt;span&gt;&lt;/span&gt;
-  &lt;span&gt;&lt;/span&gt;
-  &lt;span&gt;&lt;/span&gt;
-&lt;/div&gt;</code></pre>
+	<pre><code>&lt;LoaderWave /&gt;</code></pre>
 </Card>

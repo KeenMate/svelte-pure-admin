@@ -163,7 +163,7 @@
 <PureAdminProvider config={myConfig}>
 	<PopoverContainer />
 	<SettingsPanel />
-	<ProfilePanel bind:show={showProfilePanel} />
+	<ProfilePanel bind:show={showProfilePanel} name="John Doe" email="john.doe@example.com" role="Administrator" />
 
 	<Navbar onBurgerClick={toggleSidebar} showBurger={true}>
 		{#snippet brand()}

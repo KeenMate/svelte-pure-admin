@@ -29,16 +29,16 @@
 				<li>Multi-language support</li>
 			</BasicList>
 
-			<Heading level={4} style="margin-top: 2rem;">Compact Spacing</Heading>
-			<BasicList compact>
+			<Heading level={4} class="mt-8">Compact Spacing</Heading>
+			<BasicList spacing="compact">
 				<li>Reduced vertical spacing</li>
 				<li>Perfect for dense content</li>
 				<li>Saves vertical space</li>
 				<li>Easy to scan quickly</li>
 			</BasicList>
 
-			<Heading level={4} style="margin-top: 2rem;">Spacious Layout</Heading>
-			<BasicList spacious>
+			<Heading level={4} class="mt-8">Spacious Layout</Heading>
+			<BasicList spacing="spacious">
 				<li>More breathing room between items</li>
 				<li>Better for longer content blocks</li>
 				<li>Improved readability</li>
@@ -60,7 +60,7 @@
 				<li>Launch and monitor</li>
 			</OrderedList>
 
-			<Heading level={4} style="margin-top: 2rem;">Roman Numerals</Heading>
+			<Heading level={4} class="mt-8">Roman Numerals</Heading>
 			<OrderedList style="roman">
 				<li>Executive summary</li>
 				<li>Market analysis</li>
@@ -68,7 +68,7 @@
 				<li>Implementation roadmap</li>
 			</OrderedList>
 
-			<Heading level={4} style="margin-top: 2rem;">Alphabetical</Heading>
+			<Heading level={4} class="mt-8">Alphabetical</Heading>
 			<OrderedList style="alpha">
 				<li>Appendix A: Technical specifications</li>
 				<li>Appendix B: User testimonials</li>
@@ -94,7 +94,7 @@
 				<dd>Industry-standard protocol for authorization allowing third-party access</dd>
 			</DefinitionList>
 
-			<Heading level={4} style="margin-top: 2rem;">Inline Layout</Heading>
+			<Heading level={4} class="mt-8">Inline Layout</Heading>
 			<DefinitionList inline>
 				<dt>Status</dt>
 				<dd>Active</dd>
@@ -124,14 +124,14 @@
 				<li>24/7 customer support</li>
 			</BasicList>
 
-			<Heading level={4} style="margin-top: 2rem;">Danger (X marks)</Heading>
+			<Heading level={4} class="mt-8">Danger (X marks)</Heading>
 			<BasicList icon variant="danger">
 				<li>Deprecated API endpoint</li>
 				<li>Unsupported browser version</li>
 				<li>Missing required permissions</li>
 			</BasicList>
 
-			<Heading level={4} style="margin-top: 2rem;">Info (Arrows)</Heading>
+			<Heading level={4} class="mt-8">Info (Arrows)</Heading>
 			<BasicList icon variant="info">
 				<li>Navigate to Settings panel</li>
 				<li>Select Integration options</li>
@@ -139,7 +139,7 @@
 				<li>Complete authentication</li>
 			</BasicList>
 
-			<Heading level={4} style="margin-top: 2rem;">Warning (Exclamation)</Heading>
+			<Heading level={4} class="mt-8">Warning (Exclamation)</Heading>
 			<BasicList icon variant="warning">
 				<li>Rate limit approaching threshold</li>
 				<li>Certificate expires in 30 days</li>
@@ -162,7 +162,7 @@
 				<li>Reporting Engine</li>
 			</BasicList>
 
-			<Heading level={4} style="margin-top: 2rem;">Striped List</Heading>
+			<Heading level={4} class="mt-8">Striped List</Heading>
 			<BasicList striped>
 				<li>Monthly subscription: $99/month</li>
 				<li>Annual subscription: $990/year (2 months free)</li>
@@ -185,7 +185,7 @@
 				<li><a href="#contact">Contact</a></li>
 			</BasicList>
 
-			<Heading level={4} style="margin-top: 2rem;">Unstyled List</Heading>
+			<Heading level={4} class="mt-8">Unstyled List</Heading>
 			<BasicList unstyled>
 				<li>No bullets or numbers</li>
 				<li>Just plain text items</li>
@@ -219,7 +219,7 @@
 
 	<Heading level={4}>Available Classes</Heading>
 
-	<Heading level={5} style="margin-top: 1rem;">Unordered Lists (ul)</Heading>
+	<Heading level={5} class="mt-4">Unordered Lists (ul)</Heading>
 	<BasicList compact>
 		<li><code>pa-list-basic</code> - Base unordered list</li>
 		<li><code>pa-list-basic--compact</code> - Reduced spacing</li>
@@ -234,20 +234,20 @@
 		<li><code>pa-list-basic--icon pa-list-basic--warning</code> - Exclamation marks</li>
 	</BasicList>
 
-	<Heading level={5} style="margin-top: 1rem;">Ordered Lists (ol)</Heading>
+	<Heading level={5} class="mt-4">Ordered Lists (ol)</Heading>
 	<BasicList compact>
 		<li><code>pa-list-ordered</code> - Base ordered list (numeric)</li>
 		<li><code>pa-list-ordered--roman</code> - Roman numerals (I, II, III)</li>
 		<li><code>pa-list-ordered--alpha</code> - Lowercase letters (a, b, c)</li>
 	</BasicList>
 
-	<Heading level={5} style="margin-top: 1rem;">Definition Lists (dl)</Heading>
+	<Heading level={5} class="mt-4">Definition Lists (dl)</Heading>
 	<BasicList compact>
 		<li><code>pa-list-definition</code> - Standard definition list</li>
 		<li><code>pa-list-definition--inline</code> - Horizontal key-value pairs</li>
 	</BasicList>
 
-	<Heading level={5} style="margin-top: 1rem;">Complex Lists</Heading>
+	<Heading level={5} class="mt-4">Complex Lists</Heading>
 	<BasicList compact>
 		<li><code>pa-list</code> - Container for complex list items</li>
 		<li><code>pa-list__item</code> - Individual list item with avatar/content</li>
