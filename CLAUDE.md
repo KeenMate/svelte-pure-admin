@@ -1,8 +1,8 @@
-# @pure-admin/svelte - Claude Development Notes
+# @keenmate/svelte-pure-admin - Claude Development Notes
 
 ## Project Overview
 
-**@pure-admin/svelte** is a **Svelte 5** component library that wraps the Pure Admin CSS framework (`@pure-admin/core`) into reusable Svelte components. This library provides type-safe, reactive components that follow the HTML patterns defined in the core framework's snippet library.
+**@keenmate/svelte-pure-admin** is a **Svelte 5** component library that wraps the Pure Admin CSS framework (`@keenmate/pure-admin-core`) into reusable Svelte components. This library provides type-safe, reactive components that follow the HTML patterns defined in the core framework's snippet library.
 
 ## Technology Stack
 
@@ -10,13 +10,13 @@
 - **SvelteKit 2.x** - Library mode for component packaging
 - **TypeScript** - Full type safety with interfaces
 - **Vite** - Build tool and dev server
-- **@pure-admin/core** - Core CSS framework (file dependency)
+- **@keenmate/pure-admin-core** - Core CSS framework (file dependency)
 
 ## Architecture Principles
 
 ### 1. **Snippet-Driven Development**
 
-Every component MUST be based on the HTML snippets from `@pure-admin/core/snippets/`:
+Every component MUST be based on the HTML snippets from `@keenmate/pure-admin-core/snippets/`:
 
 ```
 ../pure-admin/pure-admin-core/snippets/
@@ -264,7 +264,7 @@ This library follows the KeenMate naming methodology for consistency, clarity, a
 <script lang="ts">
   /**
    * Pure Admin [ComponentName] Component (Svelte 5)
-   * Based on @pure-admin/core snippets
+   * Based on @keenmate/pure-admin-core snippets
    */
 
   interface Props {
@@ -473,17 +473,17 @@ Compare with `pure-admin-visual` on port 3000 to ensure visual consistency.
 
 ## CSS Import
 
-The library depends on `@pure-admin/core` for CSS. Users MUST import the CSS:
+The library depends on `@keenmate/pure-admin-core` for CSS. Users MUST import the CSS:
 
 ```svelte
 <script>
-  import '@pure-admin/core/css';
+  import '@keenmate/pure-admin-core/css';
 </script>
 ```
 
 Or in a global CSS file:
 ```css
-@import '@pure-admin/core/css';
+@import '@keenmate/pure-admin-core/css';
 ```
 
 The demo page (`src/routes/+page.svelte`) already imports this.
@@ -542,7 +542,7 @@ npm publish --access public
 - `svelte ^5.0.0` - Required by consumers
 
 **Dependencies:**
-- `@pure-admin/core` - Core CSS framework (file reference: `file:../pure-admin/pure-admin-core`)
+- `@keenmate/pure-admin-core` - Core CSS framework (file reference: `file:../pure-admin/pure-admin-core`)
 
 **Dev Dependencies:**
 - `@sveltejs/kit` - SvelteKit
@@ -554,7 +554,7 @@ npm publish --access public
 
 ## Related Packages
 
-- **@pure-admin/core** - Core CSS framework at `../pure-admin/pure-admin-core`
+- **@keenmate/pure-admin-core** - Core CSS framework at `../pure-admin/pure-admin-core`
 - **pure-admin-visual** - Showcase application at `../pure-admin/pure-admin-visual`
 - **pure-admin-visual-2** - Validation project at `../pure-admin/pure-admin-visual-2`
 

@@ -12,11 +12,7 @@
 <Paragraph>Different table density options for various use cases - from compact data grids to spacious presentation tables.</Paragraph>
 
 <!-- Default (Compact) Table -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Default (Compact) - ~31px rows</Heading>
-	{/snippet}
-
+<Card title="Default (Compact) - ~31px rows">
 	<Paragraph>Best for data-heavy tables where you need to scan hundreds of rows efficiently.</Paragraph>
 	<div class="pa-table-container">
 		<Table>
@@ -79,11 +75,7 @@
 </Card>
 
 <!-- 2x Spacing Table -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>2x Spacing - ~62px rows</Heading>
-	{/snippet}
-
+<Card title="2x Spacing - ~62px rows">
 	<Paragraph>Balanced spacing for better readability when you have moderate amounts of data.</Paragraph>
 	<div class="pa-table-container">
 		<Table spacing="2x">
@@ -130,11 +122,7 @@
 </Card>
 
 <!-- 3x Spacing Table -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>3x Spacing - ~93px rows</Heading>
-	{/snippet}
-
+<Card title="3x Spacing - ~93px rows">
 	<Paragraph>Spacious layout for presentation tables or when emphasis and clarity are priorities.</Paragraph>
 	<div class="pa-table-container">
 		<Table spacing="3x">
@@ -181,11 +169,7 @@
 </Card>
 
 <!-- Usage Guide -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Usage Guide</Heading>
-	{/snippet}
-
+<Card title="Usage Guide">
 	<Heading level={4}>Default (Compact)</Heading>
 	<pre><code>&lt;table class="pa-table"&gt;
   ...

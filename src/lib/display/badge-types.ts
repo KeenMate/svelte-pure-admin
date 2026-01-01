@@ -13,7 +13,7 @@ export type BadgeVariant =
 	| 'light'
 	| 'dark';
 
-export type BadgeSize = 'sm' | 'lg';
+export type BadgeSize = 'xs' | 'sm' | 'lg' | 'xl';
 
 export type BadgeWidth = '1x' | '2x' | '3x' | '4x' | '5x' | '6x' | '7x' | '8x' | '9x' | '10x';
 

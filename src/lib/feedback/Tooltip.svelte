@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Tooltip Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/tooltips.html
+	 * Based on @keenmate/pure-admin-core snippets/tooltips.html
 	 *
 	 * Uses Floating UI for smart positioning with collision detection
 	 * Requires: Floating UI (@floating-ui/dom) loaded globally
@@ -44,8 +44,9 @@
 	let cleanupAutoUpdate: (() => void) | null = null;
 
 	// Build class string for trigger
+	// Note: pa-tooltip--floating disables CSS ::before/::after tooltips when using Floating UI
 	const classes = $derived(() => {
-		const base = ['pa-tooltip'];
+		const base = ['pa-tooltip', 'pa-tooltip--floating'];
 		if (position && position !== 'top') base.push(`pa-tooltip--${position}`);
 		if (variant) base.push(`pa-tooltip--${variant}`);
 		if (multiline) base.push('pa-tooltip--multiline');

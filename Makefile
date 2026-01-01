@@ -1,12 +1,13 @@
 # Makefile for @pure-admin/svelte
 # Pure Admin Svelte 5 Component Library
 
-.PHONY: help install dev build package check publish publish-dry clean sync-snippets sync-snippets-update
+.PHONY: help setup install dev build package check publish publish-dry clean sync-snippets sync-snippets-update
 
 # Default target
 help:
 	@echo "Pure Admin Svelte - Available targets:"
 	@echo ""
+	@echo "  make setup                - Initial project setup (install dependencies)"
 	@echo "  make install              - Install dependencies"
 	@echo "  make dev                  - Start development server (port 5173)"
 	@echo "  make build                - Build + package library"
@@ -19,6 +20,10 @@ help:
 	@echo "  make publish-dry          - Dry run publish (test without publishing)"
 	@echo "  make clean                - Remove build artifacts"
 	@echo ""
+
+# Initial project setup
+setup:
+	npm install
 
 # Install dependencies
 install:

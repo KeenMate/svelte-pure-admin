@@ -1,12 +1,12 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Stat Component (Svelte 5)
-	 * Based on @pure-admin/core scss/core-components/_statistics.scss
+	 * Based on @keenmate/pure-admin-core scss/core-components/_statistics.scss
 	 */
 
 	type StatVariant = 'hero' | 'square';
 	type StatColor = 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger';
-	type ChangeDirection = 'positive' | 'negative' | 'neutral';
+	type TrendDirection = 'up' | 'down';
 
 	interface Props {
 		/** Stat variant */
@@ -19,10 +19,10 @@
 		number?: string | number;
 		/** Label text */
 		label?: string;
-		/** Change percentage (for hero variant) */
-		change?: string;
-		/** Change direction (for hero variant) */
-		changeDirection?: ChangeDirection;
+		/** Trend text (e.g., "+12.5%") */
+		trend?: string;
+		/** Trend direction */
+		trendDirection?: TrendDirection;
 		/** Symbol (for square variant) */
 		symbol?: string;
 		/** Additional CSS classes */
@@ -39,8 +39,8 @@
 		iconVariant = 'primary',
 		number,
 		label,
-		change,
-		changeDirection = 'neutral',
+		trend,
+		trendDirection,
 		symbol,
 		class: className = '',
 		icon,
@@ -52,6 +52,8 @@
 		const base = ['pa-stat'];
 		if (variant) base.push(`pa-stat--${variant}`);
 		if (variant === 'square' && color) base.push(`pa-stat--${color}`);
+		// Add with-icon modifier for default variant when icon is present
+		if (!variant && icon) base.push('pa-stat--with-icon');
 		if (className) base.push(className);
 		return base.join(' ');
 	});
@@ -65,8 +67,8 @@
 	<div class={classes()}>
 		<div class="pa-stat__label">{label}</div>
 		<div class="pa-stat__value">{number}</div>
-		{#if change}
-			<div class="pa-stat__change pa-stat__change--{changeDirection}">{change}</div>
+		{#if trend}
+			<div class="pa-stat__trend pa-stat__trend--{trendDirection}">{trend}</div>
 		{/if}
 	</div>
 {:else if variant === 'square'}
@@ -83,10 +85,16 @@
 			<div class="pa-stat__icon pa-stat__icon--{iconVariant}">
 				{@render icon()}
 			</div>
-		{/if}
-		<div class="pa-stat__content">
-			<div class="pa-stat__number">{number}</div>
+			<div class="pa-stat__content">
+				<div class="pa-stat__value">{number}</div>
+				<div class="pa-stat__label">{label}</div>
+			</div>
+		{:else}
+			<div class="pa-stat__value">{number}</div>
 			<div class="pa-stat__label">{label}</div>
-		</div>
+			{#if trend}
+				<div class="pa-stat__trend pa-stat__trend--{trendDirection}">{trend}</div>
+			{/if}
+		{/if}
 	</div>
 {/if}

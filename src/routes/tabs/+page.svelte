@@ -6,8 +6,6 @@
 		Grid,
 		Column,
 		Card,
-		CardTab,
-		CardTabContent,
 		Tabs,
 		TabItem,
 		TabsContent,
@@ -20,7 +18,6 @@
 	} from '$lib';
 
 	// State for active tabs in each example
-	let cardActive = $state('card-tab-1');
 	let standaloneActive = $state('tab-1');
 	let iconsActive = $state('icon-tab-1');
 	let fixed6xActive = $state('fixed-tab-1');
@@ -54,55 +51,11 @@
 <Heading level={1}>Tabs</Heading>
 <Paragraph>Tab navigation components for organizing content into separate sections.</Paragraph>
 
-<!-- Two Column Grid: Card-Based Tabs + Standalone Tabs -->
+<!-- Standalone Tabs in Cards -->
 <Grid>
-	<Column size="1" md="1-2">
-		<!-- Card-Based Tabs -->
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Card Tabs (Built-in)</Heading>
-			{/snippet}
-
-			{#snippet tabs()}
-				<CardTab active={cardActive === 'card-tab-1'} onclick={() => (cardActive = 'card-tab-1')}>
-					Overview
-				</CardTab>
-				<CardTab active={cardActive === 'card-tab-2'} onclick={() => (cardActive = 'card-tab-2')}>
-					Details
-				</CardTab>
-				<CardTab active={cardActive === 'card-tab-3'} onclick={() => (cardActive = 'card-tab-3')}>
-					Settings
-				</CardTab>
-				<CardTab active={cardActive === 'card-tab-4'} onclick={() => (cardActive = 'card-tab-4')}>
-					Reports
-				</CardTab>
-			{/snippet}
-
-			<CardTabContent active={cardActive === 'card-tab-1'} id="card-tab-1">
-				<Heading level={4}>Overview</Heading>
-				<Paragraph>Card tabs integrate seamlessly.</Paragraph>
-			</CardTabContent>
-			<CardTabContent active={cardActive === 'card-tab-2'} id="card-tab-2">
-				<Heading level={4}>Details</Heading>
-				<Paragraph>Detailed information goes here.</Paragraph>
-			</CardTabContent>
-			<CardTabContent active={cardActive === 'card-tab-3'} id="card-tab-3">
-				<Heading level={4}>Settings</Heading>
-				<Paragraph>Configuration options here.</Paragraph>
-			</CardTabContent>
-			<CardTabContent active={cardActive === 'card-tab-4'} id="card-tab-4">
-				<Heading level={4}>Reports</Heading>
-				<Paragraph>Analytics data displayed here.</Paragraph>
-			</CardTabContent>
-		</Card>
-	</Column>
-
-	<Column size="1" md="1-2">
+	<Column size="100" md="1-2">
 		<!-- Standalone Tabs - Underline Style -->
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Standalone Tabs</Heading>
-			{/snippet}
+		<Card title="Standalone Tabs">
 			<Tabs>
 				<TabItem active={standaloneActive === 'tab-1'} onclick={() => (standaloneActive = 'tab-1')}>
 					Home
@@ -141,12 +94,9 @@
 
 <!-- Two Column Grid: Tabs with Icons + Fixed Width Tabs -->
 <Grid>
-	<Column size="1" md="1-2">
+	<Column size="100" md="1-2">
 		<!-- Tabs with Icons -->
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Tabs with Icons</Heading>
-			{/snippet}
+		<Card title="Tabs with Icons">
 			<Tabs>
 				<TabItem active={iconsActive === 'icon-tab-1'} onclick={() => (iconsActive = 'icon-tab-1')}>
 					{#snippet icon()}
@@ -190,12 +140,9 @@
 		</Card>
 	</Column>
 
-	<Column size="1" md="1-2">
+	<Column size="100" md="1-2">
 		<!-- Fixed Width Tabs -->
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Fixed Width Tabs</Heading>
-			{/snippet}
+		<Card title="Fixed Width Tabs">
 			<Alert variant="info">
 				<strong>Available widths:</strong> Use <code>pa-tabs__item--w-1x</code> through <code>pa-tabs__item--w-10x</code> for 1rem to 10rem min-width.
 			</Alert>
@@ -253,12 +200,9 @@
 
 <!-- Two Column Grid: Pills Style + Pills with Icons -->
 <Grid>
-	<Column size="1" md="1-2">
+	<Column size="100" md="1-2">
 		<!-- Pills Style Tabs -->
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Pills Style Tabs</Heading>
-			{/snippet}
+		<Card title="Pills Style Tabs">
 			<Tabs style="pills">
 				<TabItem active={pillsActive === 'pills-tab-1'} onclick={() => (pillsActive = 'pills-tab-1')}>
 					Dashboard
@@ -287,12 +231,9 @@
 		</Card>
 	</Column>
 
-	<Column size="1" md="1-2">
+	<Column size="100" md="1-2">
 		<!-- Pills with Icons -->
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Pills with Icons</Heading>
-			{/snippet}
+		<Card title="Pills with Icons">
 			<Tabs style="pills">
 				<TabItem active={iconPillsActive === 'icon-pills-1'} onclick={() => (iconPillsActive = 'icon-pills-1')}>
 					{#snippet icon()}
@@ -330,12 +271,9 @@
 
 <!-- Two Column Layout: Vertical Tabs + Boxed Tabs -->
 <Grid>
-	<Column size="1" lg="1-2">
+	<Column size="100" lg="1-2">
 		<!-- Vertical Tabs -->
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Vertical Tabs</Heading>
-			{/snippet}
+		<Card title="Vertical Tabs">
 			<TabsVerticalLayout>
 				<Tabs style="vertical">
 					<TabItem active={verticalActive === 'vert-tab-1'} onclick={() => (verticalActive = 'vert-tab-1')}>
@@ -385,12 +323,9 @@
 		</Card>
 	</Column>
 
-	<Column size="1" lg="1-2">
+	<Column size="100" lg="1-2">
 		<!-- Boxed Style Tabs -->
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Boxed Tabs</Heading>
-			{/snippet}
+		<Card title="Boxed Tabs">
 			<Tabs style="boxed">
 				<TabItem active={boxedActive === 'boxed-tab-1'} onclick={() => (boxedActive = 'boxed-tab-1')}>
 					Code
@@ -418,10 +353,7 @@
 </Grid>
 
 <!-- Tab Sizes -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Tab Sizes</Heading>
-	{/snippet}
+<Card title="Tab Sizes">
 	<Heading level={4}>Small Tabs</Heading>
 	<Tabs size="sm">
 		<TabItem active={sizeSmallActive === 'size-sm-1'} onclick={() => (sizeSmallActive = 'size-sm-1')}>
@@ -496,10 +428,7 @@
 </Card>
 
 <!-- Tabs with Badges -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Tabs with Badges</Heading>
-	{/snippet}
+<Card title="Tabs with Badges">
 	<Tabs>
 		<TabItem active={badgesActive === 'badge-tab-1'} onclick={() => (badgesActive = 'badge-tab-1')}>
 			<span>All</span>
@@ -535,10 +464,7 @@
 </Card>
 
 <!-- Centered Tabs -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Centered Tabs</Heading>
-	{/snippet}
+<Card title="Centered Tabs">
 	<Tabs align="centered">
 		<TabItem active={centeredActive === 'center-tab-1'} onclick={() => (centeredActive = 'center-tab-1')}>
 			Features
@@ -564,10 +490,7 @@
 </Card>
 
 <!-- Full Width Tabs -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Full Width Tabs</Heading>
-	{/snippet}
+<Card title="Full Width Tabs">
 	<Tabs align="full">
 		<TabItem active={fullActive === 'full-tab-1'} onclick={() => (fullActive = 'full-tab-1')}>
 			{#snippet icon()}
@@ -603,11 +526,8 @@
 
 <!-- Icon-Only Tabs -->
 <Grid>
-	<Column size="1" md="1-2">
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Icon-Only Tabs - Horizontal</Heading>
-			{/snippet}
+	<Column size="100" md="1-2">
+		<Card title="Icon-Only Tabs - Horizontal">
 			<Tabs>
 				<TabItem
 					active={iconOnlyActive === 'icon-only-1'}
@@ -663,11 +583,8 @@
 		</Card>
 	</Column>
 
-	<Column size="1" md="1-2">
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Icon-Only Tabs - Vertical</Heading>
-			{/snippet}
+	<Column size="100" md="1-2">
+		<Card title="Icon-Only Tabs - Vertical">
 			<TabsVerticalLayout>
 				<Tabs style="vertical" align="centered">
 					<TabItem
@@ -806,26 +723,17 @@
 	</Tabs>
 	<TabsContent style="flex: 1;">
 		<TabPanel active={standaloneVertActive === 'standalone-vert-1'} id="standalone-vert-1">
-			<Card>
-				{#snippet header()}
-					<Heading level={3}>Dashboard</Heading>
-				{/snippet}
+			<Card title="Dashboard">
 				<Paragraph>Vertical tabs work great for sidebar-style navigation outside of cards.</Paragraph>
 			</Card>
 		</TabPanel>
 		<TabPanel active={standaloneVertActive === 'standalone-vert-2'} id="standalone-vert-2">
-			<Card>
-				{#snippet header()}
-					<Heading level={3}>Analytics</Heading>
-				{/snippet}
+			<Card title="Analytics">
 				<Paragraph>Analytics content goes here.</Paragraph>
 			</Card>
 		</TabPanel>
 		<TabPanel active={standaloneVertActive === 'standalone-vert-3'} id="standalone-vert-3">
-			<Card>
-				{#snippet header()}
-					<Heading level={3}>Users</Heading>
-				{/snippet}
+			<Card title="Users">
 				<Paragraph>User management content here.</Paragraph>
 			</Card>
 		</TabPanel>
@@ -918,11 +826,8 @@
 <Heading level={3} style="margin-top: 2rem; margin-bottom: 1rem;">Long Tab Titles in Constrained Space</Heading>
 
 <Grid>
-	<Column size="1" md="1-3">
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Default (Wrap)</Heading>
-			{/snippet}
+	<Column size="100" md="1-3">
+		<Card title="Default (Wrap)">
 			<Tabs>
 				<TabItem active={longWrapActive === 'long-1'} onclick={() => (longWrapActive = 'long-1')}>
 					Organizations Tree
@@ -954,11 +859,8 @@
 		</Card>
 	</Column>
 
-	<Column size="1" md="1-3">
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Collapse Modifier</Heading>
-			{/snippet}
+	<Column size="100" md="1-3">
+		<Card title="Collapse Modifier">
 			<Tabs overflow="collapse">
 				<TabItem
 					active={longCollapseActive === 'collapse-1'}
@@ -1022,11 +924,8 @@
 		</Card>
 	</Column>
 
-	<Column size="1" md="1-3">
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Scrollable Modifier</Heading>
-			{/snippet}
+	<Column size="100" md="1-3">
+		<Card title="Scrollable Modifier">
 			<TabsScrollable>
 				<TabItem active={longScrollActive === 'long-boxed-1'} onclick={() => (longScrollActive = 'long-boxed-1')}>
 					Organizations Tree

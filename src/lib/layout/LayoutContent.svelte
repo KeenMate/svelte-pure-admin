@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Layout Content Wrapper Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/layout.html
+	 * Based on @keenmate/pure-admin-core snippets/layout.html
 	 *
 	 * Wrapper for main content area (excludes sidebar)
 	 */

@@ -1,25 +1,31 @@
 <script lang="ts">
-	import Heading from '$lib/typography/Heading.svelte';
-	import Paragraph from '$lib/typography/Paragraph.svelte';
-	import { Card, Code, CommandPalette, Button } from '$lib';
-	import { onMount } from 'svelte';
+	import {
+		Card,
+		Grid,
+		Column,
+		Alert,
+		Table,
+		Button,
+		ButtonGroup,
+		BasicList,
+		CommandPalette,
+		NavbarSearch,
+		Navbar
+	} from '$lib';
+	import type { Command, SearchContext, SearchResult } from '$lib/navigation/command-palette-types';
 
 	let showPalette = $state(false);
 
-	// Sample data for command palette
-	const products = [
-		{ id: 1, name: 'MacBook Pro 16"', price: '$2,499' },
-		{ id: 2, name: 'MacBook Air M2', price: '$1,199' },
-		{ id: 3, name: 'iPhone 15 Pro', price: '$999' },
-		{ id: 4, name: 'iPad Pro 12.9"', price: '$1,099' },
-		{ id: 5, name: 'AirPods Pro', price: '$249' }
-	];
+	// =========================================================================
+	// SAMPLE DATA
+	// =========================================================================
 
-	const orders = [
-		{ id: 1001, customer: 'John Doe', status: 'Shipped', total: '$1,249' },
-		{ id: 1002, customer: 'Jane Smith', status: 'Processing', total: '$849' },
-		{ id: 1003, customer: 'Bob Wilson', status: 'Delivered', total: '$2,399' },
-		{ id: 1004, customer: 'Sarah Chen', status: 'Pending', total: '$599' }
+	const products = [
+		{ id: 1, name: 'MacBook Pro 16"', price: '$2,499', sku: 'MBP-16' },
+		{ id: 2, name: 'MacBook Air M2', price: '$1,199', sku: 'MBA-M2' },
+		{ id: 3, name: 'iPhone 15 Pro', price: '$999', sku: 'IP15P' },
+		{ id: 4, name: 'iPad Pro 12.9"', price: '$1,099', sku: 'IPAD-PRO' },
+		{ id: 5, name: 'AirPods Pro', price: '$249', sku: 'APP-2' }
 	];
 
 	const users = [
@@ -29,269 +35,500 @@
 		{ id: 4, name: 'Sarah Chen', email: 'sarah@example.com', role: 'User' }
 	];
 
-	const invoices = [
-		{ id: 501, customer: 'Acme Corp', amount: '$5,000', status: 'Paid' },
-		{ id: 502, customer: 'TechStart Inc', amount: '$3,200', status: 'Unpaid' },
-		{ id: 503, customer: 'Global Solutions', amount: '$7,500', status: 'Paid' },
-		{ id: 504, customer: 'StartupHub', amount: '$1,800', status: 'Overdue' }
+	const reports = [
+		{ id: 'product-sales', name: 'Product Sales', needsTimeRange: true },
+		{ id: 'product-stock', name: 'Product Stock', needsTimeRange: false },
+		{ id: 'user-activity', name: 'User Activity', needsTimeRange: true },
+		{ id: 'revenue', name: 'Revenue Report', needsTimeRange: true }
 	];
 
-	const allItems = [
-		...products.map((p) => ({ context: 'products', title: p.name, subtitle: p.price })),
-		...orders.map((o) => ({ context: 'orders', title: `Order #${o.id}`, subtitle: o.customer })),
-		...users.map((u) => ({ context: 'users', title: u.name, subtitle: u.email })),
-		...invoices.map((i) => ({ context: 'invoices', title: `Invoice #${i.id}`, subtitle: i.customer }))
+	// =========================================================================
+	// COMMANDS (/prefix)
+	// =========================================================================
+
+	const commands: Command[] = [
+		// Multi-step report command
+		{
+			shortcut: '/r',
+			aliases: ['/report', '/reports'],
+			name: 'Reports',
+			description: 'Open a report with optional filters',
+			icon: '📊',
+			steps: [
+				{
+					id: 'report',
+					placeholder: 'Select a report...',
+					getOptions: (query) => {
+						return reports
+							.filter((r) => r.name.toLowerCase().includes(query.toLowerCase()))
+							.map((r) => ({
+								id: r.id,
+								label: r.name,
+								description: r.needsTimeRange ? 'Supports time range' : 'No time range',
+								icon: '📈',
+								value: r
+							}));
+					}
+				},
+				{
+					id: 'timeRange',
+					prompt: ' in ',
+					placeholder: 'Enter time range (e.g., 30 days)',
+					freeText: true,
+					shouldShow: (prev) => prev[0]?.option?.value?.needsTimeRange === true,
+					getOptions: () => [
+						{ id: '7d', label: '7 days', description: 'Last week', value: 7 },
+						{ id: '30d', label: '30 days', description: 'Last month', value: 30 },
+						{ id: '90d', label: '90 days', description: 'Last quarter', value: 90 },
+						{ id: '365d', label: '1 year', description: 'Last year', value: 365 }
+					]
+				}
+			],
+			getPreview: (selections) => {
+				const report = selections[0]?.option?.label || 'Unknown';
+				const time = selections[1]?.option?.label || selections[1]?.freeText;
+				if (time) {
+					return `Open "${report}" for ${time}`;
+				}
+				return `Open "${report}"`;
+			},
+			onComplete: (selections) => {
+				const report = selections[0]?.option?.value;
+				const timeRange = selections[1]?.option?.value || selections[1]?.freeText;
+				console.log('Opening report:', report?.id, 'Time range:', timeRange);
+				alert(`Would navigate to: /reports/${report?.id}${timeRange ? `?range=${timeRange}` : ''}`);
+			}
+		},
+
+		// Instant settings command
+		{
+			shortcut: '/settings',
+			aliases: ['/config', '/preferences'],
+			name: 'Settings',
+			description: 'Open application settings',
+			icon: '⚙️',
+			steps: [],
+			onComplete: () => {
+				console.log('Opening settings');
+				alert('Would navigate to: /settings');
+			}
+		},
+
+		// Export command with format selection
+		{
+			shortcut: '/export',
+			name: 'Export Data',
+			description: 'Export data to file',
+			icon: '📤',
+			steps: [
+				{
+					id: 'type',
+					placeholder: 'What to export?',
+					getOptions: () => [
+						{ id: 'products', label: 'Products', icon: '📦', value: 'products' },
+						{ id: 'users', label: 'Users', icon: '👤', value: 'users' },
+						{ id: 'orders', label: 'Orders', icon: '📋', value: 'orders' }
+					]
+				},
+				{
+					id: 'format',
+					prompt: ' as ',
+					placeholder: 'Select format',
+					getOptions: () => [
+						{ id: 'csv', label: 'CSV', description: 'Comma-separated values', value: 'csv' },
+						{ id: 'json', label: 'JSON', description: 'JavaScript Object Notation', value: 'json' },
+						{ id: 'xlsx', label: 'Excel', description: 'Microsoft Excel format', value: 'xlsx' }
+					]
+				}
+			],
+			getPreview: (selections) => {
+				const type = selections[0]?.option?.label || '?';
+				const format = selections[1]?.option?.label || '?';
+				return `Export ${type} as ${format}`;
+			},
+			onComplete: (selections) => {
+				const type = selections[0]?.option?.value;
+				const format = selections[1]?.option?.value;
+				console.log('Exporting:', type, 'as', format);
+				alert(`Would export ${type} as ${format}`);
+			}
+		},
+
+		// Help command
+		{
+			shortcut: '/help',
+			aliases: ['/h', '/?'],
+			name: 'Help',
+			description: 'Show help and documentation',
+			icon: '❓',
+			steps: [],
+			onComplete: () => {
+				alert('Would open help documentation');
+			}
+		}
 	];
+
+	// =========================================================================
+	// SEARCH CONTEXTS (:prefix)
+	// =========================================================================
+
+	const contexts: SearchContext[] = [
+		{
+			shortcut: ':p',
+			aliases: [':products', ':prod'],
+			name: 'Products',
+			description: 'Search products by name or SKU',
+			icon: '📦',
+			onSearch: (query) => {
+				const lowerQuery = query.toLowerCase();
+				return products
+					.filter(
+						(p) =>
+							p.name.toLowerCase().includes(lowerQuery) ||
+							p.sku.toLowerCase().includes(lowerQuery)
+					)
+					.map((p) => ({
+						id: `product-${p.id}`,
+						title: p.name,
+						subtitle: `SKU: ${p.sku} • ${p.price}`,
+						icon: '📦',
+						badge: p.price,
+						data: p
+					}));
+			},
+			onSelect: (result) => {
+				console.log('Selected product:', result.data);
+				alert(`Would navigate to: /products/${result.data.id}`);
+			}
+		},
+		{
+			shortcut: ':u',
+			aliases: [':users', ':user'],
+			name: 'Users',
+			description: 'Search users by name or email',
+			icon: '👤',
+			onSearch: (query) => {
+				const lowerQuery = query.toLowerCase();
+				return users
+					.filter(
+						(u) =>
+							u.name.toLowerCase().includes(lowerQuery) ||
+							u.email.toLowerCase().includes(lowerQuery) ||
+							u.role.toLowerCase().includes(lowerQuery)
+					)
+					.map((u) => ({
+						id: `user-${u.id}`,
+						title: u.name,
+						subtitle: u.email,
+						icon: '👤',
+						badge: u.role,
+						data: u
+					}));
+			},
+			onSelect: (result) => {
+				console.log('Selected user:', result.data);
+				alert(`Would navigate to: /users/${result.data.id}`);
+			}
+		}
+	];
+
+	// =========================================================================
+	// GLOBAL SEARCH
+	// =========================================================================
+
+	function globalSearch(query: string): SearchResult[] {
+		const results: SearchResult[] = [];
+		const lowerQuery = query.toLowerCase();
+
+		// Search products
+		products
+			.filter((p) => p.name.toLowerCase().includes(lowerQuery))
+			.slice(0, 3)
+			.forEach((p) => {
+				results.push({
+					id: `product-${p.id}`,
+					title: p.name,
+					subtitle: p.price,
+					icon: '📦',
+					badge: 'Product',
+					data: { type: 'product', ...p }
+				});
+			});
+
+		// Search users
+		users
+			.filter((u) => u.name.toLowerCase().includes(lowerQuery))
+			.slice(0, 3)
+			.forEach((u) => {
+				results.push({
+					id: `user-${u.id}`,
+					title: u.name,
+					subtitle: u.email,
+					icon: '👤',
+					badge: 'User',
+					data: { type: 'user', ...u }
+				});
+			});
+
+		return results;
+	}
+
+	function handleGlobalSelect(result: SearchResult) {
+		console.log('Global select:', result);
+		alert(`Selected: ${result.title} (${result.data?.type})`);
+	}
 </script>
 
 <svelte:head>
-	<title>Command Palette - Pure Admin Svelte</title>
+	<title>Command Palette v2 - Pure Admin Svelte</title>
 </svelte:head>
 
-<Heading level={1}>Command Palette</Heading>
-<Paragraph>MacOS Spotlight-style quick navigation with keyboard shortcuts and context switching.</Paragraph>
+<!-- Demo Navbar with Search -->
+<div class="mb-6">
+	<Card>
+		{#snippet header()}
+			<h3>Navbar with Search Bar</h3>
+		{/snippet}
 
-<!-- Live Demo -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Live Demo</Heading>
-	{/snippet}
+		<p class="mb-3">
+			Add a search bar to your navbar that opens the command palette when clicked:
+		</p>
 
-	<div style="text-align: center; padding: 2rem;">
-		<Button variant="primary" size="lg" onclick={() => (showPalette = true)}>
-			<span style="margin-right: 0.5rem;">🔍</span>
-			Open Command Palette
-			<span class="pa-badge pa-badge--secondary pa-badge--sm" style="margin-left: 0.75rem;">
-				Ctrl+K
-			</span>
-		</Button>
+		<div class="pa-card__body--no-padding">
+			<Navbar class="position-relative">
+				{#snippet brand()}
+					<h1>My App</h1>
+				{/snippet}
 
-		<Paragraph class="mt-4 text-secondary">
-			Or press <kbd style="padding: 0.25rem 0.5rem; background: #f3f4f6; border-radius: 0.25rem; font-family: monospace;">Ctrl+K</kbd>
-			(or <kbd style="padding: 0.25rem 0.5rem; background: #f3f4f6; border-radius: 0.25rem; font-family: monospace;">Cmd+K</kbd> on Mac) to open
-		</Paragraph>
-	</div>
+				{#snippet search()}
+					<NavbarSearch
+						placeholder="Search or type / for commands..."
+						onClick={() => (showPalette = true)}
+					/>
+				{/snippet}
 
-	<CommandPalette bind:show={showPalette} items={allItems} />
-</Card>
-
-<!-- Keyboard Shortcuts -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Keyboard Shortcuts</Heading>
-	{/snippet}
-
-	<div class="pa-table-container">
-		<table class="pa-table">
-			<thead>
-				<tr>
-					<th>Key</th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>
-						<kbd style="padding: 0.25rem 0.5rem; background: #f3f4f6; border-radius: 0.25rem; font-family: monospace;">Ctrl+K</kbd>
-						/
-						<kbd style="padding: 0.25rem 0.5rem; background: #f3f4f6; border-radius: 0.25rem; font-family: monospace;">Cmd+K</kbd>
-					</td>
-					<td>Open/close command palette</td>
-				</tr>
-				<tr>
-					<td>
-						<kbd style="padding: 0.25rem 0.5rem; background: #f3f4f6; border-radius: 0.25rem; font-family: monospace;">↑</kbd>
-						<kbd style="padding: 0.25rem 0.5rem; background: #f3f4f6; border-radius: 0.25rem; font-family: monospace;">↓</kbd>
-					</td>
-					<td>Navigate through results</td>
-				</tr>
-				<tr>
-					<td>
-						<kbd style="padding: 0.25rem 0.5rem; background: #f3f4f6; border-radius: 0.25rem; font-family: monospace;">←</kbd>
-						<kbd style="padding: 0.25rem 0.5rem; background: #f3f4f6; border-radius: 0.25rem; font-family: monospace;">→</kbd>
-					</td>
-					<td>Navigate between pages</td>
-				</tr>
-				<tr>
-					<td>
-						<kbd style="padding: 0.25rem 0.5rem; background: #f3f4f6; border-radius: 0.25rem; font-family: monospace;">Enter</kbd>
-					</td>
-					<td>Select highlighted result</td>
-				</tr>
-				<tr>
-					<td>
-						<kbd style="padding: 0.25rem 0.5rem; background: #f3f4f6; border-radius: 0.25rem; font-family: monospace;">Esc</kbd>
-					</td>
-					<td>Close command palette</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-</Card>
-
-<!-- Context Switching -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Context Switching</Heading>
-	{/snippet}
-
-	<Paragraph class="mb-4">Use prefixes to search within specific contexts:</Paragraph>
-
-	<div class="pa-table-container">
-		<table class="pa-table">
-			<thead>
-				<tr>
-					<th>Prefix</th>
-					<th>Context</th>
-					<th>Example</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td><code>/p</code></td>
-					<td>Products</td>
-					<td><code>/p macbook</code></td>
-				</tr>
-				<tr>
-					<td><code>/o</code></td>
-					<td>Orders</td>
-					<td><code>/o 1001</code></td>
-				</tr>
-				<tr>
-					<td><code>/u</code></td>
-					<td>Users</td>
-					<td><code>/u john</code></td>
-				</tr>
-				<tr>
-					<td><code>/i</code></td>
-					<td>Invoices</td>
-					<td><code>/i 501</code></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-
-	<Paragraph class="mt-4 text-secondary" style="font-size: 0.875rem;">
-		<strong>Tip:</strong> Start typing a prefix to filter results by context. For example, typing "/p mac" will
-		search only within products for "mac".
-	</Paragraph>
-</Card>
-
-<!-- Key Features -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Key Features</Heading>
-	{/snippet}
-
-	<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-		<div>
-			<Heading level={4} style="margin-bottom: 0.5rem;">⚡ Lightning Fast</Heading>
-			<Paragraph class="text-secondary">Instant search results with optimized fuzzy matching algorithm.</Paragraph>
+				{#snippet navRight()}
+					<li><a href="#notifications">🔔</a></li>
+					<li><a href="#profile">👤</a></li>
+				{/snippet}
+			</Navbar>
 		</div>
 
-		<div>
-			<Heading level={4} style="margin-bottom: 0.5rem;">🎯 Context-Aware</Heading>
-			<Paragraph class="text-secondary">Switch between different data contexts using simple prefixes.</Paragraph>
+		<div class="mt-3">
+			<Alert variant="info">
+				<strong>Usage:</strong> The <code>NavbarSearch</code> component shows a search input with a keyboard shortcut hint.
+				When clicked, it calls your <code>onClick</code> handler to open the command palette.
+			</Alert>
 		</div>
+	</Card>
+</div>
 
-		<div>
-			<Heading level={4} style="margin-bottom: 0.5rem;">⌨️ Keyboard Control</Heading>
-			<Paragraph class="text-secondary">Navigate entirely with keyboard - no mouse required.</Paragraph>
-		</div>
+<div class="pa-layout-container">
+	<p class="mb-6">
+		Enhanced command palette with <strong>/commands</strong> for actions and
+		<strong>:contexts</strong> for search. Press
+		<kbd class="pa-command-palette__key">Ctrl+K</kbd> or
+		<kbd class="pa-command-palette__key">Cmd+K</kbd> to open.
+	</p>
 
-		<div>
-			<Heading level={4} style="margin-bottom: 0.5rem;">🔍 Fuzzy Matching</Heading>
-			<Paragraph class="text-secondary">Find items even with typos or partial matches.</Paragraph>
-		</div>
+	<Grid>
+		<!-- Left Column -->
+		<Column size="100" lg="50">
+			<!-- Quick Start -->
+			<Card class="mb-4">
+				{#snippet header()}
+					<h3>Quick Start</h3>
+				{/snippet}
 
-		<div>
-			<Heading level={4} style="margin-bottom: 0.5rem;">📄 Pagination</Heading>
-			<Paragraph class="text-secondary">Browse through large result sets with arrow key navigation.</Paragraph>
-		</div>
+				<div class="mb-4">
+					<Button variant="primary" size="lg" block onClick={() => (showPalette = true)}>
+						{#snippet icon()}
+							🔍
+						{/snippet}
+						Open Command Palette (Ctrl+K)
+					</Button>
+				</div>
 
-		<div>
-			<Heading level={4} style="margin-bottom: 0.5rem;">🎨 Themeable</Heading>
-			<Paragraph class="text-secondary">Matches your application theme automatically.</Paragraph>
-		</div>
-	</div>
-</Card>
+				<Alert variant="primary" class="mb-4">
+					<strong>Try it!</strong> Type <code>/</code> for commands or <code>:</code> for search contexts.
+				</Alert>
 
-<!-- Usage Examples -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Usage Examples</Heading>
-	{/snippet}
+				<h4 class="mb-2">Commands (/)</h4>
+				<Table class="pa-table--compact">
+					<thead>
+						<tr>
+							<th>Shortcut</th>
+							<th>Name</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each commands as cmd}
+							<tr>
+								<td><code>{cmd.shortcut}</code></td>
+								<td>{cmd.name}</td>
+								<td>{cmd.description}</td>
+							</tr>
+						{/each}
+					</tbody>
+				</Table>
+			</Card>
 
-	<Heading level={4}>Basic Implementation</Heading>
-	<Code language="javascript">{`< script>
-  import { CommandPalette } from '@pure-admin/svelte';
+			<!-- Search Contexts -->
+			<Card class="mb-4">
+				{#snippet header()}
+					<h3>Search Contexts (:)</h3>
+				{/snippet}
 
-  let showPalette = $state(false);
+				<p class="mb-3">Use <code>:</code> prefix to search within a specific context:</p>
 
-  const items = [
-    { context: 'products', title: 'MacBook Pro', subtitle: '$2,499' },
-    { context: 'orders', title: 'Order #1001', subtitle: 'John Doe' }
-  ];
-</script>
+				<Table class="pa-table--compact">
+					<thead>
+						<tr>
+							<th>Shortcut</th>
+							<th>Name</th>
+							<th>Example</th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each contexts as ctx}
+							<tr>
+								<td><code>{ctx.shortcut}</code></td>
+								<td>{ctx.name}</td>
+								<td><code>{ctx.shortcut} search term</code></td>
+							</tr>
+						{/each}
+					</tbody>
+				</Table>
 
-<CommandPalette bind:show={showPalette} {items} />`}</Code>
+				<Alert variant="success" class="mt-3">
+					<strong>Tip:</strong> Aliases work too! Try <code>:products</code> or <code>:users</code>.
+				</Alert>
+			</Card>
+		</Column>
 
-	<Heading level={4} class="mt-4">With Keyboard Shortcut</Heading>
-	<Code language="javascript">{`< script>
-  import { onMount } from 'svelte';
+		<!-- Right Column -->
+		<Column size="100" lg="50">
+			<!-- Multi-step Commands -->
+			<Card class="mb-4">
+				{#snippet header()}
+					<h3>Multi-Step Commands</h3>
+				{/snippet}
 
-  onMount(() => {
-    const handleKeydown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-        e.preventDefault();
-        showPalette = true;
-      }
-    };
+				<p class="mb-3">Commands can have multiple steps with conditional logic:</p>
 
-    window.addEventListener('keydown', handleKeydown);
-    return () => window.removeEventListener('keydown', handleKeydown);
-  });
-</script>`}</Code>
+				<div class="mb-3">
+					<h4 class="mb-2">Example: /r (Reports)</h4>
+					<ol class="pa-list-ordered">
+						<li>Type <code>/r</code> and press Space</li>
+						<li>Select a report (e.g., "Product Sales")</li>
+						<li>If report needs time range, " in " is auto-added</li>
+						<li>Select or type a time range (e.g., "30 days")</li>
+						<li>Press Enter to execute</li>
+					</ol>
+				</div>
 
-	<Heading level={4} class="mt-4">Custom Context Prefixes</Heading>
-	<Code language="javascript">{`const contextPrefixes = {
-  '/p': 'products',
-  '/o': 'orders',
-  '/u': 'users',
-  '/i': 'invoices'
-};`}</Code>
+				<div class="mb-3">
+					<h4 class="mb-2">Example: /export</h4>
+					<ol class="pa-list-ordered">
+						<li>Type <code>/export</code> and press Space</li>
+						<li>Select what to export (Products, Users, Orders)</li>
+						<li>" as " is auto-added</li>
+						<li>Select format (CSV, JSON, Excel)</li>
+						<li>Press Enter to execute</li>
+					</ol>
+				</div>
+			</Card>
 
-	<Heading level={4} class="mt-4">Try These Searches</Heading>
-	<ul>
-		<li><strong>Products:</strong> Try searching for "macbook", "iphone", or "/p mac"</li>
-		<li><strong>Orders:</strong> Search "1001", "shipped", or "/o john"</li>
-		<li><strong>Users:</strong> Search "john", "admin", or "/u smith"</li>
-		<li><strong>Invoices:</strong> Search "501", "unpaid", or "/i acme"</li>
-	</ul>
-</Card>
+			<!-- Keyboard Shortcuts -->
+			<Card class="mb-4">
+				{#snippet header()}
+					<h3>Keyboard Shortcuts</h3>
+				{/snippet}
 
-<!-- Integration Tips -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Integration Tips</Heading>
-	{/snippet}
+				<Table class="pa-table--compact">
+					<thead>
+						<tr>
+							<th>Key</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								<kbd class="pa-command-palette__key">Ctrl+K</kbd> /
+								<kbd class="pa-command-palette__key">Cmd+K</kbd>
+							</td>
+							<td>Open/close palette</td>
+						</tr>
+						<tr>
+							<td>
+								<kbd class="pa-command-palette__key">↑</kbd>
+								<kbd class="pa-command-palette__key">↓</kbd>
+							</td>
+							<td>Navigate options</td>
+						</tr>
+						<tr>
+							<td>
+								<kbd class="pa-command-palette__key">Enter</kbd> /
+								<kbd class="pa-command-palette__key">Tab</kbd>
+							</td>
+							<td>Select option</td>
+						</tr>
+						<tr>
+							<td><kbd class="pa-command-palette__key">Esc</kbd></td>
+							<td>Close and reset</td>
+						</tr>
+					</tbody>
+				</Table>
+			</Card>
 
-	<Heading level={4}>Best Practices</Heading>
-	<ul>
-		<li>Include the command palette button in your header/navbar for easy access</li>
-		<li>Show the keyboard shortcut hint (Ctrl+K) next to the button</li>
-		<li>Provide diverse data sources (pages, products, users, settings, etc.)</li>
-		<li>Use meaningful context prefixes that are easy to remember</li>
-		<li>Include both title and subtitle for better context in results</li>
-		<li>Implement fuzzy matching for typo-tolerant search</li>
-	</ul>
+			<!-- Try It -->
+			<Card class="mb-4">
+				{#snippet header()}
+					<h3>Try These</h3>
+				{/snippet}
 
-	<Heading level={4} class="mt-4">Performance Tips</Heading>
-	<ul>
-		<li>Index your data in advance for faster search results</li>
-		<li>Limit initial results to 20-50 items, use pagination for more</li>
-		<li>Debounce search input to avoid excessive filtering</li>
-		<li>Consider using Web Workers for large datasets</li>
-		<li>Cache frequently searched terms and results</li>
-	</ul>
-</Card>
+				<p class="mb-3">Click to open palette with pre-filled text:</p>
+
+				<div class="mb-3">
+					<h4 class="mb-2">Commands</h4>
+					<ButtonGroup class="mb-2">
+						<Button size="sm" variant="secondary" onClick={() => (showPalette = true)}>/r</Button>
+						<Button size="sm" variant="secondary" onClick={() => (showPalette = true)}>/export</Button>
+						<Button size="sm" variant="secondary" onClick={() => (showPalette = true)}
+							>/settings</Button
+						>
+					</ButtonGroup>
+				</div>
+
+				<div class="mb-3">
+					<h4 class="mb-2">Search</h4>
+					<ButtonGroup class="mb-2">
+						<Button size="sm" variant="secondary" onClick={() => (showPalette = true)}>:p mac</Button>
+						<Button size="sm" variant="secondary" onClick={() => (showPalette = true)}
+							>:u john</Button
+						>
+					</ButtonGroup>
+				</div>
+
+				<div class="mb-3">
+					<h4 class="mb-2">Global Search</h4>
+					<ButtonGroup class="mb-2">
+						<Button size="sm" variant="secondary" onClick={() => (showPalette = true)}>macbook</Button
+						>
+						<Button size="sm" variant="secondary" onClick={() => (showPalette = true)}>john</Button>
+					</ButtonGroup>
+				</div>
+			</Card>
+		</Column>
+	</Grid>
+</div>
+
+<CommandPalette
+	bind:show={showPalette}
+	{commands}
+	{contexts}
+	{globalSearch}
+	onGlobalSelect={handleGlobalSelect}
+/>

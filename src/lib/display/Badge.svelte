@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Badge Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/badges.html
+	 * Based on @keenmate/pure-admin-core snippets/badges.html
 	 */
 
 	import type { BaseBadgeProps } from './badge-types';

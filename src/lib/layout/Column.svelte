@@ -1,24 +1,55 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Column Component (Svelte 5)
-	 * Wrapper for Pure.css grid columns (pure-u-*)
+	 * Wrapper for native pa-col-* grid columns
+	 *
+	 * Supports:
+	 * - Percentage widths: "5", "10", "15"... "100" (5% increments)
+	 * - Fraction widths: "1-2", "1-3", "2-3", "1-4", etc.
+	 * - Auto width: "auto"
+	 * - Responsive variants: sm, md, lg, xl
+	 * - Offset: left margin offset (5% increments)
 	 */
 
-	type ColumnSize = '1' | '1-2' | '1-3' | '2-3' | '1-4' | '3-4' | '1-5' | '2-5' | '3-5' | '4-5' | '1-6' | '5-6' | '1-8' | '3-8' | '5-8' | '7-8' | '1-12' | '5-12' | '7-12' | '11-12' | '1-24' | '5-24' | '7-24' | '11-24' | '13-24' | '17-24' | '19-24' | '23-24';
+	// Percentage sizes (5% increments)
+	type PercentageSize = '5' | '10' | '15' | '20' | '25' | '30' | '35' | '40' | '45' | '50' |
+		'55' | '60' | '65' | '70' | '75' | '80' | '85' | '90' | '95' | '100';
+
+	// Fraction sizes
+	type FractionSize = '1-2' | '1-3' | '2-3' | '1-4' | '3-4' | '1-5' | '2-5' | '3-5' | '4-5' |
+		'1-6' | '5-6' | '1-12' | '5-12' | '7-12' | '11-12';
+
+	type ColumnSize = PercentageSize | FractionSize | 'auto';
+
+	// Offset sizes (5% increments, 5-95)
+	type OffsetSize = '5' | '10' | '15' | '20' | '25' | '30' | '35' | '40' | '45' | '50' |
+		'55' | '60' | '65' | '70' | '75' | '80' | '85' | '90' | '95';
 
 	interface Props {
-		/** Base column size (e.g., "1", "1-2", "1-3", "2-3") */
+		/** Base column size (e.g., "100", "50", "1-2", "1-3") */
 		size?: ColumnSize;
-		/** Column size on small screens (≥568px) */
+		/** Column size on small screens (≥576px) */
 		sm?: ColumnSize;
 		/** Column size on medium screens (≥768px) */
 		md?: ColumnSize;
-		/** Column size on large screens (≥1024px) */
+		/** Column size on large screens (≥992px) */
 		lg?: ColumnSize;
-		/** Column size on extra large screens (≥1280px) */
+		/** Column size on extra large screens (≥1200px) */
 		xl?: ColumnSize;
+		/** Left margin offset (5% increments) */
+		offset?: OffsetSize;
+		/** Offset on small screens (≥576px) */
+		offsetSm?: OffsetSize;
+		/** Offset on medium screens (≥768px) */
+		offsetMd?: OffsetSize;
+		/** Offset on large screens (≥992px) */
+		offsetLg?: OffsetSize;
+		/** Offset on extra large screens (≥1200px) */
+		offsetXl?: OffsetSize;
 		/** Additional CSS classes */
 		class?: string;
+		/** Inline styles */
+		style?: string;
 		/** Children content */
 		children?: import('svelte').Snippet;
 	}
@@ -29,7 +60,13 @@
 		md,
 		lg,
 		xl,
+		offset,
+		offsetSm,
+		offsetMd,
+		offsetLg,
+		offsetXl,
 		class: className = '',
+		style,
 		children
 	}: Props = $props();
 
@@ -38,13 +75,20 @@
 		const base: string[] = [];
 
 		// Base size
-		if (size) base.push(`pure-u-${size}`);
+		if (size) base.push(`pa-col-${size}`);
 
 		// Responsive sizes
-		if (sm) base.push(`pure-u-sm-${sm}`);
-		if (md) base.push(`pure-u-md-${md}`);
-		if (lg) base.push(`pure-u-lg-${lg}`);
-		if (xl) base.push(`pure-u-xl-${xl}`);
+		if (sm) base.push(`pa-col-sm-${sm}`);
+		if (md) base.push(`pa-col-md-${md}`);
+		if (lg) base.push(`pa-col-lg-${lg}`);
+		if (xl) base.push(`pa-col-xl-${xl}`);
+
+		// Offsets
+		if (offset) base.push(`pa-offset-${offset}`);
+		if (offsetSm) base.push(`pa-offset-sm-${offsetSm}`);
+		if (offsetMd) base.push(`pa-offset-md-${offsetMd}`);
+		if (offsetLg) base.push(`pa-offset-lg-${offsetLg}`);
+		if (offsetXl) base.push(`pa-offset-xl-${offsetXl}`);
 
 		// Custom classes
 		if (className) base.push(className);
@@ -53,6 +97,6 @@
 	});
 </script>
 
-<div class={classes()}>
+<div class={classes()} {style}>
 	{@render children?.()}
 </div>

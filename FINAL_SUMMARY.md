@@ -270,7 +270,7 @@ All components follow Pure Admin's strict BEM pattern:
 ### Using the Components
 
 ```bash
-npm install @pure-admin/svelte
+npm install @keenmate/svelte-pure-admin
 ```
 
 ```svelte
@@ -281,7 +281,7 @@ npm install @pure-admin/svelte
     Timeline,
     TimelineItem,
     CommandPalette
-  } from '@pure-admin/svelte';
+  } from '@keenmate/svelte-pure-admin';
 </script>
 
 <!-- Your app here -->
@@ -291,13 +291,13 @@ npm install @pure-admin/svelte
 
 ```svelte
 <script>
-  import '@pure-admin/core/css';
+  import '@keenmate/pure-admin-core/css';
 </script>
 ```
 
 Or in global CSS:
 ```css
-@import '@pure-admin/core/css';
+@import '@keenmate/pure-admin-core/css';
 ```
 
 ---

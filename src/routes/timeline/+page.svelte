@@ -12,10 +12,7 @@
 <Paragraph>Activity feed timeline with avatars and user actions - perfect for social feeds, notifications, and audit logs.</Paragraph>
 
 <!-- Activity Feed -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Activity Feed</Heading>
-	{/snippet}
+<Card title="Activity Feed">
 
 	<Timeline variant="feed">
 		<TimelineItem
@@ -147,10 +144,7 @@
 </Card>
 
 <!-- Team Collaboration Feed -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Team Collaboration Feed</Heading>
-	{/snippet}
+<Card title="Team Collaboration Feed">
 
 	<Timeline variant="feed">
 		<TimelineItem
@@ -204,10 +198,7 @@
 </Card>
 
 <!-- Usage Examples -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Usage Examples</Heading>
-	{/snippet}
+<Card title="Usage Examples">
 
 	<Heading level={4}>Basic Feed Timeline</Heading>
 	<pre class="mb-4"><code>&lt;Timeline variant="feed"&gt;

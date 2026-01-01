@@ -1,11 +1,11 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Label Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/badges.html
+	 * Based on @keenmate/pure-admin-core snippets/badges.html
 	 */
 
 	type LabelVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
-	type LabelSize = 'sm';
+	type LabelSize = 'sm' | 'lg';
 
 	interface Props {
 		/** Label variant */

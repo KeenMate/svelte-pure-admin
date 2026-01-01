@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Code Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/code.html
+	 * Based on @keenmate/pure-admin-core snippets/code.html
 	 * For inline code elements
 	 */
 
@@ -10,7 +10,8 @@
 		children?: import('svelte').Snippet;
 		/** Additional CSS classes */
 		class?: string;
-		language?: string
+		/** Language for syntax highlighting (not used for inline code, but kept for API consistency) */
+		language?: string;
 	}
 
 	let { children, class: className = '', language = undefined }: Props = $props();

@@ -15,11 +15,8 @@
 	<!-- Component Categories Overview -->
 	<Grid>
 		<!-- Form Components -->
-		<Column size="1" md="1-2" lg="1-3">
-			<Card>
-				{#snippet header()}
-					<Heading level={3}>Form Components</Heading>
-				{/snippet}
+		<Column size="100" md="1-2" lg="1-3">
+			<Card title="Form Components">
 				<Paragraph class="mb-3">Input elements, selects, checkboxes, radio buttons, and form layouts.</Paragraph>
 				<ul class="mb-4" style="list-style: disc; padding-left: 1.5rem;">
 					<li>Form Groups</li>
@@ -35,11 +32,8 @@
 		</Column>
 
 		<!-- Button Components -->
-		<Column size="1" md="1-2" lg="1-3">
-			<Card>
-				{#snippet header()}
-					<Heading level={3}>Buttons</Heading>
-				{/snippet}
+		<Column size="100" md="1-2" lg="1-3">
+			<Card title="Buttons">
 				<Paragraph class="mb-3">Various button styles, sizes, and states for user interactions.</Paragraph>
 				<ul class="mb-4" style="list-style: disc; padding-left: 1.5rem;">
 					<li>8 Color Variants</li>
@@ -54,11 +48,8 @@
 		</Column>
 
 		<!-- Card Components -->
-		<Column size="1" md="1-2" lg="1-3">
-			<Card>
-				{#snippet header()}
-					<Heading level={3}>Cards</Heading>
-				{/snippet}
+		<Column size="100" md="1-2" lg="1-3">
+			<Card title="Cards">
 				<Paragraph class="mb-3">Flexible content containers with headers, footers, and custom styling.</Paragraph>
 				<ul class="mb-4" style="list-style: disc; padding-left: 1.5rem;">
 					<li>Basic Cards</li>
@@ -73,11 +64,8 @@
 		</Column>
 
 		<!-- Badge Components -->
-		<Column size="1" md="1-2" lg="1-3">
-			<Card>
-				{#snippet header()}
-					<Heading level={3}>Badges & Labels</Heading>
-				{/snippet}
+		<Column size="100" md="1-2" lg="1-3">
+			<Card title="Badges & Labels">
 				<Paragraph class="mb-3">Small count and labeling components for UI indicators.</Paragraph>
 				<ul class="mb-4" style="list-style: disc; padding-left: 1.5rem;">
 					<li>8 Color Variants</li>
@@ -92,11 +80,8 @@
 		</Column>
 
 		<!-- Alert Components -->
-		<Column size="1" md="1-2" lg="1-3">
-			<Card>
-				{#snippet header()}
-					<Heading level={3}>Alerts</Heading>
-				{/snippet}
+		<Column size="100" md="1-2" lg="1-3">
+			<Card title="Alerts">
 				<Paragraph class="mb-3">Contextual feedback messages for user actions and notifications.</Paragraph>
 				<ul class="mb-4" style="list-style: disc; padding-left: 1.5rem;">
 					<li>8 Alert Types</li>
@@ -111,11 +96,8 @@
 		</Column>
 
 		<!-- Tooltip Components -->
-		<Column size="1" md="1-2" lg="1-3">
-			<Card>
-				{#snippet header()}
-					<Heading level={3}>Tooltips & Popovers</Heading>
-				{/snippet}
+		<Column size="100" md="1-2" lg="1-3">
+			<Card title="Tooltips & Popovers">
 				<Paragraph class="mb-3">Hover tooltips and click popovers for contextual information.</Paragraph>
 				<ul class="mb-4" style="list-style: disc; padding-left: 1.5rem;">
 					<li>4 Positions</li>
@@ -130,11 +112,8 @@
 		</Column>
 
 		<!-- Modal Components -->
-		<Column size="1" md="1-2" lg="1-3">
-			<Card>
-				{#snippet header()}
-					<Heading level={3}>Modal Windows</Heading>
-				{/snippet}
+		<Column size="100" md="1-2" lg="1-3">
+			<Card title="Modal Windows">
 				<Paragraph class="mb-3">Dialog boxes and overlays for focused user interactions.</Paragraph>
 				<ul class="mb-4" style="list-style: disc; padding-left: 1.5rem;">
 					<li>Multiple Sizes</li>
@@ -148,11 +127,8 @@
 		</Column>
 
 		<!-- Loader Components -->
-		<Column size="1" md="1-2" lg="1-3">
-			<Card>
-				{#snippet header()}
-					<Heading level={3}>Loaders & Spinners</Heading>
-				{/snippet}
+		<Column size="100" md="1-2" lg="1-3">
+			<Card title="Loaders & Spinners">
 				<Paragraph class="mb-3">Loading indicators and progress animations.</Paragraph>
 				<ul class="mb-4" style="list-style: disc; padding-left: 1.5rem;">
 					<li>Spinner Animations</li>
@@ -166,11 +142,8 @@
 		</Column>
 
 		<!-- Table Components -->
-		<Column size="1" md="1-2" lg="1-3">
-			<Card>
-				{#snippet header()}
-					<Heading level={3}>Tables</Heading>
-				{/snippet}
+		<Column size="100" md="1-2" lg="1-3">
+			<Card title="Tables">
 				<Paragraph class="mb-3">Data tables with sorting, filtering, and pagination.</Paragraph>
 				<ul class="mb-4" style="list-style: disc; padding-left: 1.5rem;">
 					<li>Basic Tables</li>
@@ -190,11 +163,8 @@
 
 	<Grid>
 		<!-- Form Example -->
-		<Column size="1" lg="1-2">
-			<Card>
-				{#snippet header()}
-					<Heading level={3}>Basic Form</Heading>
-				{/snippet}
+		<Column size="100" lg="1-2">
+			<Card title="Basic Form">
 				<form>
 					<div class="pa-form-group mb-3">
 						<label class="pa-form-label" for="example-email">Email address</label>
@@ -232,11 +202,8 @@
 		</Column>
 
 		<!-- Alert Examples -->
-		<Column size="1" lg="1-2">
-			<Card>
-				{#snippet header()}
-					<Heading level={3}>Alert Messages</Heading>
-				{/snippet}
+		<Column size="100" lg="1-2">
+			<Card title="Alert Messages">
 				<div class="pa-alert pa-alert--success mb-3">
 					<span class="pa-alert__icon">✓</span>
 					<div class="pa-alert__content">
@@ -271,12 +238,9 @@
 	<!-- Component Showcase -->
 	<Heading level={2} class="mt-6 mb-4">Component Showcase</Heading>
 
-	<Card>
-		{#snippet header()}
-			<Heading level={3}>Buttons & Badges</Heading>
-		{/snippet}
+	<Card title="Buttons & Badges">
 		<Grid>
-			<Column size="1" md="1-2">
+			<Column size="100" md="1-2">
 				<Heading level={4} class="mb-3 text-sm">Button Variants</Heading>
 				<div class="mb-4" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
 					<button class="pa-btn pa-btn--primary pa-btn--sm">Primary</button>
@@ -288,7 +252,7 @@
 				</div>
 			</Column>
 
-			<Column size="1" md="1-2">
+			<Column size="100" md="1-2">
 				<Heading level={4} class="mb-3 text-sm">Badge Variants</Heading>
 				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;">
 					<span class="pa-badge pa-badge--primary">Primary</span>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Layout Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/layout.html
+	 * Based on @keenmate/pure-admin-core snippets/layout.html
 	 *
 	 * NOTE: Width constraints are applied via body classes (pa-container-sm/md/lg/xl/2xl),
 	 * not on this component. This component only provides the .pa-layout wrapper.

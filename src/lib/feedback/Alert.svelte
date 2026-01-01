@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Alert Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/alerts.html
+	 * Based on @keenmate/pure-admin-core snippets/alerts.html
 	 */
 
 	type AlertVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark';
@@ -24,6 +24,10 @@
 		icon?: import('svelte').Snippet;
 		/** Children (alert content) */
 		children?: import('svelte').Snippet;
+		/** List snippet for alert lists */
+		list?: import('svelte').Snippet;
+		/** Actions snippet for alert action buttons */
+		actions?: import('svelte').Snippet;
 	}
 
 	let {
@@ -34,7 +38,9 @@
 		heading,
 		class: className = '',
 		icon,
-		children
+		children,
+		list,
+		actions
 	}: Props = $props();
 
 	let visible = $state(true);
@@ -79,6 +85,16 @@
 					<h4 class="pa-alert__heading">{heading}</h4>
 				{/if}
 				{@render children?.()}
+				{#if list}
+					<ul class="pa-alert__list">
+						{@render list()}
+					</ul>
+				{/if}
+				{#if actions}
+					<div class="pa-alert__actions">
+						{@render actions()}
+					</div>
+				{/if}
 			</div>
 		{:else}
 			<!-- Simple alert -->
@@ -86,6 +102,16 @@
 				<h4 class="pa-alert__heading">{heading}</h4>
 			{/if}
 			{@render children?.()}
+			{#if list}
+				<ul class="pa-alert__list">
+					{@render list()}
+				</ul>
+			{/if}
+			{#if actions}
+				<div class="pa-alert__actions">
+					{@render actions()}
+				</div>
+			{/if}
 		{/if}
 
 		{#if dismissible}

@@ -1,7 +1,7 @@
 <script lang="ts" generics="T">
 	/**
 	 * Pure Admin BadgeGroup Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/badges.html
+	 * Based on @keenmate/pure-admin-core snippets/badges.html
 	 *
 	 * Features:
 	 * - Interactive expand/collapse behavior

@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin BasicList Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/lists.html
+	 * Based on @keenmate/pure-admin-core snippets/lists.html
 	 * For simple unordered lists with various modifiers
 	 */
 

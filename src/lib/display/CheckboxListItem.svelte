@@ -1,9 +1,11 @@
 <script lang="ts">
 	/**
 	 * Pure Admin CheckboxListItem Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/checkbox-lists.html
+	 * Based on @keenmate/pure-admin-core snippets/checkbox-lists.html
 	 * Individual checkbox list item with label, description, and actions
 	 */
+
+	import CheckboxBox from '$lib/forms/CheckboxBox.svelte';
 
 	type ItemState = 'disabled' | 'locked';
 
@@ -55,9 +57,8 @@
 	});
 
 	// Handle checkbox change
-	function handleChange(event: Event) {
-		const target = event.target as HTMLInputElement;
-		checked = target.checked;
+	function handleChange(event: Event & { currentTarget: HTMLInputElement }) {
+		checked = event.currentTarget.checked;
 		onChange?.(checked);
 	}
 
@@ -66,34 +67,20 @@
 </script>
 
 <li class={itemClasses()}>
-	{#if description}
-		<!-- With description: checkbox first, then label with description -->
-		<input
-			type="checkbox"
-			class="pa-checkbox-list__checkbox"
+	<label class="pa-checkbox-list__label">
+		<CheckboxBox
 			{id}
 			bind:checked
 			disabled={isDisabled}
-			onchange={handleChange}
+			onChange={handleChange}
 		/>
-		<label class="pa-checkbox-list__label" for={id}>
+		<span class="pa-checkbox-list__text">
 			{label}
-			<span class="pa-checkbox-list__description">{description}</span>
-		</label>
-	{:else}
-		<!-- Without description: label wraps checkbox -->
-		<label class="pa-checkbox-list__label">
-			<input
-				type="checkbox"
-				class="pa-checkbox-list__checkbox"
-				{id}
-				bind:checked
-				disabled={isDisabled}
-				onchange={handleChange}
-			/>
-			<span class="pa-checkbox-list__text">{label}</span>
-		</label>
-	{/if}
+			{#if description}
+				<span class="pa-checkbox-list__description">{description}</span>
+			{/if}
+		</span>
+	</label>
 
 	{#if actions}
 		<div class="pa-checkbox-list__actions">

@@ -12,11 +12,7 @@
 <Paragraph>Contextual feedback messages for typical user actions with flexible alert messages.</Paragraph>
 
 <!-- Basic Alerts -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Basic Alerts</Heading>
-	{/snippet}
-
+<Card title="Basic Alerts">
 	<Alert variant="primary">
 		<strong>Primary!</strong> This is a primary alert — check it out!
 	</Alert>
@@ -51,11 +47,7 @@
 </Card>
 
 <!-- Alerts with Icons -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Alerts with Icons</Heading>
-	{/snippet}
-
+<Card title="Alerts with Icons">
 	<Alert variant="success">
 		{#snippet icon()}✓{/snippet}
 		<strong>Success!</strong> Your changes have been saved successfully.
@@ -78,11 +70,7 @@
 </Card>
 
 <!-- Dismissible Alerts -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Dismissible Alerts</Heading>
-	{/snippet}
-
+<Card title="Dismissible Alerts">
 	<Alert dismissible variant="success">
 		<strong>Well done!</strong> You successfully read this important alert message.
 	</Alert>
@@ -101,13 +89,9 @@
 </Card>
 
 <!-- Alerts with Additional Content -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Alerts with Additional Content</Heading>
-	{/snippet}
-
+<Card title="Alerts with Additional Content">
 	<Grid>
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Alert variant="success" heading="Success!">
 				<Paragraph>
 					Aww yeah, you successfully read this important alert message. This example text is
@@ -121,7 +105,7 @@
 			</Alert>
 		</Column>
 
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Alert variant="info" heading="System Update">
 				<Paragraph>A new version of the application is available. This update includes:</Paragraph>
 				<ul class="pa-alert__list">
@@ -139,11 +123,7 @@
 </Card>
 
 <!-- Outline Alerts -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Outline Alerts</Heading>
-	{/snippet}
-
+<Card title="Outline Alerts">
 	<Alert outline variant="primary">
 		<strong>Primary Outline!</strong> This is a primary outline alert.
 	</Alert>
@@ -166,23 +146,19 @@
 </Card>
 
 <!-- Compact Alerts Grid -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Compact Alerts in Grid</Heading>
-	{/snippet}
-
+<Card title="Compact Alerts in Grid">
 	<Grid>
-		<Column size="1" md="1-3">
+		<Column size="100" md="1-3">
 			<Alert sm variant="success">
 				<span class="pa-alert__icon">✓</span> Saved
 			</Alert>
 		</Column>
-		<Column size="1" md="1-3">
+		<Column size="100" md="1-3">
 			<Alert sm variant="warning">
 				<span class="pa-alert__icon">!</span> Pending
 			</Alert>
 		</Column>
-		<Column size="1" md="1-3">
+		<Column size="100" md="1-3">
 			<Alert sm variant="danger">
 				<span class="pa-alert__icon">×</span> Failed
 			</Alert>

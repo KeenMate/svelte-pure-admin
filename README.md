@@ -1,19 +1,19 @@
-# @pure-admin/svelte
+# @keenmate/svelte-pure-admin
 
 Svelte 5 component library for Pure Admin framework.
 
 ## Installation
 
 ```bash
-npm install @pure-admin/svelte @pure-admin/core
+npm install @keenmate/svelte-pure-admin @keenmate/pure-admin-core
 ```
 
 ## Quick Start
 
 ```svelte
 <script>
-  import { Button, Alert, Card } from '@pure-admin/svelte';
-  import '@pure-admin/core/css'; // Import Pure Admin CSS
+  import { Button, Alert, Card } from '@keenmate/svelte-pure-admin';
+  import '@keenmate/pure-admin-core/css'; // Import Pure Admin CSS
 </script>
 
 <Button variant="primary">Click me!</Button>
@@ -115,14 +115,14 @@ Always import the Pure Admin CSS in your root layout or app:
 
 ```svelte
 <script>
-  import '@pure-admin/core/css';
+  import '@keenmate/pure-admin-core/css';
 </script>
 ```
 
 Or import in your global CSS:
 
 ```css
-@import '@pure-admin/core/css';
+@import '@keenmate/pure-admin-core/css';
 ```
 
 ## Development
@@ -162,6 +162,6 @@ MIT
 
 ## Links
 
-- [@pure-admin/core](https://github.com/pure-admin/core) - Core CSS framework
+- [@keenmate/pure-admin-core](https://github.com/pure-admin/core) - Core CSS framework
 - [Pure Admin](https://github.com/pure-admin) - Framework homepage
 - [Svelte 5 Documentation](https://svelte.dev/docs/svelte/overview)

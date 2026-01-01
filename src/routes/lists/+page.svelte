@@ -8,17 +8,13 @@
 	<title>Lists - Pure Admin Svelte</title>
 </svelte:head>
 
-<Heading level={1}>Lists</Heading>
 <Paragraph>Styled lists for content organization - from basic bullets to icon lists and definition lists.</Paragraph>
 
 <Grid>
 	<!-- Left Column -->
-	<Column size="1" lg="1-2">
+	<Column size="100" lg="1-2">
 		<!-- Basic Unordered Lists -->
-		<Card class="mb-8">
-			{#snippet header()}
-				<Heading level={3}>Basic Unordered Lists</Heading>
-			{/snippet}
+		<Card title="Basic Unordered Lists" class="mb-8">
 
 			<Heading level={4}>Default Spacing</Heading>
 			<BasicList>
@@ -29,7 +25,7 @@
 				<li>Multi-language support</li>
 			</BasicList>
 
-			<Heading level={4} style="margin-top: 2rem;">Compact Spacing</Heading>
+			<Heading level={4} class="mt-8">Compact Spacing</Heading>
 			<BasicList compact>
 				<li>Reduced vertical spacing</li>
 				<li>Perfect for dense content</li>
@@ -37,7 +33,7 @@
 				<li>Easy to scan quickly</li>
 			</BasicList>
 
-			<Heading level={4} style="margin-top: 2rem;">Spacious Layout</Heading>
+			<Heading level={4} class="mt-8">Spacious Layout</Heading>
 			<BasicList spacious>
 				<li>More breathing room between items</li>
 				<li>Better for longer content blocks</li>
@@ -46,10 +42,7 @@
 		</Card>
 
 		<!-- Ordered Lists -->
-		<Card class="mb-8">
-			{#snippet header()}
-				<Heading level={3}>Ordered Lists</Heading>
-			{/snippet}
+		<Card title="Ordered Lists" class="mb-8">
 
 			<Heading level={4}>Numeric (Default)</Heading>
 			<OrderedList>
@@ -60,7 +53,7 @@
 				<li>Launch and monitor</li>
 			</OrderedList>
 
-			<Heading level={4} style="margin-top: 2rem;">Roman Numerals</Heading>
+			<Heading level={4} class="mt-8">Roman Numerals</Heading>
 			<OrderedList style="roman">
 				<li>Executive summary</li>
 				<li>Market analysis</li>
@@ -68,7 +61,7 @@
 				<li>Implementation roadmap</li>
 			</OrderedList>
 
-			<Heading level={4} style="margin-top: 2rem;">Alphabetical</Heading>
+			<Heading level={4} class="mt-8">Alphabetical</Heading>
 			<OrderedList style="alpha">
 				<li>Appendix A: Technical specifications</li>
 				<li>Appendix B: User testimonials</li>
@@ -77,10 +70,7 @@
 		</Card>
 
 		<!-- Definition Lists -->
-		<Card class="mb-8">
-			{#snippet header()}
-				<Heading level={3}>Definition Lists</Heading>
-			{/snippet}
+		<Card title="Definition Lists" class="mb-8">
 
 			<Heading level={4}>Standard Layout</Heading>
 			<DefinitionList>
@@ -94,7 +84,7 @@
 				<dd>Industry-standard protocol for authorization allowing third-party access</dd>
 			</DefinitionList>
 
-			<Heading level={4} style="margin-top: 2rem;">Inline Layout</Heading>
+			<Heading level={4} class="mt-8">Inline Layout</Heading>
 			<DefinitionList inline>
 				<dt>Status</dt>
 				<dd>Active</dd>
@@ -109,12 +99,9 @@
 	</Column>
 
 	<!-- Right Column -->
-	<Column size="1" lg="1-2">
+	<Column size="100" lg="1-2">
 		<!-- Icon Lists -->
-		<Card class="mb-8">
-			{#snippet header()}
-				<Heading level={3}>Icon Lists</Heading>
-			{/snippet}
+		<Card title="Icon Lists" class="mb-8">
 
 			<Heading level={4}>Success (Checkmarks)</Heading>
 			<BasicList icon>
@@ -124,14 +111,14 @@
 				<li>24/7 customer support</li>
 			</BasicList>
 
-			<Heading level={4} style="margin-top: 2rem;">Danger (X marks)</Heading>
+			<Heading level={4} class="mt-8">Danger (X marks)</Heading>
 			<BasicList icon variant="danger">
 				<li>Deprecated API endpoint</li>
 				<li>Unsupported browser version</li>
 				<li>Missing required permissions</li>
 			</BasicList>
 
-			<Heading level={4} style="margin-top: 2rem;">Info (Arrows)</Heading>
+			<Heading level={4} class="mt-8">Info (Arrows)</Heading>
 			<BasicList icon variant="info">
 				<li>Navigate to Settings panel</li>
 				<li>Select Integration options</li>
@@ -139,7 +126,7 @@
 				<li>Complete authentication</li>
 			</BasicList>
 
-			<Heading level={4} style="margin-top: 2rem;">Warning (Exclamation)</Heading>
+			<Heading level={4} class="mt-8">Warning (Exclamation)</Heading>
 			<BasicList icon variant="warning">
 				<li>Rate limit approaching threshold</li>
 				<li>Certificate expires in 30 days</li>
@@ -148,10 +135,7 @@
 		</Card>
 
 		<!-- Bordered & Striped Lists -->
-		<Card class="mb-8">
-			{#snippet header()}
-				<Heading level={3}>Bordered & Striped Lists</Heading>
-			{/snippet}
+		<Card title="Bordered & Striped Lists" class="mb-8">
 
 			<Heading level={4}>Bordered List</Heading>
 			<BasicList bordered>
@@ -162,7 +146,7 @@
 				<li>Reporting Engine</li>
 			</BasicList>
 
-			<Heading level={4} style="margin-top: 2rem;">Striped List</Heading>
+			<Heading level={4} class="mt-8">Striped List</Heading>
 			<BasicList striped>
 				<li>Monthly subscription: $99/month</li>
 				<li>Annual subscription: $990/year (2 months free)</li>
@@ -172,10 +156,7 @@
 		</Card>
 
 		<!-- Inline & Unstyled Lists -->
-		<Card class="mb-8">
-			{#snippet header()}
-				<Heading level={3}>Inline & Unstyled Lists</Heading>
-			{/snippet}
+		<Card title="Inline & Unstyled Lists" class="mb-8">
 
 			<Heading level={4}>Inline List</Heading>
 			<BasicList inline>
@@ -185,7 +166,7 @@
 				<li><a href="#contact">Contact</a></li>
 			</BasicList>
 
-			<Heading level={4} style="margin-top: 2rem;">Unstyled List</Heading>
+			<Heading level={4} class="mt-8">Unstyled List</Heading>
 			<BasicList unstyled>
 				<li>No bullets or numbers</li>
 				<li>Just plain text items</li>
@@ -195,31 +176,23 @@
 		</Card>
 
 		<!-- Complex Lists -->
-		<Card class="mb-8">
-			{#snippet header()}
-				<Heading level={3}>Complex Lists with Avatars</Heading>
-			{/snippet}
+		<Card title="Complex Lists with Avatars" class="mb-8" noPadding>
 
-			<div class="pa-card__body pa-card__body--no-padding">
-				<List>
-					<ListItem avatar="👤" title="Sarah Johnson" subtitle="Product Manager" meta="Last active: 2 hours ago" />
-					<ListItem avatar="👤" title="Michael Chen" subtitle="Lead Developer" meta="Last active: 15 minutes ago" />
-					<ListItem avatar="👤" title="Emily Rodriguez" subtitle="UX Designer" meta="Last active: 1 day ago" />
-				</List>
-			</div>
+			<List>
+				<ListItem avatar="👤" title="Sarah Johnson" subtitle="Product Manager" meta="Last active: 2 hours ago" />
+				<ListItem avatar="👤" title="Michael Chen" subtitle="Lead Developer" meta="Last active: 15 minutes ago" />
+				<ListItem avatar="👤" title="Emily Rodriguez" subtitle="UX Designer" meta="Last active: 1 day ago" />
+			</List>
 		</Card>
 	</Column>
 </Grid>
 
 <!-- Implementation Notes -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Implementation Guide</Heading>
-	{/snippet}
+<Card title="Implementation Guide">
 
 	<Heading level={4}>Available Classes</Heading>
 
-	<Heading level={5} style="margin-top: 1rem;">Unordered Lists (ul)</Heading>
+	<Heading level={5} class="mt-4">Unordered Lists (ul)</Heading>
 	<BasicList compact>
 		<li><code>pa-list-basic</code> - Base unordered list</li>
 		<li><code>pa-list-basic--compact</code> - Reduced spacing</li>
@@ -234,20 +207,20 @@
 		<li><code>pa-list-basic--icon pa-list-basic--warning</code> - Exclamation marks</li>
 	</BasicList>
 
-	<Heading level={5} style="margin-top: 1rem;">Ordered Lists (ol)</Heading>
+	<Heading level={5} class="mt-4">Ordered Lists (ol)</Heading>
 	<BasicList compact>
 		<li><code>pa-list-ordered</code> - Base ordered list (numeric)</li>
 		<li><code>pa-list-ordered--roman</code> - Roman numerals (I, II, III)</li>
 		<li><code>pa-list-ordered--alpha</code> - Lowercase letters (a, b, c)</li>
 	</BasicList>
 
-	<Heading level={5} style="margin-top: 1rem;">Definition Lists (dl)</Heading>
+	<Heading level={5} class="mt-4">Definition Lists (dl)</Heading>
 	<BasicList compact>
 		<li><code>pa-list-definition</code> - Standard definition list</li>
 		<li><code>pa-list-definition--inline</code> - Horizontal key-value pairs</li>
 	</BasicList>
 
-	<Heading level={5} style="margin-top: 1rem;">Complex Lists</Heading>
+	<Heading level={5} class="mt-4">Complex Lists</Heading>
 	<BasicList compact>
 		<li><code>pa-list</code> - Container for complex list items</li>
 		<li><code>pa-list__item</code> - Individual list item with avatar/content</li>

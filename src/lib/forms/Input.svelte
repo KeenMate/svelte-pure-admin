@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Input Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/forms.html
+	 * Based on @keenmate/pure-admin-core snippets/forms.html
 	 */
 
 	type InputSize = 'xs' | 'sm' | 'lg' | 'xl';
@@ -37,6 +37,8 @@
 		onChange?: (event: Event & { currentTarget: HTMLInputElement }) => void;
 		/** Blur handler */
 		onBlur?: (event: FocusEvent & { currentTarget: HTMLInputElement }) => void;
+		/** Keydown handler */
+		onkeydown?: (event: KeyboardEvent & { currentTarget: HTMLInputElement }) => void;
 	}
 
 	let {
@@ -53,7 +55,8 @@
 		class: className = '',
 		onInput,
 		onChange,
-		onBlur
+		onBlur,
+		onkeydown
 	}: Props = $props();
 
 	// Build class string
@@ -80,4 +83,5 @@
 	oninput={onInput}
 	onchange={onChange}
 	onblur={onBlur}
+	{onkeydown}
 />

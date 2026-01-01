@@ -13,56 +13,49 @@
 </svelte:head>
 
 <div class="pa-layout-container">
-	<Heading level={1} class="mb-4">Tooltips & Popovers</Heading>
 	<Paragraph class="mb-6">Hover tooltips for quick info, click popovers for rich interactive content.</Paragraph>
 
 	<Grid>
 		<!-- Left Column -->
-		<Column size="1" lg="1-2">
+		<Column size="100" lg="1-2">
 			<!-- Tooltip Positions & Colors -->
-			<Card class="mb-4">
-				{#snippet header()}
-					<Heading level={3}>Tooltip Positions & Colors</Heading>
-				{/snippet}
+			<Card title="Tooltip Positions & Colors" class="mb-4">
 				<Grid>
-					<Column size="1-2" md="1-4" class="text-center mb-3" style="padding: 1rem;">
+					<Column size="1-2" md="1-4" class="text-center mb-3 p-4">
 						<Tooltip text="Tooltip on top">Top</Tooltip>
 					</Column>
-					<Column size="1-2" md="1-4" class="text-center mb-3" style="padding: 1rem;">
+					<Column size="1-2" md="1-4" class="text-center mb-3 p-4">
 						<Tooltip text="Tooltip on right" position="right">Right</Tooltip>
 					</Column>
-					<Column size="1-2" md="1-4" class="text-center mb-3" style="padding: 1rem;">
+					<Column size="1-2" md="1-4" class="text-center mb-3 p-4">
 						<Tooltip text="Tooltip on bottom" position="bottom">Bottom</Tooltip>
 					</Column>
-					<Column size="1-2" md="1-4" class="text-center mb-3" style="padding: 1rem;">
+					<Column size="1-2" md="1-4" class="text-center mb-3 p-4">
 						<Tooltip text="Tooltip on left" position="left">Left</Tooltip>
 					</Column>
 				</Grid>
 				<hr class="my-3" />
 				<Grid>
-					<Column size="1-3" md="1-5" class="text-center mb-3" style="padding: 1rem;">
+					<Column size="1-3" md="1-5" class="text-center mb-3 p-4">
 						<Tooltip text="Default dark">Default</Tooltip>
 					</Column>
-					<Column size="1-3" md="1-5" class="text-center mb-3" style="padding: 1rem;">
+					<Column size="1-3" md="1-5" class="text-center mb-3 p-4">
 						<Tooltip text="Primary blue" variant="primary">Primary</Tooltip>
 					</Column>
-					<Column size="1-3" md="1-5" class="text-center mb-3" style="padding: 1rem;">
+					<Column size="1-3" md="1-5" class="text-center mb-3 p-4">
 						<Tooltip text="Success green" variant="success">Success</Tooltip>
 					</Column>
-					<Column size="1-2" md="1-5" class="text-center mb-3" style="padding: 1rem;">
+					<Column size="1-2" md="1-5" class="text-center mb-3 p-4">
 						<Tooltip text="Warning yellow" variant="warning">Warning</Tooltip>
 					</Column>
-					<Column size="1-2" md="1-5" class="text-center mb-3" style="padding: 1rem;">
+					<Column size="1-2" md="1-5" class="text-center mb-3 p-4">
 						<Tooltip text="Danger red" variant="danger">Danger</Tooltip>
 					</Column>
 				</Grid>
 			</Card>
 
 			<!-- Buttons with Tooltips -->
-			<Card class="mb-4">
-				{#snippet header()}
-					<Heading level={3}>Buttons & Icon-Only</Heading>
-				{/snippet}
+			<Card title="Buttons & Icon-Only" class="mb-4">
 				<Paragraph class="mb-3 text-sm">Regular buttons:</Paragraph>
 				<div class="text-center mb-4">
 					<ButtonGroup>
@@ -121,10 +114,7 @@
 			</Card>
 
 			<!-- Multiline Tooltips -->
-			<Card class="mb-4">
-				{#snippet header()}
-					<Heading level={3}>Multiline Tooltips</Heading>
-				{/snippet}
+			<Card title="Multiline Tooltips" class="mb-4">
 				<Paragraph class="mb-3 text-sm">
 					Use <code>multiline</code> prop for longer text (20rem width, left-aligned):
 				</Paragraph>
@@ -153,20 +143,17 @@
 			</Card>
 
 			<!-- Inline Text Tooltips -->
-			<Card class="mb-4">
-				{#snippet header()}
-					<Heading level={3}>Inline Text Tooltips</Heading>
-				{/snippet}
+			<Card title="Inline Text Tooltips" class="mb-4">
 				<Paragraph>
 					Tooltips can explain <Tooltip
 						text="Application Programming Interface"
 						variant="primary"
-						class="border-bottom: 1px dotted;">API</Tooltip
+						class="abbr-dotted">API</Tooltip
 					> terms,
-					<Tooltip text="Cascading Style Sheets" variant="success" class="border-bottom: 1px dotted;"
+					<Tooltip text="Cascading Style Sheets" variant="success" class="abbr-dotted"
 						>CSS</Tooltip
 					>, or
-					<Tooltip text="HyperText Markup Language" variant="danger" class="border-bottom: 1px dotted;"
+					<Tooltip text="HyperText Markup Language" variant="danger" class="abbr-dotted"
 						>HTML</Tooltip
 					> abbreviations.
 				</Paragraph>
@@ -174,17 +161,14 @@
 		</Column>
 
 		<!-- Right Column -->
-		<Column size="1" lg="1-2">
+		<Column size="100" lg="1-2">
 			<!-- Popovers -->
-			<Card class="mb-4">
-				{#snippet header()}
-					<Heading level={3}>Popovers - Interactive Help</Heading>
-				{/snippet}
+			<Card title="Popovers - Interactive Help" class="mb-4">
 				<Paragraph class="mb-3 text-sm">
 					Rich content with links, formatting. Click <strong>?</strong> to open:
 				</Paragraph>
 				<Grid>
-					<Column size="1-2" md="1-4" class="mb-3 text-center" style="padding: 0.5rem;">
+					<Column size="1-2" md="1-4" class="mb-3 text-center p-2">
 						<label class="text-sm">
 							Basic
 							<Popover title="Help" placement="bottom">
@@ -196,7 +180,7 @@
 							</Popover>
 						</label>
 					</Column>
-					<Column size="1-2" md="1-4" class="mb-3 text-center" style="padding: 0.5rem;">
+					<Column size="1-2" md="1-4" class="mb-3 text-center p-2">
 						<label class="text-sm">
 							With List
 							<Popover title="Options" placement="bottom">
@@ -209,7 +193,7 @@
 							</Popover>
 						</label>
 					</Column>
-					<Column size="1-2" md="1-4" class="mb-3 text-center" style="padding: 0.5rem;">
+					<Column size="1-2" md="1-4" class="mb-3 text-center p-2">
 						<label class="text-sm">
 							Large
 							<Popover title="Documentation" placement="bottom" size="lg">
@@ -220,7 +204,7 @@
 							</Popover>
 						</label>
 					</Column>
-					<Column size="1-2" md="1-4" class="mb-3 text-center" style="padding: 0.5rem;">
+					<Column size="1-2" md="1-4" class="mb-3 text-center p-2">
 						<label class="text-sm">
 							Small
 							<Popover title="Tip" placement="bottom" size="sm">
@@ -232,30 +216,27 @@
 			</Card>
 
 			<!-- Popover Positions -->
-			<Card class="mb-4">
-				{#snippet header()}
-					<Heading level={3}>Popover Positions</Heading>
-				{/snippet}
+			<Card title="Popover Positions" class="mb-4">
 				<Grid>
-					<Column size="1-2" md="1-4" class="text-center mb-3" style="padding: 1rem;">
+					<Column size="1-2" md="1-4" class="text-center mb-3 p-4">
 						<span class="text-sm">Top </span>
 					<Popover title="Top">
 						<Paragraph>Appears above trigger.</Paragraph>
 					</Popover>
 					</Column>
-					<Column size="1-2" md="1-4" class="text-center mb-3" style="padding: 1rem;">
+					<Column size="1-2" md="1-4" class="text-center mb-3 p-4">
 						<span class="text-sm">Right </span>
 					<Popover title="Right" placement="right">
 						<Paragraph>Appears to the right.</Paragraph>
 					</Popover>
 					</Column>
-					<Column size="1-2" md="1-4" class="text-center mb-3" style="padding: 1rem;">
+					<Column size="1-2" md="1-4" class="text-center mb-3 p-4">
 						<span class="text-sm">Bottom </span>
 					<Popover title="Bottom" placement="bottom">
 						<Paragraph>Appears below trigger.</Paragraph>
 					</Popover>
 					</Column>
-					<Column size="1-2" md="1-4" class="text-center mb-3" style="padding: 1rem;">
+					<Column size="1-2" md="1-4" class="text-center mb-3 p-4">
 						<span class="text-sm">Left </span>
 					<Popover title="Left" placement="left">
 						<Paragraph>Appears to the left.</Paragraph>
@@ -267,12 +248,9 @@
 	</Grid>
 
 	<!-- Usage Examples -->
-	<Card>
-		{#snippet header()}
-			<Heading level={3}>Code Examples</Heading>
-		{/snippet}
+	<Card title="Code Examples">
 		<Grid>
-				<Column size="1" md="1-2">
+				<Column size="100" md="1-2">
 					<Heading level={4} class="mb-2 text-sm">Tooltips</Heading>
 					<pre class="mb-3 text-sm"><code
 							>&lt;!-- Basic --&gt;
@@ -288,7 +266,7 @@
 &lt;Tooltip text="..." multiline&gt;...&lt;/Tooltip&gt;</code
 						></pre>
 				</Column>
-				<Column size="1" md="1-2">
+				<Column size="100" md="1-2">
 					<Heading level={4} class="mb-2 text-sm">Popovers</Heading>
 					<pre class="mb-3 text-sm"><code
 							>&lt;!-- Basic --&gt;
@@ -309,3 +287,10 @@
 		</Grid>
 	</Card>
 </div>
+
+<style>
+	/* Scoped style for abbreviation tooltips - matches visual's inline style */
+	:global(.abbr-dotted) {
+		border-bottom: 1px dotted;
+	}
+</style>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin TabsVerticalLayout Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/tabs.html
+	 * Based on @keenmate/pure-admin-core snippets/tabs.html
 	 * Flexbox wrapper for vertical tabs + content with optional border
 	 */
 

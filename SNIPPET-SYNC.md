@@ -1,6 +1,6 @@
 # Snippet Sync System
 
-This document explains how the snippet synchronization system works between `@pure-admin/core` and `@pure-admin/svelte`.
+This document explains how the snippet synchronization system works between `@keenmate/pure-admin-core` and `@keenmate/svelte-pure-admin`.
 
 ## Overview
 

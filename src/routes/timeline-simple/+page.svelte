@@ -103,10 +103,7 @@
 <Paragraph>Vertical timeline with dots and connecting lines - perfect for activity logs and event histories.</Paragraph>
 
 <!-- Color-coded Events -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Color-coded Events</Heading>
-	{/snippet}
+<Card title="Color-coded Events">
 
 	<Timeline variant="simple">
 		<TimelineItem time="09:00 AM" variant="primary">
@@ -137,10 +134,7 @@
 </Card>
 
 <!-- Filled Bullets -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Filled Bullets</Heading>
-	{/snippet}
+<Card title="Filled Bullets">
 
 	<Timeline variant="simple">
 		<TimelineItem time="Jan 2025" variant="primary" filled>
@@ -162,9 +156,8 @@
 </Card>
 
 <!-- Data-Driven Timeline (KeenMate Pattern) -->
-<Card>
+<Card title="Data-Driven Timeline (KeenMate Pattern)">
 	{#snippet header()}
-		<Heading level={3}>Data-Driven Timeline (KeenMate Pattern)</Heading>
 		<Paragraph>
 			Timeline populated from database/API data with member mappings and callbacks
 		</Paragraph>
@@ -195,9 +188,8 @@
 </Card>
 
 <!-- Load More Example -->
-<Card>
+<Card title="Timeline with Load More (Pagination)">
 	{#snippet header()}
-		<Heading level={3}>Timeline with Load More (Pagination)</Heading>
 		<Paragraph>
 			Data-driven timeline with pagination - showing {visibleActivities.length} of {allActivities.length} activities
 		</Paragraph>
@@ -228,10 +220,7 @@
 </Card>
 
 <!-- Virtual Scroll Example -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Virtual Scroll (Large Dataset)</Heading>
-	{/snippet}
+<Card title="Virtual Scroll (Large Dataset)">
 
 	<Paragraph class="mb-4">For very large timelines with hundreds or thousands of events, virtual scrolling can improve performance.</Paragraph>
 
@@ -257,10 +246,7 @@
 </Card>
 
 <!-- Usage Examples -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Usage Examples</Heading>
-	{/snippet}
+<Card title="Usage Examples">
 
 	<Heading level={4}>Basic Timeline</Heading>
 	<pre class="mb-4"><code>&lt;Timeline variant="simple"&gt;

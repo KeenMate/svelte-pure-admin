@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Tabs Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/tabs.html
+	 * Based on @keenmate/pure-admin-core snippets/tabs.html
 	 * Main container for standalone tabs navigation
 	 */
 

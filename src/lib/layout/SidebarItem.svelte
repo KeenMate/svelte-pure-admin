@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Sidebar Item Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/layout.html
+	 * Based on @keenmate/pure-admin-core snippets/layout.html
 	 */
 
 	import { onMount } from 'svelte';
@@ -23,6 +23,8 @@
 		onClick?: (event: MouseEvent) => void;
 		/** Additional CSS classes */
 		class?: string;
+		/** Keep icon space even without icon (for alignment) */
+		shouldKeepIconSpace?: boolean;
 	}
 
 	let {
@@ -33,7 +35,8 @@
 		hasSubmenu = false,
 		submenu,
 		onClick,
-		class: className = ''
+		class: className = '',
+		shouldKeepIconSpace = true
 	}: Props = $props();
 
 	let isOpen = $state(false);
@@ -90,6 +93,8 @@
 				<span class="pa-sidebar__icon">
 					{@render icon()}
 				</span>
+			{:else if shouldKeepIconSpace}
+				<span class="pa-sidebar__icon"></span>
 			{/if}
 			<span class="pa-sidebar__label">{label}</span>
 			<span class="pa-sidebar__chevron">›</span>
@@ -106,6 +111,8 @@
 				<span class="pa-sidebar__icon">
 					{@render icon()}
 				</span>
+			{:else if shouldKeepIconSpace}
+				<span class="pa-sidebar__icon"></span>
 			{/if}
 			<span class="pa-sidebar__label">{label}</span>
 		</a>
@@ -115,6 +122,8 @@
 				<span class="pa-sidebar__icon">
 					{@render icon()}
 				</span>
+			{:else if shouldKeepIconSpace}
+				<span class="pa-sidebar__icon"></span>
 			{/if}
 			<span class="pa-sidebar__label">{label}</span>
 		</button>

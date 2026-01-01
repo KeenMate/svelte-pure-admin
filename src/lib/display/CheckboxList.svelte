@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin CheckboxList Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/checkbox-lists.html
+	 * Based on @keenmate/pure-admin-core snippets/checkbox-lists.html
 	 * Container for checkbox list items
 	 */
 

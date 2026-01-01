@@ -13,14 +13,18 @@
 		SettingsPanel,
 		ProfilePanel,
 		NotificationsPanel,
+		DialogContainer,
 		Heading,
 		Paragraph,
 		NavItem,
-		NavDropdown
+		NavDropdown,
+		NavbarSearch,
+		CommandPalette
 	} from '$lib';
-	import type { PureAdminConfig } from '$lib';
+	import type { PureAdminConfig, Command, SearchContext, SearchResult } from '$lib';
 	import { onMount } from 'svelte';
-	import '@pure-admin/core/css';
+	import { goto } from '$app/navigation';
+	import '@keenmate/pure-admin-theme-audi';
 	import '../app.css';
 
 	let { data, children } = $props();
@@ -28,6 +32,7 @@
 	let sidebarHidden = $state(false);
 	let showProfilePanel = $state(false);
 	let showNotifications = $state(false);
+	let showCommandPalette = $state(false);
 
 	function toggleSidebar() {
 		sidebarHidden = !sidebarHidden;
@@ -73,55 +78,19 @@
 		}
 	}
 
-	// Apply server-side settings to DOM on mount
+	// Note: Critical classes (container width, sidebar mode, theme, font size/family, compact mode)
+	// are applied in app.html blocking script to prevent FOUC.
+	// This onMount only handles click outside and cleanup.
 	onMount(() => {
 		// Add click outside handler
 		document.addEventListener('click', handleClickOutside);
 
-		// Apply container width class
-		if (data.containerWidth && data.containerWidth !== 'fluid') {
-			document.body.classList.add(`pa-container-${data.containerWidth}`);
+		// Apply sidebar icon-collapse class to sidebar element (can't be done in blocking script)
+		const sidebarBehavior = localStorage.getItem('sidebar-behavior') || 'hide';
+		const sidebar = document.querySelector('.pa-layout__sidebar');
+		if (sidebar && sidebarBehavior === 'icon-collapse') {
+			sidebar.classList.add('pa-layout__sidebar--icon-collapse');
 		}
-
-		// Apply sidebar mode class
-		if (data.sidebarMode === 'sticky') {
-			document.body.classList.add('pa-layout--sticky');
-		}
-
-		// Apply localStorage-based settings after DOM is ready
-		requestAnimationFrame(() => {
-			const fontSize = localStorage.getItem('font-size') || 'default';
-			const fontFamily = localStorage.getItem('font-family') || 'default';
-			const sidebarHidden = localStorage.getItem('sidebar-hidden') === 'true';
-			const sidebarBehavior = localStorage.getItem('sidebar-behavior') || 'hide';
-			const compactMode = localStorage.getItem('compact-mode') === 'true';
-
-			// Apply font size
-			if (fontSize !== 'default') {
-				document.documentElement.classList.add(`font-size-${fontSize}`);
-			}
-
-			// Apply font family
-			if (fontFamily !== 'default') {
-				document.body.classList.add(`font-family-${fontFamily}`);
-			}
-
-			// Apply sidebar hidden state
-			if (sidebarHidden) {
-				document.body.classList.add('sidebar-hidden');
-			}
-
-			// Apply sidebar behavior
-			const sidebar = document.querySelector('.pa-layout__sidebar');
-			if (sidebar && sidebarBehavior === 'icon-collapse') {
-				sidebar.classList.add('pa-layout__sidebar--icon-collapse');
-			}
-
-			// Apply compact mode
-			if (compactMode) {
-				document.body.classList.add('compact-mode');
-			}
-		});
 
 		// Cleanup function to remove classes when unmounting
 		return () => {
@@ -135,13 +104,186 @@
 			// Remove localStorage-based classes
 			document.documentElement.classList.remove('font-size-small', 'font-size-large', 'font-size-xlarge');
 			document.body.classList.remove('font-family-serif', 'font-family-mono', 'font-family-delivery', 'font-family-cuprum', 'font-family-fira-sans-condensed', 'font-family-manrope', 'font-family-martel', 'font-family-maven-pro', 'font-family-monda', 'font-family-play', 'font-family-signika', 'font-family-yanone-kaffeesatz');
-			document.body.classList.remove('sidebar-hidden', 'compact-mode');
+			document.body.classList.remove('sidebar-hidden', 'compact-mode', 'sidebar-icon-collapse');
 			const sidebar = document.querySelector('.pa-layout__sidebar');
 			if (sidebar) {
 				sidebar.classList.remove('pa-layout__sidebar--icon-collapse');
 			}
 		};
 	});
+
+	// Navigation pages for search
+	const pages = [
+		{ id: 'home', title: 'Dashboard', path: '/', icon: '📊' },
+		{ id: 'components', title: 'Components', path: '/components', icon: '🧩' },
+		{ id: 'buttons', title: 'Buttons', path: '/buttons', icon: '🔘' },
+		{ id: 'cards', title: 'Cards', path: '/cards', icon: '🃏' },
+		{ id: 'tabs', title: 'Tabs', path: '/tabs', icon: '📑' },
+		{ id: 'badges', title: 'Badges', path: '/badges', icon: '🏷️' },
+		{ id: 'lists', title: 'Lists', path: '/lists', icon: '📝' },
+		{ id: 'checkbox-lists', title: 'Checkbox Lists', path: '/checkbox-lists', icon: '☑️' },
+		{ id: 'code', title: 'Code', path: '/code', icon: '💻' },
+		{ id: 'alerts', title: 'Alerts', path: '/alerts', icon: '⚠️' },
+		{ id: 'loaders', title: 'Loaders', path: '/loaders', icon: '⏳' },
+		{ id: 'tooltips', title: 'Tooltips', path: '/tooltips', icon: '💬' },
+		{ id: 'modals', title: 'Modals', path: '/modals', icon: '🪟' },
+		{ id: 'modal-dialogs', title: 'Modal Dialogs', path: '/modal-dialogs', icon: '💭' },
+		{ id: 'popconfirm', title: 'Popconfirm', path: '/popconfirm', icon: '❓' },
+		{ id: 'command-palette', title: 'Command Palette', path: '/command-palette', icon: '🎨' },
+		{ id: 'forms', title: 'Forms', path: '/forms', icon: '📋' },
+		{ id: 'tables', title: 'Tables', path: '/tables', icon: '📊' },
+		{ id: 'tables-sizing', title: 'Table Sizing', path: '/tables-sizing', icon: '📏' },
+		{ id: 'timeline-simple', title: 'Timeline Simple', path: '/timeline-simple', icon: '⏱️' },
+		{ id: 'timeline-block', title: 'Timeline Block', path: '/timeline-block', icon: '📦' },
+		{ id: 'timeline-feed', title: 'Timeline Feed', path: '/timeline-feed', icon: '📰' }
+	];
+
+	// Commands for the command palette
+	const commands: Command[] = [
+		{
+			shortcut: '/go',
+			aliases: ['/goto', '/nav', '/navigate'],
+			name: 'Go to Page',
+			description: 'Navigate to a page',
+			icon: '🚀',
+			steps: [
+				{
+					id: 'page',
+					placeholder: 'Select a page...',
+					getOptions: (query) => {
+						const filtered = pages.filter(
+							(p) =>
+								p.title.toLowerCase().includes(query.toLowerCase()) ||
+								p.path.toLowerCase().includes(query.toLowerCase())
+						);
+						return filtered.map((p) => ({
+							id: p.id,
+							label: p.title,
+							description: p.path,
+							icon: p.icon,
+							value: p
+						}));
+					}
+				}
+			],
+			getPreview: (selections) => {
+				const page = selections[0]?.option?.value;
+				return page ? `Navigate to ${page.title}` : '';
+			},
+			onComplete: (selections) => {
+				const page = selections[0]?.option?.value;
+				if (page) goto(page.path);
+			}
+		},
+		{
+			shortcut: '/theme',
+			aliases: ['/dark', '/light'],
+			name: 'Toggle Theme',
+			description: 'Switch between light and dark mode',
+			icon: '🌓',
+			steps: [],
+			onComplete: () => {
+				document.body.classList.toggle('pa-mode-light');
+			}
+		},
+		{
+			shortcut: '/sidebar',
+			name: 'Toggle Sidebar',
+			description: 'Show or hide the sidebar',
+			icon: '📐',
+			steps: [],
+			onComplete: () => {
+				toggleSidebar();
+			}
+		},
+		{
+			shortcut: '/settings',
+			name: 'Open Settings',
+			description: 'Open the settings panel',
+			icon: '⚙️',
+			steps: [],
+			onComplete: () => {
+				const settingsBtn = document.querySelector('.pa-settings-panel__toggle') as HTMLButtonElement;
+				settingsBtn?.click();
+			}
+		}
+	];
+
+	// Search contexts for the command palette
+	const contexts: SearchContext[] = [
+		{
+			shortcut: ':p',
+			aliases: [':pages', ':page'],
+			name: 'Pages',
+			description: 'Search pages',
+			icon: '📄',
+			onSearch: (query) => {
+				return pages
+					.filter(
+						(p) =>
+							p.title.toLowerCase().includes(query.toLowerCase()) ||
+							p.path.toLowerCase().includes(query.toLowerCase())
+					)
+					.map((p) => ({
+						id: p.id,
+						title: p.title,
+						subtitle: p.path,
+						icon: p.icon,
+						data: p
+					}));
+			},
+			onSelect: (result) => {
+				goto(result.data.path);
+			}
+		},
+		{
+			shortcut: ':c',
+			aliases: [':components', ':comp'],
+			name: 'Components',
+			description: 'Search component pages',
+			icon: '🧩',
+			onSearch: (query) => {
+				const componentPages = pages.filter((p) =>
+					p.path !== '/' &&
+					!p.path.includes('settings') &&
+					!p.path.includes('timeline')
+				);
+				return componentPages
+					.filter((p) => p.title.toLowerCase().includes(query.toLowerCase()))
+					.map((p) => ({
+						id: p.id,
+						title: p.title,
+						subtitle: p.path,
+						icon: p.icon,
+						data: p
+					}));
+			},
+			onSelect: (result) => {
+				goto(result.data.path);
+			}
+		}
+	];
+
+	// Global search function
+	function globalSearch(query: string): SearchResult[] {
+		return pages
+			.filter(
+				(p) =>
+					p.title.toLowerCase().includes(query.toLowerCase()) ||
+					p.path.toLowerCase().includes(query.toLowerCase())
+			)
+			.map((p) => ({
+				id: p.id,
+				title: p.title,
+				subtitle: p.path,
+				icon: p.icon,
+				data: p
+			}));
+	}
+
+	function handleGlobalSelect(result: SearchResult) {
+		goto(result.data.path);
+	}
 
 	// Custom configuration
 	const myConfig: Partial<PureAdminConfig> = {
@@ -164,8 +306,16 @@
 	<PopoverContainer />
 	<SettingsPanel />
 	<ProfilePanel bind:show={showProfilePanel} />
+	<DialogContainer />
+	<CommandPalette
+		bind:show={showCommandPalette}
+		{commands}
+		{contexts}
+		{globalSearch}
+		onGlobalSelect={handleGlobalSelect}
+	/>
 
-	<Navbar onBurgerClick={toggleSidebar} showBurger={true}>
+	<Navbar onBurgerClick={toggleSidebar} showBurger={true} burgerActive={sidebarHidden}>
 		{#snippet brand()}
 			<Heading level={1}>Pure Admin</Heading>
 		{/snippet}
@@ -199,6 +349,13 @@
 				{/snippet}
 			</NavItem>
 			<NavItem href="/forms">📝 Forms</NavItem>
+		{/snippet}
+
+		{#snippet search()}
+			<NavbarSearch
+				placeholder="Search..."
+				onClick={() => (showCommandPalette = true)}
+			/>
 		{/snippet}
 
 		{#snippet navRight()}
@@ -248,9 +405,15 @@
 						<SidebarItem href="/loaders" label="Loaders" />
 						<SidebarItem href="/tooltips" label="Tooltips" />
 						<SidebarItem href="/modals" label="Modals" />
+						<SidebarItem href="/modal-dialogs" label="Modal Dialogs" />
 						<SidebarItem href="/popconfirm" label="Popconfirm" />
 						<SidebarItem href="/command-palette" label="Command Palette" />
 					{/snippet}
+				</SidebarItem>
+
+				<!-- Forms -->
+				<SidebarItem href="/forms" label="Forms">
+					{#snippet icon()}📝{/snippet}
 				</SidebarItem>
 
 				<!-- Tables with submenu -->

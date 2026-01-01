@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Header/Navbar Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/layout.html
+	 * Based on @keenmate/pure-admin-core snippets/layout.html
 	 *
 	 * HYBRID NAMING CONVENTION:
 	 * - Outer wrapper: pa-navbar + pa-navbar__inner
@@ -17,6 +17,8 @@
 		brand?: import('svelte').Snippet;
 		/** Left navigation snippet */
 		navLeft?: import('svelte').Snippet;
+		/** Search bar snippet (placed before title) */
+		search?: import('svelte').Snippet;
 		/** Right navigation snippet */
 		navRight?: import('svelte').Snippet;
 		/** Page title snippet */
@@ -27,6 +29,8 @@
 		onBurgerClick?: () => void;
 		/** Show burger menu */
 		showBurger?: boolean;
+		/** Whether burger is in active (X) state - toggles animation */
+		burgerActive?: boolean;
 		/** Children content (fallback) */
 		children?: import('svelte').Snippet;
 	}
@@ -36,11 +40,13 @@
 		innerClass = '',
 		brand,
 		navLeft,
+		search,
 		navRight,
 		title,
 		profile,
 		onBurgerClick,
 		showBurger = false,
+		burgerActive = false,
 		children
 	}: Props = $props();
 
@@ -64,6 +70,7 @@
 		{#if showBurger && onBurgerClick}
 			<button
 				class="pa-header__burger burger-menu"
+				class:active={burgerActive}
 				onclick={onBurgerClick}
 				aria-label="Toggle sidebar"
 			>
@@ -85,6 +92,12 @@
 					{@render navLeft()}
 				</ul>
 			</nav>
+		{/if}
+
+		{#if search}
+			<div class="pa-header__search">
+				{@render search()}
+			</div>
 		{/if}
 
 		{#if title}

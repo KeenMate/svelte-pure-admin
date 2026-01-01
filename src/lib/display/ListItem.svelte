@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin ListItem Component (Svelte 5)
-	 * Based on @pure-admin/core scss/core-components/_lists.scss
+	 * Based on @keenmate/pure-admin-core scss/core-components/_lists.scss
 	 */
 
 	interface Props {

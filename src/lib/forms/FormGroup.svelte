@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin FormGroup Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/forms.html
+	 * Based on @keenmate/pure-admin-core snippets/forms.html
 	 */
 
 	interface Props {

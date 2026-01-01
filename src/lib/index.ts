@@ -28,22 +28,27 @@ export { default as Input } from './forms/Input.svelte';
 export { default as Textarea } from './forms/Textarea.svelte';
 export { default as Select } from './forms/Select.svelte';
 export { default as Checkbox } from './forms/Checkbox.svelte';
+export { default as CheckboxBox } from './forms/CheckboxBox.svelte';
+export { default as CheckboxGroup } from './forms/CheckboxGroup.svelte';
 export { default as Radio } from './forms/Radio.svelte';
+export { default as RadioGroup } from './forms/RadioGroup.svelte';
 export { default as InputGroup } from './forms/InputGroup.svelte';
 export { default as InputGroupPrepend } from './forms/InputGroupPrepend.svelte';
 export { default as InputGroupAppend } from './forms/InputGroupAppend.svelte';
+export { default as FormHelp } from './forms/FormHelp.svelte';
 export { default as SmallText } from './forms/SmallText.svelte';
 
 // Button Components
 export { default as Button } from './buttons/Button.svelte';
 export { default as ButtonGroup } from './buttons/ButtonGroup.svelte';
 
-// Feedback Components (Alerts, Modals, Toasts, Spinners, Tooltips, Popovers, Popconfirm)
+// Feedback Components (Alerts, Modals, Toasts, Spinners, Loaders, Tooltips, Popovers, Popconfirm)
 export { default as Alert } from './feedback/Alert.svelte';
 export { default as Modal } from './feedback/Modal.svelte';
 export { default as Toast } from './feedback/Toast.svelte';
 export { default as ToastContainer } from './feedback/ToastContainer.svelte';
 export { default as Spinner } from './feedback/Spinner.svelte';
+export { default as Loader } from './feedback/Loader.svelte';
 export { default as Tooltip } from './feedback/Tooltip.svelte';
 export { default as Popover } from './feedback/Popover.svelte';
 export { default as PopoverContainer } from './feedback/PopoverContainer.svelte';
@@ -102,9 +107,44 @@ export { default as TabsContainer } from './navigation/TabsContainer.svelte';
 export { default as TabsVerticalLayout } from './navigation/TabsVerticalLayout.svelte';
 export { default as TabsScrollable } from './navigation/TabsScrollable.svelte';
 export { default as CommandPalette } from './navigation/CommandPalette.svelte';
+export { default as NavbarSearch } from './navigation/NavbarSearch.svelte';
+export type {
+	Command,
+	CommandStep,
+	StepOption,
+	StepSelection,
+	SearchContext,
+	SearchResult,
+	PaletteMode
+} from './navigation/command-palette-types';
 export { default as NavItem } from './navigation/NavItem.svelte';
 export { default as NavDropdown } from './navigation/NavDropdown.svelte';
 
 // Typography Components
 export { default as Heading } from './typography/Heading.svelte';
 export { default as Paragraph } from './typography/Paragraph.svelte';
+
+export { default as DialogContainer } from './feedback/DialogContainer.svelte';
+export { dialogService, dialogStore } from './feedback/dialog-service.svelte';
+export type {
+	DialogVariant,
+	DialogSize,
+	DialogPosition,
+	ConfirmDialogOptions,
+	AlertDialogOptions,
+	PromptDialogOptions,
+	CustomDialogOptions,
+	DialogButton
+} from './feedback/dialog-service.svelte';
+
+// Shortcut Registry (Global keyboard shortcuts)
+export { shortcutRegistry, formatShortcut } from './services/shortcut-registry.svelte';
+export { default as ShortcutHelpDialog } from './feedback/ShortcutHelpDialog.svelte';
+export type {
+	Shortcut,
+	ShortcutModifiers,
+	ShortcutScope,
+	ShortcutRegistration,
+	ShortcutRegistry
+} from './services/shortcut-registry-types';
+

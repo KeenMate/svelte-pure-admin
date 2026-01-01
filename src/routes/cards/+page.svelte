@@ -49,7 +49,7 @@
 <Section title="Basic Cards">
 	<Grid>
 		<!-- Simple Card -->
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Card>
 				<Heading level={4}>Simple Card</Heading>
 				<Paragraph>This is a basic card with just a body. Perfect for simple content display.</Paragraph>
@@ -57,7 +57,7 @@
 		</Column>
 
 		<!-- Card with Header -->
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Card>
 				{#snippet header()}
 					<Heading level={4}>Card with Header</Heading>
@@ -67,7 +67,7 @@
 		</Column>
 
 		<!-- Card with Footer -->
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Card>
 				<Heading level={4}>Card with Footer</Heading>
 				<Paragraph>This card includes a footer section for actions or meta information.</Paragraph>
@@ -78,7 +78,7 @@
 		</Column>
 
 		<!-- Full Card -->
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Card title="Complete Card">
 				{#snippet tools()}
 					<Button variant="secondary" size="xs">⚙</Button>
@@ -98,7 +98,7 @@
 <Section title="Colored Cards">
 	<Grid>
 		<!-- Primary Card -->
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Card variant="primary">
 				{#snippet header()}
 					<Heading level={4}>Primary Card</Heading>
@@ -108,7 +108,7 @@
 		</Column>
 
 		<!-- Success Card -->
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Card variant="success">
 				{#snippet header()}
 					<Heading level={4}>Success Card</Heading>
@@ -118,7 +118,7 @@
 		</Column>
 
 		<!-- Warning Card -->
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Card variant="warning">
 				{#snippet header()}
 					<Heading level={4}>Warning Card</Heading>
@@ -128,7 +128,7 @@
 		</Column>
 
 		<!-- Danger Card -->
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Card variant="danger">
 				{#snippet header()}
 					<Heading level={4}>Danger Card</Heading>
@@ -143,7 +143,7 @@
 <Section title="Statistics Cards">
 	<Grid>
 		<!-- Stat Card 1 -->
-		<Column size="1" sm="1-2" lg="1-4">
+		<Column size="100" sm="1-2" lg="1-4">
 			<Card stat>
 				<Stat number="1,234" label="Total Users" iconVariant="primary">
 					{#snippet icon()}👥{/snippet}
@@ -152,7 +152,7 @@
 		</Column>
 
 		<!-- Stat Card 2 -->
-		<Column size="1" sm="1-2" lg="1-4">
+		<Column size="100" sm="1-2" lg="1-4">
 			<Card stat>
 				<Stat number="$45,678" label="Revenue" iconVariant="success">
 					{#snippet icon()}📊{/snippet}
@@ -161,7 +161,7 @@
 		</Column>
 
 		<!-- Stat Card 3 -->
-		<Column size="1" sm="1-2" lg="1-4">
+		<Column size="100" sm="1-2" lg="1-4">
 			<Card stat>
 				<Stat number="567" label="Orders" iconVariant="warning">
 					{#snippet icon()}📦{/snippet}
@@ -170,7 +170,7 @@
 		</Column>
 
 		<!-- Stat Card 4 -->
-		<Column size="1" sm="1-2" lg="1-4">
+		<Column size="100" sm="1-2" lg="1-4">
 			<Card stat>
 				<Stat number="+12%" label="Growth" iconVariant="info">
 					{#snippet icon()}📈{/snippet}
@@ -184,7 +184,7 @@
 <Section title="Interactive Cards">
 	<Grid>
 		<!-- Collapsible Card -->
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Card title="Collapsible Card">
 				{#snippet tools()}
 					<Button variant="secondary" size="xs" onClick={toggleCard}>−</Button>
@@ -197,7 +197,7 @@
 		</Column>
 
 		<!-- Card with Tabs -->
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Card>
 				{#snippet header()}
 					<Heading level={4}>Card with Tabs</Heading>
@@ -225,7 +225,7 @@
 <Section title="Advanced Card Features">
 	<Grid>
 		<!-- Card with Icon and Tools -->
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Card title="Analytics Dashboard Overview">
 				{#snippet titleIcon()}📊{/snippet}
 				{#snippet tools()}
@@ -241,7 +241,7 @@
 		</Column>
 
 		<!-- Card with Very Long Title -->
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Card
 				title="This is a Very Long Card Title That Should Be Truncated With Ellipsis When It Exceeds Available Space"
 			>
@@ -260,7 +260,7 @@
 		</Column>
 
 		<!-- Card with Different Icon Styles -->
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Card title="Project Management">
 				{#snippet titleIcon()}💼{/snippet}
 				{#snippet tools()}
@@ -272,7 +272,7 @@
 		</Column>
 
 		<!-- Card with Minimal Tools -->
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Card title="Revenue Metrics and KPI Tracking System">
 				{#snippet titleIcon()}📈{/snippet}
 				{#snippet tools()}
@@ -288,7 +288,7 @@
 <Section title="Data Display Cards">
 	<Grid>
 		<!-- Table Card -->
-		<Column size="1" lg="1-2">
+		<Column size="100" lg="1-2">
 			<Card title="Recent Orders" noPadding>
 				{#snippet tools()}
 					<Button variant="secondary" size="sm">View All</Button>
@@ -327,7 +327,7 @@
 		</Column>
 
 		<!-- List Card -->
-		<Column size="1" lg="1-2">
+		<Column size="100" lg="1-2">
 			<Card title="Activity Feed" noPadding>
 				<List>
 					<ListItem

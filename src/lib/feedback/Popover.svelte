@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Popover Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/tooltips.html
+	 * Based on @keenmate/pure-admin-core snippets/tooltips.html
 	 *
 	 * Click-triggered rich content overlays
 	 * Uses global PopoverContainer for rendering (portal pattern)

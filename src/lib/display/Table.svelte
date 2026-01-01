@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Table Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/tables.html
+	 * Based on @keenmate/pure-admin-core snippets/tables.html
 	 */
 
 	type TableSpacing = '2x' | '3x';

@@ -1,11 +1,12 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Modal Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/modals.html
+	 * Based on @keenmate/pure-admin-core snippets/modals.html
 	 */
 
 	type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'fw';
 	type ModalVariant = 'primary' | 'success' | 'warning' | 'danger' | 'info';
+	type ModalPosition = 'center' | 'top';
 
 	interface Props {
 		/** Show modal */
@@ -16,9 +17,19 @@
 		variant?: ModalVariant;
 		/** Header variant (for header theming only) */
 		headerVariant?: ModalVariant;
+		/** Modal position */
+		position?: ModalPosition;
+		/** Scrollable body content */
+		scrollable?: boolean;
 		/** Modal title */
 		title?: string;
-		/** Close handler */
+		/** Show close button in header (default: true) */
+		showClose?: boolean;
+		/** Close on Escape key (default: true) */
+		closeOnEscape?: boolean;
+		/** Called before close - return false to prevent closing */
+		onBeforeClose?: () => boolean | void;
+		/** Close handler (called after close) */
 		onClose?: () => void;
 		/** Additional CSS classes */
 		class?: string;
@@ -35,7 +46,12 @@
 		size = 'md',
 		variant,
 		headerVariant,
+		position = 'center',
+		scrollable = false,
 		title,
+		showClose = true,
+		closeOnEscape = true,
+		onBeforeClose,
 		onClose,
 		class: className = '',
 		header,
@@ -48,7 +64,15 @@
 		const base = ['pa-modal'];
 		if (show) base.push('pa-modal--show');
 		if (variant) base.push(`pa-modal--${variant}`);
+		if (position === 'top') base.push('pa-modal--top');
 		if (className) base.push(className);
+		return base.join(' ');
+	});
+
+	// Build class string for body
+	const bodyClasses = $derived(() => {
+		const base = ['pa-modal__body'];
+		if (scrollable) base.push('pa-modal__body--scrollable');
 		return base.join(' ');
 	});
 
@@ -67,6 +91,10 @@
 	});
 
 	function handleClose() {
+		// Check if close should be prevented
+		if (onBeforeClose && onBeforeClose() === false) {
+			return;
+		}
 		show = false;
 		if (onClose) onClose();
 	}
@@ -74,7 +102,15 @@
 	function handleBackdropClick() {
 		handleClose();
 	}
+
+	function handleKeyDown(event: KeyboardEvent) {
+		if (show && closeOnEscape && event.key === 'Escape') {
+			handleClose();
+		}
+	}
 </script>
+
+<svelte:window onkeydown={handleKeyDown} />
 
 <div class={modalClasses()}>
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -88,12 +124,12 @@
 				{:else if title}
 					<h3 class="pa-modal__title">{title}</h3>
 				{/if}
-				<button class="pa-modal__close" onclick={handleClose}>✕</button>
+				{#if showClose}<button class="pa-btn pa-btn--primary pa-btn--icon-only pa-btn--sm" onclick={handleClose}>✕</button>{/if}
 			</div>
 		{/if}
 
 		{#if children}
-			<div class="pa-modal__body">
+			<div class={bodyClasses()}>
 				{@render children()}
 			</div>
 		{/if}

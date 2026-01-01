@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Pager Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/tables.html
+	 * Based on @keenmate/pure-admin-core snippets/tables.html
 	 * Pagination component for tables
 	 */
 

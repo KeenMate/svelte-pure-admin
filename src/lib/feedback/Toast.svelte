@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Toast Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/toasts.html
+	 * Based on @keenmate/pure-admin-core snippets/toasts.html
 	 */
 
 	import { onMount } from 'svelte';

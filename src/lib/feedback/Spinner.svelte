@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Spinner Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/loaders.html
+	 * Based on @keenmate/pure-admin-core snippets/loaders.html
 	 */
 
 	type SpinnerSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';

@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin LoadMore Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/tables.html
+	 * Based on @keenmate/pure-admin-core snippets/tables.html
 	 * Load more button for infinite scroll/lazy loading
 	 */
 

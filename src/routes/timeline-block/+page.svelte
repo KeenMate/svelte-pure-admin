@@ -12,10 +12,7 @@
 <Paragraph>Alternating block timeline with centered date labels - perfect for project milestones and roadmaps.</Paragraph>
 
 <!-- Centered Alternating Layout -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Centered Alternating Layout</Heading>
-	{/snippet}
+<Card title="Centered Alternating Layout">
 
 	<Timeline variant="alternating">
 		<TimelineItem date="15 Dec" iconText="🏠">
@@ -51,10 +48,7 @@
 </Card>
 
 <!-- Future Planning -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Future Planning</Heading>
-	{/snippet}
+<Card title="Future Planning">
 
 	<Timeline variant="alternating">
 		<TimelineItem date="Q1 2024" iconText="📋">
@@ -80,10 +74,7 @@
 </Card>
 
 <!-- Load More Example -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Timeline with Load More</Heading>
-	{/snippet}
+<Card title="Timeline with Load More">
 
 	<Timeline variant="alternating">
 		<TimelineItem date="Jan 1" iconText="🎉">
@@ -110,10 +101,7 @@
 </Card>
 
 <!-- Virtual Scroll Example -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Virtual Scroll (Large Dataset)</Heading>
-	{/snippet}
+<Card title="Virtual Scroll (Large Dataset)">
 
 	<Paragraph class="mb-4">For project timelines with many milestones, virtual scrolling optimizes rendering performance.</Paragraph>
 
@@ -154,10 +142,7 @@
 </Card>
 
 <!-- Usage Examples -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Usage Examples</Heading>
-	{/snippet}
+<Card title="Usage Examples">
 
 	<Heading level={4}>Basic Alternating Timeline</Heading>
 	<pre class="mb-4"><code>&lt;Timeline variant="alternating"&gt;

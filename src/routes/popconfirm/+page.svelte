@@ -5,13 +5,11 @@
 	import Table from '$lib/display/Table.svelte';
 	import Badge from '$lib/display/Badge.svelte';
 	import Popconfirm from '$lib/feedback/Popconfirm.svelte';
-	import Section from '$lib/layout/Section.svelte';
 	import Toast from '$lib/feedback/Toast.svelte';
 	import ToastContainer from '$lib/feedback/ToastContainer.svelte';
 	import Grid from '$lib/layout/Grid.svelte';
 	import Column from '$lib/layout/Column.svelte';
 	import Heading from '$lib/typography/Heading.svelte';
-	import Paragraph from '$lib/typography/Paragraph.svelte';
 
 	// Popconfirm states and triggers
 	let showDeletePopconfirm = $state(false);
@@ -25,6 +23,9 @@
 
 	let showCompactPopconfirm = $state(false);
 	let compactTrigger = $state<HTMLElement | null>(null);
+
+	let showCompact2Popconfirm = $state(false);
+	let compact2Trigger = $state<HTMLElement | null>(null);
 
 	// Position examples
 	let showTopPopconfirm = $state(false);
@@ -49,12 +50,11 @@
 	let showInfoPopconfirm = $state(false);
 	let infoTrigger = $state<HTMLElement | null>(null);
 
-	// Table data
+	// Table data (matches visual version)
 	let tableData = $state([
 		{
 			id: 1,
 			name: 'John Doe',
-			email: 'john@example.com',
 			status: 'Active',
 			statusVariant: 'success' as const,
 			showPopconfirm: false,
@@ -63,18 +63,16 @@
 		{
 			id: 2,
 			name: 'Jane Smith',
-			email: 'jane@example.com',
-			status: 'Active',
-			statusVariant: 'success' as const,
+			status: 'Pending',
+			statusVariant: 'warning' as const,
 			showPopconfirm: false,
 			trigger: null as HTMLElement | null
 		},
 		{
 			id: 3,
 			name: 'Bob Johnson',
-			email: 'bob@example.com',
-			status: 'Pending',
-			statusVariant: 'warning' as const,
+			status: 'Inactive',
+			statusVariant: 'secondary' as const,
 			showPopconfirm: false,
 			trigger: null as HTMLElement | null
 		}
@@ -125,327 +123,327 @@
 	}
 </script>
 
-<Section>
-	<Heading level={1} class="pa-page-title">Popconfirm</Heading>
-	<Paragraph class="pa-page-description">
-		Small confirmation dialogs anchored to trigger elements. Perfect for delete confirmations and
-		quick yes/no decisions. More contextual than modals and ideal for table row actions.
-	</Paragraph>
+<!-- Popconfirm Component -->
+<Card title="Popconfirm Component" subtitle="Small confirmation dialogs anchored to trigger buttons - perfect for delete confirmations and quick decisions">
 
-	<!-- Basic Popconfirms -->
-	<Card>
-		{#snippet header()}
-			<Heading level={2} class="pa-card__title">Basic Popconfirms</Heading>
-		{/snippet}
+	<Grid>
+		<Column size="100" md="50">
+			<Heading level={4}>Basic Popconfirms</Heading>
+			<div class="min-h-12x">
+				<ButtonGroup>
+					<Button
+						variant="danger"
+						onClick={(e) => {
+							deleteTrigger = e.currentTarget as HTMLElement;
+							showDeletePopconfirm = !showDeletePopconfirm;
+						}}
+					>
+						Delete Item
+					</Button>
 
-		<div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-			<Button
-				variant="danger"
-				onClick={(e) => {
-					deleteTrigger = e.currentTarget as HTMLElement;
-					showDeletePopconfirm = !showDeletePopconfirm;
-				}}
-			>
-				Delete Item
-			</Button>
+					<Button
+						variant="warning"
+						onClick={(e) => {
+							archiveTrigger = e.currentTarget as HTMLElement;
+							showArchivePopconfirm = !showArchivePopconfirm;
+						}}
+					>
+						Archive Item
+					</Button>
 
-			<Button
-				variant="warning"
-				onClick={(e) => {
-					archiveTrigger = e.currentTarget as HTMLElement;
-					showArchivePopconfirm = !showArchivePopconfirm;
-				}}
-			>
-				Archive
-			</Button>
+					<Button
+						variant="secondary"
+						onClick={(e) => {
+							resetTrigger = e.currentTarget as HTMLElement;
+							showResetPopconfirm = !showResetPopconfirm;
+						}}
+					>
+						Reset Settings
+					</Button>
+				</ButtonGroup>
+			</div>
+		</Column>
 
-			<Button
-				variant="secondary"
-				onClick={(e) => {
-					resetTrigger = e.currentTarget as HTMLElement;
-					showResetPopconfirm = !showResetPopconfirm;
-				}}
-			>
-				Reset Settings
-			</Button>
-		</div>
+		<Column size="100" md="50">
+			<Heading level={4}>Compact Variant</Heading>
+			<div class="min-h-12x">
+				<ButtonGroup>
+					<Button
+						size="xs"
+						variant="danger"
+						onClick={(e) => {
+							compactTrigger = e.currentTarget as HTMLElement;
+							showCompactPopconfirm = !showCompactPopconfirm;
+						}}
+					>
+						🗑️
+					</Button>
 
-		<Popconfirm
-			bind:show={showDeletePopconfirm}
-			trigger={deleteTrigger}
-			message="Are you sure you want to delete this item? This action cannot be undone."
-			icon="danger"
-			confirmText="Delete"
-			confirmVariant="danger"
-			onConfirm={handleDelete}
-		/>
+					<Button
+						size="xs"
+						variant="danger"
+						outline
+						onClick={(e) => {
+							compact2Trigger = e.currentTarget as HTMLElement;
+							showCompact2Popconfirm = !showCompact2Popconfirm;
+						}}
+					>
+						Remove
+					</Button>
+				</ButtonGroup>
+			</div>
+		</Column>
+	</Grid>
 
-		<Popconfirm
-			bind:show={showArchivePopconfirm}
-			trigger={archiveTrigger}
-			message="Archive this item? You can restore it later from the archive."
-			icon="warning"
-			confirmText="Archive"
-			confirmVariant="warning"
-			onConfirm={handleArchive}
-		/>
+	<Popconfirm
+		bind:show={showDeletePopconfirm}
+		trigger={deleteTrigger}
+		message="Are you sure you want to delete this item? This action cannot be undone."
+		icon="danger"
+		confirmText="Delete"
+		confirmVariant="danger"
+		onConfirm={handleDelete}
+	/>
 
-		<Popconfirm
-			bind:show={showResetPopconfirm}
-			trigger={resetTrigger}
-			message="Reset all settings to default values?"
-			icon="info"
-			confirmText="Reset"
-			confirmVariant="primary"
-			onConfirm={handleReset}
-		/>
-	</Card>
+	<Popconfirm
+		bind:show={showArchivePopconfirm}
+		trigger={archiveTrigger}
+		message="Archive this item? It will be moved to the archive folder."
+		icon="warning"
+		confirmText="Archive"
+		confirmVariant="warning"
+		onConfirm={handleArchive}
+	/>
 
-	<!-- Compact Variant -->
-	<Card>
-		{#snippet header()}
-			<Heading level={2} class="pa-card__title">Compact Variant</Heading>
-		{/snippet}
+	<Popconfirm
+		bind:show={showResetPopconfirm}
+		trigger={resetTrigger}
+		message="Reset all settings to default values?"
+		icon="info"
+		confirmText="Reset"
+		confirmVariant="primary"
+		onConfirm={handleReset}
+	/>
 
-		<Paragraph>Smaller variant ideal for table actions and tight spaces.</Paragraph>
+	<Popconfirm
+		bind:show={showCompactPopconfirm}
+		trigger={compactTrigger}
+		message="Delete this item?"
+		compact
+		confirmText="Yes"
+		cancelText="No"
+		confirmVariant="danger"
+		onConfirm={handleRemove}
+	/>
 
+	<Popconfirm
+		bind:show={showCompact2Popconfirm}
+		trigger={compact2Trigger}
+		message="Remove this item?"
+		compact
+		confirmText="Yes"
+		cancelText="No"
+		confirmVariant="danger"
+		onConfirm={handleRemove}
+	/>
+</Card>
+
+<!-- Position Variants (Svelte-specific) -->
+<Card title="Position Variants" subtitle="Popconfirms automatically adjust position based on available space using Floating UI">
+
+	<ButtonGroup>
 		<Button
-			size="xs"
-			variant="danger"
+			variant="primary"
 			onClick={(e) => {
-				compactTrigger = e.currentTarget as HTMLElement;
-				showCompactPopconfirm = !showCompactPopconfirm;
+				topTrigger = e.currentTarget as HTMLElement;
+				showTopPopconfirm = !showTopPopconfirm;
 			}}
 		>
-			🗑️ Remove
+			Top
 		</Button>
 
+		<Button
+			variant="primary"
+			onClick={(e) => {
+				bottomTrigger = e.currentTarget as HTMLElement;
+				showBottomPopconfirm = !showBottomPopconfirm;
+			}}
+		>
+			Bottom
+		</Button>
+
+		<Button
+			variant="primary"
+			onClick={(e) => {
+				leftTrigger = e.currentTarget as HTMLElement;
+				showLeftPopconfirm = !showLeftPopconfirm;
+			}}
+		>
+			Left
+		</Button>
+
+		<Button
+			variant="primary"
+			onClick={(e) => {
+				rightTrigger = e.currentTarget as HTMLElement;
+				showRightPopconfirm = !showRightPopconfirm;
+			}}
+		>
+			Right
+		</Button>
+	</ButtonGroup>
+
+	<Popconfirm
+		bind:show={showTopPopconfirm}
+		trigger={topTrigger}
+		position="top"
+		message="Confirm this action?"
+		confirmText="Yes"
+		cancelText="No"
+	/>
+
+	<Popconfirm
+		bind:show={showBottomPopconfirm}
+		trigger={bottomTrigger}
+		position="bottom"
+		message="Confirm this action?"
+		confirmText="Yes"
+		cancelText="No"
+	/>
+
+	<Popconfirm
+		bind:show={showLeftPopconfirm}
+		trigger={leftTrigger}
+		position="left"
+		message="Confirm this action?"
+		confirmText="Yes"
+		cancelText="No"
+	/>
+
+	<Popconfirm
+		bind:show={showRightPopconfirm}
+		trigger={rightTrigger}
+		position="right"
+		message="Confirm this action?"
+		confirmText="Yes"
+		cancelText="No"
+	/>
+</Card>
+
+<!-- Icon Variants (Svelte-specific) -->
+<Card title="Icon Variants" subtitle="Different icon styles to indicate the severity of the action">
+
+	<ButtonGroup>
+		<Button
+			variant="danger"
+			onClick={(e) => {
+				dangerTrigger = e.currentTarget as HTMLElement;
+				showDangerPopconfirm = !showDangerPopconfirm;
+			}}
+		>
+			Danger Icon
+		</Button>
+
+		<Button
+			variant="warning"
+			onClick={(e) => {
+				warningTrigger = e.currentTarget as HTMLElement;
+				showWarningPopconfirm = !showWarningPopconfirm;
+			}}
+		>
+			Warning Icon
+		</Button>
+
+		<Button
+			variant="info"
+			onClick={(e) => {
+				infoTrigger = e.currentTarget as HTMLElement;
+				showInfoPopconfirm = !showInfoPopconfirm;
+			}}
+		>
+			Info Icon
+		</Button>
+	</ButtonGroup>
+
+	<Popconfirm
+		bind:show={showDangerPopconfirm}
+		trigger={dangerTrigger}
+		message="This action is destructive and cannot be undone."
+		icon="danger"
+		confirmText="Continue"
+		confirmVariant="danger"
+	/>
+
+	<Popconfirm
+		bind:show={showWarningPopconfirm}
+		trigger={warningTrigger}
+		message="Please review this action carefully before proceeding."
+		icon="warning"
+		confirmText="Proceed"
+		confirmVariant="warning"
+	/>
+
+	<Popconfirm
+		bind:show={showInfoPopconfirm}
+		trigger={infoTrigger}
+		message="This will update your preferences. Continue?"
+		icon="info"
+		confirmText="Update"
+		confirmVariant="primary"
+	/>
+</Card>
+
+<!-- Table with Popconfirms -->
+<Card title="Table with Popconfirms" subtitle="Common use case: delete confirmations in data tables" noPadding>
+
+	<Table striped>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Status</th>
+				<th class="col-auto">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{#each tableData as row, index (row.id)}
+				<tr>
+					<td>{row.id}</td>
+					<td>{row.name}</td>
+					<td><Badge variant={row.statusVariant}>{row.status}</Badge></td>
+					<td class="col-auto">
+						<ButtonGroup>
+							<Button size="xs" variant="primary">Edit</Button>
+							<Button
+								size="xs"
+								variant="danger"
+								onClick={(e) => toggleTablePopconfirm(index, e)}
+							>
+								Delete
+							</Button>
+						</ButtonGroup>
+					</td>
+				</tr>
+			{/each}
+		</tbody>
+	</Table>
+
+	<!-- Popconfirms outside table to avoid invalid HTML -->
+	{#each tableData as row (row.id)}
 		<Popconfirm
-			bind:show={showCompactPopconfirm}
-			trigger={compactTrigger}
-			message="Delete this item?"
+			bind:show={row.showPopconfirm}
+			trigger={row.trigger}
+			message={`Delete ${row.name}?`}
 			compact
 			confirmText="Yes"
 			cancelText="No"
 			confirmVariant="danger"
-			onConfirm={handleRemove}
+			onConfirm={() => handleTableDelete(row.id)}
 		/>
-	</Card>
-
-	<!-- Position Variants -->
-	<Card>
-		{#snippet header()}
-			<Heading level={2} class="pa-card__title">Position Variants</Heading>
-		{/snippet}
-
-		<Paragraph>Popconfirms automatically adjust position based on available space using Floating UI.</Paragraph>
-
-		<div
-			style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center; justify-content: center; padding: 3rem;"
-		>
-			<Button
-				variant="primary"
-				onClick={(e) => {
-					topTrigger = e.currentTarget as HTMLElement;
-					showTopPopconfirm = !showTopPopconfirm;
-				}}
-			>
-				Top
-			</Button>
-
-			<Button
-				variant="primary"
-				onClick={(e) => {
-					bottomTrigger = e.currentTarget as HTMLElement;
-					showBottomPopconfirm = !showBottomPopconfirm;
-				}}
-			>
-				Bottom
-			</Button>
-
-			<Button
-				variant="primary"
-				onClick={(e) => {
-					leftTrigger = e.currentTarget as HTMLElement;
-					showLeftPopconfirm = !showLeftPopconfirm;
-				}}
-			>
-				Left
-			</Button>
-
-			<Button
-				variant="primary"
-				onClick={(e) => {
-					rightTrigger = e.currentTarget as HTMLElement;
-					showRightPopconfirm = !showRightPopconfirm;
-				}}
-			>
-				Right
-			</Button>
-		</div>
-
-		<Popconfirm
-			bind:show={showTopPopconfirm}
-			trigger={topTrigger}
-			position="top"
-			message="Confirm this action?"
-			confirmText="Yes"
-			cancelText="No"
-		/>
-
-		<Popconfirm
-			bind:show={showBottomPopconfirm}
-			trigger={bottomTrigger}
-			position="bottom"
-			message="Confirm this action?"
-			confirmText="Yes"
-			cancelText="No"
-		/>
-
-		<Popconfirm
-			bind:show={showLeftPopconfirm}
-			trigger={leftTrigger}
-			position="left"
-			message="Confirm this action?"
-			confirmText="Yes"
-			cancelText="No"
-		/>
-
-		<Popconfirm
-			bind:show={showRightPopconfirm}
-			trigger={rightTrigger}
-			position="right"
-			message="Confirm this action?"
-			confirmText="Yes"
-			cancelText="No"
-		/>
-	</Card>
-
-	<!-- Icon Variants -->
-	<Card>
-		{#snippet header()}
-			<Heading level={2} class="pa-card__title">Icon Variants</Heading>
-		{/snippet}
-
-		<div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-			<Button
-				variant="danger"
-				onClick={(e) => {
-					dangerTrigger = e.currentTarget as HTMLElement;
-					showDangerPopconfirm = !showDangerPopconfirm;
-				}}
-			>
-				Danger Icon
-			</Button>
-
-			<Button
-				variant="warning"
-				onClick={(e) => {
-					warningTrigger = e.currentTarget as HTMLElement;
-					showWarningPopconfirm = !showWarningPopconfirm;
-				}}
-			>
-				Warning Icon
-			</Button>
-
-			<Button
-				variant="info"
-				onClick={(e) => {
-					infoTrigger = e.currentTarget as HTMLElement;
-					showInfoPopconfirm = !showInfoPopconfirm;
-				}}
-			>
-				Info Icon
-			</Button>
-		</div>
-
-		<Popconfirm
-			bind:show={showDangerPopconfirm}
-			trigger={dangerTrigger}
-			message="This action is destructive and cannot be undone."
-			icon="danger"
-			confirmText="Continue"
-			confirmVariant="danger"
-		/>
-
-		<Popconfirm
-			bind:show={showWarningPopconfirm}
-			trigger={warningTrigger}
-			message="Please review this action carefully before proceeding."
-			icon="warning"
-			confirmText="Proceed"
-			confirmVariant="warning"
-		/>
-
-		<Popconfirm
-			bind:show={showInfoPopconfirm}
-			trigger={infoTrigger}
-			message="This will update your preferences. Continue?"
-			icon="info"
-			confirmText="Update"
-			confirmVariant="primary"
-		/>
-	</Card>
-
-	<!-- Table with Popconfirms -->
-	<Card>
-		{#snippet header()}
-			<Heading level={2} class="pa-card__title">Table with Popconfirms</Heading>
-		{/snippet}
-
-		<Paragraph>Common pattern: Delete confirmations for table rows.</Paragraph>
-
-		<Table striped>
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Email</th>
-					<th>Status</th>
-					<th class="col-auto">Actions</th>
-				</tr>
-			</thead>
-			<tbody>
-				{#each tableData as row, index (row.id)}
-					<tr>
-						<td>{row.name}</td>
-						<td>{row.email}</td>
-						<td><Badge variant={row.statusVariant}>{row.status}</Badge></td>
-						<td class="col-auto">
-							<ButtonGroup>
-								<Button size="xs" variant="primary">Edit</Button>
-								<Button
-									size="xs"
-									variant="danger"
-									onClick={(e) => toggleTablePopconfirm(index, e)}
-								>
-									Delete
-								</Button>
-							</ButtonGroup>
-						</td>
-					</tr>
-				{/each}
-			</tbody>
-		</Table>
-
-		<!-- Popconfirms outside table to avoid invalid HTML -->
-		{#each tableData as row (row.id)}
-			<Popconfirm
-				bind:show={row.showPopconfirm}
-				trigger={row.trigger}
-				message={`Delete ${row.name}?`}
-				compact
-				confirmText="Yes"
-				cancelText="No"
-				confirmVariant="danger"
-				onConfirm={() => handleTableDelete(row.id)}
-			/>
-		{/each}
-	</Card>
-</Section>
+	{/each}
+</Card>
 
 <!-- Toast notifications -->
 <ToastContainer position="top-right">
-	<Toast bind:show={showToast} variant="success" title="Success" dismissible autoDismiss>
-		{toastMessage}
-	</Toast>
+	<Toast bind:show={showToast} variant="success" title="Success" message={toastMessage} />
 </ToastContainer>

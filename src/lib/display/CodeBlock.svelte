@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin CodeBlock Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/code.html
+	 * Based on @keenmate/pure-admin-core snippets/code.html
 	 * For code blocks (pre elements) with syntax highlighting hints
 	 */
 

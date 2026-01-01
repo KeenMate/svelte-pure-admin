@@ -1,7 +1,7 @@
 <script lang="ts" generics="T">
 	/**
 	 * Pure Admin Timeline Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/timeline.html
+	 * Based on @keenmate/pure-admin-core snippets/timeline.html
 	 * Container for timeline items - supports simple, alternating, and feed variants
 	 * Supports data-driven approach with member mappings (KeenMate pattern)
 	 */

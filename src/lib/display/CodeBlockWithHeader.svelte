@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin CodeBlockWithHeader Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/code.html
+	 * Based on @keenmate/pure-admin-core snippets/code.html
 	 * Code block with header (title and copy button)
 	 */
 

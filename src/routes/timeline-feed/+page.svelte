@@ -103,10 +103,7 @@
 <Paragraph>Activity feed style timeline with avatars and comments - perfect for social feeds and activity logs.</Paragraph>
 
 <!-- Basic Feed Timeline -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Basic Feed Timeline</Heading>
-	{/snippet}
+<Card title="Basic Feed Timeline">
 
 	<Timeline variant="feed">
 		<TimelineItem avatarUrl="https://ui-avatars.com/api/?name=John+Doe&background=0D8ABC&color=fff" avatarAlt="John Doe">
@@ -127,10 +124,7 @@
 </Card>
 
 <!-- Feed Timeline with Comments -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Feed Timeline with Comments</Heading>
-	{/snippet}
+<Card title="Feed Timeline with Comments">
 
 	<Timeline variant="feed">
 		<TimelineItem avatarUrl="https://ui-avatars.com/api/?name=Luna+B&background=0D8ABC&color=fff" avatarAlt="Luna Bonifacio">
@@ -163,10 +157,7 @@
 </Card>
 
 <!-- Feed Timeline with Date Headers -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Feed Timeline with Date Headers</Heading>
-	{/snippet}
+<Card title="Feed Timeline with Date Headers">
 
 	<Timeline variant="feed">
 		<!-- Date header -->
@@ -198,9 +189,8 @@
 </Card>
 
 <!-- Data-Driven Feed Timeline -->
-<Card>
+<Card title="Data-Driven Feed Timeline">
 	{#snippet header()}
-		<Heading level={3}>Data-Driven Feed Timeline</Heading>
 		<Paragraph>Timeline populated from database/API data</Paragraph>
 	{/snippet}
 
@@ -220,9 +210,8 @@
 </Card>
 
 <!-- Data-Driven with Date Sections -->
-<Card>
+<Card title="Data-Driven with Date Sections">
 	{#snippet header()}
-		<Heading level={3}>Data-Driven with Date Sections</Heading>
 		<Paragraph>Organized by date with time prefixes</Paragraph>
 	{/snippet}
 
@@ -242,10 +231,7 @@
 </Card>
 
 <!-- Usage Examples -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Usage Examples</Heading>
-	{/snippet}
+<Card title="Usage Examples">
 
 	<Heading level={4}>Basic Feed Item</Heading>
 	<pre class="mb-4"><code>&lt;Timeline variant="feed"&gt;

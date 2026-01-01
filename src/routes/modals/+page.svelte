@@ -34,24 +34,19 @@
 	let showConfirmDelete = $state(false);
 	let showConfirmAction = $state(false);
 	let showInfo = $state(false);
+	let showCentered = $state(false);
+	let showTop = $state(false);
 </script>
 
 <svelte:head>
 	<title>Modal Windows - Pure Admin Svelte</title>
 </svelte:head>
 
-<Heading level={1}>Modal Windows</Heading>
-<Paragraph>Dialog boxes and overlays for focused user interactions.</Paragraph>
-
 <!-- Basic Modal Examples -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Basic Modals</Heading>
-		<Paragraph>Standard modal dialogs for user interactions</Paragraph>
-	{/snippet}
+<Card title="Basic Modals" subtitle="Standard modal dialogs for user interactions">
 
 	<Grid>
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Heading level={4}>Standard Sizes</Heading>
 			<div class="component-showcase">
 				<Button variant="primary" onClick={() => (showSmall = true)}>Small Modal</Button>
@@ -62,7 +57,7 @@
 				<Button variant="dark" onClick={() => (showFullWidth = true)}>Full Width</Button>
 			</div>
 		</Column>
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Heading level={4}>Modal Types</Heading>
 			<div class="component-showcase">
 				<Button variant="success" onClick={() => (showSuccess = true)}>Success Modal</Button>
@@ -71,14 +66,19 @@
 			</div>
 		</Column>
 	</Grid>
+	<Grid class="mt-3">
+		<Column size="100">
+			<Heading level={4}>Position Modifiers</Heading>
+			<div class="component-showcase">
+				<Button variant="secondary" onClick={() => (showCentered = true)}>Centered (Default)</Button>
+				<Button variant="secondary" onClick={() => (showTop = true)}>Top-Aligned</Button>
+			</div>
+		</Column>
+	</Grid>
 </Card>
 
 <!-- Form Modals -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Form Modals</Heading>
-		<Paragraph>Modals containing forms and interactive content</Paragraph>
-	{/snippet}
+<Card title="Form Modals" subtitle="Modals containing forms and interactive content">
 
 	<div class="component-showcase">
 		<Button variant="secondary" onClick={() => (showForm = true)}>Contact Form</Button>
@@ -88,11 +88,7 @@
 </Card>
 
 <!-- Confirmation Modals -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Confirmation Modals</Heading>
-		<Paragraph>Action confirmation and decision dialogs</Paragraph>
-	{/snippet}
+<Card title="Confirmation Modals" subtitle="Action confirmation and decision dialogs">
 
 	<div class="component-showcase">
 		<Button variant="danger" outline onClick={() => (showConfirmDelete = true)}
@@ -134,12 +130,12 @@
 <!-- Large Modal -->
 <Modal bind:show={showLarge} size="lg" title="Large Modal">
 	<Grid>
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Heading level={5}>Column 1</Heading>
 			<Paragraph>Large modals are perfect for complex content layouts with multiple columns.</Paragraph>
 			<Paragraph>You can use the PureCSS grid system inside modals to create sophisticated layouts.</Paragraph>
 		</Column>
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Heading level={5}>Column 2</Heading>
 			<Paragraph>This second column demonstrates how you can organize content in larger modal dialogs.</Paragraph>
 			<Alert variant="info">
@@ -156,19 +152,19 @@
 <!-- Extra Large Modal -->
 <Modal bind:show={showXL} size="xl" title="Extra Large Modal">
 	<Grid>
-		<Column size="1" md="1-3">
+		<Column size="100" md="1-3">
 			<Heading level={5}>Column 1</Heading>
 			<Paragraph>Extra large modals provide ample space for comprehensive content displays.</Paragraph>
 			<Paragraph>Perfect for data tables, reports, and detailed analytics dashboards.</Paragraph>
 		</Column>
-		<Column size="1" md="1-3">
+		<Column size="100" md="1-3">
 			<Heading level={5}>Column 2</Heading>
 			<Paragraph>You can display complex data structures, charts, and visualizations.</Paragraph>
 			<Alert variant="info">
 				<strong>Note:</strong> XL modals are 70rem wide (1120px).
 			</Alert>
 		</Column>
-		<Column size="1" md="1-3">
+		<Column size="100" md="1-3">
 			<Heading level={5}>Column 3</Heading>
 			<Paragraph>Three-column layouts work beautifully in extra large modals.</Paragraph>
 			<Paragraph>Ideal for comparison views and side-by-side content.</Paragraph>
@@ -183,19 +179,19 @@
 <!-- XXL Modal -->
 <Modal bind:show={showXXL} size="xxl" title="XXL Modal - Maximum Size">
 	<Grid>
-		<Column size="1" md="1-4">
+		<Column size="100" md="1-4">
 			<Heading level={5}>Section 1</Heading>
 			<Paragraph>XXL modals are the largest available size at 90rem (1440px) wide.</Paragraph>
 			<Paragraph>Perfect for full-featured application interfaces within a modal.</Paragraph>
 		</Column>
-		<Column size="1" md="1-4">
+		<Column size="100" md="1-4">
 			<Heading level={5}>Section 2</Heading>
 			<Paragraph>Ideal for complex workflows that require maximum screen real estate.</Paragraph>
 			<Alert variant="success">
 				<strong>Great for:</strong> Data grids, reporting tools, and analytics.
 			</Alert>
 		</Column>
-		<Column size="1" md="1-4">
+		<Column size="100" md="1-4">
 			<Heading level={5}>Section 3</Heading>
 			<Paragraph>Four-column layouts provide exceptional flexibility for content organization.</Paragraph>
 			<ul>
@@ -204,7 +200,7 @@
 				<li>Data comparisons</li>
 			</ul>
 		</Column>
-		<Column size="1" md="1-4">
+		<Column size="100" md="1-4">
 			<Heading level={5}>Section 4</Heading>
 			<Paragraph>On smaller screens, these columns will stack responsively.</Paragraph>
 			<Alert variant="warning">
@@ -212,14 +208,14 @@
 			</Alert>
 		</Column>
 	</Grid>
-	<Grid style="margin-top: 2rem;">
-		<Column size="1">
+	<Grid class="mt-4">
+		<Column size="100">
 			<Heading level={5}>Full Width Content Area</Heading>
 			<Paragraph>
 				You can also use the full width for single-column content when needed. This is
 				particularly useful for wide tables, code editors, or visual design tools.
 			</Paragraph>
-			<Card style="margin-top: 1rem;">
+			<Card class="mt-3">
 				<Paragraph>
 					Nested cards and components work seamlessly within XXL modals, allowing you to create
 					rich, interactive interfaces.
@@ -237,32 +233,26 @@
 <!-- Full Width Modal -->
 <Modal bind:show={showFullWidth} size="fw" title="Full Width Modal - Maximum Screen Coverage">
 	<Grid>
-		<Column size="1">
-			<Alert variant="info" style="margin-bottom: 1rem;">
+		<Column size="100">
+			<Alert variant="info" class="mb-4">
 				<strong>Full Width Mode:</strong> This modal takes up the entire viewport minus a small margin
 				(1rem on all sides), providing maximum workspace while maintaining modal appearance.
 			</Alert>
 		</Column>
 	</Grid>
 	<Grid>
-		<Column size="1" lg="1-5">
-			<Card>
-				{#snippet header()}
-					<Heading level={5}>Navigation</Heading>
-				{/snippet}
-				<ul style="list-style: none; padding: 0;">
-					<li style="padding: 0.5rem 0;">Dashboard</li>
-					<li style="padding: 0.5rem 0;">Analytics</li>
-					<li style="padding: 0.5rem 0;">Reports</li>
-					<li style="padding: 0.5rem 0;">Settings</li>
+		<Column size="100" lg="1-5">
+			<Card title="Navigation">
+				<ul class="pa-list-unstyled">
+					<li class="py-2">Dashboard</li>
+					<li class="py-2">Analytics</li>
+					<li class="py-2">Reports</li>
+					<li class="py-2">Settings</li>
 				</ul>
 			</Card>
 		</Column>
-		<Column size="1" lg="3-5">
-			<Card>
-				{#snippet header()}
-					<Heading level={5}>Main Content Area</Heading>
-				{/snippet}
+		<Column size="100" lg="3-5">
+			<Card title="Main Content Area">
 				<Paragraph>
 					Full-width modals are perfect for complex applications that need to run within a modal
 					context. Examples include:
@@ -274,7 +264,7 @@
 					<li><strong>Media Galleries:</strong> Full-screen photo/video management</li>
 					<li><strong>Document Viewers:</strong> PDF readers, document editors</li>
 				</ul>
-				<div style="margin-top: 1rem;">
+				<div class="mt-3">
 					<Table striped>
 						<thead>
 							<tr>
@@ -304,11 +294,8 @@
 				</div>
 			</Card>
 		</Column>
-		<Column size="1" lg="1-5">
-			<Card>
-				{#snippet header()}
-					<Heading level={5}>Properties</Heading>
-				{/snippet}
+		<Column size="100" lg="1-5">
+			<Card title="Properties">
 				<FormGroup>
 					<FormLabel for="fw-width">Width</FormLabel>
 					<Input id="fw-width" value="100vw - 2rem" readonly />
@@ -377,19 +364,19 @@
 <Modal bind:show={showForm} title="Contact Us">
 	<form>
 		<Grid>
-			<Column size="1">
+			<Column size="100">
 				<FormGroup>
 					<FormLabel for="contact-name">Name</FormLabel>
 					<Input type="text" id="contact-name" placeholder="Your name" />
 				</FormGroup>
 			</Column>
-			<Column size="1">
+			<Column size="100">
 				<FormGroup>
 					<FormLabel for="contact-email">Email</FormLabel>
 					<Input type="email" id="contact-email" placeholder="your@email.com" />
 				</FormGroup>
 			</Column>
-			<Column size="1">
+			<Column size="100">
 				<FormGroup>
 					<FormLabel for="contact-message">Message</FormLabel>
 					<Textarea id="contact-message" rows={4} placeholder="Your message" />
@@ -407,19 +394,19 @@
 <Modal bind:show={showLogin} size="sm" title="Sign In">
 	<form>
 		<Grid>
-			<Column size="1">
+			<Column size="100">
 				<FormGroup>
 					<FormLabel for="login-username">Username</FormLabel>
 					<Input type="text" id="login-username" placeholder="Enter username" />
 				</FormGroup>
 			</Column>
-			<Column size="1">
+			<Column size="100">
 				<FormGroup>
 					<FormLabel for="login-password">Password</FormLabel>
 					<Input type="password" id="login-password" placeholder="Enter password" />
 				</FormGroup>
 			</Column>
-			<Column size="1">
+			<Column size="100">
 				<FormGroup>
 					<Checkbox id="login-remember">Remember me</Checkbox>
 				</FormGroup>
@@ -435,7 +422,7 @@
 <!-- Settings Modal -->
 <Modal bind:show={showSettings} size="lg" title="Settings">
 	<Grid>
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Heading level={5}>General Settings</Heading>
 			<form>
 				<FormGroup>
@@ -451,7 +438,7 @@
 				</FormGroup>
 			</form>
 		</Column>
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Heading level={5}>Privacy Settings</Heading>
 			<form>
 				<FormGroup>
@@ -505,5 +492,31 @@
 	{#snippet footer()}
 		<Button variant="secondary" onClick={() => (showInfo = false)}>Later</Button>
 		<Button variant="info">Renew Now</Button>
+	{/snippet}
+</Modal>
+
+<!-- Centered Modal (Default) -->
+<Modal bind:show={showCentered} title="Centered Modal (Default)">
+	<Paragraph>This is the default modal behavior - centered vertically and horizontally in the viewport.</Paragraph>
+	<Paragraph>This works well for most use cases where you want the modal to be the focal point.</Paragraph>
+	{#snippet footer()}
+		<Button variant="secondary" onClick={() => (showCentered = false)}>Close</Button>
+		<Button variant="primary">Confirm</Button>
+	{/snippet}
+</Modal>
+
+<!-- Top-Aligned Modal -->
+<Modal bind:show={showTop} position="top" title="Top-Aligned Modal">
+	<Paragraph>This modal uses the <code>position="top"</code> prop to position it near the top of the viewport.</Paragraph>
+	<Paragraph>This is useful for:</Paragraph>
+	<ul>
+		<li>Search interfaces (similar to command palette)</li>
+		<li>Quick actions that don't need full attention</li>
+		<li>Modals that might contain tall content</li>
+		<li>Better visual flow when content extends below fold</li>
+	</ul>
+	{#snippet footer()}
+		<Button variant="secondary" onClick={() => (showTop = false)}>Close</Button>
+		<Button variant="primary">Confirm</Button>
 	{/snippet}
 </Modal>

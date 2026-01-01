@@ -69,12 +69,8 @@
 <!-- Button Variants and Sizes Grid -->
 <Grid>
 	<!-- Basic Buttons -->
-	<Column size="1" lg="1-2">
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Button Variants</Heading>
-			{/snippet}
-
+	<Column size="100" lg="1-2">
+		<Card title="Button Variants">
 			<ButtonGroup>
 				<Button variant="primary">Primary</Button>
 				<Button variant="secondary">Secondary</Button>
@@ -89,12 +85,8 @@
 	</Column>
 
 	<!-- Button Sizes -->
-	<Column size="1" lg="1-2">
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Button Sizes</Heading>
-			{/snippet}
-
+	<Column size="100" lg="1-2">
+		<Card title="Button Sizes">
 			<ButtonGroup>
 				<Button variant="primary" size="xs">Extra Small</Button>
 				<Button variant="primary" size="sm">Small</Button>
@@ -109,12 +101,8 @@
 <!-- Outline and States Grid -->
 <Grid>
 	<!-- Outline Buttons -->
-	<Column size="1" lg="1-2">
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Outline Buttons</Heading>
-			{/snippet}
-
+	<Column size="100" lg="1-2">
+		<Card title="Outline Buttons">
 			<ButtonGroup>
 				<Button variant="primary" outline>Primary</Button>
 				<Button variant="secondary" outline>Secondary</Button>
@@ -127,12 +115,8 @@
 	</Column>
 
 	<!-- Button States -->
-	<Column size="1" lg="1-2">
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Button States</Heading>
-			{/snippet}
-
+	<Column size="100" lg="1-2">
+		<Card title="Button States">
 			<ButtonGroup>
 				<Button variant="primary">Normal</Button>
 				<Button variant="primary" disabled>Disabled</Button>
@@ -146,11 +130,7 @@
 </Grid>
 
 <!-- Block Buttons -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Block Buttons</Heading>
-	{/snippet}
-
+<Card title="Block Buttons">
 	<div class="pa-btn-group pa-btn-group--vertical">
 		<Button variant="primary" block>Block Level Button</Button>
 		<Button variant="secondary" block>Another Block Button</Button>
@@ -158,11 +138,7 @@
 </Card>
 
 <!-- Button Groups -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Button Groups</Heading>
-	{/snippet}
-
+<Card title="Button Groups">
 	<Heading level={4}>Horizontal Button Group</Heading>
 	<ButtonGroup>
 		<Button variant="secondary">Left</Button>
@@ -181,12 +157,8 @@
 <!-- Icon Buttons Grid -->
 <Grid>
 	<!-- Button with Icons -->
-	<Column size="1" lg="1-2">
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Buttons with Text Icons</Heading>
-			{/snippet}
-
+	<Column size="100" lg="1-2">
+		<Card title="Buttons with Text Icons">
 			<Paragraph class="mb-1">
 				Buttons with icons are automatically left-aligned with fixed-width icon container:
 			</Paragraph>
@@ -212,15 +184,11 @@
 	</Column>
 
 	<!-- Icon Only Buttons -->
-	<Column size="1" lg="1-2">
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Icon Only Buttons</Heading>
-			{/snippet}
-
+	<Column size="100" lg="1-2">
+		<Card title="Icon Only Buttons">
 			<Paragraph class="mb-2">Icon-only button sizes (XS → XL):</Paragraph>
 			<Grid class="mb-2">
-				<Column size="1">
+				<Column size="100">
 					<ButtonGroup>
 						<button
 							class="pa-btn pa-btn--primary pa-btn--icon-only pa-btn--xs"
@@ -246,7 +214,7 @@
 			</Grid>
 			<Paragraph class="mb-2">Various colors - default size:</Paragraph>
 			<Grid class="mb-2">
-				<Column size="1">
+				<Column size="100">
 					<ButtonGroup>
 						<button class="pa-btn pa-btn--primary pa-btn--icon-only" title="Save"
 							><i class="fa-solid fa-floppy-disk"></i></button
@@ -271,7 +239,7 @@
 			</Grid>
 			<Paragraph class="mb-2">Compact (XS) - perfect for table actions:</Paragraph>
 			<Grid class="mb-2">
-				<Column size="1">
+				<Column size="100">
 					<ButtonGroup>
 						<button class="pa-btn pa-btn--primary pa-btn--icon-only pa-btn--xs" title="View"
 							>👁️</button
@@ -296,7 +264,7 @@
 			</Grid>
 			<Paragraph class="mb-2">With ripple and loading states (click to test):</Paragraph>
 			<Grid>
-				<Column size="1">
+				<Column size="100">
 					<ButtonGroup>
 						<button
 							class="pa-btn pa-btn--primary pa-btn--icon-only"
@@ -330,11 +298,7 @@
 </Grid>
 
 <!-- Fixed Width Buttons -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Fixed Width Buttons</Heading>
-	{/snippet}
-
+<Card title="Fixed Width Buttons">
 	<Paragraph class="mb-1">
 		Use fixed-width classes for consistent button sizing regardless of text length:
 	</Paragraph>
@@ -381,12 +345,8 @@
 <!-- Button Text Alignment (Two Column Layout) -->
 <Grid>
 	<!-- Left Column: Text Icons -->
-	<Column size="1" lg="1-2">
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Button Text Alignment</Heading>
-			{/snippet}
-
+	<Column size="100" lg="1-2">
+		<Card title="Button Text Alignment">
 			<Paragraph class="mb-1">Control text alignment within fixed-width buttons:</Paragraph>
 
 			<Heading level={4}>Left Aligned (icon has no left padding)</Heading>
@@ -450,12 +410,8 @@
 	</Column>
 
 	<!-- Right Column: Font Awesome Icons -->
-	<Column size="1" lg="1-2">
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Font Awesome Icons</Heading>
-			{/snippet}
-
+	<Column size="100" lg="1-2">
+		<Card title="Font Awesome Icons">
 			<Paragraph class="mb-1">Demonstrating Font Awesome icons with alignments:</Paragraph>
 
 			<Heading level={4}>Left Aligned</Heading>
@@ -528,12 +484,8 @@
 <!-- Interactive Effects Grid -->
 <Grid>
 	<!-- Ripple Effect Buttons -->
-	<Column size="1" lg="1-2">
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Ripple Effect Buttons</Heading>
-			{/snippet}
-
+	<Column size="100" lg="1-2">
+		<Card title="Ripple Effect Buttons">
 			<Paragraph class="mb-1">Click buttons to see ripple animation effect:</Paragraph>
 			<ButtonGroup>
 				<button class="pa-btn pa-btn--primary pa-btn--ripple" data-ripple>Primary Ripple</button>
@@ -548,12 +500,8 @@
 	</Column>
 
 	<!-- Loading State Buttons -->
-	<Column size="1" lg="1-2">
-		<Card>
-			{#snippet header()}
-				<Heading level={3}>Loading State Buttons</Heading>
-			{/snippet}
-
+	<Column size="100" lg="1-2">
+		<Card title="Loading State Buttons">
 			<Paragraph class="mb-1">Click buttons to simulate loading states:</Paragraph>
 			<ButtonGroup>
 				<button class="pa-btn pa-btn--primary pa-btn--ripple" data-loading-demo data-ripple>
@@ -577,11 +525,7 @@
 </Grid>
 
 <!-- Usage Examples -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Usage Guide</Heading>
-	{/snippet}
-
+<Card title="Usage Guide">
 	<Heading level={4}>Ripple Effect</Heading>
 	<Paragraph>
 		Add <code>pa-btn--ripple</code> class and <code>data-ripple</code> attribute to any button for

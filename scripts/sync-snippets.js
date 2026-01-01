@@ -20,9 +20,9 @@ const __dirname = path.dirname(__filename);
 
 // Paths
 const ROOT_DIR = path.resolve(__dirname, '..');
-const SOURCE_MANIFEST = path.resolve(ROOT_DIR, '../pure-admin/pure-admin-core/snippets/manifest.json');
+const SOURCE_MANIFEST = path.resolve(ROOT_DIR, '../pure-admin/packages/core/snippets/manifest.json');
 const LOCAL_MANIFEST = path.resolve(ROOT_DIR, 'snippets-manifest.json');
-const SNIPPETS_DIR = path.resolve(ROOT_DIR, '../pure-admin/pure-admin-core/snippets');
+const SNIPPETS_DIR = path.resolve(ROOT_DIR, '../pure-admin/packages/core/snippets');
 
 // Colors for terminal output
 const colors = {

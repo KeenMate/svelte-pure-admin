@@ -11,7 +11,8 @@
 		Grid,
 		Column,
 		Alert,
-		Tooltip
+		Tooltip,
+		Table
 	} from '$lib';
 
 	// Badge data for interactive groups
@@ -164,17 +165,66 @@
 	<title>Badges - Pure Admin Svelte</title>
 </svelte:head>
 
-<Heading level={1}>Badges</Heading>
+<!-- Badge Sizes Reference -->
+<Card title="Badge Sizes Reference" noPadding>
+	<Table striped>
+		<thead>
+			<tr>
+				<th>Size</th>
+				<th>Class</th>
+				<th>Font Size</th>
+				<th>Padding</th>
+				<th>Example</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><strong>XS</strong></td>
+				<td><code>.pa-badge--xs</code></td>
+				<td>1rem (10px)</td>
+				<td>0.2rem 0.4rem</td>
+				<td><Badge size="xs" variant="primary">Extra Small</Badge></td>
+			</tr>
+			<tr>
+				<td><strong>SM</strong></td>
+				<td><code>.pa-badge--sm</code></td>
+				<td>1.2rem (12px)</td>
+				<td>0.25rem 0.5rem</td>
+				<td><Badge size="sm" variant="primary">Small Badge</Badge></td>
+			</tr>
+			<tr>
+				<td><strong>Default</strong></td>
+				<td><code>.pa-badge</code></td>
+				<td>1.2rem (12px)</td>
+				<td>0.4rem 0.8rem</td>
+				<td><Badge variant="primary">Default Badge</Badge></td>
+			</tr>
+			<tr>
+				<td><strong>LG</strong></td>
+				<td><code>.pa-badge--lg</code></td>
+				<td>1.4rem (14px)</td>
+				<td>0.5rem 1rem</td>
+				<td><Badge size="lg" variant="primary">Large Badge</Badge></td>
+			</tr>
+			<tr>
+				<td><strong>XL</strong></td>
+				<td><code>.pa-badge--xl</code></td>
+				<td>1.6rem (16px)</td>
+				<td>0.6rem 1.2rem</td>
+				<td><Badge size="xl" variant="primary">Extra Large</Badge></td>
+			</tr>
+		</tbody>
+	</Table>
+</Card>
 
 <!-- Basic Badges -->
-<Card>
+<Card title="Basic Badges">
 	{#snippet header()}
-		<Heading level={3}>Basic Badges</Heading>
 		<Paragraph>Simple badges for status indication and categorization</Paragraph>
 	{/snippet}
 
 	<Grid>
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Heading level={4}>Default Badges</Heading>
 			<div class="component-showcase">
 				<Badge>Default</Badge>
@@ -188,7 +238,7 @@
 				<Badge variant="dark">Dark</Badge>
 			</div>
 		</Column>
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Heading level={4}>Small Badges</Heading>
 			<div class="component-showcase">
 				<Badge size="sm">Default</Badge>
@@ -206,14 +256,13 @@
 </Card>
 
 <!-- Pill Badges -->
-<Card>
+<Card title="Pill Badges">
 	{#snippet header()}
-		<Heading level={3}>Pill Badges</Heading>
 		<Paragraph>Rounded badges for a softer, modern appearance</Paragraph>
 	{/snippet}
 
 	<Grid>
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Heading level={4}>Regular Pills</Heading>
 			<div class="component-showcase">
 				<Badge pill>Default</Badge>
@@ -225,7 +274,7 @@
 				<Badge pill variant="info">Info</Badge>
 			</div>
 		</Column>
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Heading level={4}>Small Pills</Heading>
 			<div class="component-showcase">
 				<Badge pill size="sm">Default</Badge>
@@ -241,9 +290,8 @@
 </Card>
 
 <!-- Badges with Icons -->
-<Card>
+<Card title="Badges with Icons">
 	{#snippet header()}
-		<Heading level={3}>Badges with Icons</Heading>
 		<Paragraph>Enhanced badges with icon indicators</Paragraph>
 	{/snippet}
 
@@ -275,15 +323,66 @@
 	</div>
 </Card>
 
+<!-- Label Sizes Reference -->
+<Card title="Label Sizes Reference" noPadding>
+	<Table striped>
+		<thead>
+			<tr>
+				<th>Size</th>
+				<th>Class</th>
+				<th>Font Size</th>
+				<th>Padding</th>
+				<th>Example</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><strong>XS</strong></td>
+				<td><code>.pa-label--xs</code></td>
+				<td>1rem (10px)</td>
+				<td>0.2rem 0.4rem</td>
+				<td><Label size="xs" variant="primary">Extra Small</Label></td>
+			</tr>
+			<tr>
+				<td><strong>SM</strong></td>
+				<td><code>.pa-label--sm</code></td>
+				<td>1.2rem (12px)</td>
+				<td>0.25rem 0.5rem</td>
+				<td><Label size="sm" variant="primary">Small Label</Label></td>
+			</tr>
+			<tr>
+				<td><strong>Default</strong></td>
+				<td><code>.pa-label</code></td>
+				<td>1.2rem (12px)</td>
+				<td>0.4rem 0.8rem</td>
+				<td><Label variant="primary">Default Label</Label></td>
+			</tr>
+			<tr>
+				<td><strong>LG</strong></td>
+				<td><code>.pa-label--lg</code></td>
+				<td>1.4rem (14px)</td>
+				<td>0.5rem 1rem</td>
+				<td><Label size="lg" variant="primary">Large Label</Label></td>
+			</tr>
+			<tr>
+				<td><strong>XL</strong></td>
+				<td><code>.pa-label--xl</code></td>
+				<td>1.6rem (16px)</td>
+				<td>0.6rem 1.2rem</td>
+				<td><Label size="xl" variant="primary">Extra Large</Label></td>
+			</tr>
+		</tbody>
+	</Table>
+</Card>
+
 <!-- Labels -->
-<Card>
+<Card title="Labels">
 	{#snippet header()}
-		<Heading level={3}>Labels</Heading>
 		<Paragraph>Text labels for categorization and tagging</Paragraph>
 	{/snippet}
 
 	<Grid>
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Heading level={4}>Basic Labels</Heading>
 			<div class="component-showcase">
 				<Label>Frontend</Label>
@@ -295,7 +394,7 @@
 				<Label variant="info">Documentation</Label>
 			</div>
 		</Column>
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Heading level={4}>Outlined Labels</Heading>
 			<div class="component-showcase">
 				<Label outline>Frontend</Label>
@@ -311,16 +410,15 @@
 </Card>
 
 <!-- Badge Groups with Limits -->
-<Card>
+<Card title="Badge Groups with Limits">
 	{#snippet header()}
-		<Heading level={3}>Badge Groups with Limits</Heading>
 		<Paragraph>
 			Display many badges with automatic overflow handling - shows 5 badges and "... N more"
 			indicator
 		</Paragraph>
 	{/snippet}
 	<Grid>
-		<Column size="1">
+		<Column size="100">
 			<Heading level={4}>Legacy Mode: Project Tags (15 total)</Heading>
 			<BadgeGroup badges={projectTags} limit={5} class="mb-3" />
 
@@ -332,25 +430,25 @@
 		</Column>
 	</Grid>
 
-	<Alert variant="info">
+	<Alert variant="info" class="mt-4">
 		<small
 			><strong>Interactive Badge Groups:</strong> Click "» N more" to expand all badges. Click "« Collapse" to return to limited view. The visible limit defaults to 5 badges but can be customized with the <code>limit</code> prop (e.g., <code>&lt;BadgeGroup limit={10}&gt;</code>).</small
 		>
 	</Alert>
 
 	<Grid>
-		<Column size="1" md="1-3">
+		<Column size="100" md="1-3">
 			<Heading level={4}>Narrow Container Demo</Heading>
 			<BadgeGroup badges={projectTags} limit={5} />
 		</Column>
-		<Column size="1" md="2-3">
+		<Column size="100" md="2-3">
 			<Heading level={4}>Full Width Comparison</Heading>
 			<BadgeGroup badges={projectTags} limit={5} />
 		</Column>
 	</Grid>
 
 	<Grid>
-		<Column size="1" md="1-6">
+		<Column size="100" md="1-6">
 			<Heading level={4}>Wrapping Demo (Static)</Heading>
 			<BadgeGroup showAll>
 					<Badge size="sm" variant="primary">React</Badge>
@@ -384,7 +482,7 @@
 					<Badge size="sm" variant="dark">MATLAB</Badge>
 				</BadgeGroup>
 			</Column>
-		<Column size="1" md="5-6">
+		<Column size="100" md="5-6">
 			<Heading level={4}>Full Width Comparison</Heading>
 			<BadgeGroup showAll>
 					<Badge size="sm" variant="primary">React</Badge>
@@ -422,16 +520,15 @@
 </Card>
 
 <!-- Data-Driven Badge Groups (KeenMate Pattern) -->
-<Card>
+<Card title="Data-Driven Badge Groups (KeenMate Pattern)">
 	{#snippet header()}
-		<Heading level={3}>Data-Driven Badge Groups (KeenMate Pattern)</Heading>
 		<Paragraph>
 			Use generic data from database/API with member mappings - no need to transform data first!
 		</Paragraph>
 	{/snippet}
 
 	<Grid>
-		<Column size="1">
+		<Column size="100">
 			<Heading level={4}>Simple Member Mapping (Non-clickable)</Heading>
 			<Paragraph>Map properties from your data objects directly (category maps to variant colors)</Paragraph>
 			<BadgeGroup
@@ -456,7 +553,7 @@
 		</Column>
 	</Grid>
 
-	<Alert variant="success">
+	<Alert variant="success" class="mt-4">
 		<small
 			><strong>KeenMate Pattern:</strong> Use <code>displayValueMember</code>,
 			<code>variantMember</code>, <code>pillMember</code>, <code>sizeMember</code> to map
@@ -468,16 +565,15 @@
 </Card>
 
 <!-- Fixed-Width Badges with Ellipsis -->
-<Card>
+<Card title="Fixed-Width Badges with Ellipsis">
 	{#snippet header()}
-		<Heading level={3}>Fixed-Width Badges with Ellipsis</Heading>
 		<Paragraph>
 			Badges with constrained width show ellipsis for overflow text. Hover for tooltip with full
 			text.
 		</Paragraph>
 	{/snippet}
 		<Grid>
-			<Column size="1" md="1-2">
+			<Column size="100" md="1-2">
 				<Heading level={4}>Various Fixed Widths</Heading>
 				<div class="component-showcase">
 					<Tooltip text="Short" position="bottom">
@@ -499,7 +595,7 @@
 					</Tooltip>
 				</div>
 			</Column>
-			<Column size="1" md="1-2">
+			<Column size="100" md="1-2">
 				<Heading level={4}>Small Fixed-Width Badges</Heading>
 				<div class="component-showcase">
 					<Tooltip text="OK" position="bottom">
@@ -521,8 +617,8 @@
 			</Column>
 		</Grid>
 
-		<Grid style="margin-top: 1rem;">
-			<Column size="1">
+		<Grid class="mt-4">
+			<Column size="100">
 				<Heading level={4}>Practical Example: Tags with Consistent Width</Heading>
 				<div class="component-showcase">
 					<Tooltip text="JavaScript" position="bottom">
@@ -547,10 +643,10 @@
 			</Column>
 		</Grid>
 
-		<Grid style="margin-top: 1rem;">
-			<Column size="1">
+		<Grid class="mt-4">
+			<Column size="100">
 				<Heading level={4}>Left-Side Ellipsis (Path/Hierarchy Display)</Heading>
-				<Paragraph style="font-size: 0.75rem; margin-bottom: 0.5rem;">
+				<Paragraph class="text-xs mb-2">
 					When the important part is at the end (breadcrumbs, file paths, etc.)
 				</Paragraph>
 				<div class="component-showcase">
@@ -605,16 +701,15 @@
 </Card>
 
 <!-- Composite Badge Groups (Data-Driven) -->
-<Card>
+<Card title="Composite Badge Groups (Data-Driven)">
 	{#snippet header()}
-		<Heading level={3}>Composite Badge Groups (Data-Driven)</Heading>
 		<Paragraph>
 			Display composite badges from database/API data with member mappings and click handlers
 		</Paragraph>
 	{/snippet}
 
 	<Grid>
-		<Column size="1">
+		<Column size="100">
 			<Heading level={4}>Task List with Comment Counts</Heading>
 			<Paragraph>Click task name to open, click comment count to view comments</Paragraph>
 			<CompositeBadgeGroup
@@ -630,7 +725,7 @@
 		</Column>
 	</Grid>
 
-	<Alert variant="info">
+	<Alert variant="info" class="mt-4">
 		<small
 			><strong>Composite Badges:</strong> Perfect for items with two parts - a label and a
 			count/action. Use <code>onLabelClick</code> and <code>onButtonClick</code> to handle
@@ -640,13 +735,12 @@
 </Card>
 
 <!-- Usage Examples -->
-<Card>
+<Card title="Usage Examples">
 	{#snippet header()}
-		<Heading level={3}>Usage Examples</Heading>
 		<Paragraph>Real-world examples of badges and labels in context</Paragraph>
 	{/snippet}
 		<Grid>
-			<Column size="1" md="1-2">
+			<Column size="100" md="1-2">
 				<Heading level={4}>User Status</Heading>
 				<div class="usage-example">
 					<div class="user-item">
@@ -663,7 +757,7 @@
 					</div>
 				</div>
 			</Column>
-			<Column size="1" md="1-2">
+			<Column size="100" md="1-2">
 				<Heading level={4}>Project Tags</Heading>
 				<div class="usage-example">
 					<div class="project-item">
@@ -688,13 +782,12 @@
 </Card>
 
 <!-- Composite Badges -->
-<Card>
+<Card title="Composite Badges">
 	{#snippet header()}
-		<Heading level={3}>Composite Badges</Heading>
 		<Paragraph>Three-part badges with separate icon, label, and button sections</Paragraph>
 	{/snippet}
 		<Grid>
-			<Column size="1" md="1-2">
+			<Column size="100" md="1-2">
 				<Heading level={4}>Standard Color Variations</Heading>
 				<div class="component-showcase">
 					<CompositeBadge variant="primary" label="Primary" buttonText="×" interactive>
@@ -730,7 +823,7 @@
 					</CompositeBadge>
 				</div>
 			</Column>
-			<Column size="1" md="1-2">
+			<Column size="100" md="1-2">
 				<Heading level={4}>More Examples</Heading>
 				<div class="component-showcase">
 					<CompositeBadge variant="danger" label="Critical" buttonText="×" interactive>
@@ -748,10 +841,10 @@
 			</Column>
 		</Grid>
 
-		<Grid style="margin-top: 1rem;">
-			<Column size="1">
+		<Grid class="mt-4">
+			<Column size="100">
 				<Heading level={4}>Advanced: Mixed Section Colors</Heading>
-				<Paragraph style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+				<Paragraph class="text-sm text-secondary mb-3">
 					For advanced customization, you can mix individual section colors using separate classes.
 				</Paragraph>
 				<div class="component-showcase">
@@ -804,9 +897,8 @@
 </Card>
 
 <!-- Interactive Examples -->
-<Card>
+<Card title="Interactive Composite Badges">
 	{#snippet header()}
-		<Heading level={3}>Interactive Composite Badges</Heading>
 		<Paragraph>Examples with click handlers and dynamic behavior</Paragraph>
 	{/snippet}
 		<div class="component-showcase">
@@ -844,7 +936,7 @@
 			</CompositeBadge>
 		</div>
 
-		<Alert variant="primary" style="margin-top: 1rem;">
+		<Alert variant="primary" class="mt-4">
 			<small
 				><strong>Demo Actions:</strong> Click labels to view details, click buttons for actions. Check
 				browser console for event logs.</small

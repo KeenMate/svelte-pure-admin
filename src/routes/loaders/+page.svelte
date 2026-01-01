@@ -14,33 +14,30 @@
 <!-- NOTE: Some loader types use raw HTML as components don't exist yet -->
 
 <!-- Spinner Sizes -->
-<Card class="mb-6">
-	{#snippet header()}
-		<Heading level={3}>Spinner Sizes</Heading>
-	{/snippet}
+<Card title="Spinner Sizes" class="mb-6">
 
 	<Grid>
-		<Column size="1" md="1-4" class="text-center mb-4">
+		<Column size="100" md="1-4" class="text-center mb-4">
 			<Spinner size="xs" />
 			<Paragraph class="mt-2 text-secondary">.pa-spinner--xs<br />0.75rem</Paragraph>
 		</Column>
-		<Column size="1" md="1-4" class="text-center mb-4">
+		<Column size="100" md="1-4" class="text-center mb-4">
 			<Spinner size="sm" />
 			<Paragraph class="mt-2 text-secondary">.pa-spinner--sm<br />1rem (default)</Paragraph>
 		</Column>
-		<Column size="1" md="1-4" class="text-center mb-4">
+		<Column size="100" md="1-4" class="text-center mb-4">
 			<Spinner size="md" />
 			<Paragraph class="mt-2 text-secondary">.pa-spinner--md<br />1.5rem</Paragraph>
 		</Column>
-		<Column size="1" md="1-4" class="text-center mb-4">
+		<Column size="100" md="1-4" class="text-center mb-4">
 			<Spinner size="lg" />
 			<Paragraph class="mt-2 text-secondary">.pa-spinner--lg<br />2rem</Paragraph>
 		</Column>
-		<Column size="1" md="1-4" class="text-center mb-4">
+		<Column size="100" md="1-4" class="text-center mb-4">
 			<Spinner size="xl" />
 			<Paragraph class="mt-2 text-secondary">.pa-spinner--xl<br />3rem</Paragraph>
 		</Column>
-		<Column size="1" md="1-4" class="text-center mb-4">
+		<Column size="100" md="1-4" class="text-center mb-4">
 			<Spinner size="2xl" />
 			<Paragraph class="mt-2 text-secondary">.pa-spinner--2xl<br />4rem</Paragraph>
 		</Column>
@@ -48,33 +45,30 @@
 </Card>
 
 <!-- Spinner Colors -->
-<Card class="mb-6">
-	{#snippet header()}
-		<Heading level={3}>Spinner Colors</Heading>
-	{/snippet}
+<Card title="Spinner Colors" class="mb-6">
 
 	<Grid>
-		<Column size="1" md="1-4" class="text-center mb-4">
+		<Column size="100" md="1-4" class="text-center mb-4">
 			<Spinner size="lg" variant="primary" />
 			<Paragraph class="mt-2 text-secondary">.pa-spinner--primary</Paragraph>
 		</Column>
-		<Column size="1" md="1-4" class="text-center mb-4">
+		<Column size="100" md="1-4" class="text-center mb-4">
 			<Spinner size="lg" variant="secondary" />
 			<Paragraph class="mt-2 text-secondary">.pa-spinner--secondary</Paragraph>
 		</Column>
-		<Column size="1" md="1-4" class="text-center mb-4">
+		<Column size="100" md="1-4" class="text-center mb-4">
 			<Spinner size="lg" variant="success" />
 			<Paragraph class="mt-2 text-secondary">.pa-spinner--success</Paragraph>
 		</Column>
-		<Column size="1" md="1-4" class="text-center mb-4">
+		<Column size="100" md="1-4" class="text-center mb-4">
 			<Spinner size="lg" variant="danger" />
 			<Paragraph class="mt-2 text-secondary">.pa-spinner--danger</Paragraph>
 		</Column>
-		<Column size="1" md="1-4" class="text-center mb-4">
+		<Column size="100" md="1-4" class="text-center mb-4">
 			<Spinner size="lg" variant="warning" />
 			<Paragraph class="mt-2 text-secondary">.pa-spinner--warning</Paragraph>
 		</Column>
-		<Column size="1" md="1-4" class="text-center mb-4">
+		<Column size="100" md="1-4" class="text-center mb-4">
 			<Spinner size="lg" variant="info" />
 			<Paragraph class="mt-2 text-secondary">.pa-spinner--info</Paragraph>
 		</Column>
@@ -82,10 +76,7 @@
 </Card>
 
 <!-- Inline Spinners -->
-<Card class="mb-6">
-	{#snippet header()}
-		<Heading level={3}>Inline Spinners</Heading>
-	{/snippet}
+<Card title="Inline Spinners" class="mb-6">
 
 	<Paragraph class="mb-4">
 		<span
@@ -111,10 +102,7 @@
 </Card>
 
 <!-- Centered Loaders -->
-<Card class="mb-6">
-	{#snippet header()}
-		<Heading level={3}>Centered Loaders</Heading>
-	{/snippet}
+<Card title="Centered Loaders" class="mb-6">
 
 	<div
 		style="height: 200px; position: relative; border: 1px dashed #ddd; border-radius: 4px;"
@@ -126,13 +114,10 @@
 </Card>
 
 <!-- Loader with Text -->
-<Card class="mb-6">
-	{#snippet header()}
-		<Heading level={3}>Loaders with Text</Heading>
-	{/snippet}
+<Card title="Loaders with Text" class="mb-6">
 
 	<Grid>
-		<Column size="1" md="1-2" class="mb-4">
+		<Column size="100" md="1-2" class="mb-4">
 			<div
 				class="pa-loader-center"
 				style="height: 150px; border: 1px dashed #ddd; border-radius: 4px;"
@@ -141,7 +126,7 @@
 				<Paragraph class="mt-4 text-secondary">Loading data...</Paragraph>
 			</div>
 		</Column>
-		<Column size="1" md="1-2" class="mb-4">
+		<Column size="100" md="1-2" class="mb-4">
 			<div
 				class="pa-loader-center"
 				style="height: 150px; border: 1px dashed #ddd; border-radius: 4px;"
@@ -154,13 +139,10 @@
 </Card>
 
 <!-- Card Loading State -->
-<Card class="mb-6">
-	{#snippet header()}
-		<Heading level={3}>Card Loading States</Heading>
-	{/snippet}
+<Card title="Card Loading States" class="mb-6">
 
 	<Grid>
-		<Column size="1" md="1-3" class="mb-4">
+		<Column size="100" md="1-3" class="mb-4">
 			<Card>
 				{#snippet header()}
 					<Heading level={4}>Loading Card</Heading>
@@ -172,7 +154,7 @@
 				</div>
 			</Card>
 		</Column>
-		<Column size="1" md="1-3" class="mb-4">
+		<Column size="100" md="1-3" class="mb-4">
 			<Card>
 				{#snippet header()}
 					<Heading level={4}>Loading with Text</Heading>
@@ -183,7 +165,7 @@
 				</div>
 			</Card>
 		</Column>
-		<Column size="1" md="1-3" class="mb-4">
+		<Column size="100" md="1-3" class="mb-4">
 			<Card>
 				{#snippet header()}
 					<Heading level={4}>Loaded Content</Heading>
@@ -197,14 +179,11 @@
 
 <!-- Loader Types -->
 <!-- NOTE: Using raw HTML for loader variants not yet componentized -->
-<Card class="mb-6">
-	{#snippet header()}
-		<Heading level={3}>Loader Types</Heading>
-	{/snippet}
+<Card title="Loader Types" class="mb-6">
 
 	<Grid>
 		<!-- Dots Loader -->
-		<Column size="1" md="1-3" class="text-center mb-6">
+		<Column size="100" md="1-3" class="text-center mb-6">
 			<div class="pa-loader-dots pa-loader-dots--lg" style="color: #007bff;">
 				<span></span>
 				<span></span>
@@ -215,7 +194,7 @@
 		</Column>
 
 		<!-- Bars Loader -->
-		<Column size="1" md="1-3" class="text-center mb-6">
+		<Column size="100" md="1-3" class="text-center mb-6">
 			<div class="pa-loader-bars pa-loader-bars--lg" style="color: #28a745;">
 				<span></span>
 				<span></span>
@@ -228,21 +207,21 @@
 		</Column>
 
 		<!-- Pulse Loader -->
-		<Column size="1" md="1-3" class="text-center mb-6">
+		<Column size="100" md="1-3" class="text-center mb-6">
 			<div class="pa-loader-pulse pa-loader-pulse--lg" style="color: #dc3545;"></div>
 			<Paragraph class="mt-2 text-secondary"><strong>Pulse Loader</strong></Paragraph>
 			<Paragraph class="mt-2"><code>.pa-loader-pulse</code></Paragraph>
 		</Column>
 
 		<!-- Ring Loader -->
-		<Column size="1" md="1-3" class="text-center mb-4">
+		<Column size="100" md="1-3" class="text-center mb-4">
 			<div class="pa-loader-ring pa-loader-ring--lg" style="color: #ffc107;"></div>
 			<Paragraph class="mt-2 text-secondary"><strong>Ring Loader</strong></Paragraph>
 			<Paragraph class="mt-2"><code>.pa-loader-ring</code></Paragraph>
 		</Column>
 
 		<!-- Wave Loader -->
-		<Column size="1" md="1-3" class="text-center mb-4">
+		<Column size="100" md="1-3" class="text-center mb-4">
 			<div class="pa-loader-wave pa-loader-wave--lg" style="color: #17a2b8;">
 				<span></span>
 				<span></span>
@@ -255,7 +234,7 @@
 		</Column>
 
 		<!-- Spinner (existing) -->
-		<Column size="1" md="1-3" class="text-center mb-4">
+		<Column size="100" md="1-3" class="text-center mb-4">
 			<Spinner size="xl" class="text-secondary" />
 			<Paragraph class="mt-2 text-secondary"><strong>Spinner (Default)</strong></Paragraph>
 			<Paragraph class="mt-2"><code>.pa-spinner</code></Paragraph>
@@ -264,10 +243,7 @@
 </Card>
 
 <!-- Usage Examples -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Usage Examples</Heading>
-	{/snippet}
+<Card title="Usage Examples">
 
 	<Heading level={4} class="mb-2">Basic Spinner</Heading>
 	<pre class="mb-4"><code>&lt;div class="pa-spinner"&gt;&lt;/div&gt;</code></pre>

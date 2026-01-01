@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Button Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/buttons.html
+	 * Based on @keenmate/pure-admin-core snippets/buttons.html
 	 */
 
 	type ButtonVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark';

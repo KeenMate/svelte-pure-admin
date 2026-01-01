@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin TimelineItem Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/timeline.html
+	 * Based on @keenmate/pure-admin-core snippets/timeline.html
 	 * Individual timeline entry - adapts to parent timeline variant
 	 * IMPORTANT: Uses clear naming - iconText (not icon), avatarUrl (not avatar)
 	 */

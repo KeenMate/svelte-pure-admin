@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Heading from '$lib/typography/Heading.svelte';
 	import Paragraph from '$lib/typography/Paragraph.svelte';
-	import { Button, Alert, Card, Input, Select, FormLabel } from '$lib';
+	import { Button, Alert, Card, Input, Select, FormLabel, Grid, Column } from '$lib';
 	import ConfigDisplay from './ConfigDisplay.svelte';
 </script>
 
@@ -15,10 +15,7 @@
 <Paragraph>Svelte 5 component library for Pure Admin</Paragraph>
 
 <!-- Configuration -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Configuration System</Heading>
-	{/snippet}
+<Card title="Configuration System">
 
 	<Paragraph>
 		This demo uses <code>PureAdminProvider</code> to set custom configuration values. All child
@@ -45,10 +42,7 @@
 </Card>
 
 <!-- Buttons -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Buttons</Heading>
-	{/snippet}
+<Card title="Buttons">
 
 	<div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
 		<Button variant="primary">Primary</Button>
@@ -81,10 +75,7 @@
 
 <!-- Alerts -->
 <div style="margin-top: 2rem;">
-	<Card>
-		{#snippet header()}
-			<Heading level={3}>Alerts</Heading>
-		{/snippet}
+	<Card title="Alerts">
 
 		<Alert variant="success">
 			<strong>Success!</strong> This is a success alert.
@@ -111,22 +102,19 @@
 
 <!-- Cards -->
 <div style="margin-top: 2rem;">
-	<Card>
-		{#snippet header()}
-			<Heading level={3}>Card Examples</Heading>
-		{/snippet}
+	<Card title="Card Examples">
 
-		<div class="pure-g" style="margin: -1rem;">
-			<div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-3" style="padding: 1rem;">
+		<Grid class="pa-row--same-height">
+			<Column size="100" md="50" lg="1-3">
 				<Card>
 					{#snippet header()}
 						<Heading level={4}>Simple Card</Heading>
 					{/snippet}
 					This is a simple card with a header.
 				</Card>
-			</div>
+			</Column>
 
-			<div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-3" style="padding: 1rem;">
+			<Column size="100" md="50" lg="1-3">
 				<Card>
 					{#snippet header()}
 						<Heading level={4}>Card with Footer</Heading>
@@ -136,9 +124,9 @@
 						<Button variant="primary" size="sm">Action</Button>
 					{/snippet}
 				</Card>
-			</div>
+			</Column>
 
-			<div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-3" style="padding: 1rem;">
+			<Column size="100" md="50" lg="1-3">
 				<Card>
 					{#snippet header()}
 						<Heading level={4}>Another Card</Heading>
@@ -151,79 +139,76 @@
 						</div>
 					{/snippet}
 				</Card>
-			</div>
-		</div>
+			</Column>
+		</Grid>
 	</Card>
 </div>
 
 <!-- Forms -->
 <div style="margin-top: 2rem;">
-	<Card>
-		{#snippet header()}
-			<Heading level={3}>Horizontal Form Example</Heading>
-		{/snippet}
+	<Card title="Horizontal Form Example">
 
 		<form>
 			<!-- Line 1: First Name, Last Name, Email (equal widths) -->
-			<div class="pure-g" style="margin-bottom: 1rem;">
+			<Grid style="margin-bottom: 1rem;">
 				<!-- First Name -->
-				<div class="pure-u-1 pure-u-md-1-3" style="padding-right: 1rem;">
-					<div class="pure-g">
-						<div class="pure-u-1 pure-u-sm-1-3">
+				<Column size="100" md="1-3">
+					<Grid>
+						<Column size="100" sm="1-3">
 							<FormLabel for="firstName" style="padding-top: 0.5rem;">First Name</FormLabel>
-						</div>
-						<div class="pure-u-1 pure-u-sm-2-3">
+						</Column>
+						<Column size="100" sm="2-3">
 							<Input id="firstName" placeholder="John" />
-						</div>
-					</div>
-				</div>
+						</Column>
+					</Grid>
+				</Column>
 
 				<!-- Last Name -->
-				<div class="pure-u-1 pure-u-md-1-3" style="padding-right: 1rem;">
-					<div class="pure-g">
-						<div class="pure-u-1 pure-u-sm-1-3">
+				<Column size="100" md="1-3">
+					<Grid>
+						<Column size="100" sm="1-3">
 							<FormLabel for="lastName" style="padding-top: 0.5rem;">Last Name</FormLabel>
-						</div>
-						<div class="pure-u-1 pure-u-sm-2-3">
+						</Column>
+						<Column size="100" sm="2-3">
 							<Input id="lastName" placeholder="Doe" />
-						</div>
-					</div>
-				</div>
+						</Column>
+					</Grid>
+				</Column>
 
 				<!-- Email -->
-				<div class="pure-u-1 pure-u-md-1-3">
-					<div class="pure-g">
-						<div class="pure-u-1 pure-u-sm-1-3">
+				<Column size="100" md="1-3">
+					<Grid>
+						<Column size="100" sm="1-3">
 							<FormLabel for="email" style="padding-top: 0.5rem;">Email</FormLabel>
-						</div>
-						<div class="pure-u-1 pure-u-sm-2-3">
+						</Column>
+						<Column size="100" sm="2-3">
 							<Input id="email" type="email" placeholder="john.doe@company.com" />
-						</div>
-					</div>
-				</div>
-			</div>
+						</Column>
+					</Grid>
+				</Column>
+			</Grid>
 
 			<!-- Line 2: Phone (smaller), Department (larger), Job Title (medium) -->
-			<div class="pure-g" style="margin-bottom: 1rem;">
+			<Grid style="margin-bottom: 1rem;">
 				<!-- Phone -->
-				<div class="pure-u-1 pure-u-md-1-4" style="padding-right: 1rem;">
-					<div class="pure-g">
-						<div class="pure-u-1 pure-u-sm-1-3">
+				<Column size="100" md="1-4">
+					<Grid>
+						<Column size="100" sm="1-3">
 							<FormLabel for="phone" style="padding-top: 0.5rem;">Phone</FormLabel>
-						</div>
-						<div class="pure-u-1 pure-u-sm-2-3">
+						</Column>
+						<Column size="100" sm="2-3">
 							<Input id="phone" type="tel" placeholder="+1 555-0123" />
-						</div>
-					</div>
-				</div>
+						</Column>
+					</Grid>
+				</Column>
 
 				<!-- Department -->
-				<div class="pure-u-1 pure-u-md-5-12" style="padding-right: 1rem;">
-					<div class="pure-g">
-						<div class="pure-u-1 pure-u-sm-2-5">
+				<Column size="100" md="5-12">
+					<Grid>
+						<Column size="100" sm="2-5">
 							<FormLabel for="department" style="padding-top: 0.5rem;">Department</FormLabel>
-						</div>
-						<div class="pure-u-1 pure-u-sm-3-5">
+						</Column>
+						<Column size="100" sm="3-5">
 							<Select id="department">
 								<option value="">Select department...</option>
 								<option value="engineering">Engineering</option>
@@ -231,69 +216,69 @@
 								<option value="sales">Sales</option>
 								<option value="hr">Human Resources</option>
 							</Select>
-						</div>
-					</div>
-				</div>
+						</Column>
+					</Grid>
+				</Column>
 
 				<!-- Job Title -->
-				<div class="pure-u-1 pure-u-md-1-3">
-					<div class="pure-g">
-						<div class="pure-u-1 pure-u-sm-1-3">
+				<Column size="100" md="1-3">
+					<Grid>
+						<Column size="100" sm="1-3">
 							<FormLabel for="jobTitle" style="padding-top: 0.5rem;">Job Title</FormLabel>
-						</div>
-						<div class="pure-u-1 pure-u-sm-2-3">
+						</Column>
+						<Column size="100" sm="2-3">
 							<Input id="jobTitle" placeholder="Senior Developer" />
-						</div>
-					</div>
-				</div>
-			</div>
+						</Column>
+					</Grid>
+				</Column>
+			</Grid>
 
 			<!-- Line 3: Address (larger), City (medium), Zip (small) -->
-			<div class="pure-g" style="margin-bottom: 1rem;">
+			<Grid style="margin-bottom: 1rem;">
 				<!-- Address -->
-				<div class="pure-u-1 pure-u-md-1-2" style="padding-right: 1rem;">
-					<div class="pure-g">
-						<div class="pure-u-1 pure-u-sm-1-4">
+				<Column size="100" md="1-2">
+					<Grid>
+						<Column size="100" sm="1-4">
 							<FormLabel for="address" style="padding-top: 0.5rem;">Address</FormLabel>
-						</div>
-						<div class="pure-u-1 pure-u-sm-3-4">
+						</Column>
+						<Column size="100" sm="3-4">
 							<Input id="address" placeholder="123 Main Street" />
-						</div>
-					</div>
-				</div>
+						</Column>
+					</Grid>
+				</Column>
 
 				<!-- City -->
-				<div class="pure-u-1 pure-u-md-1-3" style="padding-right: 1rem;">
-					<div class="pure-g">
-						<div class="pure-u-1 pure-u-sm-1-4">
+				<Column size="100" md="1-3">
+					<Grid>
+						<Column size="100" sm="1-4">
 							<FormLabel for="city" style="padding-top: 0.5rem;">City</FormLabel>
-						</div>
-						<div class="pure-u-1 pure-u-sm-3-4">
+						</Column>
+						<Column size="100" sm="3-4">
 							<Input id="city" placeholder="San Francisco" />
-						</div>
-					</div>
-				</div>
+						</Column>
+					</Grid>
+				</Column>
 
 				<!-- Zip Code -->
-				<div class="pure-u-1 pure-u-md-1-6">
-					<div class="pure-g">
-						<div class="pure-u-1 pure-u-sm-2-5">
+				<Column size="100" md="1-6">
+					<Grid>
+						<Column size="100" sm="2-5">
 							<FormLabel for="zip" style="padding-top: 0.5rem;">Zip</FormLabel>
-						</div>
-						<div class="pure-u-1 pure-u-sm-3-5">
+						</Column>
+						<Column size="100" sm="3-5">
 							<Input id="zip" placeholder="94102" />
-						</div>
-					</div>
-				</div>
-			</div>
+						</Column>
+					</Grid>
+				</Column>
+			</Grid>
 
 			<!-- Submit Button -->
-			<div class="pure-g">
-				<div class="pure-u-1" style="text-align: right;">
+			<Grid>
+				<Column size="100" style="text-align: right;">
 					<Button variant="secondary" style="margin-right: 0.5rem;">Cancel</Button>
 					<Button variant="primary" type="submit">Submit</Button>
-				</div>
-			</div>
+				</Column>
+			</Grid>
 		</form>
 
 		{#snippet footer()}

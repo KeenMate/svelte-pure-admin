@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Sidebar Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/layout.html
+	 * Based on @keenmate/pure-admin-core snippets/layout.html
 	 */
 
 	type SidebarMode = 'sticky' | 'icon-collapse';

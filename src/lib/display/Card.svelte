@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Card Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/cards.html
+	 * Based on @keenmate/pure-admin-core snippets/cards.html
 	 */
 
 	type CardVariant = 'primary' | 'success' | 'warning' | 'danger';
@@ -15,6 +15,8 @@
 		stat?: boolean;
 		/** Simple title text (alternative to header snippet) */
 		title?: string;
+		/** Subtitle/description text (shown below title) */
+		subtitle?: string;
 		/** Additional CSS classes */
 		class?: string;
 		/** Header snippet (for complex headers) */
@@ -40,6 +42,7 @@
 		noPadding = false,
 		stat = false,
 		title,
+		subtitle,
 		class: className = '',
 		header,
 		titleIcon,
@@ -68,7 +71,7 @@
 	});
 
 	// Determine if we should show header
-	const hasHeader = $derived(header || title || titleIcon || tools || tabs || meta);
+	const hasHeader = $derived(header || title || subtitle || titleIcon || tools || tabs || meta);
 	// Determine if we should show footer
 	const hasFooter = $derived(footer || actions);
 </script>
@@ -86,14 +89,13 @@
 				{#if title || titleIcon}
 					<div class="pa-card__title">
 						{#if titleIcon}
-							<span class="pa-card__title-icon">
-								{@render titleIcon()}
-							</span>
+							<span class="pa-card__title-icon">{@render titleIcon()}</span>
 						{/if}
-						{#if title}
-							<h3 class="pa-card__title-text">{title}</h3>
-						{/if}
+						<h3 class="pa-card__title-text">{title}</h3>
 					</div>
+				{/if}
+				{#if subtitle}
+					<p class="pa-text pa-text--secondary">{subtitle}</p>
 				{/if}
 				{#if tools}
 					<div class="pa-card__tools">

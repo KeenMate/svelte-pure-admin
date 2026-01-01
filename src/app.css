@@ -1,3 +1,13 @@
+/* CSS Variables */
+:root {
+	--pa-card-header-min-height: 5rem; /* 50px */
+}
+
+/* Consistent card header height regardless of content */
+.pa-card__header {
+	min-height: var(--pa-card-header-min-height);
+}
+
 /* Global utility classes */
 .cursor-pointer {
 	cursor: pointer;

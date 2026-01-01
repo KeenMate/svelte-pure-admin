@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin ProfilePanel Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/profile.html
+	 * Based on @keenmate/pure-admin-core snippets/profile.html
 	 */
 
 	interface Props {

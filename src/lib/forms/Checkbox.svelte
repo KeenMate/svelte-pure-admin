@@ -1,14 +1,30 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Checkbox Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/forms.html
+	 * Based on @keenmate/pure-admin-core snippets/forms.html
+	 *
+	 * Uses the custom tri-state checkbox pattern from pure-admin-visual:
+	 * - Supports checked, unchecked, and indeterminate states
+	 * - X-mark variant (shows X instead of checkmark when checked)
+	 * - Size variants (xs, sm, default, lg, xl)
+	 *
+	 * This is a labeled checkbox (label wraps the box).
+	 * For the raw checkbox without label wrapper, use CheckboxBox.
 	 */
+
+	type CheckboxSize = 'xs' | 'sm' | 'lg' | 'xl';
 
 	interface Props {
 		/** Checkbox checked state */
 		checked?: boolean;
+		/** Indeterminate state (partial selection) */
+		indeterminate?: boolean;
 		/** Disabled state */
 		disabled?: boolean;
+		/** Use X mark instead of checkmark when checked */
+		xMark?: boolean;
+		/** Checkbox size */
+		size?: CheckboxSize;
 		/** Checkbox ID (required for label association) */
 		id: string;
 		/** Checkbox name */
@@ -19,7 +35,9 @@
 		label?: string;
 		/** Additional CSS classes for wrapper */
 		class?: string;
-		/** Label snippet (alternative to label prop) */
+		/** Icon snippet (rendered before label text) */
+		icon?: import('svelte').Snippet;
+		/** Label snippet (alternative to label prop for custom label content) */
 		labelSnippet?: import('svelte').Snippet;
 		/** Change handler */
 		onChange?: (event: Event & { currentTarget: HTMLInputElement }) => void;
@@ -27,28 +45,44 @@
 
 	let {
 		checked = $bindable(false),
+		indeterminate = false,
 		disabled = false,
+		xMark = false,
+		size,
 		id,
 		name,
 		value,
 		label,
 		class: className = '',
+		icon,
 		labelSnippet,
 		onChange
 	}: Props = $props();
 
-	// Build class string for wrapper
+	let inputElement: HTMLInputElement;
+
+	// Sync indeterminate property (can only be set via JS, not attribute)
+	$effect(() => {
+		if (inputElement) {
+			inputElement.indeterminate = indeterminate;
+		}
+	});
+
+	// Build class string for wrapper (using pa-checkbox pattern)
 	const wrapperClasses = $derived(() => {
-		const base = ['pa-form-check'];
+		const base = ['pa-checkbox'];
+		if (size) base.push(`pa-checkbox--${size}`);
+		if (xMark) base.push('pa-checkbox--x');
+		if (disabled) base.push('pa-checkbox--disabled');
 		if (className) base.push(className);
 		return base.join(' ');
 	});
 </script>
 
-<div class={wrapperClasses()}>
+<label class={wrapperClasses()}>
 	<input
+		bind:this={inputElement}
 		type="checkbox"
-		class="pa-checkbox"
 		bind:checked
 		{id}
 		{name}
@@ -56,13 +90,17 @@
 		{disabled}
 		onchange={onChange}
 	/>
+	<span class="pa-checkbox__box"></span>
 	{#if labelSnippet}
-		<label class="pa-form-check-label" for={id}>
+		<span class="pa-checkbox__label">
 			{@render labelSnippet()}
-		</label>
-	{:else if label}
-		<label class="pa-form-check-label" for={id}>
+		</span>
+	{:else if icon || label}
+		<span class="pa-checkbox__label">
+			{#if icon}
+				<span class="pa-checkbox__icon">{@render icon()}</span>
+			{/if}
 			{label}
-		</label>
+		</span>
 	{/if}
-</div>
+</label>

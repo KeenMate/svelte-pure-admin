@@ -14,6 +14,7 @@
 	import { onMount } from 'svelte';
 
 	interface SettingsPanelState {
+		themeMode: string;
 		sidebarBehavior: string;
 		sidebarCollapsed: boolean;
 		compactMode: boolean;
@@ -32,6 +33,7 @@
 
 	let isOpen = $state(false);
 	let settings = $state<SettingsPanelState>({
+		themeMode: 'light',
 		sidebarBehavior: 'hide',
 		sidebarCollapsed: false,
 		compactMode: false,
@@ -46,6 +48,7 @@
 		if (typeof window === 'undefined') return;
 
 		// Load localStorage-based settings
+		settings.themeMode = localStorage.getItem('theme-mode') || 'light';
 		settings.fontSize = localStorage.getItem('font-size') || 'default';
 		settings.fontFamily = localStorage.getItem('font-family') || 'default';
 		settings.sidebarCollapsed = localStorage.getItem('sidebar-hidden') === 'true';
@@ -63,6 +66,10 @@
 	// Apply settings to DOM
 	function applySettings() {
 		if (typeof document === 'undefined') return;
+
+		// Theme mode (light/dark)
+		document.body.classList.remove('pa-mode-light', 'pa-mode-dark');
+		document.body.classList.add(`pa-mode-${settings.themeMode}`);
 
 		// Font size
 		document.documentElement.classList.remove(
@@ -127,6 +134,7 @@
 	function saveSettings() {
 		if (typeof window === 'undefined') return;
 
+		localStorage.setItem('theme-mode', settings.themeMode);
 		localStorage.setItem('font-size', settings.fontSize);
 		localStorage.setItem('font-family', settings.fontFamily);
 		localStorage.setItem('sidebar-hidden', settings.sidebarCollapsed.toString());
@@ -159,6 +167,7 @@
 
 	// Reset to defaults
 	function resetSettings() {
+		settings.themeMode = 'light';
 		settings.fontSize = 'default';
 		settings.fontFamily = 'default';
 		settings.sidebarCollapsed = false;
@@ -166,6 +175,7 @@
 		settings.compactMode = false;
 
 		if (typeof localStorage !== 'undefined') {
+			localStorage.removeItem('theme-mode');
 			localStorage.removeItem('font-size');
 			localStorage.removeItem('font-family');
 			localStorage.removeItem('sidebar-hidden');
@@ -190,6 +200,7 @@
 	$effect(() => {
 		if (mounted) {
 			// Access all settings to track them
+			settings.themeMode;
 			settings.fontSize;
 			settings.fontFamily;
 			settings.sidebarCollapsed;
@@ -219,6 +230,15 @@
 
 	<div class="pa-settings-panel__content">
 		<h3 class="pa-settings-panel__title">Settings</h3>
+
+		<!-- Theme Mode -->
+		<div class="pa-settings-panel__section">
+			<label class="pa-settings-panel__label">Theme Mode</label>
+			<select class="pa-settings-panel__select" bind:value={settings.themeMode}>
+				<option value="light">Light</option>
+				<option value="dark">Dark</option>
+			</select>
+		</div>
 
 		<!-- Container Width -->
 		<div class="pa-settings-panel__section">

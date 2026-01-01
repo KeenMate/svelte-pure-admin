@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Select Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/forms.html
+	 * Based on @keenmate/pure-admin-core snippets/forms.html
 	 */
 
 	interface Props {

@@ -1,30 +1,52 @@
 <script lang="ts">
-	import Heading from '$lib/typography/Heading.svelte';
-	import Paragraph from '$lib/typography/Paragraph.svelte';
 	import {
 		Card,
 		Table,
 		Badge,
 		Button,
 		ButtonGroup,
+		Input,
 		Pager,
 		LoadMore
 	} from '$lib';
+
+	// Product data for Load More demo
+	const allProducts = [
+		{ name: 'MacBook Pro', price: '$2,399', stock: 12, status: 'success' as const, statusText: 'Available' },
+		{ name: 'iPhone 15', price: '$999', stock: 0, status: 'danger' as const, statusText: 'Out of Stock' },
+		{ name: 'iPad Air', price: '$599', stock: 8, status: 'success' as const, statusText: 'Available' },
+		{ name: 'Apple Watch', price: '$399', stock: 25, status: 'success' as const, statusText: 'Available' },
+		{ name: 'AirPods Pro', price: '$249', stock: 3, status: 'warning' as const, statusText: 'Low Stock' },
+		{ name: 'Mac Mini', price: '$599', stock: 0, status: 'danger' as const, statusText: 'Out of Stock' },
+		{ name: 'Studio Display', price: '$1,599', stock: 5, status: 'warning' as const, statusText: 'Low Stock' },
+		{ name: 'Magic Keyboard', price: '$99', stock: 42, status: 'success' as const, statusText: 'Available' },
+		{ name: 'HomePod Mini', price: '$99', stock: 18, status: 'success' as const, statusText: 'Available' },
+	];
+
+	let visibleCount = $state(3);
+	let isLoadingProducts = $state(false);
+
+	const visibleProducts = $derived(allProducts.slice(0, visibleCount));
+	const hasMoreProducts = $derived(visibleCount < allProducts.length);
+
+	function loadMoreProducts() {
+		isLoadingProducts = true;
+		// Simulate network delay
+		setTimeout(() => {
+			visibleCount = Math.min(visibleCount + 3, allProducts.length);
+			isLoadingProducts = false;
+		}, 800);
+	}
 </script>
 
 <svelte:head>
 	<title>Tables - Pure Admin Svelte</title>
 </svelte:head>
 
-<Heading level={1}>Tables</Heading>
-<Paragraph>Data tables with sorting, pagination, and various styling options.</Paragraph>
+<p>Data tables with sorting, pagination, and various styling options.</p>
 
 <!-- Basic Table with Pager -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Basic Table with Pagination</Heading>
-	{/snippet}
-
+<Card title="Basic Table with Pagination">
 	<!-- Pager Above Table (Center) -->
 	<Pager
 		align="center"
@@ -130,11 +152,7 @@
 </Card>
 
 <!-- Striped Table -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Striped Table</Heading>
-	{/snippet}
-
+<Card title="Striped Table">
 	<div class="pa-table-container">
 		<Table striped>
 			{#snippet children()}
@@ -183,11 +201,7 @@
 </Card>
 
 <!-- 2x Spacing Table -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>2x Spacing Table</Heading>
-	{/snippet}
-
+<Card title="2x Spacing Table">
 	<!-- Left-aligned pager -->
 	<Pager
 		align="left"
@@ -266,12 +280,8 @@
 </Card>
 
 <!-- Load More Examples -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Load More Positioning</Heading>
-	{/snippet}
-
-	<Heading level={4}>Table with Left-aligned Load More</Heading>
+<Card title="Load More Positioning">
+	<h4>Table with Left-aligned Load More</h4>
 	<div class="pa-table-container">
 		<Table>
 			{#snippet children()}
@@ -284,37 +294,31 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>MacBook Pro</td>
-						<td>$2,399</td>
-						<td>12</td>
-						<td><Badge variant="success">Available</Badge></td>
-					</tr>
-					<tr>
-						<td>iPhone 15</td>
-						<td>$999</td>
-						<td>0</td>
-						<td><Badge variant="danger">Out of Stock</Badge></td>
-					</tr>
-					<tr>
-						<td>iPad Air</td>
-						<td>$599</td>
-						<td>8</td>
-						<td><Badge variant="success">Available</Badge></td>
-					</tr>
+					{#each visibleProducts as product}
+						<tr>
+							<td>{product.name}</td>
+							<td>{product.price}</td>
+							<td>{product.stock}</td>
+							<td><Badge variant={product.status}>{product.statusText}</Badge></td>
+						</tr>
+					{/each}
 				</tbody>
 			{/snippet}
 		</Table>
 	</div>
 
-	<LoadMore
-		align="left"
-		text="Load more products"
-		count="showing 3 of 150"
-		showCount={true}
-	/>
+	{#if hasMoreProducts}
+		<LoadMore
+			align="left"
+			text="Load more products"
+			count="{visibleCount} of {allProducts.length}"
+			showCount={true}
+			loading={isLoadingProducts}
+			onClick={loadMoreProducts}
+		/>
+	{/if}
 
-	<Heading level={4} style="margin-top: 2rem;">Table with Center Load More</Heading>
+	<h4 class="mt-8">Table with Center Load More</h4>
 	<div class="pa-table-container">
 		<Table>
 			{#snippet children()}
@@ -334,16 +338,16 @@
 						<td>$4,567.89</td>
 					</tr>
 					<tr>
-						<td>Jane Doe</td>
-						<td>jane@example.com</td>
-						<td>45</td>
-						<td>$8,234.12</td>
+						<td>Sarah Johnson</td>
+						<td>sarah@example.com</td>
+						<td>18</td>
+						<td>$3,245.12</td>
 					</tr>
 					<tr>
-						<td>Bob Johnson</td>
-						<td>bob@example.com</td>
-						<td>12</td>
-						<td>$2,123.45</td>
+						<td>Mike Davis</td>
+						<td>mike@example.com</td>
+						<td>31</td>
+						<td>$6,789.45</td>
 					</tr>
 				</tbody>
 			{/snippet}
@@ -353,11 +357,11 @@
 	<LoadMore
 		align="center"
 		text="Load more customers"
-		count="showing 3 of 500"
+		count="3 of 1,247"
 		showCount={true}
 	/>
 
-	<Heading level={4} style="margin-top: 2rem;">Table with Right Load More</Heading>
+	<h4 class="mt-8">Table with Right Load More (Loading State)</h4>
 	<div class="pa-table-container">
 		<Table>
 			{#snippet children()}
@@ -373,19 +377,19 @@
 					<tr>
 						<td>#INV-001</td>
 						<td>2024-01-15</td>
-						<td>$1,299.99</td>
+						<td>$234.56</td>
 						<td><Badge variant="success">Paid</Badge></td>
 					</tr>
 					<tr>
 						<td>#INV-002</td>
 						<td>2024-01-14</td>
-						<td>$599.99</td>
+						<td>$567.89</td>
 						<td><Badge variant="warning">Pending</Badge></td>
 					</tr>
 					<tr>
 						<td>#INV-003</td>
 						<td>2024-01-13</td>
-						<td>$2,499.99</td>
+						<td>$123.45</td>
 						<td><Badge variant="success">Paid</Badge></td>
 					</tr>
 				</tbody>
@@ -395,8 +399,138 @@
 
 	<LoadMore
 		align="right"
-		text="Load more invoices"
-		count="showing 3 of 250"
-		showCount={true}
+		loading={true}
 	/>
+</Card>
+
+<!-- Pager Positioning Examples -->
+<Card title="Pager Positioning Examples">
+	<h4>Left-aligned Pager</h4>
+	<div class="pa-pager pa-pager--left">
+		<div class="pa-pager__container">
+			<div class="pa-pager__controls">
+				<Button variant="secondary" size="sm">«</Button>
+				<Button variant="secondary" size="sm">‹</Button>
+			</div>
+			<div class="pa-pager__info">
+				<Input type="number" size="sm" class="pa-pager__input" value={1} min={1} max={10} />
+				<span class="pa-pager__text">/ 10 pages</span>
+			</div>
+			<div class="pa-pager__controls">
+				<Button variant="secondary" size="sm">›</Button>
+				<Button variant="secondary" size="sm">»</Button>
+			</div>
+		</div>
+	</div>
+
+	<h4>Center-aligned Pager (Default)</h4>
+	<div class="pa-pager pa-pager--center">
+		<div class="pa-pager__container">
+			<div class="pa-pager__controls">
+				<Button variant="secondary" size="sm">«</Button>
+				<Button variant="secondary" size="sm">‹</Button>
+			</div>
+			<div class="pa-pager__info">
+				<Input type="number" size="sm" class="pa-pager__input" value={5} min={1} max={10} />
+				<span class="pa-pager__text">/ 10 pages</span>
+			</div>
+			<div class="pa-pager__controls">
+				<Button variant="secondary" size="sm">›</Button>
+				<Button variant="secondary" size="sm">»</Button>
+			</div>
+		</div>
+	</div>
+
+	<h4>Right-aligned Pager</h4>
+	<div class="pa-pager pa-pager--right">
+		<div class="pa-pager__container">
+			<div class="pa-pager__controls">
+				<Button variant="secondary" size="sm">«</Button>
+				<Button variant="secondary" size="sm">‹</Button>
+			</div>
+			<div class="pa-pager__info">
+				<Input type="number" size="sm" class="pa-pager__input" value={10} min={1} max={10} />
+				<span class="pa-pager__text">/ 10 pages</span>
+			</div>
+			<div class="pa-pager__controls">
+				<Button variant="secondary" size="sm">›</Button>
+				<Button variant="secondary" size="sm">»</Button>
+			</div>
+		</div>
+	</div>
+</Card>
+
+<!-- Alternative Icon Sets -->
+<Card title="Alternative Pager Icon Sets">
+	<h4>Double/Single Angles (Current)</h4>
+	<div class="pa-pager pa-pager--center">
+		<div class="pa-pager__container">
+			<div class="pa-pager__controls">
+				<Button variant="secondary" size="sm">«</Button>
+				<Button variant="secondary" size="sm">‹</Button>
+			</div>
+			<div class="pa-pager__info">
+				<Input type="number" size="sm" class="pa-pager__input" value={1} min={1} max={10} />
+				<span class="pa-pager__text">/ 10 pages</span>
+			</div>
+			<div class="pa-pager__controls">
+				<Button variant="secondary" size="sm">›</Button>
+				<Button variant="secondary" size="sm">»</Button>
+			</div>
+		</div>
+	</div>
+
+	<h4>Triangular Arrows</h4>
+	<div class="pa-pager pa-pager--center">
+		<div class="pa-pager__container">
+			<div class="pa-pager__controls">
+				<Button variant="secondary" size="sm">⏮</Button>
+				<Button variant="secondary" size="sm">◀</Button>
+			</div>
+			<div class="pa-pager__info">
+				<Input type="number" size="sm" class="pa-pager__input" value={1} min={1} max={10} />
+				<span class="pa-pager__text">/ 10 pages</span>
+			</div>
+			<div class="pa-pager__controls">
+				<Button variant="secondary" size="sm">▶</Button>
+				<Button variant="secondary" size="sm">⏭</Button>
+			</div>
+		</div>
+	</div>
+
+	<h4>Simple Arrows</h4>
+	<div class="pa-pager pa-pager--center">
+		<div class="pa-pager__container">
+			<div class="pa-pager__controls">
+				<Button variant="secondary" size="sm">⇤</Button>
+				<Button variant="secondary" size="sm">←</Button>
+			</div>
+			<div class="pa-pager__info">
+				<Input type="number" size="sm" class="pa-pager__input" value={1} min={1} max={10} />
+				<span class="pa-pager__text">/ 10 pages</span>
+			</div>
+			<div class="pa-pager__controls">
+				<Button variant="secondary" size="sm">→</Button>
+				<Button variant="secondary" size="sm">⇥</Button>
+			</div>
+		</div>
+	</div>
+
+	<h4>Mathematical Double Arrows</h4>
+	<div class="pa-pager pa-pager--center">
+		<div class="pa-pager__container">
+			<div class="pa-pager__controls">
+				<Button variant="secondary" size="sm">⇇</Button>
+				<Button variant="secondary" size="sm">⇦</Button>
+			</div>
+			<div class="pa-pager__info">
+				<Input type="number" size="sm" class="pa-pager__input" value={1} min={1} max={10} />
+				<span class="pa-pager__text">/ 10 pages</span>
+			</div>
+			<div class="pa-pager__controls">
+				<Button variant="secondary" size="sm">⇨</Button>
+				<Button variant="secondary" size="sm">⇉</Button>
+			</div>
+		</div>
+	</div>
 </Card>

@@ -22,7 +22,7 @@
 <Card>
 	{#snippet header()}
 		<div style="display: flex; justify-content: space-between; align-items: center;">
-			<Heading level={3}>Version Detail (2-Column)</Heading>
+			<h3>Version Detail (2-Column)</h3>
 			<ButtonGroup>
 				<Button variant="primary" size="sm">
 					<i class="fa-solid fa-table-list"></i> View in form
@@ -178,7 +178,7 @@
 <Card>
 	{#snippet header()}
 		<div style="display: flex; justify-content: space-between; align-items: center;">
-			<Heading level={3}>Merge Comparison (3-Column)</Heading>
+			<h3>Merge Comparison (3-Column)</h3>
 			<ButtonGroup>
 				<Button variant="success" size="sm">
 					<i class="fa-solid fa-code-merge"></i> Accept A

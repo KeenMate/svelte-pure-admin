@@ -1,25 +1,33 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Radio Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/forms.html
+	 * Based on @keenmate/pure-admin-core snippets/forms.html
+	 *
+	 * Uses the pa-radio label pattern from pure-admin-visual:
+	 * <label class="pa-radio">
+	 *   <input type="radio" ...>
+	 *   Label text
+	 * </label>
 	 */
 
+	type RadioSize = 'xs' | 'sm' | 'lg' | 'xl';
+
 	interface Props {
-		/** Radio group value */
+		/** Radio group value (bindable) */
 		group?: string | number;
 		/** Radio value */
 		value: string | number;
 		/** Disabled state */
 		disabled?: boolean;
-		/** Radio ID (required for label association) */
-		id: string;
 		/** Radio name (group name) */
 		name: string;
+		/** Radio size */
+		size?: RadioSize;
 		/** Label text */
 		label?: string;
 		/** Additional CSS classes for wrapper */
 		class?: string;
-		/** Label snippet (alternative to label prop) */
+		/** Label snippet (alternative to label prop for custom content) */
 		labelSnippet?: import('svelte').Snippet;
 		/** Change handler */
 		onChange?: (event: Event & { currentTarget: HTMLInputElement }) => void;
@@ -29,40 +37,36 @@
 		group = $bindable(),
 		value,
 		disabled = false,
-		id,
 		name,
+		size,
 		label,
 		class: className = '',
 		labelSnippet,
 		onChange
 	}: Props = $props();
 
-	// Build class string for wrapper
+	// Build class string for label wrapper
 	const wrapperClasses = $derived(() => {
-		const base = ['pa-form-check'];
+		const base = ['pa-radio'];
+		if (size) base.push(`pa-radio--${size}`);
+		if (disabled) base.push('pa-radio--disabled');
 		if (className) base.push(className);
 		return base.join(' ');
 	});
 </script>
 
-<div class={wrapperClasses()}>
+<label class={wrapperClasses()}>
 	<input
 		type="radio"
-		class="pa-radio"
 		bind:group
 		{value}
-		{id}
 		{name}
 		{disabled}
 		onchange={onChange}
 	/>
 	{#if labelSnippet}
-		<label class="pa-form-check-label" for={id}>
-			{@render labelSnippet()}
-		</label>
+		{@render labelSnippet()}
 	{:else if label}
-		<label class="pa-form-check-label" for={id}>
-			{label}
-		</label>
+		{label}
 	{/if}
-</div>
+</label>

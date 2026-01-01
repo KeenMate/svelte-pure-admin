@@ -1,5 +1,5 @@
 {
-  "name": "@pure-admin/svelte",
+  "name": "@keenmate/svelte-pure-admin",
   "version": "1.0.0",
   "description": "Svelte 5 component library for Pure Admin framework",
   "type": "module",
@@ -9,8 +9,7 @@
     ".": {
       "types": "./dist/index.d.ts",
       "svelte": "./dist/index.js"
-    },
-    "./css": "../pure-admin-core/dist/css/main.css"
+    }
   },
   "files": [
     "dist",
@@ -32,7 +31,8 @@
     "svelte": "^5.0.0"
   },
   "dependencies": {
-    "@pure-admin/core": "file:../pure-admin/pure-admin-core"
+    "@keenmate/pure-admin-core": "file:../pure-admin/packages/core",
+    "@keenmate/pure-admin-theme-audi": "file:../pure-admin/packages/theme-audi"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^3.0.0",

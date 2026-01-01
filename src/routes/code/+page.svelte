@@ -32,24 +32,16 @@
 <Paragraph>Display code snippets, JSON data, configuration files, and terminal output with syntax highlighting and copy functionality.</Paragraph>
 
 <!-- Inline Code -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Inline Code</Heading>
-	{/snippet}
-
+<Card title="Inline Code">
 	<Paragraph>Use the <code>&lt;code&gt;</code> element for inline code references like <code>npm install</code> or <code>const myVariable = true</code>.</Paragraph>
 	<Paragraph>Configure the server using <code>config.json</code> and set <code>port: 3000</code> in the configuration file.</Paragraph>
 	<Paragraph>Import components with <code>import {`{ Button }`} from 'react'</code> syntax.</Paragraph>
 </Card>
 
 <!-- Basic Code Blocks -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Basic Code Blocks</Heading>
-	{/snippet}
-
+<Card title="Basic Code Blocks">
 	<Grid>
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Heading level={4}>JavaScript</Heading>
 			<Code language="javascript">{`function greet(name) {
     return \`Hello, \${name}!\`;
@@ -59,7 +51,7 @@ const result = greet('World');
 console.log(result);`}</Code>
 		</Column>
 
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Heading level={4}>JSON</Heading>
 			<Code language="json">{`{
     "name": "Pure Admin",
@@ -73,7 +65,7 @@ console.log(result);`}</Code>
 }`}</Code>
 		</Column>
 
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Heading level={4}>HTML</Heading>
 			<Code language="html">{`<div class="pa-card">
     <div class="pa-card__header">
@@ -85,7 +77,7 @@ console.log(result);`}</Code>
 </div>`}</Code>
 		</Column>
 
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Heading level={4}>CSS</Heading>
 			<Code language="css">{`.pa-btn {
     padding: 0.5rem 0.75rem;
@@ -99,13 +91,9 @@ console.log(result);`}</Code>
 </Card>
 
 <!-- Code Blocks with Headers and Copy -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Code Blocks with Headers</Heading>
-	{/snippet}
-
+<Card title="Code Blocks with Headers">
 	<Grid>
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<div class="pa-code-block">
 				<div class="pa-code-block__header">
 					<span class="pa-code-block__title">server.js</span>
@@ -127,7 +115,7 @@ app.listen(3000);`}</Code>
 			</div>
 		</Column>
 
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<div class="pa-code-block">
 				<div class="pa-code-block__header">
 					<span class="pa-code-block__title">package.json</span>
@@ -152,13 +140,9 @@ app.listen(3000);`}</Code>
 </Card>
 
 <!-- Terminal/Bash Output -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Terminal Output</Heading>
-	{/snippet}
-
+<Card title="Terminal Output">
 	<Grid>
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Heading level={4}>Bash Commands</Heading>
 			<Code language="bash">{`$ npm install
 $ npm run build
@@ -167,7 +151,7 @@ $ npm start
 Server running on port 3000...`}</Code>
 		</Column>
 
-		<Column size="1" md="1-2">
+		<Column size="100" md="1-2">
 			<Heading level={4}>SQL Query</Heading>
 			<Code language="sql">{`SELECT users.name, orders.total
 FROM users
@@ -180,11 +164,7 @@ ORDER BY orders.total DESC;`}</Code>
 </Card>
 
 <!-- Compact Code Blocks -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Compact Variant</Heading>
-	{/snippet}
-
+<Card title="Compact Variant">
 	<Paragraph>Use <code>.pa-code--compact</code> for smaller code snippets.</Paragraph>
 	<Code language="python" compact>{`def fibonacci(n):
     if n <= 1:
@@ -193,39 +173,35 @@ ORDER BY orders.total DESC;`}</Code>
 </Card>
 
 <!-- All Language Variants -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Language Accent Colors</Heading>
-	{/snippet}
-
+<Card title="Language Accent Colors">
 	<Paragraph>Code blocks with language-specific colored left borders for visual identification.</Paragraph>
 
 	<Grid>
-		<Column size="1" md="1-3">
+		<Column size="100" md="1-3">
 			<Heading level={5}>JavaScript</Heading>
 			<Code language="javascript" compact>console.log('Hello');</Code>
 		</Column>
-		<Column size="1" md="1-3">
+		<Column size="100" md="1-3">
 			<Heading level={5}>JSON</Heading>
 			<Code language="json" compact>{`{"key": "value"}`}</Code>
 		</Column>
-		<Column size="1" md="1-3">
+		<Column size="100" md="1-3">
 			<Heading level={5}>HTML</Heading>
 			<Code language="html" compact>{`<div>Hello</div>`}</Code>
 		</Column>
-		<Column size="1" md="1-3">
+		<Column size="100" md="1-3">
 			<Heading level={5}>CSS</Heading>
 			<Code language="css" compact>.class {`{ color: red; }`}</Code>
 		</Column>
-		<Column size="1" md="1-3">
+		<Column size="100" md="1-3">
 			<Heading level={5}>Bash</Heading>
 			<Code language="bash" compact>$ npm install</Code>
 		</Column>
-		<Column size="1" md="1-3">
+		<Column size="100" md="1-3">
 			<Heading level={5}>SQL</Heading>
 			<Code language="sql" compact>SELECT * FROM users;</Code>
 		</Column>
-		<Column size="1" md="1-3">
+		<Column size="100" md="1-3">
 			<Heading level={5}>Python</Heading>
 			<Code language="python" compact>print("Hello World")</Code>
 		</Column>
@@ -233,11 +209,7 @@ ORDER BY orders.total DESC;`}</Code>
 </Card>
 
 <!-- Usage Examples -->
-<Card>
-	{#snippet header()}
-		<Heading level={3}>Usage Examples</Heading>
-	{/snippet}
-
+<Card title="Usage Examples">
 	<Heading level={4}>Inline Code</Heading>
 	<Code language="html">{`<Paragraph>Use <code>inline code</code> for references.</Paragraph>`}</Code>
 

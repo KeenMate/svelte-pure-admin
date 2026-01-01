@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Popconfirm Component (Svelte 5)
-	 * Based on @pure-admin/core snippets/popconfirm.html
+	 * Based on @keenmate/pure-admin-core snippets/popconfirm.html
 	 *
 	 * Small confirmation dialogs anchored to trigger elements.
 	 * Perfect for delete confirmations and quick yes/no decisions.
