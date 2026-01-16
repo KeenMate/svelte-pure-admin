@@ -21,7 +21,7 @@ const __dirname = path.dirname(__filename);
 // Paths
 const ROOT_DIR = path.resolve(__dirname, '..');
 const SOURCE_MANIFEST = path.resolve(ROOT_DIR, '../pure-admin/packages/core/snippets/manifest.json');
-const LOCAL_MANIFEST = path.resolve(ROOT_DIR, 'snippets-manifest.json');
+const LOCAL_MANIFEST = path.resolve(ROOT_DIR, 'packages/svelte-pure-admin/snippets-manifest.json');
 const SNIPPETS_DIR = path.resolve(ROOT_DIR, '../pure-admin/packages/core/snippets');
 
 // Colors for terminal output
@@ -94,62 +94,63 @@ function compareManifests(source, local) {
 }
 
 function getComponentMapping() {
+  const LIB = 'packages/svelte-pure-admin/src/lib';
   return {
-    'alerts.html': ['src/lib/feedback/Alert.svelte'],
-    'badges.html': ['src/lib/display/Badge.svelte', 'src/lib/display/CompositeBadge.svelte', 'src/lib/display/BadgeGroup.svelte'],
-    'buttons.html': ['src/lib/buttons/Button.svelte', 'src/lib/buttons/ButtonGroup.svelte'],
-    'cards.html': ['src/lib/display/Card.svelte'],
+    'alerts.html': [`${LIB}/feedback/Alert.svelte`],
+    'badges.html': [`${LIB}/display/Badge.svelte`, `${LIB}/display/CompositeBadge.svelte`, `${LIB}/display/BadgeGroup.svelte`],
+    'buttons.html': [`${LIB}/buttons/Button.svelte`, `${LIB}/buttons/ButtonGroup.svelte`],
+    'cards.html': [`${LIB}/display/Card.svelte`],
     'checkbox-lists.html': ['(Not yet componentized - specialized component)'],
-    'code.html': ['src/lib/display/Code.svelte', 'src/lib/display/CodeBlock.svelte'],
-    'command-palette.html': ['src/lib/navigation/CommandPalette.svelte'],
+    'code.html': [`${LIB}/display/Code.svelte`, `${LIB}/display/CodeBlock.svelte`],
+    'command-palette.html': [`${LIB}/navigation/CommandPalette.svelte`],
     'comparison.html': ['(Not componentized - raw HTML in pages)'],
     'customization.html': ['(Documentation only - CSS variables)'],
     'forms.html': [
-      'src/lib/forms/Input.svelte',
-      'src/lib/forms/Textarea.svelte',
-      'src/lib/forms/Select.svelte',
-      'src/lib/forms/Checkbox.svelte',
-      'src/lib/forms/Radio.svelte',
-      'src/lib/forms/FormGroup.svelte',
-      'src/lib/forms/FormLabel.svelte',
-      'src/lib/forms/InputGroup.svelte',
-      'src/lib/forms/InputGroupPrepend.svelte',
-      'src/lib/forms/InputGroupAppend.svelte'
+      `${LIB}/forms/Input.svelte`,
+      `${LIB}/forms/Textarea.svelte`,
+      `${LIB}/forms/Select.svelte`,
+      `${LIB}/forms/Checkbox.svelte`,
+      `${LIB}/forms/Radio.svelte`,
+      `${LIB}/forms/FormGroup.svelte`,
+      `${LIB}/forms/FormLabel.svelte`,
+      `${LIB}/forms/InputGroup.svelte`,
+      `${LIB}/forms/InputGroupPrepend.svelte`,
+      `${LIB}/forms/InputGroupAppend.svelte`
     ],
-    'grid.html': ['src/lib/layout/Grid.svelte', 'src/lib/layout/Column.svelte'],
+    'grid.html': [`${LIB}/layout/Grid.svelte`, `${LIB}/layout/Column.svelte`],
     'layout.html': [
-      'src/lib/layout/Layout.svelte',
-      'src/lib/layout/LayoutInner.svelte',
-      'src/lib/layout/LayoutContent.svelte',
-      'src/lib/layout/Navbar.svelte',
-      'src/lib/layout/Sidebar.svelte',
-      'src/lib/layout/SidebarItem.svelte',
-      'src/lib/layout/Main.svelte',
-      'src/lib/layout/Footer.svelte'
+      `${LIB}/layout/Layout.svelte`,
+      `${LIB}/layout/LayoutInner.svelte`,
+      `${LIB}/layout/LayoutContent.svelte`,
+      `${LIB}/layout/Navbar.svelte`,
+      `${LIB}/layout/Sidebar.svelte`,
+      `${LIB}/layout/SidebarItem.svelte`,
+      `${LIB}/layout/Main.svelte`,
+      `${LIB}/layout/Footer.svelte`
     ],
     'lists.html': [
-      'src/lib/display/BasicList.svelte',
-      'src/lib/display/OrderedList.svelte',
-      'src/lib/display/DefinitionList.svelte',
-      'src/lib/display/List.svelte',
-      'src/lib/display/ListItem.svelte'
+      `${LIB}/display/BasicList.svelte`,
+      `${LIB}/display/OrderedList.svelte`,
+      `${LIB}/display/DefinitionList.svelte`,
+      `${LIB}/display/List.svelte`,
+      `${LIB}/display/ListItem.svelte`
     ],
-    'loaders.html': ['src/lib/feedback/Spinner.svelte'],
-    'modals.html': ['src/lib/feedback/Modal.svelte'],
-    'popconfirm.html': ['src/lib/feedback/Popconfirm.svelte'],
-    'profile.html': ['src/lib/profile/ProfilePanel.svelte'],
-    'tables.html': ['src/lib/display/Table.svelte', 'src/lib/display/Pager.svelte', 'src/lib/display/LoadMore.svelte'],
+    'loaders.html': [`${LIB}/feedback/Spinner.svelte`],
+    'modals.html': [`${LIB}/feedback/Modal.svelte`],
+    'popconfirm.html': [`${LIB}/feedback/Popconfirm.svelte`],
+    'profile.html': [`${LIB}/profile/ProfilePanel.svelte`],
+    'tables.html': [`${LIB}/display/Table.svelte`, `${LIB}/display/Pager.svelte`, `${LIB}/display/LoadMore.svelte`],
     'tabs.html': [
-      'src/lib/navigation/Tabs.svelte',
-      'src/lib/navigation/TabItem.svelte',
-      'src/lib/navigation/TabsContent.svelte',
-      'src/lib/navigation/TabPanel.svelte',
-      'src/lib/navigation/TabsContainer.svelte',
-      'src/lib/display/Card.svelte (for card tabs)'
+      `${LIB}/navigation/Tabs.svelte`,
+      `${LIB}/navigation/TabItem.svelte`,
+      `${LIB}/navigation/TabsContent.svelte`,
+      `${LIB}/navigation/TabPanel.svelte`,
+      `${LIB}/navigation/TabsContainer.svelte`,
+      `${LIB}/display/Card.svelte (for card tabs)`
     ],
-    'timeline.html': ['src/lib/display/Timeline.svelte', 'src/lib/display/TimelineItem.svelte'],
-    'toasts.html': ['src/lib/feedback/Toast.svelte', 'src/lib/feedback/ToastContainer.svelte'],
-    'tooltips.html': ['src/lib/feedback/Tooltip.svelte', 'src/lib/feedback/Popover.svelte'],
+    'timeline.html': [`${LIB}/display/Timeline.svelte`, `${LIB}/display/TimelineItem.svelte`],
+    'toasts.html': [`${LIB}/feedback/Toast.svelte`, `${LIB}/feedback/ToastContainer.svelte`],
+    'tooltips.html': [`${LIB}/feedback/Tooltip.svelte`, `${LIB}/feedback/Popover.svelte`],
     'utilities.html': ['(CSS utilities - no components)'],
     'virtual-scroll.html': ['(Not yet componentized - advanced feature)']
   };

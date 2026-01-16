@@ -1,6 +1,6 @@
 # @keenmate/svelte-pure-admin
 
-Svelte 5 component library for Pure Admin framework.
+Svelte 5 component library for Pure Admin CSS framework - 80+ ready-to-use components for building admin dashboards.
 
 ## Installation
 
@@ -12,106 +12,179 @@ npm install @keenmate/svelte-pure-admin @keenmate/pure-admin-core
 
 ```svelte
 <script>
-  import { Button, Alert, Card } from '@keenmate/svelte-pure-admin';
-  import '@keenmate/pure-admin-core/css'; // Import Pure Admin CSS
+  import { PureAdminProvider, Button, Alert, Card } from '@keenmate/svelte-pure-admin';
+  import '@keenmate/pure-admin-core/css';
 </script>
 
-<Button variant="primary">Click me!</Button>
+<PureAdminProvider>
+  <Button variant="primary">Click me!</Button>
 
-<Alert variant="success">
-  <strong>Success!</strong> Operation completed.
-</Alert>
+  <Alert variant="success">
+    <strong>Success!</strong> Operation completed.
+  </Alert>
 
-<Card>
-  {#snippet header()}
-    <h3>Card Title</h3>
-  {/snippet}
+  <Card>
+    {#snippet header()}
+      <h3>Card Title</h3>
+    {/snippet}
 
-  Card content goes here.
+    Card content goes here.
 
-  {#snippet footer()}
-    <Button variant="primary">Action</Button>
-  {/snippet}
-</Card>
+    {#snippet footer()}
+      <Button variant="primary">Action</Button>
+    {/snippet}
+  </Card>
+</PureAdminProvider>
 ```
 
 ## Components
 
-### Button
+### Configuration
+| Component | Description |
+|-----------|-------------|
+| `PureAdminProvider` | Context provider for app-wide configuration |
+| `usePureAdminConfig` | Hook to access configuration |
+| `defaultConfig` | Default configuration object |
+| `mergeConfig` | Utility to merge configurations |
 
-Full-featured button component with variants, sizes, and states.
+### Layout
+| Component | Description |
+|-----------|-------------|
+| `Layout` | Main layout container |
+| `LayoutInner` | Inner layout wrapper |
+| `LayoutContent` | Content area wrapper |
+| `Navbar` | Top navigation bar with burger menu, brand, and nav items |
+| `NavItem` | Navigation item (link or dropdown trigger) |
+| `NavDropdown` | Dropdown menu for navbar |
+| `Sidebar` | Collapsible sidebar navigation |
+| `SidebarItem` | Sidebar menu item with submenu support |
+| `Main` | Main content area |
+| `Footer` | Page footer |
+| `Grid` | CSS grid container |
+| `Column` | Grid column |
 
-```svelte
-<Button variant="primary">Primary</Button>
-<Button variant="secondary" size="lg">Large Secondary</Button>
-<Button variant="danger" outline>Outline Danger</Button>
-<Button variant="success" block>Full Width</Button>
-<Button variant="info" disabled>Disabled</Button>
-```
+### Forms
+| Component | Description |
+|-----------|-------------|
+| `FormGroup` | Form group wrapper with validation states |
+| `FormLabel` | Form label with required indicator |
+| `FormHelp` | Help text for form fields |
+| `Input` | Text input with sizes and validation |
+| `Textarea` | Multiline text input |
+| `Select` | Dropdown select |
+| `Checkbox` | Checkbox input |
+| `CheckboxBox` | Box-style checkbox |
+| `CheckboxGroup` | Group of checkboxes |
+| `Radio` | Radio button |
+| `RadioGroup` | Group of radio buttons |
+| `InputGroup` | Input with addons/buttons |
+| `InputGroupAddon` | Addon for input group |
+| `SmallText` | Small helper text |
 
-**Props:**
-- `variant` - Button color variant: `primary`, `secondary`, `success`, `danger`, `warning`, `info`, `light`, `dark`
-- `size` - Button size: `xs`, `sm`, `lg`, `xl` (default is medium)
-- `outline` - Outline style (boolean)
-- `block` - Full width (boolean)
-- `iconOnly` - Icon-only button (boolean)
-- `disabled` - Disabled state (boolean)
-- `type` - Button type: `button`, `submit`, `reset`
-- `onclick` - Click handler function
-- `class` - Additional CSS classes
+### Buttons
+| Component | Description |
+|-----------|-------------|
+| `Button` | Button with variants, sizes, outline, block |
+| `ButtonGroup` | Horizontal/vertical button group |
 
-### Alert
+### Feedback
+| Component | Description |
+|-----------|-------------|
+| `Alert` | Alert messages with dismissible option |
+| `Modal` | Modal dialog with sizes and themes |
+| `Toast` | Toast notifications with auto-dismiss |
+| `ToastContainer` | Container for positioning toasts |
+| `Spinner` | Loading spinner |
+| `Loader` | Loading indicator |
+| `Tooltip` | Hover tooltips |
+| `Popover` | Click-triggered popovers |
+| `PopoverContainer` | Global popover container |
+| `Popconfirm` | Confirmation popover |
 
-Alert component with dismissible functionality.
+### Display
+| Component | Description |
+|-----------|-------------|
+| `Badge` | Status badges with variants and sizes |
+| `BadgeGroup` | Group of badges |
+| `CompositeBadge` | Badge with icon, label, and action |
+| `Card` | Card with header, body, footer |
+| `Table` | Data table with striped, hover, compact |
+| `TableResponsive` | Responsive table wrapper |
+| `List` | Unordered list |
+| `OrderedList` | Ordered list |
+| `ListItem` | List item |
+| `BasicList` | Simple list |
+| `CheckboxList` | List with checkboxes |
+| `CheckboxListItem` | Checkbox list item |
+| `DefinitionList` | Definition list (dt/dd) |
+| `Timeline` | Timeline container |
+| `TimelineItem` | Timeline entry |
+| `Code` | Inline code |
+| `CodeBlock` | Code block with syntax highlighting |
+| `CodeBlockWithHeader` | Code block with title |
+| `Label` | Text label |
+| `Stat` | Statistics display |
+| `Pager` | Pagination controls |
+| `LoadMore` | Load more button |
 
-```svelte
-<Alert variant="success">Success message</Alert>
-<Alert variant="danger" dismissible>Dismissible error</Alert>
-<Alert variant="warning" outline>Outline warning</Alert>
-```
+### Navigation
+| Component | Description |
+|-----------|-------------|
+| `Tabs` | Tab container |
+| `TabsContainer` | Alternative tab container |
+| `TabsContent` | Tab content wrapper |
+| `TabItem` | Individual tab |
+| `TabPanel` | Tab content panel |
+| `TabsVerticalLayout` | Vertical tabs layout |
+| `CommandPalette` | Command palette (Ctrl+K) |
+| `NavbarSearch` | Search input for navbar |
 
-**Props:**
-- `variant` - Alert color variant: `primary`, `secondary`, `success`, `danger`, `warning`, `info`
-- `dismissible` - Add close button (boolean)
-- `outline` - Outline style (boolean)
-- `compact` - Compact padding (boolean)
-- `class` - Additional CSS classes
+### Profile & Settings
+| Component | Description |
+|-----------|-------------|
+| `ProfilePanel` | User profile dropdown panel |
+| `NotificationsPanel` | Notifications dropdown |
+| `SettingsPanel` | Settings sidebar panel |
 
-### Card
+### Typography
+| Component | Description |
+|-----------|-------------|
+| `Heading` | h1-h6 headings |
+| `Paragraph` | Paragraph text |
 
-Flexible card component with header, body, and footer snippets.
-
-```svelte
-<Card>
-  {#snippet header()}
-    <h3>Card Title</h3>
-  {/snippet}
-
-  Card body content
-
-  {#snippet footer()}
-    <Button>Action</Button>
-  {/snippet}
-</Card>
-```
-
-**Props:**
-- `header` - Header snippet (optional)
-- `children` - Body content (main snippet)
-- `footer` - Footer snippet (optional)
-- `class` - Additional CSS classes
+### Services
+| Export | Description |
+|--------|-------------|
+| `dialogService` | Programmatic dialog/modal service |
+| `dialogStore` | Dialog state store |
+| `shortcutRegistry` | Keyboard shortcut registry |
+| `formatShortcut` | Format shortcut for display |
+| `ShortcutHelpDialog` | Keyboard shortcuts help dialog |
 
 ## Svelte 5 Features
 
-This library uses **Svelte 5** features:
+This library uses **Svelte 5** runes and snippets:
 
-- **Runes**: `$props()`, `$state()`, `$derived()`
-- **Snippets**: Named slots replacement with `{#snippet}` blocks
-- **Modern TypeScript**: Full type safety with interfaces
+```svelte
+<script>
+  // Runes for reactivity
+  let count = $state(0);
+  const doubled = $derived(count * 2);
+</script>
+
+<!-- Snippets for named slots -->
+<Card>
+  {#snippet header()}
+    <h3>Title</h3>
+  {/snippet}
+
+  Content here
+</Card>
+```
 
 ## CSS Import
 
-Always import the Pure Admin CSS in your root layout or app:
+Import Pure Admin CSS in your root layout:
 
 ```svelte
 <script>
@@ -119,37 +192,23 @@ Always import the Pure Admin CSS in your root layout or app:
 </script>
 ```
 
-Or import in your global CSS:
+Or use a theme package:
 
-```css
-@import '@keenmate/pure-admin-core/css';
+```svelte
+<script>
+  import '@keenmate/pure-admin-theme-audi'; // Audi theme
+</script>
 ```
 
 ## Development
 
 ```bash
-# Install dependencies
-npm install
-
-# Start dev server
-npm run dev
-
-# Build library
-npm run build
-
-# Package library
-npm run package
+npm install       # Install dependencies
+npm run dev       # Start dev server (http://localhost:5173)
+npm run build     # Build library
+npm run package   # Package for npm
+npm run check     # Type check
 ```
-
-## Demo
-
-Run the demo application:
-
-```bash
-npm run dev
-```
-
-Visit `http://localhost:5173` to see the component showcase.
 
 ## Browser Support
 
@@ -162,6 +221,6 @@ MIT
 
 ## Links
 
-- [@keenmate/pure-admin-core](https://github.com/pure-admin/core) - Core CSS framework
-- [Pure Admin](https://github.com/pure-admin) - Framework homepage
+- [GitHub Repository](https://github.com/keenmate/svelte-pure-admin)
+- [@keenmate/pure-admin-core](https://www.npmjs.com/package/@keenmate/pure-admin-core) - Core CSS framework
 - [Svelte 5 Documentation](https://svelte.dev/docs/svelte/overview)

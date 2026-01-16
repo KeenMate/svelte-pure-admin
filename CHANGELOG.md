@@ -7,6 +7,394 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+#### Navbar Three-Section Layout
+Updated Navbar component to support three-section layout matching pure-admin-core pattern.
+
+**New Snippet Props:**
+- `left?: Snippet` - Left section content (e.g., burger menu, brand)
+- `center?: Snippet` - Center section content (e.g., page title)
+- `right?: Snippet` - Right section content (e.g., nav items, user menu)
+
+**HTML Structure:**
+```html
+<nav class="pa-navbar">
+  <div class="pa-navbar__left">...</div>
+  <div class="pa-navbar__center">...</div>
+  <div class="pa-navbar__right">...</div>
+</nav>
+```
+
+#### Footer Three-Section Layout
+Updated Footer component to support three-section layout matching pure-admin-core pattern.
+
+**New Snippet Props:**
+- `left?: Snippet` - Left section content (e.g., copyright)
+- `center?: Snippet` - Center section content
+- `right?: Snippet` - Right section content (e.g., links)
+
+**HTML Structure:**
+```html
+<footer class="pa-footer">
+  <div class="pa-footer__left">...</div>
+  <div class="pa-footer__center">...</div>
+  <div class="pa-footer__right">...</div>
+</footer>
+```
+
+#### Dynamic Page Titles in Docs
+Implemented dynamic page titles that display in navbar instead of page content.
+
+**Changes:**
+- Updated `docs/src/routes/+layout.svelte` to use `$page.data.pageTitle` from SvelteKit's page store
+- Added `<svelte:head>` for dynamic browser tab titles
+- Created 31 `+page.ts` files exporting `pageTitle` for each route
+- Removed redundant `<Heading level={1}>` and `<svelte:head><title>` from all page content
+
+**Pattern:**
+```typescript
+// docs/src/routes/buttons/+page.ts
+export const load = () => {
+    return { pageTitle: 'Buttons' };
+};
+```
+
+### Fixed
+
+#### Column Component Auto-Sizing
+Fixed Column component to add `pa-col` class by default when no size or responsive props are specified.
+
+**Problem:** Columns without explicit size props didn't get any class, breaking the pure-admin flex grid auto-sizing behavior.
+
+**Solution:** Added logic to output `pa-col` class when `size`, `sm`, `md`, `lg`, and `xl` props are all undefined.
+
+```typescript
+// Before: No class output when no size specified
+// After: Outputs 'pa-col' for flex auto-sizing
+if (size) {
+    base.push(`pa-col-${size}`);
+} else if (!sm && !md && !lg && !xl) {
+    base.push('pa-col');
+}
+```
+
+**Use Case:** Theme color grids where columns should auto-size evenly:
+```svelte
+<Grid>
+  <Column>Color 1</Column>  <!-- Now gets pa-col class -->
+  <Column>Color 2</Column>
+  <Column>Color 3</Column>
+</Grid>
+```
+
+#### Lists Page Prop Names
+Fixed incorrect prop names in docs lists page to match BasicList component API.
+
+**Fixes:**
+- Changed `variant="danger"` → `iconVariant="danger"` (also info, warning)
+- Changed `<BasicList compact>` → `<BasicList spacing="compact">`
+- Changed `<BasicList spacious>` → `<BasicList spacing="spacious">`
+
+#### Dark Mode FOUC with Audi Theme
+Fixed flash of dark mode on page reload when using light mode with the Audi theme.
+
+**Problem:** The FOUC prevention script in `app.html` only added `pa-mode-dark` class when dark mode was saved, but didn't handle light mode. Since the Audi theme uses `:root, .pa-mode-dark` for dark defaults, pages would briefly flash dark before SettingsPanel mounted and applied `pa-mode-light`.
+
+**Solution:** Updated the blocking script to also apply `pa-mode-light` class when light mode is saved (or no preference), ensuring the override is in place before CSS renders.
+
+```javascript
+// Before: Only handled dark mode
+if (themeMode === 'dark') {
+    document.body.classList.add('pa-mode-dark');
+}
+
+// After: Handles both modes
+if (themeMode === 'dark') {
+    document.body.classList.add('pa-mode-dark');
+} else {
+    document.body.classList.add('pa-mode-light');
+}
+```
+
+---
+
+## [1.0.0-rc05] - 2026-01-09
+
+### Added
+
+#### TabsContainer Card Variant
+- New `card?: boolean` prop - makes tabs look like a card with tabs replacing the header
+- CSS class: `pa-tabs__container--card`
+- Height aligned with card header (40px)
+- Same border, border-radius, background, and shadow as regular cards
+
+**Usage:**
+```svelte
+<TabsContainer card>
+  <Tabs>
+    <TabItem active>Tab 1</TabItem>
+    <TabItem>Tab 2</TabItem>
+  </Tabs>
+  <TabsContent>
+    <!-- panels -->
+  </TabsContent>
+</TabsContainer>
+```
+
+#### TabsOverflow Component (NEW)
+- New component for tab overflow dropdown when tabs don't fit in container
+- CSS classes: `pa-tabs__overflow`, `pa-tabs__overflow-toggle`, `pa-tabs__overflow-menu`
+- Props: `hasActive` (shows accent underline), `show` (bindable dropdown state), `toggle` (custom icon snippet)
+- Click outside to close dropdown
+
+**Usage:**
+```svelte
+<TabsContainer card>
+  <Tabs>
+    <TabItem active>Tab 1</TabItem>
+    <TabItem>Tab 2</TabItem>
+    <TabsOverflow hasActive={false} bind:show={overflowOpen}>
+      {#snippet toggle()}<i class="fa-solid fa-ellipsis"></i>{/snippet}
+      <TabItem>Hidden Tab 1</TabItem>
+      <TabItem>Hidden Tab 2</TabItem>
+    </TabsOverflow>
+  </Tabs>
+</TabsContainer>
+```
+
+#### Modal Static Modifier
+- New `isStatic?: boolean` prop - prevents closing via ESC key or backdrop click
+- CSS class: `pa-modal--static`
+- Use case: License agreements, critical confirmations, required actions
+
+**Usage:**
+```svelte
+<Modal bind:show isStatic title="License Agreement">
+  <p>You must accept the terms to continue.</p>
+  {#snippet footer()}
+    <Button onclick={() => (show = false)}>I Accept</Button>
+  {/snippet}
+</Modal>
+```
+
+#### Tooltip Color Variants
+- Extended `variant` prop to include theme color variants: `color-1` through `color-9`
+- CSS classes: `pa-tooltip--color-1` through `pa-tooltip--color-9`
+- Uses `--pa-color-*` CSS variables that themes can define
+
+**Usage:**
+```svelte
+<Tooltip text="Custom color" variant="color-1">Hover me</Tooltip>
+```
+
+#### Popover Alignment Modifiers
+- New `alignment?: 'center' | 'right'` prop - controls text alignment in popover body
+- CSS classes: `pa-popover--center`, `pa-popover--right`
+- Default is left-aligned (no modifier class)
+
+**Usage:**
+```svelte
+<Popover title="Centered" alignment="center">
+  <p>This content is centered.</p>
+</Popover>
+```
+
+#### Card Inline Tabs
+- New `inlineTabs?: boolean` prop - places tabs inside the card header row as pill-style buttons
+- CSS class: `pa-card__tabs--inline`
+- Height aligned with cards without tabs
+
+**Usage:**
+```svelte
+<Card inlineTabs>
+  {#snippet tabs()}
+    <button class="pa-card__tab pa-card__tab--active">Tab 1</button>
+    <button class="pa-card__tab">Tab 2</button>
+  {/snippet}
+  Body content
+</Card>
+```
+
+#### ProfilePanel Footer Support
+- New `footer?: Snippet` prop for fixed action buttons at bottom of panel
+- CSS class: `pa-profile-panel__footer`
+- Footer renders outside body, always visible at bottom (doesn't scroll)
+- Proper pattern for "Sign Out", "Switch Account" buttons per pure-admin-core
+
+**Usage:**
+```svelte
+<ProfilePanel bind:show name="John Doe" email="john@example.com">
+  {#snippet nav()}
+    <ProfilePanelNavItem href="/profile">Profile Settings</ProfilePanelNavItem>
+  {/snippet}
+
+  {#snippet footer()}
+    <Button variant="secondary" block>Switch Account</Button>
+    <Button variant="danger" block>Sign Out</Button>
+  {/snippet}
+</ProfilePanel>
+```
+
+**Note:** The existing `actions` snippet (inside body) is deprecated. Use `footer` for action buttons.
+
+### Changed
+
+#### Peer Dependency Update
+- Updated `@keenmate/pure-admin-core` peer dependency: `^1.0.0-rc04` → `^1.0.0-rc05`
+
+### Exports
+- Added `TabsOverflow` component export
+
+---
+
+## [1.0.0-rc04] - 2026-01-06
+
+### Breaking Changes
+
+#### Removed Component-Specific Width/Gap Props
+Following pure-admin-core rc04's consolidation of sizing utilities, several component props have been removed in favor of utility classes.
+
+**Badge Component:**
+- Removed `width` prop and `BadgeWidth` type
+- Migration: Use utility classes like `class="wr-5 minwr-5"` instead of `width="5x"`
+
+**Button Component:**
+- Removed `width` prop and `ButtonWidth` type
+- Migration: Use utility classes like `class="wr-8 minwr-8"` instead of `width="8x"`
+
+**ButtonGroup Component:**
+- Removed `gap` prop (`'compact' | 'loose'`)
+- Migration: Use utility classes like `class="gap-2"` for compact, `class="gap-8"` for loose
+
+**Migration Examples:**
+```svelte
+<!-- Before (rc03) -->
+<Badge width="5x">Tag</Badge>
+<Button width="8x">Click</Button>
+<ButtonGroup gap="compact">...</ButtonGroup>
+
+<!-- After (rc04) - use utility classes -->
+<Badge class="wr-5 minwr-5">Tag</Badge>
+<Button class="wr-8 minwr-8">Click</Button>
+<ButtonGroup class="gap-2">...</ButtonGroup>
+```
+
+### Added
+
+#### Tabs Component
+- New `borderTop?: boolean` prop - moves active indicator from bottom to top
+- CSS class: `pa-tabs--border-top`
+- Useful for profile panel tabs and similar UI patterns
+
+### Changed
+
+#### Peer Dependency Update
+- Updated `@keenmate/pure-admin-core` peer dependency: `^1.0.0-rc03` → `^1.0.0-rc04`
+
+---
+
+## [1.0.0-rc03] - 2026-01-05
+
+### Added
+
+#### ProfilePanel No-Avatar Variant
+- New `noAvatar?: boolean` prop - hides avatar for corporate apps without user photos
+- CSS class: `pa-profile-panel__header--no-avatar`
+- Avatar is always in DOM (CSS controls visibility for SettingsPanel toggle support)
+
+#### SettingsPanel Profile Toggle
+- New "Profile Panel" section with "Hide Avatar" checkbox
+- Setting persisted to `localStorage.getItem('profile-no-avatar')`
+- Dynamically toggles `pa-profile-panel__header--no-avatar` class on profile panel
+
+### Changed
+
+#### Peer Dependency Update
+- Updated `@keenmate/pure-admin-core` peer dependency: `^1.0.0-rc02` → `^1.0.0-rc03`
+
+---
+
+## [1.0.0-rc02] - 2026-01-05
+
+### Added
+
+#### Profile Panel Favorites Components
+New components to support the profile panel favorites feature from pure-admin-core rc02.
+
+**New Components:**
+- **ProfilePanelFavorites** (`src/lib/profile/ProfilePanelFavorites.svelte`)
+  - Container for favorites list with optional add button
+  - Props: `children` (favorite items), `addButton` (snippet for add button), `class`
+  - CSS class: `pa-profile-panel__favorites`
+
+- **ProfilePanelFavoriteItem** (`src/lib/profile/ProfilePanelFavoriteItem.svelte`)
+  - Individual favorite item with icon, label, and remove button
+  - Props: `href`, `icon` (snippet), `label`, `removable`, `onClick`, `onRemove`, `class`
+  - CSS classes: `pa-profile-panel__favorite-item`, `__favorite-icon`, `__favorite-label`, `__favorite-remove`
+
+**ProfilePanel Enhancements:**
+- Added `tabs` snippet prop - renders between header and body for tabbed interface
+- Added `children` snippet prop - replaces nav+actions for full body content control
+- Supports new pure-admin-core rc02 tabbed profile panel pattern (Profile + Favorites tabs)
+
+**Usage Example:**
+```svelte
+<ProfilePanel bind:show name="John Doe" email="john@example.com" role="Admin">
+  {#snippet tabs()}
+    <Tabs variant="full">
+      <TabItem active>Profile</TabItem>
+      <TabItem>Favorites</TabItem>
+    </Tabs>
+  {/snippet}
+
+  <!-- Tab panels content -->
+  <TabPanel active>
+    <ProfilePanelNavItem href="/profile">Profile Settings</ProfilePanelNavItem>
+  </TabPanel>
+  <TabPanel>
+    <ProfilePanelFavorites>
+      <ProfilePanelFavoriteItem label="Dashboard" href="/dashboard">
+        {#snippet icon()}📊{/snippet}
+      </ProfilePanelFavoriteItem>
+    </ProfilePanelFavorites>
+  </TabPanel>
+</ProfilePanel>
+```
+
+**Exports:**
+- `ProfilePanelFavorites`
+- `ProfilePanelFavoriteItem`
+
+### Changed
+
+#### Peer Dependency Update
+- Updated `@keenmate/pure-admin-core` peer dependency: `^1.0.0-rc01` → `^1.0.0-rc02`
+
+---
+
+## [1.0.0-rc01] - 2026-01-02
+
+First release candidate of @keenmate/svelte-pure-admin.
+
+### Release Highlights
+- **80+ Svelte 5 components** for building admin dashboards
+- Full TypeScript support with type definitions
+- Svelte 5 runes (`$props`, `$state`, `$derived`) and snippets
+- Comprehensive component library: Layout, Forms, Buttons, Feedback, Display, Navigation
+- Dialog service for programmatic modals
+- Keyboard shortcut registry
+- Command palette with multi-step commands
+- FOUC prevention for theme/layout settings
+
+### Package Details
+- Package size: 70.7 kB (compressed)
+- Unpacked size: 313.5 kB
+- Total files: 200
+- Peer dependencies: `svelte ^5.0.0`, `@keenmate/pure-admin-core ^1.0.0-rc01`
+
+---
+
 ### Changed - 2025-12-25
 
 #### Grid Component Enhancements

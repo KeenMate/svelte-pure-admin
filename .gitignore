@@ -1,8 +1,11 @@
 # Dependencies
 node_modules/
-package-lock.json
 yarn.lock
 pnpm-lock.yaml
+
+# Package lock files for workspaces (root package-lock.json is kept)
+packages/**/package-lock.json
+docs/package-lock.json
 
 # Build outputs
 dist/

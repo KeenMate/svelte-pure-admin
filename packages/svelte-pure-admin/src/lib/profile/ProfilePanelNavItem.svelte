@@ -1,0 +1,48 @@
+<script lang="ts">
+	/**
+	 * Pure Admin ProfilePanelNavItem Component (Svelte 5)
+	 * Based on @keenmate/pure-admin-core snippets/profile.html
+	 *
+	 * Helper component for rendering nav items in ProfilePanel with proper BEM classes.
+	 */
+
+	interface Props {
+		/** Link URL */
+		href?: string;
+		/** Icon snippet */
+		icon?: import('svelte').Snippet;
+		/** Content children */
+		children?: import('svelte').Snippet;
+		/** Click handler */
+		onClick?: () => void;
+		/** Additional CSS classes */
+		class?: string;
+	}
+
+	let {
+		href,
+		icon,
+		children,
+		onClick,
+		class: className = ''
+	}: Props = $props();
+
+	const classes = $derived(() => {
+		const base = ['pa-profile-panel__nav-item'];
+		if (className) base.push(className);
+		return base.join(' ');
+	});
+</script>
+
+<li>
+	<a
+		{href}
+		class={classes()}
+		onclick={onClick}
+	>
+		{#if icon}
+			<span class="pa-profile-panel__nav-icon">{@render icon()}</span>
+		{/if}
+		{@render children?.()}
+	</a>
+</li>

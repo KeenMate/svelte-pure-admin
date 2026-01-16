@@ -1,0 +1,179 @@
+<script lang="ts">
+	import { Heading, Paragraph, Card, Grid, Column, Badge, Code } from '@keenmate/svelte-pure-admin';
+
+	// Color swatch data for semantic colors
+	const semanticColors = [
+		{ name: 'Success', variable: '--pa-success-bg', light: false },
+		{ name: 'Warning', variable: '--pa-warning-bg', light: false },
+		{ name: 'Danger', variable: '--pa-danger-bg', light: false },
+		{ name: 'Info', variable: '--pa-info-bg', light: false },
+		{ name: 'Accent', variable: '--pa-accent', light: false },
+		{ name: 'Primary BG', variable: '--pa-primary-bg', light: true },
+		{ name: 'Secondary BG', variable: '--pa-secondary-bg', light: true }
+	];
+
+	// Color slots 1-9
+	const colorSlots = Array.from({ length: 9 }, (_, i) => ({
+		name: `Color ${i + 1}`,
+		variable: `--pa-color-${i + 1}`,
+		num: i + 1
+	}));
+
+	// Swatch preview styles
+	const swatchPreviewStyle = (variable: string, light: boolean) =>
+		`background-color: var(${variable}); height: 6rem; display: flex; align-items: center; justify-content: center; font-weight: 600; border-radius: var(--pa-border-radius) var(--pa-border-radius) 0 0; ${light ? 'color: var(--pa-text-primary);' : 'color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.3);'}`;
+
+	const swatchInfoStyle =
+		'padding: 0.75rem; background: var(--pa-card-bg); font-size: 1.2rem; border: 1px solid var(--pa-border-color); border-top: none; border-radius: 0 0 var(--pa-border-radius) var(--pa-border-radius);';
+</script>
+
+<!-- Semantic Colors -->
+<Card title="Semantic Colors">
+	<Paragraph>Standard semantic colors used throughout the framework for status indication.</Paragraph>
+
+	<Grid class="gap-base">
+		{#each semanticColors as color}
+			<Column size="100" sm="50" md="1-3" lg="1-4">
+				<div>
+					<div style={swatchPreviewStyle(color.variable, color.light)}>{color.name}</div>
+					<div style={swatchInfoStyle}>
+						<div style="font-weight: 600; margin-bottom: 0.25rem;">{color.name}</div>
+						<div style="color: var(--pa-text-secondary); font-family: monospace; font-size: 1.1rem;">
+							{color.variable}
+						</div>
+					</div>
+				</div>
+			</Column>
+		{/each}
+	</Grid>
+</Card>
+
+<!-- Theme Color Slots -->
+<Card title="Theme Color Slots (1-9)">
+	<Paragraph>Custom theme colors that can be overridden per-theme. Use these for branded elements.</Paragraph>
+
+	<Grid class="gap-base">
+		{#each colorSlots as color}
+			<Column size="100" sm="50" md="1-3" lg="1-4">
+				<div>
+					<div style={swatchPreviewStyle(color.variable, false)}>{color.name}</div>
+					<div style={swatchInfoStyle}>
+						<div style="font-weight: 600; margin-bottom: 0.25rem;">{color.name}</div>
+						<div style="color: var(--pa-text-secondary); font-family: monospace; font-size: 1.1rem;">
+							{color.variable}
+						</div>
+					</div>
+				</div>
+			</Column>
+		{/each}
+	</Grid>
+</Card>
+
+<!-- Utility Classes -->
+<Card title="Color Utility Classes">
+	<Paragraph>Apply theme colors to any element using these utility classes.</Paragraph>
+
+	<Grid>
+		<Column size="100" md="1-3">
+			<Heading level={4}>Background Colors</Heading>
+			<Paragraph>
+				<Code>.pa-bg-color-1</Code> to <Code>.pa-bg-color-9</Code>
+			</Paragraph>
+			<div class="d-flex flex-wrap gap-xs" style="margin-top: 1rem;">
+				{#each colorSlots as color}
+					<span class="pa-badge pa-bg-color-{color.num}" style="color: white;">bg-color-{color.num}</span>
+				{/each}
+			</div>
+		</Column>
+		<Column size="100" md="1-3">
+			<Heading level={4}>Text Colors</Heading>
+			<Paragraph>
+				<Code>.pa-text-color-1</Code> to <Code>.pa-text-color-9</Code>
+			</Paragraph>
+			<div class="d-flex flex-wrap gap-sm" style="margin-top: 1rem;">
+				{#each colorSlots as color}
+					<span class="pa-text-color-{color.num}" style="font-weight: 600;">Text {color.num}</span>
+				{/each}
+			</div>
+		</Column>
+		<Column size="100" md="1-3">
+			<Heading level={4}>Border Colors</Heading>
+			<Paragraph>
+				<Code>.pa-border-color-1</Code> to <Code>.pa-border-color-9</Code>
+			</Paragraph>
+			<div class="d-flex flex-wrap gap-xs" style="margin-top: 1rem;">
+				{#each colorSlots.slice(0, 5) as color}
+					<span
+						class="pa-badge pa-border-color-{color.num}"
+						style="border: 2px solid; background: transparent;">Border {color.num}</span
+					>
+				{/each}
+			</div>
+		</Column>
+	</Grid>
+</Card>
+
+<!-- Applied to Components -->
+<Card title="Applied to Components">
+	<Paragraph>Examples of color utilities applied to various components.</Paragraph>
+
+	<Heading level={4}>Alerts with Theme Colors</Heading>
+	<div class="pa-alert pa-bg-color-1" style="color: white; border: none;">
+		<strong>Color 1 Alert:</strong> Using <code style="color: inherit;">.pa-bg-color-1</code> utility
+		class.
+	</div>
+	<div class="pa-alert pa-bg-color-4" style="color: white; border: none;">
+		<strong>Color 4 Alert:</strong> Using <code style="color: inherit;">.pa-bg-color-4</code> utility
+		class.
+	</div>
+	<div class="pa-alert pa-bg-color-7" style="color: white; border: none;">
+		<strong>Color 7 Alert:</strong> Using <code style="color: inherit;">.pa-bg-color-7</code> utility
+		class.
+	</div>
+
+	<Heading level={4} class="mt-4">Cards with Colored Headers</Heading>
+	<Grid>
+		<Column size="100" md="1-3">
+			<div class="pa-card">
+				<div class="pa-card__header pa-bg-color-1" style="color: white;">
+					<h3 style="color: inherit;">Color 1 Header</h3>
+				</div>
+				<div class="pa-card__body">
+					Card with <Code>.pa-bg-color-1</Code> on header.
+				</div>
+			</div>
+		</Column>
+		<Column size="100" md="1-3">
+			<div class="pa-card">
+				<div class="pa-card__header pa-bg-color-5" style="color: white;">
+					<h3 style="color: inherit;">Color 5 Header</h3>
+				</div>
+				<div class="pa-card__body">
+					Card with <Code>.pa-bg-color-5</Code> on header.
+				</div>
+			</div>
+		</Column>
+		<Column size="100" md="1-3">
+			<div class="pa-card">
+				<div class="pa-card__header pa-bg-color-8" style="color: white;">
+					<h3 style="color: inherit;">Color 8 Header</h3>
+				</div>
+				<div class="pa-card__body">
+					Card with <Code>.pa-bg-color-8</Code> on header.
+				</div>
+			</div>
+		</Column>
+	</Grid>
+
+	<Heading level={4} class="mt-4">Mixed Badges</Heading>
+	<div class="d-flex flex-wrap gap-xs">
+		<Badge variant="success">Success</Badge>
+		<Badge variant="warning">Warning</Badge>
+		<Badge variant="danger">Danger</Badge>
+		<Badge variant="info">Info</Badge>
+		<span class="pa-badge pa-bg-color-1" style="color: white;">Color 1</span>
+		<span class="pa-badge pa-bg-color-2" style="color: white;">Color 2</span>
+		<span class="pa-badge pa-bg-color-6" style="color: white;">Color 6</span>
+		<span class="pa-badge pa-bg-color-9" style="color: white;">Color 9</span>
+	</div>
+</Card>
