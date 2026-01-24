@@ -5,6 +5,58 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.5] - 2026-01-24
+
+### Added
+
+#### FormErrorSummary Component
+New component that encapsulates the form validation error summary pattern, reducing boilerplate when displaying validation errors with clickable anchor links.
+
+**Props:**
+- `errors: FormErrorItem[]` - Array of error objects with `field`, `id`, and `message`
+- `show?: boolean` - Whether to show the summary (default: `true`)
+- `class?: string` - Additional CSS class
+
+**Usage:**
+```svelte
+<FormErrorSummary errors={allErrors()} show={submitted} />
+```
+
+**Before (10 lines of boilerplate per form):**
+```svelte
+{#if submitted && errors().length > 0}
+  <Alert variant="danger" class="mb-4">
+    <Strong>{errors().length} error{errors().length > 1 ? 's' : ''} found:</Strong>
+    <BasicList class="mt-2 mb-0">
+      {#each errors() as error}
+        <li><Link href="#{error.id}">{error.field}</Link> - {error.message}</li>
+      {/each}
+    </BasicList>
+  </Alert>
+{/if}
+```
+
+**After (1 line):**
+```svelte
+<FormErrorSummary errors={allErrors()} show={submitted} />
+```
+
+**Exports:**
+- `FormErrorSummary` component
+- `FormErrorItem` type interface
+
+#### Docs: Real Use Case Form Example
+Added comprehensive "Create User Form" example to `/validation` page demonstrating:
+- Multiple fields (First Name, Last Name, Email, Role, Department)
+- Async API submission with 1.5s simulated delay
+- Loading state on submit button ("Creating User...")
+- Server-side validation error simulation (use `admin@example.com`)
+- Random server error simulation (10% chance)
+- FormErrorSummary integration with clickable error links
+- Success message showing created user details
+
+---
+
 ## [1.1.4] - 2026-01-24
 
 ### Added
@@ -67,6 +119,54 @@ console.log(await orders); // Order[]
 - `commonResponseConfig`, `pureDataConfig`
 - Types: `BatchCall`, `BatchRequest`, `BatchResult`, `BatchResponse`, `RpcError`
 - Types: `RpcTransport`, `RpcTransportConfig`, `HttpTransportOptions`, `SignalRTransportOptions`, `PhoenixTransportOptions`
+
+#### FormField Component
+New wrapper component that combines `FormGroup`, `FormLabel`, and `FormHelp` with automatic error/success state handling. Reduces validation boilerplate significantly.
+
+**Props:**
+- `label` - Field label text
+- `required` - Show required indicator (*)
+- `help` - Default help text
+- `successMessage` - Success message (shown when valid)
+- `errors` - Error messages array from validation
+- `touched` - Whether field has been interacted with
+- `hasValue` - Field has a value (for success state)
+- `state` - Manual state override ('success' | 'warning' | 'error')
+- `horizontal` - Horizontal layout
+
+**Usage with Felte:**
+```svelte
+<FormField
+  label="Email"
+  required
+  help="Enter your email"
+  successMessage="Valid email"
+  errors={$errors.email}
+  touched={$touched.email ?? false}
+  hasValue={!!$data.email}
+>
+  {#snippet children({ errors, touched })}
+    <Input name="email" {errors} {touched} />
+  {/snippet}
+</FormField>
+```
+
+**Exports:**
+- `FormField` component
+
+#### Docs: Felte Validation Integration
+Reworked `/validation` page to use Felte + Zod for form validation instead of manual state management.
+
+**New dependencies (docs only):**
+- `felte` - Form management library
+- `@felte/validator-zod` - Zod schema validator
+- `zod` - Schema validation
+
+**Features demonstrated:**
+- Felte + Zod setup and integration
+- Type-safe forms with `z.infer<typeof schema>`
+- Cross-field validation (password confirmation)
+- All 7 test cases using `FormField` component
 
 ### Changed
 

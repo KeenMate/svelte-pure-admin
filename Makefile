@@ -2,6 +2,18 @@
 
 .PHONY: help setup install dev dev-lib build build-docs build-all package check check-lib check-docs publish publish-dry clean sync-snippets sync-snippets-update verify docker-build docker-run docker-stop docker-restart docker-logs docker-clean docker-deploy docker-push
 
+# === Shell Configuration (cross-platform) ===
+# Use sh on Unix, cmd on Windows
+ifeq ($(OS),Windows_NT)
+    SHELL := cmd.exe
+    RM_RF := rmdir /s /q
+    NULL := nul
+else
+    SHELL := /bin/sh
+    RM_RF := rm -rf
+    NULL := /dev/null
+endif
+
 # === Configuration ===
 DOCKER_IMAGE_NAME = svelte-pure-admin
 DOCKER_REGISTRY = registry.km8.es
@@ -108,24 +120,28 @@ sync-snippets-update:
 # Verify package (clean + build + pack)
 verify: clean build
 	@echo "Creating package tarball for verification..."
-	cd packages/svelte-pure-admin && npm pack
+	npm pack -w @keenmate/svelte-pure-admin
 	@echo "Package verified and ready!"
 
 # Publish to npm
 publish: clean build
 	@echo "Publishing @keenmate/svelte-pure-admin to npm..."
-	npm run publish:lib $(NPM_TAG)
+	npm publish -w @keenmate/svelte-pure-admin --access public $(NPM_TAG)
 
 # Dry run publish
 publish-dry: clean build
 	@echo "Running dry-run publish test..."
-	cd packages/svelte-pure-admin && npm publish --dry-run --access public $(NPM_TAG)
+	npm publish -w @keenmate/svelte-pure-admin --dry-run --access public $(NPM_TAG)
 
 # Clean build artifacts
 clean:
 	@echo "Cleaning build artifacts..."
 	npm run clean
+ifeq ($(OS),Windows_NT)
+	@if exist node_modules\.cache rmdir /s /q node_modules\.cache
+else
 	rm -rf node_modules/.cache
+endif
 	@echo "Clean complete!"
 
 # === Docker Commands (for docs site) ===

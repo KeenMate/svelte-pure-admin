@@ -4,6 +4,8 @@
 		FormGroup,
 		FormLabel,
 		FormHelp,
+		FormField,
+		FormErrorSummary,
 		Input,
 		NumberInput,
 		DateInput,
@@ -15,117 +17,116 @@
 		Column,
 		Heading,
 		Paragraph,
+		Strong,
 		Alert,
-		Callout
+		Callout,
+		BasicList,
+		Link
 	} from '@keenmate/svelte-pure-admin';
 	import { HighlightedCode } from '$lib/components';
+	import { createForm } from 'felte';
+	import { validator } from '@felte/validator-zod';
+	import { z } from 'zod';
 
 	// ==========================================
 	// Test 1: Basic Email Validation
 	// ==========================================
-	let test1Email = $state('');
-	let test1Errors = $state<string[]>([]);
-	let test1Touched = $state(false);
-	let test1Saved = $state(false);
+	const test1Schema = z.object({
+		email: z.string().min(1, 'Email is required').email('Please enter a valid email address')
+	});
 
-	function validateTest1() {
-		test1Errors = [];
-		if (!test1Email) {
-			test1Errors = ['Email is required'];
-		} else if (!test1Email.includes('@')) {
-			test1Errors = ['Please enter a valid email address'];
-		}
-		return test1Errors.length === 0;
-	}
-
-	function saveTest1() {
-		test1Touched = true;
-		if (validateTest1()) {
+	const {
+		form: form1,
+		errors: errors1,
+		touched: touched1,
+		data: data1,
+		reset: reset1
+	} = createForm<z.infer<typeof test1Schema>>({
+		extend: validator({ schema: test1Schema }),
+		onSubmit: () => {
 			test1Saved = true;
-			setTimeout(() => test1Saved = false, 3000);
+			test1Submitted = false;
+			setTimeout(() => (test1Saved = false), 3000);
+		},
+		onError: () => {
+			test1Submitted = true;
 		}
-	}
+	});
+
+	let test1Saved = $state(false);
+	let test1Submitted = $state(false);
+
+	// Collect all Test 1 errors for summary
+	const test1AllErrors = $derived(() => {
+		const result: Array<{ field: string; id: string; message: string }> = [];
+		if ($errors1.email?.[0]) {
+			result.push({ field: 'Email', id: 'test1-email', message: $errors1.email[0] });
+		}
+		return result;
+	});
 
 	function resetTest1() {
-		test1Email = '';
-		test1Errors = [];
-		test1Touched = false;
+		reset1();
 		test1Saved = false;
+		test1Submitted = false;
 	}
 
 	// ==========================================
 	// Test 2: Multiple Fields Validation
 	// ==========================================
-	let test2Name = $state('');
-	let test2NameErrors = $state<string[]>([]);
-	let test2NameTouched = $state(false);
+	const test2Schema = z.object({
+		name: z.string().min(1, 'Name is required').min(2, 'Name must be at least 2 characters'),
+		age: z.coerce
+			.number({ invalid_type_error: 'Age is required' })
+			.min(0, 'Age cannot be negative')
+			.max(150, 'Please enter a valid age'),
+		bio: z.string().max(200, 'Bio must be 200 characters or less').optional()
+	});
 
-	let test2Age = $state<number | null>(null);
-	let test2AgeErrors = $state<string[]>([]);
-	let test2AgeTouched = $state(false);
-
-	let test2Bio = $state('');
-	let test2BioErrors = $state<string[]>([]);
-	let test2BioTouched = $state(false);
+	const {
+		form: form2,
+		errors: errors2,
+		touched: touched2,
+		data: data2,
+		reset: reset2
+	} = createForm<z.infer<typeof test2Schema>>({
+		extend: validator({ schema: test2Schema }),
+		onSubmit: () => {
+			test2Saved = true;
+			test2Submitted = false;
+			setTimeout(() => (test2Saved = false), 3000);
+		},
+		onError: () => {
+			test2Submitted = true;
+		}
+	});
 
 	let test2Saved = $state(false);
+	let test2Submitted = $state(false);
 
-	function validateTest2Name() {
-		test2NameErrors = [];
-		if (!test2Name) {
-			test2NameErrors = ['Name is required'];
-		} else if (test2Name.length < 2) {
-			test2NameErrors = ['Name must be at least 2 characters'];
+	// Collect all Test 2 errors for summary
+	const test2AllErrors = $derived(() => {
+		const result: Array<{ field: string; id: string; message: string }> = [];
+		if ($errors2.name?.[0]) {
+			result.push({ field: 'Name', id: 'test2-name', message: $errors2.name[0] });
 		}
-		return test2NameErrors.length === 0;
-	}
-
-	function validateTest2Age() {
-		test2AgeErrors = [];
-		if (test2Age === null) {
-			test2AgeErrors = ['Age is required'];
-		} else if (test2Age < 0) {
-			test2AgeErrors = ['Age cannot be negative'];
-		} else if (test2Age > 150) {
-			test2AgeErrors = ['Please enter a valid age'];
+		if ($errors2.age?.[0]) {
+			result.push({ field: 'Age', id: 'test2-age', message: $errors2.age[0] });
 		}
-		return test2AgeErrors.length === 0;
-	}
-
-	function validateTest2Bio() {
-		test2BioErrors = [];
-		if (test2Bio && test2Bio.length > 200) {
-			test2BioErrors = ['Bio must be 200 characters or less'];
+		if ($errors2.bio?.[0]) {
+			result.push({ field: 'Bio', id: 'test2-bio', message: $errors2.bio[0] });
 		}
-		return test2BioErrors.length === 0;
-	}
-
-	function saveTest2() {
-		test2NameTouched = true;
-		test2AgeTouched = true;
-		test2BioTouched = true;
-		const valid = validateTest2Name() && validateTest2Age() && validateTest2Bio();
-		if (valid) {
-			test2Saved = true;
-			setTimeout(() => test2Saved = false, 3000);
-		}
-	}
+		return result;
+	});
 
 	function resetTest2() {
-		test2Name = '';
-		test2NameErrors = [];
-		test2NameTouched = false;
-		test2Age = null;
-		test2AgeErrors = [];
-		test2AgeTouched = false;
-		test2Bio = '';
-		test2BioErrors = [];
-		test2BioTouched = false;
+		reset2();
 		test2Saved = false;
+		test2Submitted = false;
 	}
 
 	// ==========================================
-	// Test 3: Touched Behavior
+	// Test 3: Touched Behavior (manual demo)
 	// ==========================================
 	let test3Value = $state('');
 	let test3Touched = $state(false);
@@ -137,234 +138,308 @@
 	}
 
 	// ==========================================
-	// Test 4: Select with Validation
+	// Test 4: Select and Date Validation
 	// ==========================================
-	let test4Country = $state('');
-	let test4CountryErrors = $state<string[]>([]);
-	let test4CountryTouched = $state(false);
+	const test4Schema = z.object({
+		country: z.string().min(1, 'Please select a country'),
+		birthDate: z.string().min(1, 'Date is required').refine(
+			(val) => {
+				if (!val) return true;
+				return new Date(val) <= new Date();
+			},
+			{ message: 'Date cannot be in the future' }
+		)
+	});
 
-	let test4Date = $state('');
-	let test4DateErrors = $state<string[]>([]);
-	let test4DateTouched = $state(false);
+	const {
+		form: form4,
+		errors: errors4,
+		touched: touched4,
+		reset: reset4
+	} = createForm<z.infer<typeof test4Schema>>({
+		extend: validator({ schema: test4Schema }),
+		onSubmit: () => {
+			test4Saved = true;
+			test4Submitted = false;
+			setTimeout(() => (test4Saved = false), 3000);
+		},
+		onError: () => {
+			test4Submitted = true;
+		}
+	});
 
 	let test4Saved = $state(false);
+	let test4Submitted = $state(false);
 
-	function validateTest4Country() {
-		test4CountryErrors = [];
-		if (!test4Country) {
-			test4CountryErrors = ['Please select a country'];
+	// Collect all Test 4 errors for summary
+	const test4AllErrors = $derived(() => {
+		const result: Array<{ field: string; id: string; message: string }> = [];
+		if ($errors4.country?.[0]) {
+			result.push({ field: 'Country', id: 'test4-country', message: $errors4.country[0] });
 		}
-		return test4CountryErrors.length === 0;
-	}
-
-	function validateTest4Date() {
-		test4DateErrors = [];
-		if (!test4Date) {
-			test4DateErrors = ['Date is required'];
-		} else {
-			const selected = new Date(test4Date);
-			const today = new Date();
-			if (selected > today) {
-				test4DateErrors = ['Date cannot be in the future'];
-			}
+		if ($errors4.birthDate?.[0]) {
+			result.push({ field: 'Birth Date', id: 'test4-birthDate', message: $errors4.birthDate[0] });
 		}
-		return test4DateErrors.length === 0;
-	}
-
-	function saveTest4() {
-		test4CountryTouched = true;
-		test4DateTouched = true;
-		if (validateTest4Country() && validateTest4Date()) {
-			test4Saved = true;
-			setTimeout(() => test4Saved = false, 3000);
-		}
-	}
+		return result;
+	});
 
 	function resetTest4() {
-		test4Country = '';
-		test4CountryErrors = [];
-		test4CountryTouched = false;
-		test4Date = '';
-		test4DateErrors = [];
-		test4DateTouched = false;
+		reset4();
 		test4Saved = false;
+		test4Submitted = false;
 	}
 
 	// ==========================================
-	// Test 5: Real-time Validation (validate on input)
+	// Test 5: Password with Real-time Validation
 	// ==========================================
-	let test5Password = $state('');
-	let test5PasswordErrors = $state<string[]>([]);
-	let test5PasswordTouched = $state(false);
+	const test5Schema = z
+		.object({
+			password: z
+				.string()
+				.min(1, 'Password is required')
+				.min(8, 'Password must be at least 8 characters')
+				.regex(/[A-Z]/, 'Password must contain an uppercase letter')
+				.regex(/[0-9]/, 'Password must contain a number'),
+			confirm: z.string().min(1, 'Please confirm your password')
+		})
+		.refine((data) => data.password === data.confirm, {
+			message: 'Passwords do not match',
+			path: ['confirm']
+		});
 
-	let test5Confirm = $state('');
-	let test5ConfirmErrors = $state<string[]>([]);
-	let test5ConfirmTouched = $state(false);
+	const {
+		form: form5,
+		errors: errors5,
+		touched: touched5,
+		data: data5,
+		reset: reset5
+	} = createForm<z.infer<typeof test5Schema>>({
+		extend: validator({ schema: test5Schema }),
+		onSubmit: () => {
+			test5Saved = true;
+			test5Submitted = false;
+			setTimeout(() => (test5Saved = false), 3000);
+		},
+		onError: () => {
+			test5Submitted = true;
+		}
+	});
 
 	let test5Saved = $state(false);
+	let test5Submitted = $state(false);
 
-	function validateTest5Password() {
-		test5PasswordErrors = [];
-		if (!test5Password) {
-			test5PasswordErrors = ['Password is required'];
-		} else if (test5Password.length < 8) {
-			test5PasswordErrors = ['Password must be at least 8 characters'];
-		} else if (!/[A-Z]/.test(test5Password)) {
-			test5PasswordErrors = ['Password must contain an uppercase letter'];
-		} else if (!/[0-9]/.test(test5Password)) {
-			test5PasswordErrors = ['Password must contain a number'];
+	// Collect all Test 5 errors for summary
+	const test5AllErrors = $derived(() => {
+		const result: Array<{ field: string; id: string; message: string }> = [];
+		if ($errors5.password?.[0]) {
+			result.push({ field: 'Password', id: 'test5-password', message: $errors5.password[0] });
 		}
-		return test5PasswordErrors.length === 0;
-	}
-
-	function validateTest5Confirm() {
-		test5ConfirmErrors = [];
-		if (!test5Confirm) {
-			test5ConfirmErrors = ['Please confirm your password'];
-		} else if (test5Confirm !== test5Password) {
-			test5ConfirmErrors = ['Passwords do not match'];
+		if ($errors5.confirm?.[0]) {
+			result.push({ field: 'Confirm Password', id: 'test5-confirm', message: $errors5.confirm[0] });
 		}
-		return test5ConfirmErrors.length === 0;
-	}
-
-	function saveTest5() {
-		test5PasswordTouched = true;
-		test5ConfirmTouched = true;
-		if (validateTest5Password() && validateTest5Confirm()) {
-			test5Saved = true;
-			setTimeout(() => test5Saved = false, 3000);
-		}
-	}
+		return result;
+	});
 
 	function resetTest5() {
-		test5Password = '';
-		test5PasswordErrors = [];
-		test5PasswordTouched = false;
-		test5Confirm = '';
-		test5ConfirmErrors = [];
-		test5ConfirmTouched = false;
+		reset5();
 		test5Saved = false;
+		test5Submitted = false;
 	}
 
 	// ==========================================
-	// Test 6: State Override
+	// Real Use Case: Create User Form
+	// ==========================================
+	const createUserSchema = z.object({
+		firstName: z.string().min(1, 'First name is required').min(2, 'First name must be at least 2 characters'),
+		lastName: z.string().min(1, 'Last name is required').min(2, 'Last name must be at least 2 characters'),
+		email: z.string().min(1, 'Email is required').email('Please enter a valid email address'),
+		role: z.string().min(1, 'Please select a role'),
+		department: z.string().min(1, 'Please select a department')
+	});
+
+	type CreateUserData = z.infer<typeof createUserSchema>;
+
+	let createUserSubmitted = $state(false);
+	let createUserSaving = $state(false);
+	let createUserSuccess = $state(false);
+	let createUserServerError = $state<string | null>(null);
+	let createdUser = $state<CreateUserData | null>(null);
+
+	// Simulated API call
+	async function saveUserToApi(data: CreateUserData): Promise<{ success: boolean; error?: string }> {
+		// Simulate network delay
+		await new Promise((resolve) => setTimeout(resolve, 1500));
+
+		// Simulate server-side validation (email already exists)
+		if (data.email === 'admin@example.com') {
+			return { success: false, error: 'This email address is already registered' };
+		}
+
+		// Simulate random server error (10% chance)
+		if (Math.random() < 0.1) {
+			return { success: false, error: 'Server error. Please try again.' };
+		}
+
+		// Success
+		return { success: true };
+	}
+
+	const {
+		form: createUserForm,
+		errors: createUserErrors,
+		touched: createUserTouched,
+		data: createUserData,
+		reset: resetCreateUserForm
+	} = createForm<CreateUserData>({
+		extend: validator({ schema: createUserSchema }),
+		onSubmit: async (values) => {
+			createUserSaving = true;
+			createUserServerError = null;
+
+			const result = await saveUserToApi(values);
+
+			createUserSaving = false;
+
+			if (result.success) {
+				createUserSuccess = true;
+				createdUser = values;
+				createUserSubmitted = false;
+			} else {
+				createUserServerError = result.error ?? 'Unknown error';
+			}
+		}
+	});
+
+	// Collect all Create User errors for summary
+	const createUserAllErrors = $derived(() => {
+		const result: Array<{ field: string; id: string; message: string }> = [];
+		if ($createUserErrors.firstName?.[0]) {
+			result.push({ field: 'First Name', id: 'create-user-firstName', message: $createUserErrors.firstName[0] });
+		}
+		if ($createUserErrors.lastName?.[0]) {
+			result.push({ field: 'Last Name', id: 'create-user-lastName', message: $createUserErrors.lastName[0] });
+		}
+		if ($createUserErrors.email?.[0]) {
+			result.push({ field: 'Email', id: 'create-user-email', message: $createUserErrors.email[0] });
+		}
+		if ($createUserErrors.role?.[0]) {
+			result.push({ field: 'Role', id: 'create-user-role', message: $createUserErrors.role[0] });
+		}
+		if ($createUserErrors.department?.[0]) {
+			result.push({ field: 'Department', id: 'create-user-department', message: $createUserErrors.department[0] });
+		}
+		return result;
+	});
+
+	function resetCreateUser() {
+		resetCreateUserForm();
+		createUserSubmitted = false;
+		createUserSaving = false;
+		createUserSuccess = false;
+		createUserServerError = null;
+		createdUser = null;
+	}
+
+	// ==========================================
+	// Test 6: State Override (manual demo)
 	// ==========================================
 	let test6Value = $state('has error but shows success');
 	let test6ManualState = $state<'success' | 'warning' | 'error' | undefined>('success');
 
-	// Helper
-	function firstError(errors: string[]): string | undefined {
-		return errors[0];
-	}
+	// Code examples
+	const codeFelteSetup = `import { createForm } from 'felte';
+import { validator } from '@felte/validator-zod';
+import { z } from 'zod';
+import { FormField, Input, Button } from '@keenmate/svelte-pure-admin';
 
-	// Code examples (stored as constants to avoid Svelte parsing <script> tags)
-	const codeHowItWorks = `<!-- Field shows error only when touched AND has errors -->
-<Input
-  bind:value={email}
-  errors={emailErrors}
-  touched={emailTouched}
-  onblur={() => { emailTouched = true; validate(); }}
-/>
+const schema = z.object({
+  email: z.string()
+    .min(1, 'Email is required')
+    .email('Please enter a valid email')
+});
 
-<!-- FormHelp shows appropriate variant -->
-{#if emailTouched && emailErrors.length > 0}
-  <FormHelp variant="error">{emailErrors[0]}</FormHelp>
-{:else}
-  <FormHelp>Enter your email</FormHelp>
-{/if}`;
+const { form, errors, touched, data } = createForm<z.infer<typeof schema>>({
+  extend: validator({ schema }),
+  onSubmit: (values) => {
+    console.log('Valid:', values);
+  }
+});`;
 
-	const codeSuperforms = '<' + `script>
-  import { superForm } from 'sveltekit-superforms/client';
-
-  const { form, errors, constraints } = superForm(data.form);
-</` + 'script>' + `
-
-<Input
-  bind:value={$form.email}
-  errors={$errors.email ?? []}
-  touched={true}
-  {...$constraints.email}
-/>`;
-
-	const codeFelte = '<' + `script>
-  import { createForm } from 'felte';
-
-  const { form, errors, touched } = createForm({
-    onSubmit: (values) => { /* ... */ }
-  });
-</` + 'script>' + `
-
-<form use:form>
-  <Input
-    name="email"
-    errors={$errors.email ?? []}
+	const codeFelteTemplate = `<form use:form>
+  <FormField
+    label="Email"
+    required
+    help="Enter your email"
+    successMessage="Valid email"
+    errors={$errors.email}
     touched={$touched.email ?? false}
-  />
+    hasValue={!!$data.email}
+  >
+    {#snippet children({ errors, touched })}
+      <Input name="email" {errors} {touched} />
+    {/snippet}
+  </FormField>
+  <Button type="submit">Save</Button>
 </form>`;
 
-	const codeManualValidation = '<' + `script>
-  let email = $state('');
-  let errors = $state<string[]>([]);
-  let touched = $state(false);
+	const codeZodSchema = `// Simple field
+email: z.string().min(1, 'Required').email('Invalid email')
 
-  function validate() {
-    errors = [];
-    if (!email) errors.push('Email is required');
-    else if (!email.includes('@')) errors.push('Invalid email');
-  }
-</` + 'script>' + `
+// Number with coercion (for input fields)
+age: z.coerce.number().min(0).max(150)
 
-<Input
-  bind:value={email}
-  {errors}
-  {touched}
-  onblur={() => { touched = true; validate(); }}
-  oninput={() => { if (touched) validate(); }}
-/>`;
+// Optional with max length
+bio: z.string().max(200).optional()
+
+// Password with multiple rules
+password: z.string()
+  .min(8, 'Min 8 characters')
+  .regex(/[A-Z]/, 'Need uppercase')
+  .regex(/[0-9]/, 'Need number')
+
+// Cross-field validation (confirm password)
+.refine(data => data.password === data.confirm, {
+  message: 'Passwords do not match',
+  path: ['confirm']
+})`;
 </script>
 
 <Callout variant="info" class="mb-4">
-	This page covers <strong>Svelte-specific integration</strong> patterns for form validation. For CSS patterns and visual styling, see <a href="/validations">Components &rarr; Validation Patterns</a>.
+	This page demonstrates <strong>Felte + Zod</strong> integration with svelte-pure-admin form
+	components. Felte handles form state, validation, and touched tracking automatically.
 </Callout>
 
 <Paragraph class="mb-4">
-	svelte-pure-admin form components support validation through <code>errors</code> and <code>touched</code> props.
-	These integrate seamlessly with validation libraries like <strong>Superforms</strong>, <strong>Felte</strong>, or manual validation.
+	Using <a href="https://felte.dev">Felte</a> with
+	<a href="https://zod.dev">Zod</a> schemas eliminates boilerplate while providing type-safe validation.
+	The <code>errors</code> and <code>touched</code> props integrate seamlessly.
 </Paragraph>
 
-<!-- Props Overview -->
-<Card title="Validation Props">
-	<Heading level={4}>Core Props</Heading>
-	<ul class="pa-list-basic">
-		<li><code>errors: string[]</code> - Array of error messages. When non-empty and touched=true, the field shows error state.</li>
-		<li><code>touched: boolean</code> - Whether the field has been interacted with. Errors only show when touched=true.</li>
-		<li><code>state: 'success' | 'warning' | 'error'</code> - Manual state override (takes precedence over errors).</li>
-	</ul>
+<!-- Setup -->
+<Card title="Felte Setup">
+	<Heading level={4}>1. Install Dependencies</Heading>
+	<HighlightedCode language="bash" code="npm install felte @felte/validator-zod zod" />
 
-	<Heading level={4} class="mt-4">How It Works</Heading>
-	<HighlightedCode code={codeHowItWorks} language="svelte" />
+	<Heading level={4} class="mt-4">2. Create Form with Schema</Heading>
+	<HighlightedCode language="typescript" code={codeFelteSetup} />
 
-	<Heading level={4} class="mt-4">aria-invalid Accessibility</Heading>
-	<Paragraph>
-		When <code>touched=true</code> and <code>errors</code> is non-empty, the input automatically sets <code>aria-invalid="true"</code> for screen reader support.
-	</Paragraph>
+	<Heading level={4} class="mt-4">3. Use in Template</Heading>
+	<HighlightedCode language="svelte" code={codeFelteTemplate} />
+
+	<Callout variant="success" class="mt-4">
+		<strong>That's it!</strong> Felte handles touched state, validation on blur/change, and form submission.
+		No manual state management needed.
+	</Callout>
 </Card>
 
-<!-- Library Integration -->
-<Card title="Library Integration Patterns">
-	<Heading level={4}>With Superforms</Heading>
-	<HighlightedCode code={codeSuperforms} language="svelte" />
-
-	<Heading level={4} class="mt-4">With Felte</Heading>
-	<HighlightedCode code={codeFelte} language="svelte" />
-
-	<Heading level={4} class="mt-4">Manual Validation</Heading>
-	<HighlightedCode code={codeManualValidation} language="svelte" />
+<!-- Zod Patterns -->
+<Card title="Common Zod Patterns">
+	<HighlightedCode language="typescript" code={codeZodSchema} />
 </Card>
 
 <Heading level={2} class="mt-5 mb-4">Interactive Tests</Heading>
 
-<Paragraph>Each card below can be tested independently with its own Save button.</Paragraph>
+<Paragraph>Each form below uses Felte with Zod validation.</Paragraph>
 
 <!-- Test 1: Basic Email -->
 <Card title="Test 1: Basic Email Validation">
@@ -372,32 +447,28 @@
 		<Alert variant="success" class="mb-4">Email saved successfully!</Alert>
 	{/if}
 
-	<FormGroup>
-		<FormLabel>Email Address *</FormLabel>
-		<Input
-			type="email"
-			placeholder="Enter your email"
-			bind:value={test1Email}
-			errors={test1Errors}
-			touched={test1Touched}
-			onblur={() => { test1Touched = true; validateTest1(); }}
-			oninput={() => { if (test1Touched) validateTest1(); }}
-		/>
-		{#if test1Touched && test1Errors.length > 0}
-			<FormHelp variant="error">{firstError(test1Errors)}</FormHelp>
-		{:else}
-			<FormHelp>Enter a valid email address</FormHelp>
-		{/if}
-	</FormGroup>
+	<FormErrorSummary errors={test1AllErrors()} show={test1Submitted} />
 
-	<ButtonGroup class="mt-4">
-		<Button variant="primary" onclick={saveTest1}>Save</Button>
-		<Button variant="secondary" onclick={resetTest1}>Reset</Button>
-	</ButtonGroup>
+	<form use:form1>
+		<FormField
+			label="Email Address"
+			required
+			help="Enter a valid email address"
+			successMessage="Valid email address"
+			errors={$errors1.email}
+			touched={$touched1.email ?? false}
+			hasValue={!!$data1?.email}
+		>
+			{#snippet children({ errors, touched })}
+				<Input type="email" name="email" id="test1-email" placeholder="Enter your email" {errors} {touched} />
+			{/snippet}
+		</FormField>
 
-	<div class="mt-3 p-2 bg-light rounded">
-		<small><strong>State:</strong> value="{test1Email}", touched={test1Touched}, errors={JSON.stringify(test1Errors)}</small>
-	</div>
+		<ButtonGroup class="mt-4">
+			<Button type="submit" variant="primary" onclick={() => (test1Submitted = true)}>Save</Button>
+			<Button type="button" variant="secondary" onclick={resetTest1}>Reset</Button>
+		</ButtonGroup>
+	</form>
 </Card>
 
 <!-- Test 2: Multiple Fields -->
@@ -406,113 +477,91 @@
 		<Alert variant="success" class="mb-4">Profile saved successfully!</Alert>
 	{/if}
 
-	<Grid>
-		<Column size="100" md="1-3">
-			<FormGroup>
-				<FormLabel>Name *</FormLabel>
-				<Input
-					placeholder="Your name"
-					bind:value={test2Name}
-					errors={test2NameErrors}
-					touched={test2NameTouched}
-					onblur={() => { test2NameTouched = true; validateTest2Name(); }}
-					oninput={() => { if (test2NameTouched) validateTest2Name(); }}
-				/>
-				{#if test2NameTouched && test2NameErrors.length > 0}
-					<FormHelp variant="error">{firstError(test2NameErrors)}</FormHelp>
-				{/if}
-			</FormGroup>
-		</Column>
-		<Column size="100" md="1-3">
-			<FormGroup>
-				<FormLabel>Age *</FormLabel>
-				<NumberInput
-					placeholder="Your age"
-					bind:value={test2Age}
-					errors={test2AgeErrors}
-					touched={test2AgeTouched}
-					min={0}
-					max={150}
-					onblur={() => { test2AgeTouched = true; validateTest2Age(); }}
-					oninput={() => { if (test2AgeTouched) validateTest2Age(); }}
-				/>
-				{#if test2AgeTouched && test2AgeErrors.length > 0}
-					<FormHelp variant="error">{firstError(test2AgeErrors)}</FormHelp>
-				{/if}
-			</FormGroup>
-		</Column>
-		<Column size="100" md="1-3">
-			<FormGroup>
-				<FormLabel>Bio (optional, max 200 chars)</FormLabel>
-				<Textarea
-					placeholder="Tell us about yourself"
-					bind:value={test2Bio}
-					errors={test2BioErrors}
-					touched={test2BioTouched}
-					rows={2}
-					onblur={() => { test2BioTouched = true; validateTest2Bio(); }}
-					oninput={() => { if (test2BioTouched) validateTest2Bio(); }}
-				/>
-				{#if test2BioTouched && test2BioErrors.length > 0}
-					<FormHelp variant="error">{firstError(test2BioErrors)}</FormHelp>
-				{:else}
-					<FormHelp>{test2Bio.length}/200 characters</FormHelp>
-				{/if}
-			</FormGroup>
-		</Column>
-	</Grid>
+	<FormErrorSummary errors={test2AllErrors()} show={test2Submitted} />
 
-	<ButtonGroup class="mt-4">
-		<Button variant="primary" onclick={saveTest2}>Save Profile</Button>
-		<Button variant="secondary" onclick={resetTest2}>Reset</Button>
-	</ButtonGroup>
+	<form use:form2>
+		<Grid>
+			<Column size="100" md="1-3">
+				<FormField
+					label="Name"
+					required
+					errors={$errors2.name}
+					touched={$touched2.name ?? false}
+				>
+					{#snippet children({ errors, touched })}
+						<Input name="name" id="test2-name" placeholder="Your name" {errors} {touched} />
+					{/snippet}
+				</FormField>
+			</Column>
+			<Column size="100" md="1-3">
+				<FormField
+					label="Age"
+					required
+					errors={$errors2.age}
+					touched={$touched2.age ?? false}
+				>
+					{#snippet children({ errors, touched })}
+						<NumberInput name="age" id="test2-age" placeholder="Your age" {errors} {touched} />
+					{/snippet}
+				</FormField>
+			</Column>
+			<Column size="100" md="1-3">
+				<FormField
+					label="Bio (optional, max 200 chars)"
+					help="{($data2.bio ?? '').length}/200 characters"
+					errors={$errors2.bio}
+					touched={$touched2.bio ?? false}
+				>
+					{#snippet children({ errors, touched })}
+						<Textarea name="bio" id="test2-bio" placeholder="Tell us about yourself" rows={2} {errors} {touched} />
+					{/snippet}
+				</FormField>
+			</Column>
+		</Grid>
 
-	<div class="mt-3 p-2 bg-light rounded">
-		<small><strong>State:</strong> name="{test2Name}" (touched={test2NameTouched}), age={test2Age} (touched={test2AgeTouched}), bio.length={test2Bio.length} (touched={test2BioTouched})</small>
-	</div>
+		<ButtonGroup class="mt-4">
+			<Button type="submit" variant="primary" onclick={() => (test2Submitted = true)}>Save Profile</Button>
+			<Button type="button" variant="secondary" onclick={resetTest2}>Reset</Button>
+		</ButtonGroup>
+	</form>
 </Card>
 
 <!-- Test 3: Touched Behavior -->
 <Card title="Test 3: Touched Behavior">
 	<Paragraph class="mb-4">
-		Both inputs have the same error, but only the touched one shows the error styling.
+		Both inputs have the same error, but only the touched one shows error styling.
+		This demonstrates how <code>touched</code> controls error visibility.
 	</Paragraph>
 
 	<Grid>
 		<Column size="100" md="50">
-			<FormGroup>
-				<FormLabel>touched=false (pristine)</FormLabel>
-				<Input
-					placeholder="Type here, then click elsewhere"
-					bind:value={test3Value}
-					errors={test3Errors}
-					touched={false}
-				/>
-				<FormHelp>Error exists but not shown (touched=false)</FormHelp>
-			</FormGroup>
+			<FormField
+				label="touched=false (pristine)"
+				help="Error exists but not shown"
+				errors={test3Errors}
+				touched={false}
+			>
+				{#snippet children({ errors, touched })}
+					<Input placeholder="Type here" bind:value={test3Value} {errors} {touched} />
+				{/snippet}
+			</FormField>
 		</Column>
 		<Column size="100" md="50">
-			<FormGroup>
-				<FormLabel>touched=true</FormLabel>
-				<Input
-					placeholder="Same value as left"
-					value={test3Value}
-					errors={test3Errors}
-					touched={true}
-				/>
-				<FormHelp variant="error">{test3Errors[0]}</FormHelp>
-			</FormGroup>
+			<FormField
+				label="touched=true"
+				errors={test3Errors}
+				touched={true}
+			>
+				{#snippet children({ errors, touched })}
+					<Input placeholder="Same value as left" value={test3Value} {errors} {touched} />
+				{/snippet}
+			</FormField>
 		</Column>
 	</Grid>
 
 	<ButtonGroup class="mt-4">
-		<Button variant="primary" onclick={() => test3Touched = true}>Mark as Touched</Button>
 		<Button variant="secondary" onclick={resetTest3}>Reset</Button>
 	</ButtonGroup>
-
-	<div class="mt-3 p-2 bg-light rounded">
-		<small><strong>Note:</strong> Click in left input, type, then blur. Left stays clean, right shows error.</small>
-	</div>
 </Card>
 
 <!-- Test 4: Select and Date -->
@@ -521,157 +570,261 @@
 		<Alert variant="success" class="mb-4">Location data saved!</Alert>
 	{/if}
 
-	<Grid>
-		<Column size="100" md="50">
-			<FormGroup>
-				<FormLabel>Country *</FormLabel>
-				<Select
-					bind:value={test4Country}
-					errors={test4CountryErrors}
-					touched={test4CountryTouched}
-					onchange={() => { test4CountryTouched = true; validateTest4Country(); }}
+	<FormErrorSummary errors={test4AllErrors()} show={test4Submitted} />
+
+	<form use:form4>
+		<Grid>
+			<Column size="100" md="50">
+				<FormField
+					label="Country"
+					required
+					errors={$errors4.country}
+					touched={$touched4.country ?? false}
 				>
-					<option value="">Select a country...</option>
-					<option value="us">United States</option>
-					<option value="uk">United Kingdom</option>
-					<option value="ca">Canada</option>
-					<option value="au">Australia</option>
-					<option value="de">Germany</option>
-				</Select>
-				{#if test4CountryTouched && test4CountryErrors.length > 0}
-					<FormHelp variant="error">{firstError(test4CountryErrors)}</FormHelp>
-				{/if}
-			</FormGroup>
-		</Column>
-		<Column size="100" md="50">
-			<FormGroup>
-				<FormLabel>Birth Date * (not in future)</FormLabel>
-				<DateInput
-					bind:value={test4Date}
-					errors={test4DateErrors}
-					touched={test4DateTouched}
-					onblur={() => { test4DateTouched = true; validateTest4Date(); }}
-					onchange={() => { if (test4DateTouched) validateTest4Date(); }}
-				/>
-				{#if test4DateTouched && test4DateErrors.length > 0}
-					<FormHelp variant="error">{firstError(test4DateErrors)}</FormHelp>
-				{/if}
-			</FormGroup>
-		</Column>
-	</Grid>
+					{#snippet children({ errors, touched })}
+						<Select name="country" id="test4-country" {errors} {touched}>
+							<option value="">Select a country...</option>
+							<option value="us">United States</option>
+							<option value="uk">United Kingdom</option>
+							<option value="ca">Canada</option>
+							<option value="au">Australia</option>
+							<option value="de">Germany</option>
+						</Select>
+					{/snippet}
+				</FormField>
+			</Column>
+			<Column size="100" md="50">
+				<FormField
+					label="Birth Date (not in future)"
+					required
+					errors={$errors4.birthDate}
+					touched={$touched4.birthDate ?? false}
+				>
+					{#snippet children({ errors, touched })}
+						<DateInput name="birthDate" id="test4-birthDate" {errors} {touched} />
+					{/snippet}
+				</FormField>
+			</Column>
+		</Grid>
 
-	<ButtonGroup class="mt-4">
-		<Button variant="primary" onclick={saveTest4}>Save Location</Button>
-		<Button variant="secondary" onclick={resetTest4}>Reset</Button>
-	</ButtonGroup>
-
-	<div class="mt-3 p-2 bg-light rounded">
-		<small><strong>State:</strong> country="{test4Country}" (touched={test4CountryTouched}), date="{test4Date}" (touched={test4DateTouched})</small>
-	</div>
+		<ButtonGroup class="mt-4">
+			<Button type="submit" variant="primary" onclick={() => (test4Submitted = true)}>Save Location</Button>
+			<Button type="button" variant="secondary" onclick={resetTest4}>Reset</Button>
+		</ButtonGroup>
+	</form>
 </Card>
 
 <!-- Test 5: Password with Real-time Validation -->
-<Card title="Test 5: Password with Real-time Validation">
+<Card title="Test 5: Password with Cross-Field Validation">
 	{#if test5Saved}
 		<Alert variant="success" class="mb-4">Password set successfully!</Alert>
 	{/if}
 
+	<FormErrorSummary errors={test5AllErrors()} show={test5Submitted} />
+
 	<Paragraph class="mb-4">
-		Password requires: 8+ characters, uppercase letter, and a number.
+		Password requires: 8+ characters, uppercase letter, and a number. Uses Zod's
+		<code>.refine()</code> for cross-field validation.
 	</Paragraph>
 
-	<Grid>
-		<Column size="100" md="50">
-			<FormGroup>
-				<FormLabel>Password *</FormLabel>
-				<Input
-					type="password"
-					placeholder="Enter password"
-					bind:value={test5Password}
-					errors={test5PasswordErrors}
-					touched={test5PasswordTouched}
-					onblur={() => { test5PasswordTouched = true; validateTest5Password(); }}
-					oninput={() => {
-						if (test5PasswordTouched) validateTest5Password();
-						if (test5ConfirmTouched) validateTest5Confirm();
-					}}
-				/>
-				{#if test5PasswordTouched && test5PasswordErrors.length > 0}
-					<FormHelp variant="error">{firstError(test5PasswordErrors)}</FormHelp>
-				{:else if test5PasswordTouched && test5PasswordErrors.length === 0 && test5Password}
-					<FormHelp variant="success">Password meets requirements</FormHelp>
+	<form use:form5>
+		<Grid>
+			<Column size="100" md="50">
+				<FormField
+					label="Password"
+					required
+					help="Min 8 chars, 1 uppercase, 1 number"
+					successMessage="Password meets requirements"
+					errors={$errors5.password}
+					touched={$touched5.password ?? false}
+					hasValue={!!$data5.password}
+				>
+					{#snippet children({ errors, touched })}
+						<Input type="password" name="password" id="test5-password" placeholder="Enter password" {errors} {touched} />
+					{/snippet}
+				</FormField>
+			</Column>
+			<Column size="100" md="50">
+				<FormField
+					label="Confirm Password"
+					required
+					successMessage="Passwords match!"
+					errors={$errors5.confirm}
+					touched={$touched5.confirm ?? false}
+					hasValue={!!$data5.confirm}
+				>
+					{#snippet children({ errors, touched })}
+						<Input type="password" name="confirm" id="test5-confirm" placeholder="Confirm password" {errors} {touched} />
+					{/snippet}
+				</FormField>
+			</Column>
+		</Grid>
+
+		<ButtonGroup class="mt-4">
+			<Button type="submit" variant="primary" onclick={() => (test5Submitted = true)}>Set Password</Button>
+			<Button type="button" variant="secondary" onclick={resetTest5}>Reset</Button>
+		</ButtonGroup>
+	</form>
+</Card>
+
+<!-- Real Use Case: Create User -->
+<Card title="Real Use Case: Create User Form">
+	<Callout variant="info" class="mb-4">
+		This demonstrates a realistic form with async API submission, loading states, and server-side error handling.
+		Try submitting with <code>admin@example.com</code> to see a server-side validation error.
+	</Callout>
+
+	{#if createUserSuccess && createdUser}
+		<Alert variant="success" class="mb-4">
+			<Strong>User created successfully!</Strong>
+			<Paragraph class="mb-0 mt-2">
+				Created: {createdUser.firstName} {createdUser.lastName} ({createdUser.email}) as {createdUser.role} in {createdUser.department}
+			</Paragraph>
+		</Alert>
+	{/if}
+
+	{#if createUserServerError}
+		<Alert variant="danger" class="mb-4">
+			<Strong>Server Error:</Strong> {createUserServerError}
+		</Alert>
+	{/if}
+
+	<FormErrorSummary errors={createUserAllErrors()} show={createUserSubmitted} />
+
+	<form use:createUserForm>
+		<Grid>
+			<Column size="100" md="50">
+				<FormField
+					label="First Name"
+					required
+					errors={$createUserErrors.firstName}
+					touched={$createUserTouched.firstName ?? false}
+				>
+					{#snippet children({ errors, touched })}
+						<Input name="firstName" id="create-user-firstName" placeholder="John" {errors} {touched} />
+					{/snippet}
+				</FormField>
+			</Column>
+			<Column size="100" md="50">
+				<FormField
+					label="Last Name"
+					required
+					errors={$createUserErrors.lastName}
+					touched={$createUserTouched.lastName ?? false}
+				>
+					{#snippet children({ errors, touched })}
+						<Input name="lastName" id="create-user-lastName" placeholder="Doe" {errors} {touched} />
+					{/snippet}
+				</FormField>
+			</Column>
+		</Grid>
+
+		<FormField
+			label="Email"
+			required
+			help="Use admin@example.com to test server-side validation error"
+			errors={$createUserErrors.email}
+			touched={$createUserTouched.email ?? false}
+		>
+			{#snippet children({ errors, touched })}
+				<Input type="email" name="email" id="create-user-email" placeholder="john.doe@company.com" {errors} {touched} />
+			{/snippet}
+		</FormField>
+
+		<Grid>
+			<Column size="100" md="50">
+				<FormField
+					label="Role"
+					required
+					errors={$createUserErrors.role}
+					touched={$createUserTouched.role ?? false}
+				>
+					{#snippet children({ errors, touched })}
+						<Select name="role" id="create-user-role" {errors} {touched}>
+							<option value="">Select a role...</option>
+							<option value="Developer">Developer</option>
+							<option value="Designer">Designer</option>
+							<option value="Manager">Manager</option>
+							<option value="Admin">Admin</option>
+						</Select>
+					{/snippet}
+				</FormField>
+			</Column>
+			<Column size="100" md="50">
+				<FormField
+					label="Department"
+					required
+					errors={$createUserErrors.department}
+					touched={$createUserTouched.department ?? false}
+				>
+					{#snippet children({ errors, touched })}
+						<Select name="department" id="create-user-department" {errors} {touched}>
+							<option value="">Select a department...</option>
+							<option value="Engineering">Engineering</option>
+							<option value="Product">Product</option>
+							<option value="Marketing">Marketing</option>
+							<option value="Sales">Sales</option>
+							<option value="HR">Human Resources</option>
+						</Select>
+					{/snippet}
+				</FormField>
+			</Column>
+		</Grid>
+
+		<ButtonGroup class="mt-4">
+			<Button
+				type="submit"
+				variant="primary"
+				disabled={createUserSaving}
+				onclick={() => (createUserSubmitted = true)}
+			>
+				{#if createUserSaving}
+					Creating User...
 				{:else}
-					<FormHelp>Min 8 chars, 1 uppercase, 1 number</FormHelp>
+					Create User
 				{/if}
-			</FormGroup>
-		</Column>
-		<Column size="100" md="50">
-			<FormGroup>
-				<FormLabel>Confirm Password *</FormLabel>
-				<Input
-					type="password"
-					placeholder="Confirm password"
-					bind:value={test5Confirm}
-					errors={test5ConfirmErrors}
-					touched={test5ConfirmTouched}
-					onblur={() => { test5ConfirmTouched = true; validateTest5Confirm(); }}
-					oninput={() => { if (test5ConfirmTouched) validateTest5Confirm(); }}
-				/>
-				{#if test5ConfirmTouched && test5ConfirmErrors.length > 0}
-					<FormHelp variant="error">{firstError(test5ConfirmErrors)}</FormHelp>
-				{:else if test5ConfirmTouched && test5ConfirmErrors.length === 0 && test5Confirm}
-					<FormHelp variant="success">Passwords match!</FormHelp>
-				{/if}
-			</FormGroup>
-		</Column>
-	</Grid>
-
-	<ButtonGroup class="mt-4">
-		<Button variant="primary" onclick={saveTest5}>Set Password</Button>
-		<Button variant="secondary" onclick={resetTest5}>Reset</Button>
-	</ButtonGroup>
-
-	<div class="mt-3 p-2 bg-light rounded">
-		<small><strong>State:</strong> password.length={test5Password.length}, confirm.length={test5Confirm.length}, match={test5Password === test5Confirm}</small>
-	</div>
+			</Button>
+			<Button type="button" variant="secondary" onclick={resetCreateUser} disabled={createUserSaving}>
+				Reset
+			</Button>
+		</ButtonGroup>
+	</form>
 </Card>
 
 <!-- Test 6: State Override -->
 <Card title="Test 6: Manual State Override">
 	<Paragraph class="mb-4">
 		The <code>state</code> prop takes precedence over auto-derived state from <code>errors</code>.
+		This is useful when you need manual control.
 	</Paragraph>
 
 	<Grid>
 		<Column size="100" md="50">
-			<FormGroup>
-				<FormLabel>Input with errors + manual state</FormLabel>
-				<Input
-					bind:value={test6Value}
-					errors={['This error is ignored visually']}
-					state={test6ManualState}
-				/>
-				<FormHelp variant={test6ManualState}>
-					errors=['...'] but state="{test6ManualState}" overrides
-				</FormHelp>
-			</FormGroup>
+			<FormField
+				label="Input with errors + manual state"
+				help="state='{test6ManualState}' overrides errors"
+				errors={['This error is ignored visually']}
+				touched={true}
+				state={test6ManualState}
+			>
+				{#snippet children({ errors, touched, state })}
+					<Input bind:value={test6Value} {errors} {touched} {state} />
+				{/snippet}
+			</FormField>
 		</Column>
 		<Column size="100" md="50">
-			<FormGroup>
-				<FormLabel>Change manual state:</FormLabel>
-				<Select bind:value={test6ManualState}>
-					<option value={undefined}>undefined (use errors)</option>
-					<option value="success">success</option>
-					<option value="warning">warning</option>
-					<option value="error">error</option>
-				</Select>
-			</FormGroup>
+			<FormField label="Change manual state:">
+				{#snippet children()}
+					<Select bind:value={test6ManualState}>
+						<option value={undefined}>undefined (use errors)</option>
+						<option value="success">success</option>
+						<option value="warning">warning</option>
+						<option value="error">error</option>
+					</Select>
+				{/snippet}
+			</FormField>
 		</Column>
 	</Grid>
-
-	<div class="mt-3 p-2 bg-light rounded">
-		<small><strong>Note:</strong> When state is undefined, the input would show error styling from errors prop.</small>
-	</div>
 </Card>
 
 <!-- Aria-Invalid Check -->
@@ -682,24 +835,25 @@
 
 	<Grid>
 		<Column size="100" md="50">
-			<FormGroup>
-				<FormLabel>Has errors + touched</FormLabel>
-				<Input
-					placeholder="Inspect me - has aria-invalid=true"
-					errors={['Error!']}
-					touched={true}
-				/>
-				<FormHelp variant="error">Should have aria-invalid="true"</FormHelp>
-			</FormGroup>
+			<FormField
+				label="Has errors + touched"
+				errors={['Error!']}
+				touched={true}
+			>
+				{#snippet children({ errors, touched })}
+					<Input placeholder="Inspect me - has aria-invalid=true" {errors} {touched} />
+				{/snippet}
+			</FormField>
 		</Column>
 		<Column size="100" md="50">
-			<FormGroup>
-				<FormLabel>No errors</FormLabel>
-				<Input
-					placeholder="Inspect me - no aria-invalid"
-				/>
-				<FormHelp>Should NOT have aria-invalid attribute</FormHelp>
-			</FormGroup>
+			<FormField
+				label="No errors"
+				help="Should NOT have aria-invalid attribute"
+			>
+				{#snippet children()}
+					<Input placeholder="Inspect me - no aria-invalid" />
+				{/snippet}
+			</FormField>
 		</Column>
 	</Grid>
 </Card>

@@ -16,6 +16,41 @@ const builtInLocales: Record<string, TranslationKeys> = {
 };
 
 /**
+ * Type for arbitrary application translations
+ * Allows any nested structure with string values
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AppTranslations = Record<string, any>;
+
+/**
+ * Deep merge utility for arbitrary objects
+ */
+function deepMergeObjects<T extends Record<string, unknown>>(target: T, source: Partial<T>): T {
+	const result = { ...target } as T;
+	for (const key in source) {
+		const sourceValue = source[key];
+		const targetValue = result[key];
+		if (
+			sourceValue !== null &&
+			sourceValue !== undefined &&
+			typeof sourceValue === 'object' &&
+			!Array.isArray(sourceValue) &&
+			targetValue !== null &&
+			targetValue !== undefined &&
+			typeof targetValue === 'object' &&
+			!Array.isArray(targetValue)
+		) {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			result[key] = deepMergeObjects(targetValue as any, sourceValue as any);
+		} else if (sourceValue !== undefined) {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			result[key] = sourceValue as any;
+		}
+	}
+	return result;
+}
+
+/**
  * Deep merge utility for translation objects
  * Merges source into target, recursively merging nested objects
  */
@@ -33,9 +68,12 @@ function deepMergeTranslations(
 }
 
 /**
- * Get nested value from object by path
+ * Get nested value from object by path (works with any object structure)
  */
-function getNestedValue(obj: TranslationKeys, path: string): string | undefined {
+function getNestedValue(
+	obj: TranslationKeys | AppTranslations,
+	path: string
+): string | undefined {
 	const keys = path.split('.');
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	let current: any = obj;
@@ -48,6 +86,14 @@ function getNestedValue(obj: TranslationKeys, path: string): string | undefined 
 	}
 
 	return typeof current === 'string' ? current : undefined;
+}
+
+/**
+ * Get value from flat key object (keys like "domain.type.code")
+ */
+function getFlatValue(obj: AppTranslations, key: string): string | undefined {
+	const value = obj[key];
+	return typeof value === 'string' ? value : undefined;
 }
 
 /**
@@ -80,8 +126,11 @@ function createI18nStore() {
 	);
 	let isLoading = $state<boolean>(false);
 
+	// Application-level translations (arbitrary structure)
+	let appTranslations = $state<Record<string, AppTranslations>>({});
+
 	/**
-	 * Get merged translations for current locale
+	 * Get merged translations for current locale (component library translations)
 	 * Priority: loaded translations > built-in translations > fallback
 	 */
 	const translations = $derived.by(() => {
@@ -108,13 +157,46 @@ function createI18nStore() {
 	});
 
 	/**
+	 * Get merged app translations for current locale
+	 * Supports both flat keys ("domain.type.code": "value") and nested structures
+	 * Priority: current locale translations > fallback locale translations
+	 */
+	const currentAppTranslations = $derived.by(() => {
+		let result: AppTranslations = {};
+
+		// Merge fallback locale app translations
+		if (appTranslations[fallbackLocale]) {
+			result = { ...result, ...appTranslations[fallbackLocale] };
+		}
+
+		// Merge current locale app translations (if different from fallback)
+		if (currentLocale !== fallbackLocale && appTranslations[currentLocale]) {
+			result = { ...result, ...appTranslations[currentLocale] };
+		}
+
+		return result;
+	});
+
+	/**
 	 * Translate a key path with optional parameters
-	 * @param keyPath - Dot-separated key path (e.g., 'dialog.confirm')
+	 * Checks app translations first (flat keys, then nested), then component library translations
+	 * @param keyPath - Dot-separated key path (e.g., 'dialog.confirm' or 'organizations.labels.title')
 	 * @param params - Optional interpolation parameters
 	 * @returns Translated string or key path if not found
 	 */
 	function t(keyPath: string, params?: TranslationParams): string {
-		const value = getNestedValue(translations, keyPath);
+		// First check app translations with flat key (e.g., "organizations.labels.title": "...")
+		let value = getFlatValue(currentAppTranslations, keyPath);
+
+		// If not found as flat key, try nested path in app translations
+		if (value === undefined) {
+			value = getNestedValue(currentAppTranslations, keyPath);
+		}
+
+		// If not found in app translations, check component library translations (nested)
+		if (value === undefined) {
+			value = getNestedValue(translations, keyPath);
+		}
 
 		if (value === undefined) {
 			console.warn(`[i18n] Missing translation for key: ${keyPath}`);
@@ -171,8 +253,8 @@ function createI18nStore() {
 	}
 
 	/**
-	 * Register additional translations for a locale
-	 * Useful for adding custom translations from consuming apps
+	 * Register additional component library translations for a locale
+	 * Useful for overriding or extending built-in component strings
 	 */
 	function registerTranslations(locale: string, newTranslations: Partial<TranslationKeys>): void {
 		const existing = loadedTranslations[locale] || {};
@@ -196,10 +278,36 @@ function createI18nStore() {
 	}
 
 	/**
-	 * Check if a locale has translations available
+	 * Register application-level translations for a locale
+	 * Supports flat key format: "domain.type.code": "value"
+	 * @param locale - The locale code (e.g., 'en', 'cs')
+	 * @param newTranslations - Translation object (flat keys or nested)
+	 *
+	 * @example
+	 * ```typescript
+	 * // Flat keys (recommended)
+	 * i18nStore.registerAppTranslations('en', {
+	 *   'organizations.labels.title': 'Organizations',
+	 *   'organizations.messages.noData': 'No organizations found'
+	 * });
+	 * // Then use: t('organizations.labels.title')
+	 * ```
+	 */
+	function registerAppTranslations(locale: string, newTranslations: AppTranslations): void {
+		const existing = appTranslations[locale] || {};
+		appTranslations = {
+			...appTranslations,
+			[locale]: { ...existing, ...newTranslations }
+		};
+	}
+
+	/**
+	 * Check if a locale has translations available (component or app level)
 	 */
 	function hasLocale(locale: string): boolean {
-		return Boolean(builtInLocales[locale] || loadedTranslations[locale]);
+		return Boolean(
+			builtInLocales[locale] || loadedTranslations[locale] || appTranslations[locale]
+		);
 	}
 
 	return {
@@ -210,6 +318,7 @@ function createI18nStore() {
 		setLocale,
 		initialize,
 		registerTranslations,
+		registerAppTranslations,
 
 		// Utility
 		hasLocale,
@@ -226,6 +335,9 @@ function createI18nStore() {
 		},
 		get translations() {
 			return translations;
+		},
+		get appTranslations() {
+			return currentAppTranslations;
 		},
 		get isLoading() {
 			return isLoading;

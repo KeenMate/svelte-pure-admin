@@ -5,6 +5,7 @@
 
 // Store
 export { i18nStore } from './store.svelte';
+export type { AppTranslations } from './store.svelte';
 
 // Hooks
 export { useI18n, useTranslate, useScopedTranslate } from './hooks';

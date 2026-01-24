@@ -1,0 +1,82 @@
+<script lang="ts">
+	/**
+	 * FormField Component
+	 *
+	 * A wrapper that combines FormGroup, FormLabel, and FormHelp with automatic
+	 * error/success state handling. Reduces boilerplate when using form validation.
+	 */
+	import type { Snippet } from 'svelte';
+	import FormGroup from './FormGroup.svelte';
+	import FormLabel from './FormLabel.svelte';
+	import FormHelp from './FormHelp.svelte';
+
+	type InputState = 'success' | 'warning' | 'error';
+
+	interface Props {
+		/** Field label text */
+		label?: string;
+		/** Show required indicator (*) on label */
+		required?: boolean;
+		/** Default help text (shown when no errors and not validated) */
+		help?: string;
+		/** Success message (shown when touched, no errors, and field has value) */
+		successMessage?: string;
+		/** Error messages array from validation */
+		errors?: string[] | null;
+		/** Whether the field has been touched/interacted with */
+		touched?: boolean;
+		/** Field has a value (for showing success state) */
+		hasValue?: boolean;
+		/** Manual state override (takes precedence over errors) */
+		state?: InputState;
+		/** Additional class for FormGroup */
+		class?: string;
+		/** Horizontal layout */
+		horizontal?: boolean;
+		/** The input control */
+		children: Snippet<[{ errors: string[]; touched: boolean; state?: InputState }]>;
+	}
+
+	let {
+		label,
+		required = false,
+		help,
+		successMessage,
+		errors = null,
+		touched = false,
+		hasValue = false,
+		state,
+		class: className = '',
+		horizontal = false,
+		children
+	}: Props = $props();
+
+	// Normalize errors to always be an array
+	const normalizedErrors = $derived(errors ?? []);
+	const hasErrors = $derived(normalizedErrors.length > 0);
+
+	// When state is manually set, use it; otherwise derive from errors/touched
+	const showError = $derived(!state && touched && hasErrors);
+	const showSuccess = $derived(!state && touched && !hasErrors && hasValue && !!successMessage);
+
+	// Help variant follows manual state or derived state
+	const helpVariant = $derived<InputState | undefined>(
+		state ?? (showError ? 'error' : showSuccess ? 'success' : undefined)
+	);
+</script>
+
+<FormGroup class={className} {horizontal}>
+	{#if label}
+		<FormLabel {required}>{label}</FormLabel>
+	{/if}
+
+	{@render children({ errors: normalizedErrors, touched, state })}
+
+	{#if showError}
+		<FormHelp variant="error">{normalizedErrors[0]}</FormHelp>
+	{:else if showSuccess}
+		<FormHelp variant="success">{successMessage}</FormHelp>
+	{:else if help}
+		<FormHelp variant={helpVariant}>{help}</FormHelp>
+	{/if}
+</FormGroup>
