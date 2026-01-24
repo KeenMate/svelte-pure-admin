@@ -1,0 +1,38 @@
+# Build outputs - always rebuild fresh in Docker
+**/dist/
+**/build/
+**/*.tgz
+
+# Dependencies - installed fresh via npm ci
+node_modules/
+**/node_modules/
+
+# Git
+.git/
+.gitignore
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+.claude/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Documentation files (not needed for build)
+*.md
+!README.md
+
+# Local development files
+*.local
+*.log
+npm-debug.log*
+
+# GitHub workflows (not needed in image)
+.github/
+
+# SvelteKit generated
+**/.svelte-kit/

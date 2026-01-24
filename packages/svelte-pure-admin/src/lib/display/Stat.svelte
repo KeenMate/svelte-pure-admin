@@ -6,7 +6,7 @@
 
 	type StatVariant = 'hero' | 'square';
 	type StatColor = 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger';
-	type TrendDirection = 'up' | 'down';
+	type ChangeDirection = 'positive' | 'negative' | 'neutral';
 
 	interface Props {
 		/** Stat variant */
@@ -19,10 +19,10 @@
 		number?: string | number;
 		/** Label text */
 		label?: string;
-		/** Trend text (e.g., "+12.5%") */
-		trend?: string;
-		/** Trend direction */
-		trendDirection?: TrendDirection;
+		/** Change text (e.g., "+12.5%") - for hero variant */
+		change?: string;
+		/** Change direction - determines color (positive=green, negative=red, neutral=gray) */
+		changeDirection?: ChangeDirection;
 		/** Symbol (for square variant) */
 		symbol?: string;
 		/** Additional CSS classes */
@@ -39,8 +39,8 @@
 		iconVariant = 'primary',
 		number,
 		label,
-		trend,
-		trendDirection,
+		change,
+		changeDirection,
 		symbol,
 		class: className = '',
 		icon,
@@ -65,8 +65,8 @@
 	<div class={classes()}>
 		<div class="pa-stat__label">{label}</div>
 		<div class="pa-stat__value">{number}</div>
-		{#if trend}
-			<div class="pa-stat__trend pa-stat__trend--{trendDirection}">{trend}</div>
+		{#if change}
+			<div class="pa-stat__change pa-stat__change--{changeDirection}">{change}</div>
 		{/if}
 	</div>
 {:else if variant === 'square'}
@@ -90,8 +90,8 @@
 		{:else}
 			<div class="pa-stat__number">{number}</div>
 			<div class="pa-stat__label">{label}</div>
-			{#if trend}
-				<div class="pa-stat__trend pa-stat__trend--{trendDirection}">{trend}</div>
+			{#if change}
+				<div class="pa-stat__change pa-stat__change--{changeDirection}">{change}</div>
 			{/if}
 		{/if}
 	</div>

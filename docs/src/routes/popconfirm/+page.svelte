@@ -123,7 +123,7 @@
 				<ButtonGroup>
 					<Button
 						variant="danger"
-						onClick={(e) => {
+						onclick={(e: MouseEvent) => {
 							deleteTrigger = e.currentTarget as HTMLElement;
 							showDeletePopconfirm = !showDeletePopconfirm;
 						}}
@@ -133,7 +133,7 @@
 
 					<Button
 						variant="warning"
-						onClick={(e) => {
+						onclick={(e: MouseEvent) => {
 							archiveTrigger = e.currentTarget as HTMLElement;
 							showArchivePopconfirm = !showArchivePopconfirm;
 						}}
@@ -143,7 +143,7 @@
 
 					<Button
 						variant="secondary"
-						onClick={(e) => {
+						onclick={(e: MouseEvent) => {
 							resetTrigger = e.currentTarget as HTMLElement;
 							showResetPopconfirm = !showResetPopconfirm;
 						}}
@@ -161,7 +161,7 @@
 					<Button
 						size="xs"
 						variant="danger"
-						onClick={(e) => {
+						onclick={(e: MouseEvent) => {
 							compactTrigger = e.currentTarget as HTMLElement;
 							showCompactPopconfirm = !showCompactPopconfirm;
 						}}
@@ -173,7 +173,7 @@
 						size="xs"
 						variant="danger"
 						outline
-						onClick={(e) => {
+						onclick={(e: MouseEvent) => {
 							compact2Trigger = e.currentTarget as HTMLElement;
 							showCompact2Popconfirm = !showCompact2Popconfirm;
 						}}
@@ -244,7 +244,7 @@
 	<ButtonGroup>
 		<Button
 			variant="primary"
-			onClick={(e) => {
+			onclick={(e: MouseEvent) => {
 				topTrigger = e.currentTarget as HTMLElement;
 				showTopPopconfirm = !showTopPopconfirm;
 			}}
@@ -254,7 +254,7 @@
 
 		<Button
 			variant="primary"
-			onClick={(e) => {
+			onclick={(e: MouseEvent) => {
 				bottomTrigger = e.currentTarget as HTMLElement;
 				showBottomPopconfirm = !showBottomPopconfirm;
 			}}
@@ -264,7 +264,7 @@
 
 		<Button
 			variant="primary"
-			onClick={(e) => {
+			onclick={(e: MouseEvent) => {
 				leftTrigger = e.currentTarget as HTMLElement;
 				showLeftPopconfirm = !showLeftPopconfirm;
 			}}
@@ -274,7 +274,7 @@
 
 		<Button
 			variant="primary"
-			onClick={(e) => {
+			onclick={(e: MouseEvent) => {
 				rightTrigger = e.currentTarget as HTMLElement;
 				showRightPopconfirm = !showRightPopconfirm;
 			}}
@@ -326,7 +326,7 @@
 	<ButtonGroup>
 		<Button
 			variant="danger"
-			onClick={(e) => {
+			onclick={(e: MouseEvent) => {
 				dangerTrigger = e.currentTarget as HTMLElement;
 				showDangerPopconfirm = !showDangerPopconfirm;
 			}}
@@ -336,7 +336,7 @@
 
 		<Button
 			variant="warning"
-			onClick={(e) => {
+			onclick={(e: MouseEvent) => {
 				warningTrigger = e.currentTarget as HTMLElement;
 				showWarningPopconfirm = !showWarningPopconfirm;
 			}}
@@ -346,7 +346,7 @@
 
 		<Button
 			variant="info"
-			onClick={(e) => {
+			onclick={(e: MouseEvent) => {
 				infoTrigger = e.currentTarget as HTMLElement;
 				showInfoPopconfirm = !showInfoPopconfirm;
 			}}
@@ -407,7 +407,7 @@
 							<Button
 								size="xs"
 								variant="danger"
-								onClick={(e) => toggleTablePopconfirm(index, e)}
+								onclick={(e: MouseEvent) => toggleTablePopconfirm(index, e)}
 							>
 								Delete
 							</Button>

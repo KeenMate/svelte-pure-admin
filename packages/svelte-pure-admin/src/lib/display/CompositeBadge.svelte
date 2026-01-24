@@ -58,7 +58,18 @@
 			{@render icon()}
 		</span>
 	{/if}
-	<span class="pa-composite-badge__label" onclick={onLabelClick}>{label}</span>
+	{#if onLabelClick}
+		<!-- svelte-ignore a11y_no_static_element_interactions -->
+		<span
+			class="pa-composite-badge__label"
+			onclick={onLabelClick}
+			onkeydown={(e) => e.key === 'Enter' && onLabelClick?.(e as any)}
+			role="button"
+			tabindex="0"
+		>{label}</span>
+	{:else}
+		<span class="pa-composite-badge__label">{label}</span>
+	{/if}
 	{#if interactive}
 		<button class="pa-composite-badge__button" onclick={onButtonClick}>
 			{buttonText}

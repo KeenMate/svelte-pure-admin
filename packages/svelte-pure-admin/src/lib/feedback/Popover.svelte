@@ -50,7 +50,7 @@
 		children
 	}: Props = $props();
 
-	let triggerElement: HTMLButtonElement;
+	let triggerElement = $state<HTMLButtonElement | null>(null);
 	let popoverId = `popover-${Math.random().toString(36).substr(2, 9)}`;
 
 	const isOpen = $derived(popoverManager.isOpen(popoverId));
@@ -68,7 +68,7 @@
 
 		if (isOpen) {
 			popoverManager.close();
-		} else if (children) {
+		} else if (children && triggerElement) {
 			popoverManager.open({
 				id: popoverId,
 				triggerElement,

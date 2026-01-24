@@ -25,12 +25,30 @@
 		CommandPalette,
 		Button
 	} from '@keenmate/svelte-pure-admin';
-	import type { PureAdminConfig, Command, SearchContext, SearchResult } from '@keenmate/svelte-pure-admin';
+	import type { PureAdminConfig, Command, SearchContext, SearchResult, ThemeOption } from '@keenmate/svelte-pure-admin';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import '@keenmate/pure-admin-theme-audi';
 	import '../app.css';
+
+	// Import default theme statically to prevent FOUC on initial load
+	import '@keenmate/pure-admin-theme-audi';
+
+	// Import theme CSS URLs using Vite's ?url suffix for dynamic switching
+	import audiCssUrl from '@keenmate/pure-admin-theme-audi?url';
+	import corporateCssUrl from '@keenmate/pure-admin-theme-corporate?url';
+	import darkCssUrl from '@keenmate/pure-admin-theme-dark?url';
+	import expressCssUrl from '@keenmate/pure-admin-theme-express?url';
+	import minimalCssUrl from '@keenmate/pure-admin-theme-minimal?url';
+
+	// Available themes for the settings panel
+	const availableThemes: ThemeOption[] = [
+		{ id: 'audi', name: 'Audi', cssPath: audiCssUrl },
+		{ id: 'corporate', name: 'Corporate', cssPath: corporateCssUrl },
+		{ id: 'dark', name: 'Dark', cssPath: darkCssUrl },
+		{ id: 'express', name: 'Express', cssPath: expressCssUrl },
+		{ id: 'minimal', name: 'Minimal', cssPath: minimalCssUrl }
+	];
 
 	let { data, children } = $props();
 
@@ -140,6 +158,7 @@
 
 	// Navigation pages for search
 	const pages = [
+		{ id: 'getting-started', title: 'Getting Started', path: '/getting-started', icon: '🚀' },
 		{ id: 'home', title: 'Dashboard', path: '/', icon: '📊' },
 		{ id: 'components', title: 'Components', path: '/components', icon: '🧩' },
 		{ id: 'buttons', title: 'Buttons', path: '/buttons', icon: '🔘' },
@@ -169,7 +188,8 @@
 		{ id: 'timeline-block', title: 'Timeline Block', path: '/timeline-block', icon: '📦' },
 		{ id: 'timeline-feed', title: 'Timeline Feed', path: '/timeline-feed', icon: '📰' },
 		{ id: 'theme-variables', title: 'Theme Variables', path: '/theme-variables', icon: '🎨' },
-		{ id: 'colors', title: 'Colors', path: '/colors', icon: '🎨' }
+		{ id: 'colors', title: 'Colors', path: '/colors', icon: '🎨' },
+		{ id: 'validations', title: 'Validation Patterns', path: '/validations', icon: '✓' }
 	];
 
 	// Commands for the command palette
@@ -342,7 +362,7 @@
 
 <PureAdminProvider config={myConfig}>
 	<PopoverContainer />
-	<SettingsPanel />
+	<SettingsPanel {availableThemes} defaultTheme="audi" />
 	<ProfilePanel
 		bind:show={showProfilePanel}
 		name="John Doe"
@@ -500,7 +520,12 @@
 
 	<Layout>
 		<LayoutInner>
-			<Sidebar>
+			<Sidebar isResizable>
+				<!-- Getting Started -->
+				<SidebarItem href="/getting-started" label="Getting Started">
+					{#snippet icon()}🚀{/snippet}
+				</SidebarItem>
+
 				<!-- Dashboard -->
 				<SidebarItem href="/" label="Dashboard">
 					{#snippet icon()}📊{/snippet}
@@ -521,29 +546,80 @@
 					{#snippet icon()}📝{/snippet}
 				</SidebarItem>
 
+				<!-- Svelte Integration -->
+				<SidebarItem label="Svelte" hasSubmenu={true}>
+					{#snippet icon()}🔥{/snippet}
+					{#snippet submenu()}
+						<SidebarItem href="/validation" label="Validation">
+							{#snippet icon()}✓{/snippet}
+						</SidebarItem>
+					{/snippet}
+				</SidebarItem>
+
 				<!-- Components with submenu -->
 				<SidebarItem label="Components" hasSubmenu={true}>
 					{#snippet icon()}🧩{/snippet}
 					{#snippet submenu()}
-						<SidebarItem href="/components" label="Overview" />
-						<SidebarItem href="/buttons" label="Buttons" />
-						<SidebarItem href="/inputs" label="Inputs" />
-						<SidebarItem href="/cards" label="Cards" />
-						<SidebarItem href="/grid" label="Grid System" />
-						<SidebarItem href="/tabs" label="Tabs" />
-						<SidebarItem href="/badges" label="Badges" />
-						<SidebarItem href="/lists" label="Lists" />
-						<SidebarItem href="/checkbox-lists" label="Checkbox Lists" />
-						<SidebarItem href="/code" label="Code" />
-						<SidebarItem href="/alerts" label="Alerts" />
-						<SidebarItem href="/callouts" label="Callouts" />
-						<SidebarItem href="/toasts" label="Toasts" />
-						<SidebarItem href="/loaders" label="Loaders" />
-						<SidebarItem href="/tooltips" label="Tooltips" />
-						<SidebarItem href="/modals" label="Modals" />
-						<SidebarItem href="/modal-dialogs" label="Modal Dialogs" />
-						<SidebarItem href="/popconfirm" label="Popconfirm" />
-						<SidebarItem href="/command-palette" label="Command Palette" />
+						<SidebarItem href="/components" label="Overview">
+							{#snippet icon()}🧩{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/buttons" label="Buttons">
+							{#snippet icon()}🔘{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/inputs" label="Inputs">
+							{#snippet icon()}✏️{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/validations" label="Validations">
+							{#snippet icon()}✓{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/cards" label="Cards">
+							{#snippet icon()}🃏{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/grid" label="Grid System">
+							{#snippet icon()}⊞{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/tabs" label="Tabs">
+							{#snippet icon()}📑{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/badges" label="Badges">
+							{#snippet icon()}🏷️{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/lists" label="Lists">
+							{#snippet icon()}📃{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/checkbox-lists" label="Checkbox Lists">
+							{#snippet icon()}☑️{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/code" label="Code">
+							{#snippet icon()}💻{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/alerts" label="Alerts">
+							{#snippet icon()}⚠️{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/callouts" label="Callouts">
+							{#snippet icon()}📌{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/toasts" label="Toasts">
+							{#snippet icon()}🔔{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/loaders" label="Loaders">
+							{#snippet icon()}⏳{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/tooltips" label="Tooltips">
+							{#snippet icon()}💬{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/modals" label="Modals">
+							{#snippet icon()}🔳{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/modal-dialogs" label="Modal Dialogs">
+							{#snippet icon()}💬{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/popconfirm" label="Popconfirm">
+							{#snippet icon()}💬{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/command-palette" label="Command Palette">
+							{#snippet icon()}🔍{/snippet}
+						</SidebarItem>
 					{/snippet}
 				</SidebarItem>
 
@@ -551,10 +627,18 @@
 				<SidebarItem label="Tables" hasSubmenu={true}>
 					{#snippet icon()}📋{/snippet}
 					{#snippet submenu()}
-						<SidebarItem href="/tables" label="Standard Tables" />
-						<SidebarItem href="/tables-sizing" label="Table Sizing" />
-						<SidebarItem href="/tables-responsive" label="Responsive" />
-						<SidebarItem href="/comparison" label="Comparison" />
+						<SidebarItem href="/tables" label="Standard Tables">
+							{#snippet icon()}📊{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/tables-sizing" label="Table Sizing">
+							{#snippet icon()}📏{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/tables-responsive" label="Responsive">
+							{#snippet icon()}📱{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/comparison" label="Comparison">
+							{#snippet icon()}📈{/snippet}
+						</SidebarItem>
 					{/snippet}
 				</SidebarItem>
 
@@ -562,9 +646,15 @@
 				<SidebarItem label="Timeline" hasSubmenu={true}>
 					{#snippet icon()}⏱️{/snippet}
 					{#snippet submenu()}
-						<SidebarItem href="/timeline-simple" label="Simple" />
-						<SidebarItem href="/timeline-block" label="Block" />
-						<SidebarItem href="/timeline-feed" label="Feed" />
+						<SidebarItem href="/timeline-simple" label="Simple">
+							{#snippet icon()}•{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/timeline-block" label="Block">
+							{#snippet icon()}•{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/timeline-feed" label="Feed">
+							{#snippet icon()}•{/snippet}
+						</SidebarItem>
 					{/snippet}
 				</SidebarItem>
 
@@ -572,7 +662,9 @@
 				<SidebarItem label="Layout" hasSubmenu={true}>
 					{#snippet icon()}📐{/snippet}
 					{#snippet submenu()}
-						<SidebarItem href="/layouts" label="Page Layouts" />
+						<SidebarItem href="/layouts" label="Page Layouts">
+							{#snippet icon()}•{/snippet}
+						</SidebarItem>
 					{/snippet}
 				</SidebarItem>
 			</Sidebar>

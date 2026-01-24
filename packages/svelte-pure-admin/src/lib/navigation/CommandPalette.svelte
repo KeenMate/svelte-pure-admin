@@ -827,7 +827,7 @@
 		background: rgba(var(--pa-primary-rgb, 59, 130, 246), 0.1);
 		border-top: 1px solid var(--pa-border-color, #e5e7eb);
 		font-size: 0.875rem;
-		color: var(--pa-text-secondary, #6b7280);
+		color: var(--pa-text-color-2, #6b7280);
 	}
 
 	.pa-command-palette__preview-label {

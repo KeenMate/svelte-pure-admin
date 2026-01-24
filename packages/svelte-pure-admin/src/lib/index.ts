@@ -1,6 +1,18 @@
 // Pure Admin Svelte Components
 // Svelte 5 component library
 
+// Shared Types
+export type {
+	ColorVariant,
+	Size,
+	ExtendedSize,
+	HorizontalAlignment,
+	VerticalAlignment,
+	TextMode,
+	ValidationState,
+	ThemeColor
+} from './types';
+
 // Configuration
 export { default as PureAdminProvider } from './config/PureAdminProvider.svelte';
 export type { PureAdminConfig } from './config/config';
@@ -20,11 +32,19 @@ export { default as Grid } from './layout/Grid.svelte';
 export { default as Column } from './layout/Column.svelte';
 export { default as Section } from './layout/Section.svelte';
 export { default as SettingsPanel } from './layout/SettingsPanel.svelte';
+export { default as Divider } from './layout/Divider.svelte';
+export type { ThemeOption } from './layout/types';
 
 // Form Components
+export { default as Form } from './forms/Form.svelte';
 export { default as FormGroup } from './forms/FormGroup.svelte';
 export { default as FormLabel } from './forms/FormLabel.svelte';
 export { default as Input } from './forms/Input.svelte';
+export { default as NumberInput } from './forms/NumberInput.svelte';
+export { default as DateInput } from './forms/DateInput.svelte';
+export { default as FileInput } from './forms/FileInput.svelte';
+export { default as RangeInput } from './forms/RangeInput.svelte';
+export { default as ColorInput } from './forms/ColorInput.svelte';
 export { default as Textarea } from './forms/Textarea.svelte';
 export { default as Select } from './forms/Select.svelte';
 export { default as Checkbox } from './forms/Checkbox.svelte';
@@ -78,6 +98,13 @@ export { default as TableResponsive } from './display/TableResponsive.svelte';
 export { default as Pager } from './display/Pager.svelte';
 export { default as LoadMore } from './display/LoadMore.svelte';
 export { default as Stat } from './display/Stat.svelte';
+export { default as MetricList } from './display/MetricList.svelte';
+export { default as MetricListItem } from './display/MetricListItem.svelte';
+export { default as StatusList } from './display/StatusList.svelte';
+export { default as StatusListItem } from './display/StatusListItem.svelte';
+export { default as ActivityFeed } from './display/ActivityFeed.svelte';
+export { default as ActivityFeedItem } from './display/ActivityFeedItem.svelte';
+export { default as QuickActions } from './display/QuickActions.svelte';
 export { default as List } from './display/List.svelte';
 export { default as ListItem } from './display/ListItem.svelte';
 export { default as BasicList } from './display/BasicList.svelte';
@@ -128,6 +155,10 @@ export { default as NavDropdown } from './navigation/NavDropdown.svelte';
 // Typography Components
 export { default as Heading } from './typography/Heading.svelte';
 export { default as Paragraph } from './typography/Paragraph.svelte';
+export { default as Strong } from './typography/Strong.svelte';
+export { default as Em } from './typography/Em.svelte';
+export { default as Text } from './typography/Text.svelte';
+export { default as Link } from './typography/Link.svelte';
 
 export { default as DialogContainer } from './feedback/DialogContainer.svelte';
 export { dialogService, dialogStore } from './feedback/dialog-service.svelte';

@@ -22,6 +22,8 @@
 	}
 </script>
 
+<Paragraph>Display code snippets, JSON data, configuration files, and terminal output with syntax highlighting and copy functionality.</Paragraph>
+
 <!-- Inline Code -->
 <Card title="Inline Code">
 	<Paragraph>Use the <code>&lt;code&gt;</code> element for inline code references like <code>npm install</code> or <code>const myVariable = true</code>.</Paragraph>
@@ -157,10 +159,10 @@ ORDER BY orders.total DESC;`}</Code>
 <!-- Compact Code Blocks -->
 <Card title="Compact Variant">
 	<Paragraph>Use <code>.pa-code--compact</code> for smaller code snippets.</Paragraph>
-	<Code language="python" compact>{`def fibonacci(n):
+	<CodeBlock language="python" compact>{`def fibonacci(n):
     if n <= 1:
         return n
-    return fibonacci(n-1) + fibonacci(n-2)`}</Code>
+    return fibonacci(n-1) + fibonacci(n-2)`}</CodeBlock>
 </Card>
 
 <!-- All Language Variants -->
@@ -170,31 +172,31 @@ ORDER BY orders.total DESC;`}</Code>
 	<Grid>
 		<Column size="100" md="1-3">
 			<Heading level={5}>JavaScript</Heading>
-			<Code language="javascript" compact>console.log('Hello');</Code>
+			<CodeBlock language="javascript" compact>console.log('Hello');</CodeBlock>
 		</Column>
 		<Column size="100" md="1-3">
 			<Heading level={5}>JSON</Heading>
-			<Code language="json" compact>{`{"key": "value"}`}</Code>
+			<CodeBlock language="json" compact>{`{"key": "value"}`}</CodeBlock>
 		</Column>
 		<Column size="100" md="1-3">
 			<Heading level={5}>HTML</Heading>
-			<Code language="html" compact>{`<div>Hello</div>`}</Code>
+			<CodeBlock language="html" compact>{`<div>Hello</div>`}</CodeBlock>
 		</Column>
 		<Column size="100" md="1-3">
 			<Heading level={5}>CSS</Heading>
-			<Code language="css" compact>.class {`{ color: red; }`}</Code>
+			<CodeBlock language="css" compact>.class {`{ color: red; }`}</CodeBlock>
 		</Column>
 		<Column size="100" md="1-3">
 			<Heading level={5}>Bash</Heading>
-			<Code language="bash" compact>$ npm install</Code>
+			<CodeBlock language="bash" compact>$ npm install</CodeBlock>
 		</Column>
 		<Column size="100" md="1-3">
 			<Heading level={5}>SQL</Heading>
-			<Code language="sql" compact>SELECT * FROM users;</Code>
+			<CodeBlock language="sql" compact>SELECT * FROM users;</CodeBlock>
 		</Column>
 		<Column size="100" md="1-3">
 			<Heading level={5}>Python</Heading>
-			<Code language="python" compact>print("Hello World")</Code>
+			<CodeBlock language="python" compact>print("Hello World")</CodeBlock>
 		</Column>
 	</Grid>
 </Card>

@@ -197,7 +197,7 @@
 
 	{#if hasMore}
 		<div class="mt-4 text-center">
-			<Button variant="secondary" size="sm" onClick={loadMore}>
+			<Button variant="secondary" size="sm" onclick={loadMore}>
 				Load more events ({allActivities.length - visibleCount} remaining)
 			</Button>
 		</div>
@@ -222,7 +222,7 @@
 			{#each Array.from({ length: 50 }, (_, i) => i) as index}
 				<TimelineItem
 					time={`Event ${index + 1}`}
-					variant={['primary', 'secondary', 'success', 'info', 'warning', 'danger'][index % 6]}
+					variant={(['primary', 'secondary', 'success', 'info', 'warning', 'danger'] as const)[index % 6]}
 				>
 					Activity log entry #{index + 1} - {['User login', 'File uploaded', 'Settings changed', 'Report generated', 'Email sent', 'Task completed'][index % 6]}
 				</TimelineItem>

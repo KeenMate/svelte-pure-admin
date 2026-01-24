@@ -19,18 +19,24 @@
 Every component MUST be based on the HTML snippets from `@keenmate/pure-admin-core/snippets/`:
 
 ```
-../pure-admin/pure-admin-core/snippets/
+../pure-admin/packages/core/snippets/
 ├── alerts.html       ← Reference for Alert component
 ├── badges.html       ← Reference for Badge component
 ├── buttons.html      ← Reference for Button component
+├── callout.html      ← Reference for Callout component (NEW in 1.1.0)
 ├── cards.html        ← Reference for Card component
+├── comparison.html   ← Reference for Comparison tables
 ├── forms.html        ← Reference for Form components
+├── grid.html         ← Reference for Grid system
 ├── layout.html       ← Reference for Layout/Sidebar/ProfilePanel
+├── lists.html        ← Reference for Lists component
 ├── loaders.html      ← Reference for Loader/Spinner
 ├── modals.html       ← Reference for Modal component
 ├── profile.html      ← Reference for ProfilePanel
 ├── tables.html       ← Reference for Table component
-└── toasts.html       ← Reference for Toast component
+├── toasts.html       ← Reference for Toast component
+├── tooltips.html     ← Reference for Tooltips/Popovers
+└── utilities.html    ← Reference for Utility classes
 ```
 
 **Process for creating a new component:**
@@ -431,11 +437,11 @@ All component categories are complete:
 
 ### 2. Read the Snippet
 
-Open the corresponding snippet file from `../pure-admin/pure-admin-core/snippets/[component].html`
+Open the corresponding snippet file from `../pure-admin/packages/core/snippets/[component].html`
 
 Example for Badge:
 ```bash
-cat ../pure-admin/pure-admin-core/snippets/badges.html
+cat ../pure-admin/packages/core/snippets/badges.html
 ```
 
 Identify:
@@ -549,7 +555,7 @@ npm publish --access public
 - `svelte ^5.0.0` - Required by consumers
 
 **Dependencies:**
-- `@keenmate/pure-admin-core` - Core CSS framework (file reference: `file:../pure-admin/pure-admin-core`)
+- `@keenmate/pure-admin-core` - Core CSS framework (file reference: `file:../pure-admin/packages/core`)
 
 **Dev Dependencies:**
 - `@sveltejs/kit` - SvelteKit
@@ -561,9 +567,9 @@ npm publish --access public
 
 ## Related Packages
 
-- **@keenmate/pure-admin-core** - Core CSS framework at `../pure-admin/pure-admin-core`
-- **pure-admin-visual** - Showcase application at `../pure-admin/pure-admin-visual`
-- **pure-admin-visual-2** - Validation project at `../pure-admin/pure-admin-visual-2`
+- **@keenmate/pure-admin-core** - Core CSS framework at `../pure-admin/packages/core`
+- **@keenmate/pure-admin-theme-*** - Theme packages at `../pure-admin/packages/theme-*` (audi, dark, express, corporate, minimal)
+- **pure-admin demo** - Demo application at `../pure-admin/demo` (port 3000)
 
 ## Important Rules
 
@@ -579,9 +585,10 @@ npm publish --access public
 ## Snippet Reference Quick Links
 
 **Local paths (relative to this directory):**
-- Snippets: `../pure-admin/pure-admin-core/snippets/`
-- Core SCSS: `../pure-admin/pure-admin-core/src/scss/`
-- Visual demo: `../pure-admin/pure-admin-visual/` (port 3000)
+- Snippets: `../pure-admin/packages/core/snippets/`
+- Core SCSS: `../pure-admin/packages/core/src/scss/`
+- Demo app: `../pure-admin/demo/` (port 3000)
+- Changelog: `../pure-admin/packages/core/CHANGELOG.md`
 
 **When implementing a component:**
 1. Read snippet file
@@ -598,7 +605,7 @@ npm publish --access public
 
 **Step 1:** Read snippet
 ```bash
-cat ../pure-admin/pure-admin-core/snippets/badges.html
+cat ../pure-admin/packages/core/snippets/badges.html
 ```
 
 **Step 2:** Identify patterns
@@ -664,6 +671,7 @@ Done! ✅
 
 ---
 
-**Last Updated:** 2025-10-03
+**Last Updated:** 2026-01-18
 **Svelte Version:** 5.x
 **SvelteKit Version:** 2.x
+**Pure Admin Core Version:** 1.1.0

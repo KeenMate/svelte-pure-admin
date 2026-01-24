@@ -36,11 +36,29 @@
 	});
 </script>
 
-<span class={classes()} {onclick}>
-	{#if icon}
-		<span class="pa-badge__icon">
-			{@render icon()}
-		</span>
-	{/if}
-	{@render children?.()}
-</span>
+{#if onclick}
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
+	<span
+		class={classes()}
+		{onclick}
+		onkeydown={(e) => e.key === 'Enter' && onclick?.(e as any)}
+		role="button"
+		tabindex="0"
+	>
+		{#if icon}
+			<span class="pa-badge__icon">
+				{@render icon()}
+			</span>
+		{/if}
+		{@render children?.()}
+	</span>
+{:else}
+	<span class={classes()}>
+		{#if icon}
+			<span class="pa-badge__icon">
+				{@render icon()}
+			</span>
+		{/if}
+		{@render children?.()}
+	</span>
+{/if}

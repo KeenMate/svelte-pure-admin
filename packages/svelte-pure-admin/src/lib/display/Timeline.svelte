@@ -126,10 +126,10 @@
 		getContentCallback,
 		getCommentCallback,
 
-		// Templates
-		iconTemplate,
-		contentTemplate,
-		commentTemplate,
+		// Templates (aliased to avoid naming conflict with local snippets)
+		iconTemplate: iconSnippet,
+		contentTemplate: contentSnippet,
+		commentTemplate: commentSnippet,
 
 		// Events
 		onItemClick,
@@ -199,9 +199,9 @@
 	}
 
 	// Determine which mode we're in
-	const isDataMode = data && data.length > 0;
-	const isLegacyMode = items && items.length > 0;
-	const isSnippetMode = !isDataMode && !isLegacyMode;
+	const isDataMode = $derived(data && data.length > 0);
+	const isLegacyMode = $derived(items && items.length > 0);
+	const isSnippetMode = $derived(!isDataMode && !isLegacyMode);
 
 	// Handle item click (data mode)
 	function handleItemClick(item: T) {
@@ -250,22 +250,22 @@
 				avatarAlt={getAvatarAlt(item)}
 				onclick={onItemClick ? handleItemClick(item) : undefined}
 			>
-				{#if contentTemplate}
-					{@render contentTemplate(item)}
+				{#if contentSnippet}
+					{@render contentSnippet(item)}
 				{:else}
 					{getContent(item)}
 				{/if}
 
-				{#if iconTemplate}
+				{#if iconSnippet}
 					{#snippet iconTemplate()}
-						{@render iconTemplate(item)}
+						{@render iconSnippet(item)}
 					{/snippet}
 				{/if}
 
-				{#if commentTemplate || getComment(item)}
+				{#if commentSnippet || getComment(item)}
 					{#snippet commentTemplate()}
-						{#if commentTemplate}
-							{@render commentTemplate(item)}
+						{#if commentSnippet}
+							{@render commentSnippet(item)}
 						{:else}
 							{getComment(item) ?? ''}
 						{/if}

@@ -4,15 +4,19 @@
 	 * Based on @keenmate/pure-admin-core snippets/forms.html
 	 */
 
+	type ValidationState = 'success' | 'warning' | 'error';
+
 	interface Props {
-		/** Has validation error */
+		/** Validation state (success, warning, error) */
+		state?: ValidationState;
+		/** Has validation error (legacy, prefer state prop) */
 		hasError?: boolean;
-		/** Has validation success */
+		/** Has validation success (legacy, prefer state prop) */
 		hasSuccess?: boolean;
 		/** Mark as required */
 		isRequired?: boolean;
 		/** Horizontal layout (label left, input right) */
-		horizontal?: boolean;
+		isHorizontal?: boolean;
 		/** Additional CSS classes */
 		class?: string;
 		/** Children content */
@@ -20,10 +24,11 @@
 	}
 
 	let {
+		state,
 		hasError = false,
 		hasSuccess = false,
 		isRequired = false,
-		horizontal = false,
+		isHorizontal = false,
 		class: className = '',
 		children
 	}: Props = $props();
@@ -31,10 +36,16 @@
 	// Build class string
 	const classes = $derived(() => {
 		const base = ['pa-form-group'];
-		if (hasSuccess) base.push('pa-form-group--success');
-		if (hasError) base.push('pa-form-group--error');
+		// New state prop takes precedence
+		if (state) {
+			base.push(`pa-form-group--${state}`);
+		} else {
+			// Legacy boolean props
+			if (hasSuccess) base.push('pa-form-group--success');
+			if (hasError) base.push('pa-form-group--error');
+		}
 		if (isRequired) base.push('pa-form-group--required');
-		if (horizontal) base.push('pa-form-group--horizontal');
+		if (isHorizontal) base.push('pa-form-group--horizontal');
 		if (className) base.push(className);
 		return base.join(' ');
 	});

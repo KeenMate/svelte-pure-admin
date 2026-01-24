@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Heading, Paragraph, Button, ButtonGroup, Card, Grid, Column, BasicList } from '@keenmate/svelte-pure-admin';
+	import { Heading, Paragraph, Button, ButtonGroup, Card, Grid, Column, BasicList, Tooltip } from '@keenmate/svelte-pure-admin';
 	import { onMount } from 'svelte';
 		
 	onMount(() => {
@@ -59,6 +59,8 @@
 		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 	/>
 </svelte:head>
+
+<Paragraph>Various button styles and sizes for actions and navigation.</Paragraph>
 
 <!-- Button Variants and Sizes Grid -->
 <Grid>
@@ -161,28 +163,48 @@
 	<!-- Gap Variants -->
 	<Column size="100" lg="1-2">
 		<Card title="Button Groups - Gap Sizes">
-			<Heading level={4}>Compact Gap (2px) - <code>gap-2</code></Heading>
-			<ButtonGroup class="gap-2">
+			<Heading level={4}>Semantic Gap Classes</Heading>
+			<Paragraph class="text-muted mb-1"><code>gap-xs</code> (4px)</Paragraph>
+			<ButtonGroup class="gap-xs mb-1">
 				<Button variant="primary">A</Button>
 				<Button variant="primary">B</Button>
 				<Button variant="primary">C</Button>
 				<Button variant="primary">D</Button>
 			</ButtonGroup>
-
-			<Heading level={4} class="mt-2">Default Gap (3px)</Heading>
-			<ButtonGroup>
-				<Button variant="primary">A</Button>
-				<Button variant="primary">B</Button>
-				<Button variant="primary">C</Button>
-				<Button variant="primary">D</Button>
+			<Paragraph class="text-muted mb-1"><code>gap-sm</code> (8px)</Paragraph>
+			<ButtonGroup class="gap-sm mb-1">
+				<Button variant="secondary">A</Button>
+				<Button variant="secondary">B</Button>
+				<Button variant="secondary">C</Button>
+				<Button variant="secondary">D</Button>
 			</ButtonGroup>
-
-			<Heading level={4} class="mt-2">Loose Gap (8px) - <code>gap-8</code></Heading>
-			<ButtonGroup class="gap-8">
-				<Button variant="primary">A</Button>
-				<Button variant="primary">B</Button>
-				<Button variant="primary">C</Button>
-				<Button variant="primary">D</Button>
+			<Paragraph class="text-muted mb-1"><code>gap-md</code> (12px)</Paragraph>
+			<ButtonGroup class="gap-md mb-1">
+				<Button variant="success">A</Button>
+				<Button variant="success">B</Button>
+				<Button variant="success">C</Button>
+				<Button variant="success">D</Button>
+			</ButtonGroup>
+			<Paragraph class="text-muted mb-1"><code>gap-base</code> (16px)</Paragraph>
+			<ButtonGroup class="gap-base mb-1">
+				<Button variant="info">A</Button>
+				<Button variant="info">B</Button>
+				<Button variant="info">C</Button>
+				<Button variant="info">D</Button>
+			</ButtonGroup>
+			<Paragraph class="text-muted mb-1"><code>gap-lg</code> (24px)</Paragraph>
+			<ButtonGroup class="gap-lg mb-1">
+				<Button variant="warning">A</Button>
+				<Button variant="warning">B</Button>
+				<Button variant="warning">C</Button>
+				<Button variant="warning">D</Button>
+			</ButtonGroup>
+			<Paragraph class="text-muted mb-1"><code>gap-xl</code> (32px)</Paragraph>
+			<ButtonGroup class="gap-xl">
+				<Button variant="danger">A</Button>
+				<Button variant="danger">B</Button>
+				<Button variant="danger">C</Button>
+				<Button variant="danger">D</Button>
 			</ButtonGroup>
 		</Card>
 	</Column>
@@ -193,37 +215,38 @@
 	<!-- Vertical Alignment -->
 	<Column size="100" lg="1-2">
 		<Card title="Vertical Alignment">
+			<Paragraph class="text-muted mb-md">Use semantic gap classes (<code>gap-sm</code>, <code>gap-md</code>, <code>gap-lg</code>, <code>gap-xl</code>) to control vertical spacing between buttons.</Paragraph>
 			<Grid>
-				<Column size="25">
-					<Heading level={4}>Left (default)</Heading>
-					<ButtonGroup vertical>
-						<Button variant="secondary">Short</Button>
-						<Button variant="secondary">Medium Btn</Button>
-						<Button variant="secondary">Long Button</Button>
+				<Column size="50" xl="25">
+					<Heading level={4}>Left <code>gap-sm</code></Heading>
+					<ButtonGroup vertical class="gap-sm">
+						<Button variant="secondary" class="text-truncate">Short</Button>
+						<Button variant="secondary" class="text-truncate">Medium Btn</Button>
+						<Button variant="secondary" class="text-truncate">Long Button</Button>
 					</ButtonGroup>
 				</Column>
-				<Column size="25">
-					<Heading level={4}>Center</Heading>
-					<ButtonGroup vertical align="center">
-						<Button variant="secondary">Short</Button>
-						<Button variant="secondary">Medium Btn</Button>
-						<Button variant="secondary">Long Button</Button>
+				<Column size="50" xl="25">
+					<Heading level={4}>Center <code>gap-md</code></Heading>
+					<ButtonGroup vertical align="center" class="gap-md">
+						<Button variant="secondary" class="text-truncate">Short</Button>
+						<Button variant="secondary" class="text-truncate">Medium Btn</Button>
+						<Button variant="secondary" class="text-truncate">Long Button</Button>
 					</ButtonGroup>
 				</Column>
-				<Column size="25">
-					<Heading level={4}>End</Heading>
-					<ButtonGroup vertical align="end">
-						<Button variant="secondary">Short</Button>
-						<Button variant="secondary">Medium Btn</Button>
-						<Button variant="secondary">Long Button</Button>
+				<Column size="50" xl="25">
+					<Heading level={4}>End <code>gap-lg</code></Heading>
+					<ButtonGroup vertical align="end" class="gap-lg">
+						<Button variant="secondary" class="text-truncate">Short</Button>
+						<Button variant="secondary" class="text-truncate">Medium Btn</Button>
+						<Button variant="secondary" class="text-truncate">Long Button</Button>
 					</ButtonGroup>
 				</Column>
-				<Column size="25">
-					<Heading level={4}>Stretch</Heading>
-					<ButtonGroup vertical align="stretch">
-						<Button variant="primary">Save</Button>
-						<Button variant="secondary">Cancel</Button>
-						<Button variant="danger">Delete</Button>
+				<Column size="50" xl="25">
+					<Heading level={4}>Stretch <code>gap-xl</code></Heading>
+					<ButtonGroup vertical align="stretch" class="gap-xl">
+						<Button variant="primary" class="text-truncate">Save</Button>
+						<Button variant="secondary" class="text-truncate">Cancel</Button>
+						<Button variant="danger" class="text-truncate">DELETE</Button>
 					</ButtonGroup>
 				</Column>
 			</Grid>
@@ -259,6 +282,28 @@
 		</Card>
 	</Column>
 </Grid>
+
+<!-- Text Truncation -->
+<Card title="Text Truncation">
+	<Paragraph class="text-muted mb-1">Use <code>.text-truncate</code> with a fixed width (<code>.wr-*</code>) to truncate long text with ellipsis</Paragraph>
+	<div class="component-showcase">
+		<Tooltip text="This is a very long button text that will be truncated with ellipsis" position="bottom" multiline>
+			<button class="pa-btn pa-btn--secondary text-truncate wr-15">
+				This is a very long button text that will be truncated with ellipsis
+			</button>
+		</Tooltip>
+		<Tooltip text="Another long button" position="bottom">
+			<button class="pa-btn pa-btn--primary text-truncate wr-10">
+				Another long button
+			</button>
+		</Tooltip>
+		<Tooltip text="Short width truncation" position="bottom">
+			<button class="pa-btn pa-btn--success text-truncate wr-8">
+				Short width truncation
+			</button>
+		</Tooltip>
+	</div>
+</Card>
 
 <!-- Icon Buttons Grid -->
 <Grid>
@@ -406,46 +451,30 @@
 <!-- Fixed Width Buttons -->
 <Card title="Fixed Width Buttons">
 	<Paragraph class="mb-1">
-		Use fixed-width classes for consistent button sizing regardless of text length:
+		Use <code>minwr-*</code> + <code>maxwr-*</code> to constrain width. Add <code>text-truncate</code> on an inner span for ellipsis:
 	</Paragraph>
-	<ButtonGroup vertical>
-		<Button variant="primary" width="6x">
-			{#snippet icon()}✓{/snippet}
-			OK
-		</Button>
-		<Button variant="success" width="6x">
-			{#snippet icon()}→{/snippet}
-			Save
-		</Button>
-		<Button variant="secondary" width="6x">
-			{#snippet icon()}×{/snippet}
-			Cancel
-		</Button>
-	</ButtonGroup>
+	<div class="d-flex flex-column align-items-start gap-sm">
+		<button class="pa-btn pa-btn--primary minwr-10 maxwr-10">
+			<span class="pa-btn__icon">✓</span>
+			<span class="text-truncate">OK</span>
+		</button>
+		<button class="pa-btn pa-btn--success minwr-10 maxwr-10">
+			<span class="pa-btn__icon">→</span>
+			<span class="text-truncate">Save Changes</span>
+		</button>
+		<button class="pa-btn pa-btn--secondary minwr-10 maxwr-10">
+			<span class="pa-btn__icon">×</span>
+			<span class="text-truncate">Cancel and Go Back</span>
+		</button>
+	</div>
 
-	<Heading level={4} class="mt-6">Different Width Multipliers (1x = 1rem)</Heading>
-	<ButtonGroup vertical>
-		<Button variant="primary" width="3x">
-			{#snippet icon()}📄{/snippet}
-			3x (3rem)
-		</Button>
-		<Button variant="primary" width="5x">
-			{#snippet icon()}📄{/snippet}
-			5x (5rem)
-		</Button>
-		<Button variant="primary" width="7x">
-			{#snippet icon()}📄{/snippet}
-			7x (7rem)
-		</Button>
-		<Button variant="primary" width="9x">
-			{#snippet icon()}📄{/snippet}
-			9x (9rem)
-		</Button>
-		<Button variant="primary" width="10x">
-			{#snippet icon()}📄{/snippet}
-			10x (10rem)
-		</Button>
-	</ButtonGroup>
+	<Heading level={4} class="mt-6">Different Widths (<code>minwr-8</code> to <code>minwr-20</code>)</Heading>
+	<div class="d-flex flex-column align-items-start gap-sm">
+		<button class="pa-btn pa-btn--primary minwr-8">minwr-8</button>
+		<button class="pa-btn pa-btn--primary minwr-10">minwr-10</button>
+		<button class="pa-btn pa-btn--primary minwr-15">minwr-15</button>
+		<button class="pa-btn pa-btn--primary minwr-20">minwr-20</button>
+	</div>
 </Card>
 
 <!-- Button Text Alignment (Two Column Layout) -->
@@ -457,15 +486,15 @@
 
 			<Heading level={4}>Left Aligned (icon has no left padding)</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" width="8x" align="left">
+				<Button variant="primary" class="wr-8" align="left">
 					{#snippet icon()}✓{/snippet}
 					Save
 				</Button>
-				<Button variant="success" width="8x" align="left">
+				<Button variant="success" class="wr-8" align="left">
 					{#snippet icon()}→{/snippet}
 					Continue
 				</Button>
-				<Button variant="secondary" width="8x" align="left">
+				<Button variant="secondary" class="wr-8" align="left">
 					{#snippet icon()}×{/snippet}
 					Cancel
 				</Button>
@@ -473,15 +502,15 @@
 
 			<Heading level={4} class="mt-6">Right Aligned (icon has no right padding)</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" width="8x" align="right">
+				<Button variant="primary" class="wr-8" align="right">
 					Save
 					{#snippet icon()}✓{/snippet}
 				</Button>
-				<Button variant="success" width="8x" align="right">
+				<Button variant="success" class="wr-8" align="right">
 					Continue
 					{#snippet icon()}→{/snippet}
 				</Button>
-				<Button variant="secondary" width="8x" align="right">
+				<Button variant="secondary" class="wr-8" align="right">
 					Cancel
 					{#snippet icon()}×{/snippet}
 				</Button>
@@ -489,25 +518,25 @@
 
 			<Heading level={4} class="mt-6">Center Aligned</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" width="8x" align="center">
+				<Button variant="primary" class="wr-8" align="center">
 					{#snippet icon()}✓{/snippet}
 					Save
 				</Button>
-				<Button variant="success" width="8x" align="center">Continue</Button>
-				<Button variant="secondary" width="8x" align="center">Cancel</Button>
+				<Button variant="success" class="wr-8" align="center">Continue</Button>
+				<Button variant="secondary" class="wr-8" align="center">Cancel</Button>
 			</ButtonGroup>
 
 			<Heading level={4} class="mt-6">Justified</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" width="8x" align="justify">
+				<Button variant="primary" class="wr-8" align="justify">
 					{#snippet icon()}✓{/snippet}
 					Save
 				</Button>
-				<Button variant="success" width="8x" align="justify">
+				<Button variant="success" class="wr-8" align="justify">
 					{#snippet icon()}→{/snippet}
 					Continue
 				</Button>
-				<Button variant="secondary" width="8x" align="justify">
+				<Button variant="secondary" class="wr-8" align="justify">
 					{#snippet icon()}×{/snippet}
 					Cancel
 				</Button>
@@ -522,15 +551,15 @@
 
 			<Heading level={4}>Left Aligned</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" width="10x" align="left">
+				<Button variant="primary" class="wr-10" align="left">
 					{#snippet icon()}<i class="fa-solid fa-floppy-disk"></i>{/snippet}
 					Save Changes
 				</Button>
-				<Button variant="success" width="10x" align="left">
+				<Button variant="success" class="wr-10" align="left">
 					{#snippet icon()}<i class="fa-solid fa-check"></i>{/snippet}
 					Approve
 				</Button>
-				<Button variant="danger" width="10x" align="left">
+				<Button variant="danger" class="wr-10" align="left">
 					{#snippet icon()}<i class="fa-solid fa-trash"></i>{/snippet}
 					Delete
 				</Button>
@@ -538,15 +567,15 @@
 
 			<Heading level={4} class="mt-6">Right Aligned</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" width="10x" align="right">
+				<Button variant="primary" class="wr-10" align="right">
 					Save Changes
 					{#snippet icon()}<i class="fa-solid fa-floppy-disk"></i>{/snippet}
 				</Button>
-				<Button variant="success" width="10x" align="right">
+				<Button variant="success" class="wr-10" align="right">
 					Continue
 					{#snippet icon()}<i class="fa-solid fa-arrow-right"></i>{/snippet}
 				</Button>
-				<Button variant="secondary" width="10x" align="right">
+				<Button variant="secondary" class="wr-10" align="right">
 					Settings
 					{#snippet icon()}<i class="fa-solid fa-gear"></i>{/snippet}
 				</Button>
@@ -554,15 +583,15 @@
 
 			<Heading level={4} class="mt-6">Center Aligned</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" width="10x" align="center">
+				<Button variant="primary" class="wr-10" align="center">
 					{#snippet icon()}<i class="fa-solid fa-upload"></i>{/snippet}
 					Upload File
 				</Button>
-				<Button variant="success" width="10x" align="center">
+				<Button variant="success" class="wr-10" align="center">
 					{#snippet icon()}<i class="fa-solid fa-plus"></i>{/snippet}
 					Add New
 				</Button>
-				<Button variant="info" width="10x" align="center">
+				<Button variant="info" class="wr-10" align="center">
 					{#snippet icon()}<i class="fa-solid fa-magnifying-glass"></i>{/snippet}
 					Search
 				</Button>
@@ -570,15 +599,15 @@
 
 			<Heading level={4} class="mt-6">Justified</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" width="10x" align="justify">
+				<Button variant="primary" class="wr-10" align="justify">
 					{#snippet icon()}<i class="fa-solid fa-user"></i>{/snippet}
 					Profile
 				</Button>
-				<Button variant="success" width="10x" align="justify">
+				<Button variant="success" class="wr-10" align="justify">
 					{#snippet icon()}<i class="fa-solid fa-envelope"></i>{/snippet}
 					Messages
 				</Button>
-				<Button variant="danger" width="10x" align="justify">
+				<Button variant="danger" class="wr-10" align="justify">
 					{#snippet icon()}<i class="fa-solid fa-right-from-bracket"></i>{/snippet}
 					Logout
 				</Button>
@@ -653,5 +682,91 @@
 			<strong>Prevent Double-clicks:</strong> Disable buttons during loading to prevent duplicate submissions
 		</li>
 		<li><strong>Accessibility:</strong> Loading states are announced to screen readers</li>
+	</BasicList>
+</Card>
+
+<!-- CSS Classes Reference -->
+<Card title="CSS Classes Reference">
+	<Heading level={4}>Button Base</Heading>
+	<BasicList class="pa-list-basic--compact">
+		<li><code>pa-btn</code> - Base button styling</li>
+	</BasicList>
+
+	<Heading level={4} class="mt-4">Button Variants (Colors)</Heading>
+	<BasicList class="pa-list-basic--compact">
+		<li><code>pa-btn--primary</code> - Primary accent color</li>
+		<li><code>pa-btn--secondary</code> - Secondary/neutral color</li>
+		<li><code>pa-btn--success</code> - Success/green color</li>
+		<li><code>pa-btn--warning</code> - Warning/yellow color</li>
+		<li><code>pa-btn--danger</code> - Danger/red color</li>
+		<li><code>pa-btn--info</code> - Info/blue color</li>
+		<li><code>pa-btn--light</code> - Light background</li>
+		<li><code>pa-btn--dark</code> - Dark background</li>
+	</BasicList>
+
+	<Heading level={4} class="mt-4">Outline Variants</Heading>
+	<BasicList class="pa-list-basic--compact">
+		<li><code>pa-btn--outline-primary</code> - Outline primary</li>
+		<li><code>pa-btn--outline-secondary</code> - Outline secondary</li>
+		<li><code>pa-btn--outline-success</code> - Outline success</li>
+		<li><code>pa-btn--outline-warning</code> - Outline warning</li>
+		<li><code>pa-btn--outline-danger</code> - Outline danger</li>
+		<li><code>pa-btn--outline-info</code> - Outline info</li>
+	</BasicList>
+
+	<Heading level={4} class="mt-4">Button Sizes</Heading>
+	<BasicList class="pa-list-basic--compact">
+		<li><code>pa-btn--xs</code> - Extra small button</li>
+		<li><code>pa-btn--sm</code> - Small button</li>
+		<li><code>pa-btn--lg</code> - Large button</li>
+		<li><code>pa-btn--xl</code> - Extra large button</li>
+	</BasicList>
+
+	<Heading level={4} class="mt-4">Button States & Modifiers</Heading>
+	<BasicList class="pa-list-basic--compact">
+		<li><code>pa-btn--loading</code> - Loading state with spinner</li>
+		<li><code>pa-btn--ripple</code> - Enable ripple click effect</li>
+		<li><code>pa-btn--block</code> - Full width block button</li>
+		<li><code>pa-btn--icon-only</code> - Square icon-only button</li>
+	</BasicList>
+
+	<Heading level={4} class="mt-4">Content Alignment</Heading>
+	<BasicList class="pa-list-basic--compact">
+		<li><code>pa-btn--align-left</code> - Left-align content</li>
+		<li><code>pa-btn--align-right</code> - Right-align content</li>
+		<li><code>pa-btn--align-center</code> - Center-align content</li>
+		<li><code>pa-btn--align-justify</code> - Space-between content</li>
+	</BasicList>
+
+	<Heading level={4} class="mt-4">Button Elements</Heading>
+	<BasicList class="pa-list-basic--compact">
+		<li><code>pa-btn__icon</code> - Icon container with fixed width</li>
+		<li><code>pa-btn__spinner</code> - Loading spinner element</li>
+	</BasicList>
+
+	<Heading level={4} class="mt-4">Button Groups</Heading>
+	<BasicList class="pa-list-basic--compact">
+		<li><code>pa-btn-group</code> - Container for grouped buttons</li>
+		<li><code>pa-btn-group--vertical</code> - Vertical stacking</li>
+		<li><code>pa-btn-group--nowrap</code> - Prevent wrapping</li>
+	</BasicList>
+
+	<Heading level={4} class="mt-4">Button Group Alignment (vertical only)</Heading>
+	<BasicList class="pa-list-basic--compact">
+		<li><code>pa-btn-group--center</code> - Center-align buttons</li>
+		<li><code>pa-btn-group--end</code> - Right-align buttons</li>
+		<li><code>pa-btn-group--stretch</code> - Full width buttons</li>
+	</BasicList>
+
+	<Heading level={4} class="mt-4">Responsive Button Groups</Heading>
+	<BasicList class="pa-list-basic--compact">
+		<li><code>pa-btn-group--sm-vertical</code> - Vertical at 576px+</li>
+		<li><code>pa-btn-group--sm-horizontal</code> - Horizontal at 576px+</li>
+		<li><code>pa-btn-group--md-vertical</code> - Vertical at 768px+</li>
+		<li><code>pa-btn-group--md-horizontal</code> - Horizontal at 768px+</li>
+		<li><code>pa-btn-group--lg-vertical</code> - Vertical at 992px+</li>
+		<li><code>pa-btn-group--lg-horizontal</code> - Horizontal at 992px+</li>
+		<li><code>pa-btn-group--xl-vertical</code> - Vertical at 1200px+</li>
+		<li><code>pa-btn-group--xl-horizontal</code> - Horizontal at 1200px+</li>
 	</BasicList>
 </Card>

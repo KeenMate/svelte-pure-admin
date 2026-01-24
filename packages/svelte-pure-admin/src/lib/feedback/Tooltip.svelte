@@ -35,7 +35,7 @@
 		/** Multiline tooltip (20rem width, left-aligned) */
 		multiline?: boolean;
 		/** Help cursor (question mark cursor) */
-		help?: boolean;
+		isHelp?: boolean;
 		/** Additional CSS classes */
 		class?: string;
 		/** Children content */
@@ -47,7 +47,7 @@
 		position = 'top',
 		variant,
 		multiline = false,
-		help = false,
+		isHelp = false,
 		class: className = '',
 		children
 	}: Props = $props();
@@ -63,7 +63,7 @@
 		if (position && position !== 'top') base.push(`pa-tooltip--${position}`);
 		if (variant) base.push(`pa-tooltip--${variant}`);
 		if (multiline) base.push('pa-tooltip--multiline');
-		if (help) base.push('pa-tooltip--help');
+		if (isHelp) base.push('pa-tooltip--help');
 		if (className) base.push(className);
 		return base.join(' ');
 	});
@@ -149,6 +149,7 @@
 	});
 </script>
 
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <span
 	bind:this={triggerElement}
 	class={classes()}

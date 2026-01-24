@@ -2,6 +2,8 @@
 			import { Heading, Paragraph, Card, Grid, Column, BasicList, OrderedList, DefinitionList, List, ListItem } from '@keenmate/svelte-pure-admin';
 </script>
 
+<Paragraph>Styled lists for content organization - from basic bullets to icon lists and definition lists.</Paragraph>
+
 <Grid>
 	<!-- Left Column -->
 	<Column size="100" lg="1-2">

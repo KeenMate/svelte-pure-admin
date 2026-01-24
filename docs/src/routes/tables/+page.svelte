@@ -5,7 +5,7 @@
 		Badge,
 		Button,
 		ButtonGroup,
-		Input,
+		NumberInput,
 		Pager,
 		LoadMore,
 		Heading,
@@ -40,6 +40,8 @@
 		}, 800);
 	}
 </script>
+
+<Paragraph>Data tables with sorting, pagination, and various styling options.</Paragraph>
 
 <!-- Basic Table with Pager -->
 <Card title="Basic Table with Pagination">
@@ -207,7 +209,7 @@
 	/>
 
 	<div class="pa-table-container">
-		<Table spacing="2x">
+		<Table size="sm">
 			{#snippet children()}
 				<thead>
 					<tr>
@@ -425,7 +427,7 @@
 			</div>
 			<div class="pa-pager__info">
 				<span class="pa-pager__text">Page</span>
-				<Input type="number" size="sm" class="pa-pager__input" value={1} min={1} max={10} />
+				<NumberInput size="sm" class="pa-pager__input" value={1} min={1} max={10} />
 				<span class="pa-pager__text">of 10</span>
 			</div>
 			<div class="pa-pager__controls">
@@ -444,7 +446,7 @@
 			</div>
 			<div class="pa-pager__info">
 				<span class="pa-pager__text">Page</span>
-				<Input type="number" size="sm" class="pa-pager__input" value={1} min={1} max={10} />
+				<NumberInput size="sm" class="pa-pager__input" value={1} min={1} max={10} />
 				<span class="pa-pager__text">of 10</span>
 			</div>
 			<div class="pa-pager__controls">
@@ -463,7 +465,7 @@
 			</div>
 			<div class="pa-pager__info">
 				<span class="pa-pager__text">Page</span>
-				<Input type="number" size="sm" class="pa-pager__input" value={1} min={1} max={10} />
+				<NumberInput size="sm" class="pa-pager__input" value={1} min={1} max={10} />
 				<span class="pa-pager__text">of 10</span>
 			</div>
 			<div class="pa-pager__controls">

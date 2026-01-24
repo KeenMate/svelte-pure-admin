@@ -424,12 +424,12 @@ switch (result) {
 	<Paragraph>Two-button dialogs that return <Code>true</Code> (confirmed) or <Code>false</Code> (cancelled).</Paragraph>
 
 	<ButtonGroup class="mt-4">
-		<Button variant="primary" onClick={confirmPrimary}>Primary Confirm</Button>
-		<Button variant="success" onClick={confirmSuccess}>Success Confirm</Button>
-		<Button variant="warning" onClick={confirmWarning}>Warning Confirm</Button>
-		<Button variant="danger" onClick={confirmDanger}>Danger Confirm</Button>
-		<Button variant="secondary" onClick={confirmCustomText}>Custom Text</Button>
-		<Button variant="secondary" onClick={confirmLarge}>Large Size</Button>
+		<Button variant="primary" onclick={confirmPrimary}>Primary Confirm</Button>
+		<Button variant="success" onclick={confirmSuccess}>Success Confirm</Button>
+		<Button variant="warning" onclick={confirmWarning}>Warning Confirm</Button>
+		<Button variant="danger" onclick={confirmDanger}>Danger Confirm</Button>
+		<Button variant="secondary" onclick={confirmCustomText}>Custom Text</Button>
+		<Button variant="secondary" onclick={confirmLarge}>Large Size</Button>
 	</ButtonGroup>
 
 	{#if confirmResult.shown}
@@ -444,10 +444,10 @@ switch (result) {
 	<Paragraph>Dialogs can be positioned in the <strong>center</strong> (default) or at the <strong>top</strong> of the viewport.</Paragraph>
 
 	<ButtonGroup class="mt-4">
-		<Button variant="primary" onClick={positionCenter}>Center (Default)</Button>
-		<Button variant="primary" onClick={positionTop}>Top Position</Button>
-		<Button variant="success" onClick={promptTop}>Prompt (Top)</Button>
-		<Button variant="danger" onClick={confirmTop}>Confirm (Top)</Button>
+		<Button variant="primary" onclick={positionCenter}>Center (Default)</Button>
+		<Button variant="primary" onclick={positionTop}>Top Position</Button>
+		<Button variant="success" onclick={promptTop}>Prompt (Top)</Button>
+		<Button variant="danger" onclick={confirmTop}>Confirm (Top)</Button>
 	</ButtonGroup>
 
 	<CodeBlock class="mt-4">{positionCode}</CodeBlock>
@@ -458,10 +458,10 @@ switch (result) {
 	<Paragraph>Single-button dialogs for notifications. Just wait for the user to acknowledge.</Paragraph>
 
 	<ButtonGroup class="mt-4">
-		<Button variant="primary" onClick={alertPrimary}>Primary Alert</Button>
-		<Button variant="success" onClick={alertSuccess}>Success Alert</Button>
-		<Button variant="warning" onClick={alertWarning}>Warning Alert</Button>
-		<Button variant="danger" onClick={alertDanger}>Danger Alert</Button>
+		<Button variant="primary" onclick={alertPrimary}>Primary Alert</Button>
+		<Button variant="success" onclick={alertSuccess}>Success Alert</Button>
+		<Button variant="warning" onclick={alertWarning}>Warning Alert</Button>
+		<Button variant="danger" onclick={alertDanger}>Danger Alert</Button>
 	</ButtonGroup>
 </Card>
 
@@ -470,9 +470,9 @@ switch (result) {
 	<Paragraph>Text input dialogs that return the entered value (or <Code>null</Code> if cancelled).</Paragraph>
 
 	<ButtonGroup class="mt-4">
-		<Button variant="primary" onClick={promptBasic}>Basic Prompt</Button>
-		<Button variant="primary" onClick={promptWithDefault}>With Default Value</Button>
-		<Button variant="primary" onClick={promptWithValidation}>With Validation</Button>
+		<Button variant="primary" onclick={promptBasic}>Basic Prompt</Button>
+		<Button variant="primary" onclick={promptWithDefault}>With Default Value</Button>
+		<Button variant="primary" onclick={promptWithValidation}>With Validation</Button>
 	</ButtonGroup>
 
 	{#if promptResult.shown}
@@ -486,7 +486,7 @@ switch (result) {
 <Card title="Sequential Dialogs" class="pa-section">
 	<Paragraph>Chain multiple dialogs together using async/await:</Paragraph>
 
-	<Button variant="primary" onClick={sequentialDialogs} class="mt-4">
+	<Button variant="primary" onclick={sequentialDialogs} class="mt-4">
 		Run Sequential Flow
 	</Button>
 
@@ -498,10 +498,10 @@ switch (result) {
 	<Paragraph>Define your own buttons with typed return values using <Code>dialogService.custom()</Code>.</Paragraph>
 
 	<ButtonGroup class="mt-4">
-		<Button variant="warning" onClick={customSaveChanges}>Save Changes</Button>
-		<Button variant="danger" onClick={customDeleteOptions}>Delete Options</Button>
-		<Button variant="primary" onClick={customFeedback}>Feedback Rating</Button>
-		<Button variant="warning" onClick={customMergeConflict}>Merge Conflict</Button>
+		<Button variant="warning" onclick={customSaveChanges}>Save Changes</Button>
+		<Button variant="danger" onclick={customDeleteOptions}>Delete Options</Button>
+		<Button variant="primary" onclick={customFeedback}>Feedback Rating</Button>
+		<Button variant="warning" onclick={customMergeConflict}>Merge Conflict</Button>
 	</ButtonGroup>
 
 	{#if customResult.shown}

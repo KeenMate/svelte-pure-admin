@@ -228,7 +228,7 @@
 </Card>
 
 <!-- Offsets -->
-<Card title="Offsets" subtitle="Push columns with left margin: .pa-offset-{size}">
+<Card title="Offsets" subtitle={`Push columns with left margin: .pa-offset-{size}`}>
 	<h4>Centering with Offsets</h4>
 	<Grid class="mb-2">
 		<Column size="50" offset="25"><Alert variant="primary">.pa-col-50 .pa-offset-25</Alert></Column>

@@ -5,6 +5,280 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.3] - 2026-01-24
+
+### Changed
+
+#### Docs Sync with pure-admin Demo
+
+**Cards Page:**
+- Added info variant card to Colored Cards section (5th semantic color)
+- Added "Theme Color Cards" section demonstrating color-1 through color-9 theme slots
+- Added "Bordered Cards" section showing `pa-card--bordered` modifier with different variants
+- Added "Statistics with Trends" section showing Stat component's `change` and `changeDirection` props (positive/negative/neutral indicators)
+
+**Validations Page:**
+- Fixed Pattern 2: Added required asterisk to checkbox label using `labelSnippet`
+- Fixed Pattern 3: Corrected anchor link IDs from `#card-number-input`/`#cvv-input` to `#card-number`/`#cvv` to match pure-admin
+- Fixed Pattern 5: Changed `<Text variant="danger">` to `<FormHelp variant="error" class="mt-0">` for correct CSS classes (`pa-form-help--error` instead of `text-danger`), added `align-items-center` class to horizontal FormGroups
+- Fixed Pattern 10: Added `class="pa-badge--default"` to Badge step 3 for proper neutral styling
+
+### Known Limitations
+
+- Button component doesn't support `variant="default"` (pure-admin's `pa-btn--default`). Use `variant="secondary"` as closest equivalent for neutral/cancel buttons.
+- Badge component doesn't have `variant="default"` - use `class="pa-badge--default"` as workaround.
+
+---
+
+## [1.1.2] - 2026-01-22
+
+### Added
+
+#### Dashboard Components
+New Svelte 5 components for building dashboard-style displays.
+
+**MetricList & MetricListItem** (`src/lib/display/MetricList.svelte`, `MetricListItem.svelte`):
+- Simple label/value list for displaying metrics
+- CSS classes: `pa-metric-list`, `pa-metric-list__item`, `pa-metric-list__label`, `pa-metric-list__value`
+- Props: `MetricList`: `class`; `MetricListItem`: `label`, `value`, `class`
+
+**StatusList & StatusListItem** (`src/lib/display/StatusList.svelte`, `StatusListItem.svelte`):
+- Status indicators with colored dots
+- CSS classes: `pa-status-list`, `pa-status-list__item`, `pa-status-list__indicator--{status}`, `pa-status-list__label`, `pa-status-list__value`
+- Props: `StatusList`: `class`; `StatusListItem`: `label`, `value`, `status` ('success' | 'warning' | 'danger' | 'info'), `class`
+
+**ActivityFeed & ActivityFeedItem** (`src/lib/display/ActivityFeed.svelte`, `ActivityFeedItem.svelte`):
+- Activity feed with icon, text, and timestamp
+- CSS classes: `pa-activity-feed`, `pa-activity-feed__item`, `pa-activity-feed__icon`, `pa-activity-feed__content`, `pa-activity-feed__text`, `pa-activity-feed__time`
+- Props: `ActivityFeed`: `class`; `ActivityFeedItem`: `time`, `icon` (snippet), `children` (snippet), `class`
+
+**QuickActions** (`src/lib/display/QuickActions.svelte`):
+- Container for vertically stacked action buttons
+- CSS class: `pa-quick-actions`
+- Props: `class`, `children` (snippet)
+
+**Usage:**
+```svelte
+<MetricList>
+  <MetricListItem label="Organic Search" value="42.3%" />
+  <MetricListItem label="Direct" value="28.7%" />
+</MetricList>
+
+<StatusList>
+  <StatusListItem label="API Services" value="Operational" status="success" />
+  <StatusListItem label="Payment Gateway" value="Degraded" status="warning" />
+</StatusList>
+
+<ActivityFeed>
+  <ActivityFeedItem time="2 minutes ago">
+    {#snippet icon()}👤{/snippet}
+    New user registration
+  </ActivityFeedItem>
+</ActivityFeed>
+
+<QuickActions>
+  <Button variant="primary" block>New Order</Button>
+  <Button variant="secondary" block>Add Customer</Button>
+</QuickActions>
+```
+
+**Exports:**
+- `MetricList`, `MetricListItem`
+- `StatusList`, `StatusListItem`
+- `ActivityFeed`, `ActivityFeedItem`
+- `QuickActions`
+
+### Changed
+
+#### Stat Component: Renamed trend to change
+The Stat component's hero variant now uses `change` and `changeDirection` props instead of `trend` and `trendDirection` to match the pure-admin-core CSS naming.
+
+**Before:**
+```svelte
+<Stat variant="hero" trend="+12.5%" trendDirection="up" />
+```
+
+**After:**
+```svelte
+<Stat variant="hero" change="+12.5%" changeDirection="positive" />
+```
+
+- `trend` → `change`
+- `trendDirection` type changed from `'up' | 'down'` to `'positive' | 'negative' | 'neutral'`
+- CSS class: `pa-stat__change` with `pa-stat__change--positive`, `pa-stat__change--negative`, `pa-stat__change--neutral`
+
+#### Peer Dependency Update
+- Updated `@keenmate/pure-admin-core` peer dependency: `^1.1.1` → `^1.1.2`
+
+**pure-admin-core 1.1.2 includes:**
+- Web Multiselect group label styling improvements
+- Removed ~650 lines of unnecessary web component CSS variable overrides from themes
+- Fixed `.pa-link` class color (now uses `$accent-color`)
+
+#### Docs Sync with pure-admin Demo
+
+**Buttons Page:**
+- Updated "Button Groups - Gap Sizes" card to use semantic gap classes (`gap-xs`, `gap-sm`, `gap-md`, `gap-base`, `gap-lg`, `gap-xl`) with different button variants per size
+- Updated "Vertical Alignment" card with explanatory text about semantic gap classes and added different gap classes per column (`gap-sm`, `gap-md`, `gap-lg`, `gap-xl`)
+- Updated "Fixed Width Buttons" card to use `minwr-*`/`maxwr-*` utility class pattern with inner `<span class="text-truncate">` for ellipsis instead of component props
+- Added comprehensive "CSS Classes Reference" section at the end documenting all button-related classes
+
+**Inputs Page:**
+- Added "Theme Color Variants" section showing `pa-input--color-1`, `--color-2`, `--color-3` with colored help text
+- Updated "Input Groups" section with width utility tip (`wr-*` for rem-based, `wp-*` for percentage-based) on prepend/append elements
+- Added example showing `wr-3` on prepend element for fixed width
+- Added comprehensive "CSS Classes Reference" section at the end documenting all input-related classes
+
+**Dashboard Page:**
+- Completely redesigned to match pure-admin demo dashboard
+- **KPI Metric Cards**: 4 hero stat cards (Total Revenue, Active Users, Conversion Rate, Avg Order Value) with change indicators
+- **Key Performance Indicators**: 6 square stat tiles with variants (Completion Rate, Customer Satisfaction, Market Share, Server Capacity, Error Rate, Uptime)
+- **Charts Section**: Chart placeholders for Top Sales Products and Revenue Trend with SVG mockups
+- **Traffic Sources**: Metric list showing traffic distribution
+- **Recent Activity**: Activity feed with icons and timestamps
+- **Recent Orders**: Compact table with order data and status badges
+- **Top Products**: Metric list with product sales
+- **System Status**: Status list with operational indicators
+- **Quick Actions**: Block button group for common actions
+- Uses Svelte components (Card, Grid, Column, Badge, Button, Table, TableResponsive) where available
+
+---
+
+## [1.1.1] - 2026-01-19
+
+### Fixed
+
+#### Docs Sidebar Submenu Icons
+Added icons to all submenu items in the docs sidebar to match pure-admin demo.
+
+**Components submenu:** 🧩 Overview, 🔘 Buttons, ✏️ Inputs, 🃏 Cards, ⊞ Grid System, 📑 Tabs, 🏷️ Badges, 📃 Lists, ☑️ Checkbox Lists, 💻 Code, ⚠️ Alerts, 📌 Callouts, 🔔 Toasts, ⏳ Loaders, 💬 Tooltips, 🔳 Modals, 💬 Modal Dialogs, 💬 Popconfirm, 🔍 Command Palette
+
+**Tables submenu:** 📊 Standard Tables, 📏 Table Sizing, 📱 Responsive, 📈 Comparison
+
+**Timeline & Layout submenus:** • (bullet points)
+
+#### Buttons Page Alignment with pure-admin
+- **Vertical Alignment card**: Fixed column sizes from `size="25"` to `size="50" xl="25"` to match pure-admin's responsive behavior (2 columns on smaller screens, 4 columns at xl)
+- Added `text-truncate` class to all buttons in Vertical Alignment card
+- Changed "Delete" to "DELETE" in Stretch section to match pure-admin
+- **Added missing Text Truncation card**: New card demonstrating `.text-truncate` with fixed widths (`.wr-*`) and tooltips showing full text on hover
+
+### Added
+
+#### Resizable Sidebar
+Implemented drag-to-resize functionality for the Sidebar component.
+
+**Sidebar Component:**
+- `resizable?: boolean` prop - enables drag-to-resize
+- Adds resize handle (`pa-sidebar-resize`) on right edge when enabled
+- Width range: 180px (min) to 500px (max)
+- Default width: 288px (28.8rem)
+- Width saved to `localStorage` under `sidebar-width` key
+- Double-click resize handle to reset to default width
+- Touch support for mobile devices
+- Uses CSS variable `--pa-local-sidebar-width` for dynamic width
+
+**FOUC Prevention:**
+- Early sidebar width loading in `<head>` section before body renders
+- Prevents layout shift when restoring saved sidebar width
+
+**Usage:**
+```svelte
+<Sidebar resizable>
+  <SidebarItem href="/" label="Dashboard" />
+</Sidebar>
+```
+
+#### Getting Started Documentation Page
+New `/getting-started` page added to docs with comprehensive introduction:
+- What is svelte-pure-admin (Svelte 5 component library wrapping pure-admin-core)
+- About theme switching in demo (FOUC explanation)
+- Installation instructions (npm, pnpm, yarn)
+- Basic setup guide with code examples
+- PureAdminProvider explanation (configuration context + keyboard shortcuts)
+- Available themes overview (5 starter themes)
+- Component categories overview (40+ components)
+
+#### Form Validation State: Warning
+Added `warning` state support to form components, matching pure-admin-core 1.1.1.
+
+**FormGroup:**
+- New `state` prop: `'success' | 'warning' | 'error'`
+- CSS class: `pa-form-group--warning`
+- Legacy `hasError`/`hasSuccess` boolean props still supported
+
+**Input:**
+- Added `'warning'` to state type
+- CSS class: `pa-input--warning`
+
+**Select:**
+- Added `state` prop: `'success' | 'warning' | 'error'`
+- CSS class: `pa-select--warning`
+
+**Textarea:**
+- Added `state` prop: `'success' | 'warning' | 'error'`
+- CSS class: `pa-textarea--warning`
+
+#### Theme Color Variants for Form Elements
+New `color` prop (1-9) for custom input accents beyond semantic states.
+
+**Input:**
+- `color?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9`
+- CSS classes: `pa-input--color-1` through `pa-input--color-9`
+
+**Select:**
+- `color?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9`
+- CSS classes: `pa-select--color-1` through `pa-select--color-9`
+
+**Textarea:**
+- `color?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9`
+- CSS classes: `pa-textarea--color-1` through `pa-textarea--color-9`
+
+#### Select Component: Size Prop
+Added `size` prop to Select component for consistent sizing with Input/Textarea.
+- `size?: 'xs' | 'sm' | 'lg' | 'xl'`
+- CSS classes: `pa-select--xs`, `pa-select--sm`, `pa-select--lg`, `pa-select--xl`
+
+#### Textarea Component: Size Prop
+Added `size` prop to Textarea component.
+- `size?: 'xs' | 'sm' | 'lg' | 'xl'`
+- CSS classes: `pa-textarea--xs`, `pa-textarea--sm`, `pa-textarea--lg`, `pa-textarea--xl`
+- Note: pure-admin-core 1.1.1 fixed textarea sizes to actually render different heights
+
+#### Input Component: Additional Types
+Extended Input `type` prop with more HTML5 input types:
+- Added: `month`, `week`, `color`, `file`, `range`
+
+#### Docker Support
+Added Docker configuration for deploying docs site:
+- `Dockerfile` - Multi-stage build (node for building, caddy for serving)
+- `Caddyfile` - SPA routing configuration
+- `.dockerignore` - Excludes node_modules, build outputs, etc.
+
+**Build from parent directory:**
+```bash
+cd C:/Git/KM
+docker build -f svelte-pure-admin/Dockerfile -t svelte-pure-admin .
+docker run -p 8080:80 svelte-pure-admin
+```
+
+### Changed
+
+#### Peer Dependency Update
+- Updated `@keenmate/pure-admin-core` peer dependency: `^1.1.0` → `^1.1.1`
+
+#### Package Version
+- Bumped version: `1.1.0` → `1.1.1`
+
+### Fixed
+
+#### Select Component: Multiple Attribute
+Removed dynamic `multiple` prop from Select component. Svelte requires `multiple` to be static when using `bind:value`.
+
+**Migration:** Use native `<select class="pa-select" multiple>` for multiple select dropdowns.
+
+---
+
 ## [Unreleased]
 
 ### Changed

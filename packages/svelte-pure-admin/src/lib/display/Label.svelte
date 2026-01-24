@@ -5,7 +5,7 @@
 	 */
 
 	type LabelVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
-	type LabelSize = 'sm' | 'lg';
+	type LabelSize = 'xs' | 'sm' | 'lg' | 'xl';
 
 	interface Props {
 		/** Label variant */

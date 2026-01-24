@@ -5,7 +5,7 @@
 	 * For code blocks (pre elements) with syntax highlighting hints
 	 */
 
-	type Language = 'javascript' | 'json' | 'html' | 'css' | 'bash' | 'sql' | 'python';
+	type Language = 'javascript' | 'typescript' | 'json' | 'html' | 'css' | 'bash' | 'sql' | 'python' | 'svelte';
 
 	interface Props {
 		/** Programming language for styling */

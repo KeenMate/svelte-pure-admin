@@ -1,51 +1,65 @@
-# Svelte Pure Admin - Documentation Site Dockerfile
-# Multi-stage build for optimized production image
-#
-# NOTE: Build from parent directory to include pure-admin dependencies:
-#   docker build -f svelte-pure-admin/Dockerfile -t svelte-pure-admin:production .
+#  ██████╗ ██╗   ██╗██╗██╗     ██████╗
+#  ██╔══██╗██║   ██║██║██║     ██╔══██╗
+#  ██████╔╝██║   ██║██║██║     ██║  ██║
+#  ██╔══██╗██║   ██║██║██║     ██║  ██║
+#  ██████╔╝╚██████╔╝██║███████╗██████╔╝
+#  ╚═════╝  ╚═════╝ ╚═╝╚══════╝╚═════╝
 
-# Build stage
-FROM node:22-alpine AS builder
+FROM node:lts-alpine AS build
 
 WORKDIR /app
 
-# Copy pure-admin packages (needed as file dependencies)
-COPY pure-admin/packages/core/ ./pure-admin/packages/core/
-COPY pure-admin/packages/theme-audi/ ./pure-admin/packages/theme-audi/
+# Copy pure-admin packages (dependency)
+COPY pure-admin/packages/core/package.json ./pure-admin/packages/core/
+COPY pure-admin/packages/theme-audi/package.json ./pure-admin/packages/theme-audi/
+COPY pure-admin/packages/theme-corporate/package.json ./pure-admin/packages/theme-corporate/
+COPY pure-admin/packages/theme-dark/package.json ./pure-admin/packages/theme-dark/
+COPY pure-admin/packages/theme-express/package.json ./pure-admin/packages/theme-express/
+COPY pure-admin/packages/theme-minimal/package.json ./pure-admin/packages/theme-minimal/
+COPY pure-admin/package.json pure-admin/package-lock.json ./pure-admin/
 
-# Copy svelte-pure-admin workspace files
+# Copy svelte-pure-admin workspace package files
 COPY svelte-pure-admin/package.json svelte-pure-admin/package-lock.json ./svelte-pure-admin/
 COPY svelte-pure-admin/packages/svelte-pure-admin/package.json ./svelte-pure-admin/packages/svelte-pure-admin/
 COPY svelte-pure-admin/docs/package.json ./svelte-pure-admin/docs/
 
-WORKDIR /app/svelte-pure-admin
+# Install pure-admin dependencies and build
+WORKDIR /app/pure-admin
+RUN npm ci
+COPY pure-admin/packages/ ./packages/
+RUN npm run build -w @keenmate/pure-admin-core && \
+    npm run build -w @keenmate/pure-admin-theme-audi && \
+    npm run build -w @keenmate/pure-admin-theme-corporate && \
+    npm run build -w @keenmate/pure-admin-theme-dark && \
+    npm run build -w @keenmate/pure-admin-theme-express && \
+    npm run build -w @keenmate/pure-admin-theme-minimal
 
-# Install all workspace dependencies
+# Install svelte-pure-admin dependencies
+WORKDIR /app/svelte-pure-admin
 RUN npm ci
 
-# Copy library source
-COPY svelte-pure-admin/packages/svelte-pure-admin/ ./packages/svelte-pure-admin/
-
-# Copy docs source
+# Copy svelte-pure-admin source files
+COPY svelte-pure-admin/packages/ ./packages/
 COPY svelte-pure-admin/docs/ ./docs/
 
-# Build the library first (needed for docs)
-RUN npm run build -w @keenmate/svelte-pure-admin
+# Build the library first, then the docs
+RUN npm run build && npm run build:docs
 
-# Build the documentation site
-RUN npm run build -w docs
+#  ██████╗ ██╗   ██╗███╗   ██╗████████╗██╗███╗   ███╗███████╗
+#  ██╔══██╗██║   ██║████╗  ██║╚══██╔══╝██║████╗ ████║██╔════╝
+#  ██████╔╝██║   ██║██╔██╗ ██║   ██║   ██║██╔██╗██║█████╗
+#  ██╔══██╗██║   ██║██║╚██╗██║   ██║   ██║██║╚██╗██║██╔══╝
+#  ██║  ██║╚██████╔╝██║ ╚████║   ██║   ██║██║ ╚████║███████╗
+#  ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚═╝╚═╝  ╚═══╝╚══════╝
 
-# Production stage
-FROM nginx:alpine
+FROM caddy:alpine AS runtime
 
-# Copy custom nginx config
-COPY svelte-pure-admin/nginx.conf /etc/nginx/nginx.conf
+# Copy built static files
+COPY --from=build /app/svelte-pure-admin/docs/build /srv
 
-# Copy built documentation from builder stage
-COPY --from=builder /app/svelte-pure-admin/docs/build /usr/share/nginx/html
+# Copy Caddyfile
+COPY svelte-pure-admin/Caddyfile /etc/caddy/Caddyfile
 
-# Expose port 80
 EXPOSE 80
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile"]

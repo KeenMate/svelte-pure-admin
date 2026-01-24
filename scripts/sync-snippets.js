@@ -99,6 +99,7 @@ function getComponentMapping() {
     'alerts.html': [`${LIB}/feedback/Alert.svelte`],
     'badges.html': [`${LIB}/display/Badge.svelte`, `${LIB}/display/CompositeBadge.svelte`, `${LIB}/display/BadgeGroup.svelte`],
     'buttons.html': [`${LIB}/buttons/Button.svelte`, `${LIB}/buttons/ButtonGroup.svelte`],
+    'callouts.html': [`${LIB}/feedback/Callout.svelte`],
     'cards.html': [`${LIB}/display/Card.svelte`],
     'checkbox-lists.html': ['(Not yet componentized - specialized component)'],
     'code.html': [`${LIB}/display/Code.svelte`, `${LIB}/display/CodeBlock.svelte`],

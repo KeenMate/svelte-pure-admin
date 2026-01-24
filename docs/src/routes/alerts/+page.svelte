@@ -2,6 +2,7 @@
 	import { Heading, Paragraph, Alert, Card, Button, Grid, Column, BasicList } from '@keenmate/svelte-pure-admin';
 		</script>
 
+<Paragraph>Contextual feedback messages for typical user actions with flexible alert messages.</Paragraph>
 
 <!-- Basic Alerts -->
 <Card title="Basic Alerts">
@@ -141,17 +142,17 @@
 <Card title="Compact Alerts in Grid">
 	<Grid>
 		<Column size="100" md="1-3">
-			<Alert sm variant="success">
+			<Alert size="sm" variant="success">
 				<span class="pa-alert__icon">✓</span> Saved
 			</Alert>
 		</Column>
 		<Column size="100" md="1-3">
-			<Alert sm variant="warning">
+			<Alert size="sm" variant="warning">
 				<span class="pa-alert__icon">!</span> Pending
 			</Alert>
 		</Column>
 		<Column size="100" md="1-3">
-			<Alert sm variant="danger">
+			<Alert size="sm" variant="danger">
 				<span class="pa-alert__icon">×</span> Failed
 			</Alert>
 		</Column>

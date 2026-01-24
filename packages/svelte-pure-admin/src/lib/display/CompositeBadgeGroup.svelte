@@ -142,9 +142,9 @@
 	}
 
 	// Determine which mode we're in
-	const isDataMode = data && data.length > 0;
-	const isLegacyMode = badges && badges.length > 0;
-	const isSnippetMode = !isDataMode && !isLegacyMode;
+	const isDataMode = $derived(data && data.length > 0);
+	const isLegacyMode = $derived(badges && badges.length > 0);
+	const isSnippetMode = $derived(!isDataMode && !isLegacyMode);
 
 	// Handle label click (data mode)
 	function handleLabelClick(item: T) {
@@ -215,15 +215,10 @@
 				label={badge.label}
 				buttonText={badge.buttonText}
 				interactive={badge.interactive}
+				icon={badge.icon}
 				onLabelClick={onLabelClickLegacy ? handleLabelClickLegacy(badge) : undefined}
 				onButtonClick={onButtonClickLegacy ? handleButtonClickLegacy(badge) : undefined}
-			>
-				{#if badge.icon}
-					{#snippet icon()}
-						{@render badge.icon()}
-					{/snippet}
-				{/if}
-			</CompositeBadge>
+			/>
 		{/each}
 	{:else}
 		<!-- Snippet-based mode (manual) -->

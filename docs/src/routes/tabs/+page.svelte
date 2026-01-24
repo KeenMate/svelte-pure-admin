@@ -32,6 +32,8 @@
 	let inlineOnlyActive = $state('inline-only-1');
 </script>
 
+<Paragraph>Tab navigation components for organizing content into separate sections.</Paragraph>
+
 <!-- Tabs as Card Header (Same Height) -->
 <Heading level={3} class="mt-4 mb-4">Tabs as Card Header (Same Height)</Heading>
 <Grid sameHeight>

@@ -313,7 +313,7 @@
 		<div class="mt-3">
 			<Alert variant="info">
 				<strong>Usage:</strong> The <code>NavbarSearch</code> component shows a search input with a keyboard shortcut hint.
-				When clicked, it calls your <code>onClick</code> handler to open the command palette.
+				When clicked, it calls your <code>onclick</code> handler to open the command palette.
 			</Alert>
 		</div>
 	</Card>
@@ -337,7 +337,7 @@
 				{/snippet}
 
 				<div class="mb-4">
-					<Button variant="primary" size="lg" block onClick={() => (showPalette = true)}>
+					<Button variant="primary" size="lg" block onclick={() => (showPalette = true)}>
 						{#snippet icon()}
 							🔍
 						{/snippet}
@@ -490,9 +490,9 @@
 				<div class="mb-3">
 					<h4 class="mb-2">Commands</h4>
 					<ButtonGroup class="mb-2">
-						<Button size="sm" variant="secondary" onClick={() => (showPalette = true)}>/r</Button>
-						<Button size="sm" variant="secondary" onClick={() => (showPalette = true)}>/export</Button>
-						<Button size="sm" variant="secondary" onClick={() => (showPalette = true)}
+						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>/r</Button>
+						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>/export</Button>
+						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}
 							>/settings</Button
 						>
 					</ButtonGroup>
@@ -501,8 +501,8 @@
 				<div class="mb-3">
 					<h4 class="mb-2">Search</h4>
 					<ButtonGroup class="mb-2">
-						<Button size="sm" variant="secondary" onClick={() => (showPalette = true)}>:p mac</Button>
-						<Button size="sm" variant="secondary" onClick={() => (showPalette = true)}
+						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>:p mac</Button>
+						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}
 							>:u john</Button
 						>
 					</ButtonGroup>
@@ -511,9 +511,9 @@
 				<div class="mb-3">
 					<h4 class="mb-2">Global Search</h4>
 					<ButtonGroup class="mb-2">
-						<Button size="sm" variant="secondary" onClick={() => (showPalette = true)}>macbook</Button
+						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>macbook</Button
 						>
-						<Button size="sm" variant="secondary" onClick={() => (showPalette = true)}>john</Button>
+						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>john</Button>
 					</ButtonGroup>
 				</div>
 			</Card>

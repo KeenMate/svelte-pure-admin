@@ -559,21 +559,21 @@
 				<Heading level={4}>Various Fixed Widths</Heading>
 				<div class="component-showcase">
 					<Tooltip text="Short" position="bottom">
-						<Badge variant="primary" width="3x">Short</Badge>
+						<Badge variant="primary" class="wr-3 text-truncate">Short</Badge>
 					</Tooltip>
 					<Tooltip text="This is medium text" position="bottom">
-						<Badge variant="info" width="4x">This is medium text</Badge>
+						<Badge variant="info" class="wr-4 text-truncate">This is medium text</Badge>
 					</Tooltip>
 					<Tooltip text="This is longer text that will be truncated" position="bottom">
-						<Badge variant="success" width="5x">This is longer text that will be truncated</Badge>
+						<Badge variant="success" class="wr-5 text-truncate">This is longer text that will be truncated</Badge>
 					</Tooltip>
 					<Tooltip text="Very long badge text that definitely needs ellipsis" position="bottom">
-						<Badge variant="warning" width="6x"
+						<Badge variant="warning" class="wr-6 text-truncate"
 							>Very long badge text that definitely needs ellipsis</Badge
 						>
 					</Tooltip>
 					<Tooltip text="Super extremely long badge text example" position="bottom">
-						<Badge variant="danger" width="7x">Super extremely long badge text example</Badge>
+						<Badge variant="danger" class="wr-7 text-truncate">Super extremely long badge text example</Badge>
 					</Tooltip>
 				</div>
 			</Column>
@@ -581,19 +581,19 @@
 				<Heading level={4}>Small Fixed-Width Badges</Heading>
 				<div class="component-showcase">
 					<Tooltip text="OK" position="bottom">
-						<Badge size="sm" variant="primary" width="2x">OK</Badge>
+						<Badge size="sm" variant="primary" class="wr-2 text-truncate">OK</Badge>
 					</Tooltip>
 					<Tooltip text="Status" position="bottom">
-						<Badge size="sm" variant="info" width="3x">Status</Badge>
+						<Badge size="sm" variant="info" class="wr-3 text-truncate">Status</Badge>
 					</Tooltip>
 					<Tooltip text="Completed Task" position="bottom">
-						<Badge size="sm" variant="success" width="4x">Completed Task</Badge>
+						<Badge size="sm" variant="success" class="wr-4 text-truncate">Completed Task</Badge>
 					</Tooltip>
 					<Tooltip text="Pending Review Process" position="bottom">
-						<Badge size="sm" variant="warning" width="5x">Pending Review Process</Badge>
+						<Badge size="sm" variant="warning" class="wr-5 text-truncate">Pending Review Process</Badge>
 					</Tooltip>
 					<Tooltip text="Critical Error in Production" position="bottom">
-						<Badge size="sm" variant="danger" width="6x">Critical Error in Production</Badge>
+						<Badge size="sm" variant="danger" class="wr-6 text-truncate">Critical Error in Production</Badge>
 					</Tooltip>
 				</div>
 			</Column>
@@ -604,22 +604,22 @@
 				<Heading level={4}>Practical Example: Tags with Consistent Width</Heading>
 				<div class="component-showcase">
 					<Tooltip text="JavaScript" position="bottom">
-						<Badge pill variant="secondary" width="5x">JavaScript</Badge>
+						<Badge pill variant="secondary" class="wr-5 text-truncate">JavaScript</Badge>
 					</Tooltip>
 					<Tooltip text="TypeScript" position="bottom">
-						<Badge pill variant="secondary" width="5x">TypeScript</Badge>
+						<Badge pill variant="secondary" class="wr-5 text-truncate">TypeScript</Badge>
 					</Tooltip>
 					<Tooltip text="React" position="bottom">
-						<Badge pill variant="secondary" width="5x">React</Badge>
+						<Badge pill variant="secondary" class="wr-5 text-truncate">React</Badge>
 					</Tooltip>
 					<Tooltip text="Node.js" position="bottom">
-						<Badge pill variant="secondary" width="5x">Node.js</Badge>
+						<Badge pill variant="secondary" class="wr-5 text-truncate">Node.js</Badge>
 					</Tooltip>
 					<Tooltip text="PostgreSQL Database" position="bottom">
-						<Badge pill variant="secondary" width="5x">PostgreSQL Database</Badge>
+						<Badge pill variant="secondary" class="wr-5 text-truncate">PostgreSQL Database</Badge>
 					</Tooltip>
 					<Tooltip text="Express.js Framework" position="bottom">
-						<Badge pill variant="secondary" width="5x">Express.js Framework</Badge>
+						<Badge pill variant="secondary" class="wr-5 text-truncate">Express.js Framework</Badge>
 					</Tooltip>
 				</div>
 			</Column>
@@ -637,7 +637,7 @@
 						position="bottom"
 						multiline
 					>
-						<Badge variant="secondary" width="6x" ellipsisLeft
+						<Badge variant="secondary" class="wr-6 text-truncate" ellipsisLeft
 							>Settings > User Preferences > Notifications > Email</Badge
 						>
 					</Tooltip>
@@ -646,7 +646,7 @@
 						position="bottom"
 						multiline
 					>
-						<Badge variant="info" width="7x" ellipsisLeft
+						<Badge variant="info" class="wr-7 text-truncate" ellipsisLeft
 							>/var/www/html/application/config/database.php</Badge
 						>
 					</Tooltip>
@@ -655,7 +655,7 @@
 						position="bottom"
 						multiline
 					>
-						<Badge variant="primary" width="6x" ellipsisLeft
+						<Badge variant="primary" class="wr-6 text-truncate" ellipsisLeft
 							>Components > Forms > Inputs > TextArea.svelte</Badge
 						>
 					</Tooltip>
@@ -664,7 +664,7 @@
 						position="bottom"
 						multiline
 					>
-						<Badge variant="warning" width="5x" ellipsisLeft
+						<Badge variant="warning" class="wr-5 text-truncate" ellipsisLeft
 							>Europe > Germany > Berlin > Mitte > Alexanderplatz</Badge
 						>
 					</Tooltip>
@@ -674,10 +674,9 @@
 
 		<Alert variant="info" class="mt-3">
 			<small
-				><strong>Note:</strong> Custom tooltips show full text on hover. Width classes range from
-				<code>pa-badge--w-1x</code>
-				to <code>pa-badge--w-10x</code>. Use <code>pa-badge--ellipsis-left</code> to truncate from
-				the left side instead.</small
+				><strong>Note:</strong> Custom tooltips show full text on hover. Use utility width classes like
+				<code>wr-3</code> to <code>wr-10</code> combined with <code>text-truncate</code> for fixed-width badges.
+				Use <code>ellipsisLeft</code> prop to truncate from the left side instead.</small
 			>
 		</Alert>
 </Card>

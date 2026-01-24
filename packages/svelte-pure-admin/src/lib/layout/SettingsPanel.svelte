@@ -12,8 +12,10 @@
 	 */
 
 	import { onMount } from 'svelte';
+	import type { ThemeOption } from './types';
 
 	interface SettingsPanelState {
+		theme: string;
 		themeMode: string;
 		sidebarBehavior: string;
 		sidebarCollapsed: boolean;
@@ -28,12 +30,18 @@
 	interface Props {
 		/** Callback when settings change */
 		onSettingsChange?: (settings: SettingsPanelState) => void;
+		/** Available themes for the theme selector. If not provided, theme selector is hidden. */
+		availableThemes?: ThemeOption[];
+		/** Default theme ID (defaults to first theme in availableThemes) */
+		defaultTheme?: string;
 	}
 
-	let { onSettingsChange }: Props = $props();
+	let { onSettingsChange, availableThemes = [], defaultTheme }: Props = $props();
 
 	let isOpen = $state(false);
+	// svelte-ignore state_referenced_locally - intentionally capturing initial values for default state
 	let settings = $state<SettingsPanelState>({
+		theme: defaultTheme || (availableThemes.length > 0 ? availableThemes[0].id : ''),
 		themeMode: 'light',
 		sidebarBehavior: 'hide',
 		sidebarCollapsed: false,
@@ -50,6 +58,12 @@
 		if (typeof window === 'undefined') return;
 
 		// Load localStorage-based settings
+		const savedTheme = localStorage.getItem('theme');
+		if (savedTheme && availableThemes.some(t => t.id === savedTheme)) {
+			settings.theme = savedTheme;
+		} else if (availableThemes.length > 0) {
+			settings.theme = defaultTheme || availableThemes[0].id;
+		}
 		settings.themeMode = localStorage.getItem('theme-mode') || 'light';
 		settings.fontSize = localStorage.getItem('font-size') || 'default';
 		settings.fontFamily = localStorage.getItem('font-family') || 'default';
@@ -69,6 +83,23 @@
 	// Apply settings to DOM
 	function applySettings() {
 		if (typeof document === 'undefined') return;
+
+		// Theme CSS (load via link tag)
+		if (settings.theme && availableThemes.length > 0) {
+			const selectedTheme = availableThemes.find(t => t.id === settings.theme);
+			if (selectedTheme) {
+				let themeLink = document.getElementById('pa-theme-css') as HTMLLinkElement;
+				if (!themeLink) {
+					themeLink = document.createElement('link');
+					themeLink.id = 'pa-theme-css';
+					themeLink.rel = 'stylesheet';
+					document.head.appendChild(themeLink);
+				}
+				if (themeLink.href !== selectedTheme.cssPath) {
+					themeLink.href = selectedTheme.cssPath;
+				}
+			}
+		}
 
 		// Theme mode (light/dark)
 		document.body.classList.remove('pa-mode-light', 'pa-mode-dark');
@@ -147,6 +178,9 @@
 	function saveSettings() {
 		if (typeof window === 'undefined') return;
 
+		if (settings.theme) {
+			localStorage.setItem('theme', settings.theme);
+		}
 		localStorage.setItem('theme-mode', settings.themeMode);
 		localStorage.setItem('font-size', settings.fontSize);
 		localStorage.setItem('font-family', settings.fontFamily);
@@ -181,6 +215,9 @@
 
 	// Reset to defaults
 	function resetSettings() {
+		if (availableThemes.length > 0) {
+			settings.theme = defaultTheme || availableThemes[0].id;
+		}
 		settings.themeMode = 'light';
 		settings.fontSize = 'default';
 		settings.fontFamily = 'default';
@@ -190,6 +227,7 @@
 		settings.profileNoAvatar = false;
 
 		if (typeof localStorage !== 'undefined') {
+			localStorage.removeItem('theme');
 			localStorage.removeItem('theme-mode');
 			localStorage.removeItem('font-size');
 			localStorage.removeItem('font-family');
@@ -216,6 +254,7 @@
 	$effect(() => {
 		if (mounted) {
 			// Access all settings to track them
+			settings.theme;
 			settings.themeMode;
 			settings.fontSize;
 			settings.fontFamily;
@@ -248,10 +287,22 @@
 	<div class="pa-settings-panel__content">
 		<h3 class="pa-settings-panel__title">Settings</h3>
 
+		<!-- Theme -->
+		{#if availableThemes.length > 0}
+			<div class="pa-settings-panel__section">
+				<label class="pa-settings-panel__label" for="settings-theme">Theme</label>
+				<select id="settings-theme" class="pa-settings-panel__select" bind:value={settings.theme}>
+					{#each availableThemes as theme (theme.id)}
+						<option value={theme.id}>{theme.name}</option>
+					{/each}
+				</select>
+			</div>
+		{/if}
+
 		<!-- Theme Mode -->
 		<div class="pa-settings-panel__section">
-			<label class="pa-settings-panel__label">Theme Mode</label>
-			<select class="pa-settings-panel__select" bind:value={settings.themeMode}>
+			<label class="pa-settings-panel__label" for="settings-themeMode">Theme Mode</label>
+			<select id="settings-themeMode" class="pa-settings-panel__select" bind:value={settings.themeMode}>
 				<option value="light">Light</option>
 				<option value="dark">Dark</option>
 			</select>
@@ -259,8 +310,8 @@
 
 		<!-- Container Width -->
 		<div class="pa-settings-panel__section">
-			<label class="pa-settings-panel__label">Layout Width</label>
-			<select class="pa-settings-panel__select" bind:value={settings.containerWidth} onchange={(e) => handleUrlSetting('containerWidth', e.currentTarget.value)}>
+			<label class="pa-settings-panel__label" for="settings-containerWidth">Layout Width</label>
+			<select id="settings-containerWidth" class="pa-settings-panel__select" bind:value={settings.containerWidth} onchange={(e) => handleUrlSetting('containerWidth', e.currentTarget.value)}>
 				<option value="fluid">Fluid (Full Width)</option>
 				<option value="sm">Small (768px)</option>
 				<option value="md">Medium (1024px)</option>
@@ -272,8 +323,8 @@
 
 		<!-- Sidebar Mode -->
 		<div class="pa-settings-panel__section">
-			<label class="pa-settings-panel__label">Sidebar Mode</label>
-			<select class="pa-settings-panel__select" bind:value={settings.sidebarMode} onchange={(e) => handleUrlSetting('sidebarMode', e.currentTarget.value)}>
+			<label class="pa-settings-panel__label" for="settings-sidebarMode">Sidebar Mode</label>
+			<select id="settings-sidebarMode" class="pa-settings-panel__select" bind:value={settings.sidebarMode} onchange={(e) => handleUrlSetting('sidebarMode', e.currentTarget.value)}>
 				<option value="">Scrolls with Content</option>
 				<option value="sticky">Fixed Position</option>
 			</select>
@@ -281,8 +332,8 @@
 
 		<!-- Sidebar Behavior -->
 		<div class="pa-settings-panel__section">
-			<label class="pa-settings-panel__label">Sidebar Behavior</label>
-			<select class="pa-settings-panel__select" bind:value={settings.sidebarBehavior}>
+			<label class="pa-settings-panel__label" for="settings-sidebarBehavior">Sidebar Behavior</label>
+			<select id="settings-sidebarBehavior" class="pa-settings-panel__select" bind:value={settings.sidebarBehavior}>
 				<option value="hide">Hide Completely</option>
 				<option value="icon-collapse">Show Icons Only</option>
 			</select>
@@ -290,7 +341,7 @@
 
 		<!-- Sidebar Collapsed -->
 		<div class="pa-settings-panel__section">
-			<label class="pa-settings-panel__label">Sidebar</label>
+			<span class="pa-settings-panel__label">Sidebar</span>
 			<div class="pa-settings-panel__checkbox-group">
 				<label class="pa-settings-panel__checkbox">
 					<input type="checkbox" bind:checked={settings.sidebarCollapsed} />
@@ -301,7 +352,7 @@
 
 		<!-- Compact Mode -->
 		<div class="pa-settings-panel__section">
-			<label class="pa-settings-panel__label">Display</label>
+			<span class="pa-settings-panel__label">Display</span>
 			<div class="pa-settings-panel__checkbox-group">
 				<label class="pa-settings-panel__checkbox">
 					<input type="checkbox" bind:checked={settings.compactMode} />
@@ -312,7 +363,7 @@
 
 		<!-- Profile Panel -->
 		<div class="pa-settings-panel__section">
-			<label class="pa-settings-panel__label">Profile Panel</label>
+			<span class="pa-settings-panel__label">Profile Panel</span>
 			<div class="pa-settings-panel__checkbox-group">
 				<label class="pa-settings-panel__checkbox">
 					<input type="checkbox" bind:checked={settings.profileNoAvatar} />
@@ -323,8 +374,8 @@
 
 		<!-- Font Size -->
 		<div class="pa-settings-panel__section">
-			<label class="pa-settings-panel__label">Font Size</label>
-			<select class="pa-settings-panel__select" bind:value={settings.fontSize}>
+			<label class="pa-settings-panel__label" for="settings-fontSize">Font Size</label>
+			<select id="settings-fontSize" class="pa-settings-panel__select" bind:value={settings.fontSize}>
 				<option value="small">Small (14px)</option>
 				<option value="default">Default (16px)</option>
 				<option value="large">Large (18px)</option>
@@ -334,8 +385,8 @@
 
 		<!-- Font Family -->
 		<div class="pa-settings-panel__section">
-			<label class="pa-settings-panel__label">Font Family</label>
-			<select class="pa-settings-panel__select" bind:value={settings.fontFamily}>
+			<label class="pa-settings-panel__label" for="settings-fontFamily">Font Family</label>
+			<select id="settings-fontFamily" class="pa-settings-panel__select" bind:value={settings.fontFamily}>
 				<option value="default">Theme Default</option>
 				<option value="serif">Serif</option>
 				<option value="mono">Monospace</option>

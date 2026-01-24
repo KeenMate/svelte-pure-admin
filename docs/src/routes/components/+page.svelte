@@ -19,6 +19,8 @@
 	} from '@keenmate/svelte-pure-admin';
 </script>
 
+<Paragraph>Pure Admin Visual framework provides a comprehensive set of components for building data-focused admin interfaces.</Paragraph>
+
 <div class="pa-layout-container">
 	<!-- Component Categories Overview -->
 	<Grid>
@@ -190,7 +192,7 @@
 					</FormGroup>
 
 					<FormGroup class="mb-3">
-						<Checkbox label="Check me out" />
+						<Checkbox id="demo-checkbox" label="Check me out" />
 					</FormGroup>
 
 					<ButtonGroup>

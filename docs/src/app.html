@@ -11,6 +11,18 @@
 		<!-- Floating UI for tooltips and popovers -->
 		<script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.0"></script>
 		<script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.3"></script>
+		<!-- Early sidebar width loading (before body renders to prevent FOUC) -->
+		<script>
+			(function() {
+				var savedWidth = localStorage.getItem('sidebar-width');
+				if (savedWidth) {
+					var width = parseInt(savedWidth, 10);
+					if (width >= 180 && width <= 500) {
+						document.documentElement.style.setProperty('--pa-local-sidebar-width', (width / 10) + 'rem');
+					}
+				}
+			})();
+		</script>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">

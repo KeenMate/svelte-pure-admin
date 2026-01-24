@@ -9,8 +9,8 @@
   import { onMount } from "svelte";
   import { popoverManager } from "./popover-manager.svelte";
 
-  let wrapperElement: HTMLDivElement | null = null;
-  let contentElement: HTMLDivElement | null = null;
+  let wrapperElement = $state<HTMLDivElement | null>(null);
+  let contentElement = $state<HTMLDivElement | null>(null);
   let cleanupAutoUpdate: (() => void) | null = null;
   let isPositioned = $state(false);
   let currentPopoverId: string | null = null;

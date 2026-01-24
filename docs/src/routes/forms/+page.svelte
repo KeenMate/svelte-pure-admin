@@ -5,6 +5,8 @@
 		FormLabel,
 		FormHelp,
 		Input,
+		NumberInput,
+		DateInput,
 		Textarea,
 		Select,
 		Checkbox,
@@ -27,7 +29,7 @@
 	let textInput = $state('');
 	let emailInput = $state('');
 	let passwordInput = $state('');
-	let numberInput = $state('');
+	let numberInput = $state<number | null>(null);
 	let basicSelect = $state('');
 	let dateInput = $state('');
 	let textareaValue = $state('');
@@ -93,6 +95,8 @@
 	let hCity = $state('');
 	let hZip = $state('');
 </script>
+
+<Paragraph>Complete set of form elements with various styles and states for data input.</Paragraph>
 
 <!-- Input Sizes Reference -->
 <Card title="Input Sizes Reference" noPadding>
@@ -196,7 +200,7 @@
 			<Column size="100" md="50">
 				<FormGroup>
 					<FormLabel for="number-input">Number Input</FormLabel>
-					<Input type="number" id="number-input" placeholder="0" bind:value={numberInput} />
+					<NumberInput id="number-input" placeholder="0" bind:value={numberInput} />
 				</FormGroup>
 			</Column>
 
@@ -215,7 +219,7 @@
 			<Column size="100" md="50">
 				<FormGroup>
 					<FormLabel for="date-input">Date Input</FormLabel>
-					<Input type="date" id="date-input" bind:value={dateInput} />
+					<DateInput id="date-input" bind:value={dateInput} />
 				</FormGroup>
 			</Column>
 
@@ -433,7 +437,7 @@
 					<FormLabel for="button-append-input">Button + Input + Append</FormLabel>
 					<InputGroup>
 						<Button variant="secondary" class="pa-input-group__button">-</Button>
-						<Input type="number" id="button-append-input" bind:value={buttonAppendInput} />
+						<NumberInput id="button-append-input" bind:value={buttonAppendInput} />
 						<InputGroupAppend>items</InputGroupAppend>
 					</InputGroup>
 				</FormGroup>
@@ -456,7 +460,7 @@
 					<FormLabel for="quantity-input">Button + Input + Button (Quantity)</FormLabel>
 					<InputGroup>
 						<Button variant="secondary" class="pa-input-group__button">-</Button>
-						<Input type="number" id="quantity-input" bind:value={quantityInput} class="text-center" />
+						<NumberInput id="quantity-input" bind:value={quantityInput} class="text-center" />
 						<Button variant="secondary" class="pa-input-group__button">+</Button>
 					</InputGroup>
 				</FormGroup>
@@ -608,7 +612,7 @@
 		<Grid>
 			<!-- First Name -->
 			<Column size="100" md="1-3">
-				<FormGroup horizontal>
+				<FormGroup isHorizontal>
 					<FormLabel for="h-fname">First Name</FormLabel>
 					<Input id="h-fname" placeholder="John" bind:value={hFname} />
 				</FormGroup>
@@ -616,7 +620,7 @@
 
 			<!-- Last Name -->
 			<Column size="100" md="1-3">
-				<FormGroup horizontal>
+				<FormGroup isHorizontal>
 					<FormLabel for="h-lname">Last Name</FormLabel>
 					<Input id="h-lname" placeholder="Doe" bind:value={hLname} />
 				</FormGroup>
@@ -624,7 +628,7 @@
 
 			<!-- Email -->
 			<Column size="100" md="1-3">
-				<FormGroup horizontal>
+				<FormGroup isHorizontal>
 					<FormLabel for="h-email">Email</FormLabel>
 					<Input type="email" id="h-email" placeholder="john.doe@company.com" bind:value={hEmail} />
 				</FormGroup>
@@ -635,7 +639,7 @@
 		<Grid>
 			<!-- Phone -->
 			<Column size="100" md="25">
-				<FormGroup horizontal>
+				<FormGroup isHorizontal>
 					<FormLabel for="h-phone">Phone</FormLabel>
 					<Input type="tel" id="h-phone" placeholder="+1 555-0123" bind:value={hPhone} />
 				</FormGroup>
@@ -643,7 +647,7 @@
 
 			<!-- Department -->
 			<Column size="100" md="1-3">
-				<FormGroup horizontal>
+				<FormGroup isHorizontal>
 					<FormLabel for="h-dept">Department</FormLabel>
 					<Select id="h-dept" bind:value={hDept}>
 						<option value="">Select department...</option>
@@ -657,7 +661,7 @@
 
 			<!-- Job Title -->
 			<Column size="100" md="1-3">
-				<FormGroup horizontal>
+				<FormGroup isHorizontal>
 					<FormLabel for="h-title">Job Title</FormLabel>
 					<Input id="h-title" placeholder="Senior Developer" bind:value={hTitle} />
 				</FormGroup>
@@ -668,7 +672,7 @@
 		<Grid>
 			<!-- Address -->
 			<Column size="100" md="50">
-				<FormGroup horizontal>
+				<FormGroup isHorizontal>
 					<FormLabel for="h-address">Address</FormLabel>
 					<Input id="h-address" placeholder="123 Main Street" bind:value={hAddress} />
 				</FormGroup>
@@ -676,7 +680,7 @@
 
 			<!-- City -->
 			<Column size="100" md="1-3">
-				<FormGroup horizontal>
+				<FormGroup isHorizontal>
 					<FormLabel for="h-city">City</FormLabel>
 					<Input id="h-city" placeholder="San Francisco" bind:value={hCity} />
 				</FormGroup>
@@ -684,7 +688,7 @@
 
 			<!-- Zip Code -->
 			<Column size="100" md="15">
-				<FormGroup horizontal>
+				<FormGroup isHorizontal>
 					<FormLabel for="h-zip">Zip</FormLabel>
 					<Input id="h-zip" placeholder="94102" bind:value={hZip} />
 				</FormGroup>

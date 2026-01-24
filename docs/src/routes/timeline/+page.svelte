@@ -17,39 +17,34 @@
 
 	<Timeline variant="feed">
 		<TimelineItem
-			avatar="https://ui-avatars.com/api/?name=Luna+Bonifacio&background=3b82f6&color=fff"
+			avatarUrl="https://ui-avatars.com/api/?name=Luna+Bonifacio&background=3b82f6&color=fff"
 			variant="primary"
 		>
-			{#snippet content()}
-				<div>
+							<div>
 					<strong>Luna Bonifacio</strong> changed 2 attributes
 				</div>
 				<div class="text-secondary text-sm mt-1">
 					Jan 21, 2021
 				</div>
-			{/snippet}
 		</TimelineItem>
 
 		<TimelineItem
-			avatar="https://ui-avatars.com/api/?name=Yoan+Almedia&background=10b981&color=fff"
+			avatarUrl="https://ui-avatars.com/api/?name=Yoan+Almedia&background=10b981&color=fff"
 			variant="success"
 		>
-			{#snippet content()}
-				<div>
+							<div>
 					<strong>Yoan Almedia</strong> moved Eric Lubin to "Technical Test"
 				</div>
 				<div class="text-secondary text-sm mt-1">
 					Jan 20, 2021
 				</div>
-			{/snippet}
 		</TimelineItem>
 
 		<TimelineItem
-			avatar="https://ui-avatars.com/api/?name=Yoan+Almedia&background=10b981&color=fff"
+			avatarUrl="https://ui-avatars.com/api/?name=Yoan+Almedia&background=10b981&color=fff"
 			variant="info"
 		>
-			{#snippet content()}
-				<div>
+							<div>
 					<strong>Yoan Almedia</strong> commented on an assignment
 				</div>
 				<div class="text-secondary text-sm mt-1">
@@ -60,15 +55,13 @@
 						"I've reviewed the candidate's technical test submission. The code quality is excellent and demonstrates strong understanding of React patterns. I recommend moving forward with the next interview stage."
 					</Paragraph>
 				</div>
-			{/snippet}
 		</TimelineItem>
 
 		<TimelineItem
-			avatar="https://ui-avatars.com/api/?name=Sarah+Chen&background=f59e0b&color=fff"
+			avatarUrl="https://ui-avatars.com/api/?name=Sarah+Chen&background=f59e0b&color=fff"
 			variant="warning"
 		>
-			{#snippet content()}
-				<div>
+							<div>
 					<strong>Sarah Chen</strong> attached 3 files to project
 				</div>
 				<div class="text-secondary text-sm mt-1">
@@ -88,29 +81,25 @@
 						components.zip
 					</Badge>
 				</div>
-			{/snippet}
 		</TimelineItem>
 
 		<TimelineItem
-			avatar="https://ui-avatars.com/api/?name=Mike+Johnson&background=8b5cf6&color=fff"
+			avatarUrl="https://ui-avatars.com/api/?name=Mike+Johnson&background=8b5cf6&color=fff"
 			variant="success"
 		>
-			{#snippet content()}
-				<div>
+							<div>
 					<strong>Mike Johnson</strong> completed "Design Review" task
 				</div>
 				<div class="text-secondary text-sm mt-1">
 					Jan 18, 2021
 				</div>
-			{/snippet}
 		</TimelineItem>
 
 		<TimelineItem
-			avatar="https://ui-avatars.com/api/?name=Emma+Davis&background=ec4899&color=fff"
+			avatarUrl="https://ui-avatars.com/api/?name=Emma+Davis&background=ec4899&color=fff"
 			variant="danger"
 		>
-			{#snippet content()}
-				<div>
+							<div>
 					<strong>Emma Davis</strong> reported a critical bug
 				</div>
 				<div class="text-secondary text-sm mt-1">
@@ -121,21 +110,18 @@
 						<strong class="text-danger">URGENT:</strong> Payment processing fails when cart total exceeds $1000. Multiple customers affected. Needs immediate attention.
 					</Paragraph>
 				</div>
-			{/snippet}
 		</TimelineItem>
 
 		<TimelineItem
-			avatar="https://ui-avatars.com/api/?name=Alex+Rodriguez&background=06b6d4&color=fff"
+			avatarUrl="https://ui-avatars.com/api/?name=Alex+Rodriguez&background=06b6d4&color=fff"
 			variant="info"
 		>
-			{#snippet content()}
-				<div>
+							<div>
 					<strong>Alex Rodriguez</strong> created new branch "feature/user-profiles"
 				</div>
 				<div class="text-secondary text-sm mt-1">
 					Jan 16, 2021
 				</div>
-			{/snippet}
 		</TimelineItem>
 	</Timeline>
 </Card>
@@ -145,45 +131,39 @@
 
 	<Timeline variant="feed">
 		<TimelineItem
-			avatar="https://ui-avatars.com/api/?name=John+Doe&background=3b82f6&color=fff"
+			avatarUrl="https://ui-avatars.com/api/?name=John+Doe&background=3b82f6&color=fff"
 			variant="primary"
 		>
-			{#snippet content()}
-				<div>
+							<div>
 					<strong>John Doe</strong> started a new project
 				</div>
 				<div class="text-secondary text-sm mt-1">
 					2 hours ago
 				</div>
-			{/snippet}
 		</TimelineItem>
 
 		<TimelineItem
-			avatar="https://ui-avatars.com/api/?name=Jane+Smith&background=10b981&color=fff"
+			avatarUrl="https://ui-avatars.com/api/?name=Jane+Smith&background=10b981&color=fff"
 			variant="success"
 		>
-			{#snippet content()}
-				<div>
+							<div>
 					<strong>Jane Smith</strong> merged pull request #142
 				</div>
 				<div class="text-secondary text-sm mt-1">
 					5 hours ago
 				</div>
-			{/snippet}
 		</TimelineItem>
 
 		<TimelineItem
-			avatar="https://ui-avatars.com/api/?name=Bob+Wilson&background=f59e0b&color=fff"
+			avatarUrl="https://ui-avatars.com/api/?name=Bob+Wilson&background=f59e0b&color=fff"
 			variant="warning"
 		>
-			{#snippet content()}
-				<div>
+							<div>
 					<strong>Bob Wilson</strong> requested code review
 				</div>
 				<div class="text-secondary text-sm mt-1">
 					1 day ago
 				</div>
-			{/snippet}
 		</TimelineItem>
 	</Timeline>
 
@@ -200,27 +180,23 @@
 	<Heading level={4}>Basic Feed Timeline</Heading>
 	<CodeBlock language="html" class="mb-4">&lt;Timeline variant="feed"&gt;
   &lt;TimelineItem
-    avatar="https://ui-avatars.com/api/?name=User+Name"
+    avatarUrl="https://ui-avatars.com/api/?name=User+Name"
     variant="primary"
   &gt;
-    {#snippet content()}
-      &lt;div&gt;
-        &lt;strong&gt;User Name&lt;/strong&gt; performed an action
-      &lt;/div&gt;
-      &lt;div class="text-secondary"&gt;2 hours ago&lt;/div&gt;
-    {/snippet}
+    &lt;div&gt;
+      &lt;strong&gt;User Name&lt;/strong&gt; performed an action
+    &lt;/div&gt;
+    &lt;div class="text-secondary"&gt;2 hours ago&lt;/div&gt;
   &lt;/TimelineItem&gt;
 &lt;/Timeline&gt;</CodeBlock>
 
 	<Heading level={4}>With Comment/Additional Content</Heading>
-	<CodeBlock language="html" class="mb-4">&lt;TimelineItem avatar="..." variant="info"&gt;
-  {#snippet content()}
-    &lt;div&gt;&lt;strong&gt;User&lt;/strong&gt; commented&lt;/div&gt;
-    &lt;div class="text-secondary"&gt;1 hour ago&lt;/div&gt;
-    &lt;div class="pa-callout pa-callout--info mt-3"&gt;
-      Comment text here
-    &lt;/div&gt;
-  {/snippet}
+	<CodeBlock language="html" class="mb-4">&lt;TimelineItem avatarUrl="..." variant="info"&gt;
+  &lt;div&gt;&lt;strong&gt;User&lt;/strong&gt; commented&lt;/div&gt;
+  &lt;div class="text-secondary"&gt;1 hour ago&lt;/div&gt;
+  &lt;div class="pa-callout pa-callout--info mt-3"&gt;
+    Comment text here
+  &lt;/div&gt;
 &lt;/TimelineItem&gt;</CodeBlock>
 
 	<Heading level={4}>UI Avatars Integration</Heading>

@@ -2,6 +2,8 @@
 	import { Heading, Paragraph, Callout, Card, Alert, Grid, Column, Code, CodeBlock } from '@keenmate/svelte-pure-admin';
 </script>
 
+<Paragraph>Documentation-style callouts with left border accent for tips, notes, warnings in content areas.</Paragraph>
+
 <!-- Basic Callouts -->
 <Card title="Basic Callouts">
 	<Callout variant="primary">

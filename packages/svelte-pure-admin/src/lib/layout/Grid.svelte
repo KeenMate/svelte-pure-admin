@@ -13,6 +13,8 @@
 	type HorizontalAlign = 'center' | 'end' | 'between' | 'around';
 	type VerticalAlign = 'top' | 'middle' | 'bottom';
 
+	type GapSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+
 	interface Props {
 		/** Remove spacing between columns */
 		noGutter?: boolean;
@@ -22,6 +24,8 @@
 		align?: VerticalAlign;
 		/** Force all columns to equal height (for card grids) */
 		sameHeight?: boolean;
+		/** Gap between items (utility class or custom value) */
+		gap?: GapSize | number;
 		/** Additional CSS classes */
 		class?: string;
 		/** Inline styles */
@@ -35,6 +39,7 @@
 		justify,
 		align,
 		sameHeight = false,
+		gap,
 		class: className = '',
 		style,
 		children
@@ -47,11 +52,21 @@
 		if (justify) base.push(`pa-row--${justify}`);
 		if (align) base.push(`pa-row--${align}`);
 		if (sameHeight) base.push('pa-row--same-height');
+		// Gap: use utility class for named sizes, inline style for numbers
+		if (gap && typeof gap === 'string') base.push(`gap-${gap}`);
 		if (className) base.push(className);
 		return base.join(' ');
 	});
+
+	// Build inline styles
+	const computedStyle = $derived(() => {
+		const styles: string[] = [];
+		if (gap && typeof gap === 'number') styles.push(`gap: ${gap}px`);
+		if (style) styles.push(style);
+		return styles.length > 0 ? styles.join('; ') : undefined;
+	});
 </script>
 
-<div class={classes()} {style}>
+<div class={classes()} style={computedStyle()}>
 	{@render children?.()}
 </div>

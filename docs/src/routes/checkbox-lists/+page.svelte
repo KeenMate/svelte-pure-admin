@@ -418,7 +418,7 @@
 <!-- Card 9: Tables with Checkboxes -->
 <Card title="Tables with Checkboxes" subtitle="Checkboxes in table first column for row selection">
 
-	<Table striped noPadding>
+	<Table striped>
 		<thead>
 			<tr>
 				<th class="pa-table__checkbox-col">
@@ -455,7 +455,7 @@
 <!-- Card 10: Interactive Demo -->
 <Card title="Interactive Demo" subtitle="Select-all functionality and row selection">
 
-	<Table striped noPadding>
+	<Table striped>
 		<thead>
 			<tr>
 				<th class="pa-table__checkbox-col">

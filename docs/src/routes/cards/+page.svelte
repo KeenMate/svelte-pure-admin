@@ -23,6 +23,8 @@
 	}
 </script>
 
+<Paragraph>Flexible content containers for organizing and displaying information.</Paragraph>
+
 <!-- Same Height Cards -->
 <Section title="Same Height Cards">
 	<Paragraph class="mb-2">Use <code>sameHeight</code> on Grid to make all cards in a row match the height of the tallest card.</Paragraph>
@@ -86,7 +88,7 @@
 					<Button variant="secondary" size="xs">⚙</Button>
 				{/snippet}
 				<Paragraph>A complete card with header, body, and footer sections.</Paragraph>
-				{#snippet meta()}Updated 2 hours ago{/snippet}
+				<Paragraph class="text-muted text-sm">Updated 2 hours ago</Paragraph>
 				{#snippet actions()}
 					<Button variant="secondary" size="sm">Cancel</Button>
 					<Button variant="primary" size="sm">Save</Button>
@@ -138,6 +140,60 @@
 				<Paragraph>Card with danger color theme.</Paragraph>
 			</Card>
 		</Column>
+
+		<!-- Info Card -->
+		<Column size="100" md="1-2">
+			<Card variant="info">
+				{#snippet header()}
+					<Heading level={4}>Info Card</Heading>
+				{/snippet}
+				<Paragraph>Card with info color theme.</Paragraph>
+			</Card>
+		</Column>
+	</Grid>
+</Section>
+
+<!-- Theme Color Cards -->
+<Section title="Theme Color Cards">
+	<Paragraph class="mb-2">Cards can use theme color slots (color-1 through color-9) for custom color schemes defined by your theme.</Paragraph>
+	<Grid>
+		{#each [1, 2, 3, 4, 5, 6, 7, 8, 9] as num}
+			<Column size="100" md="1-3">
+				<Card variant="color-{num}">
+					{#snippet header()}
+						<Heading level={4}>Color {num}</Heading>
+					{/snippet}
+					<Paragraph>Theme color slot {num}</Paragraph>
+				</Card>
+			</Column>
+		{/each}
+	</Grid>
+</Section>
+
+<!-- Bordered Cards -->
+<Section title="Bordered Cards">
+	<Paragraph class="mb-2">Cards can have visible borders using the <code>pa-card--bordered</code> class.</Paragraph>
+	<Grid>
+		<Column size="100" md="1-2">
+			<Card class="pa-card--bordered" title="Bordered Card">
+				<Paragraph>Card with visible border styling.</Paragraph>
+			</Card>
+		</Column>
+		<Column size="100" md="1-2">
+			<Card class="pa-card--bordered" variant="primary" title="Bordered Primary">
+				<Paragraph>Bordered card with color variant.</Paragraph>
+			</Card>
+		</Column>
+		<Column size="100" md="1-2">
+			<Card class="pa-card--bordered" variant="success" title="Bordered Success">
+				<Paragraph>Bordered card with success variant.</Paragraph>
+			</Card>
+		</Column>
+		<Column size="100" md="1-2">
+			<Card class="pa-card--bordered" variant="danger" title="Bordered Danger">
+				<Paragraph>Bordered card with danger variant.</Paragraph>
+			</Card>
+		</Column>
 	</Grid>
 </Section>
 
@@ -182,6 +238,28 @@
 	</Grid>
 </Section>
 
+<!-- Statistics with Trends -->
+<Section title="Statistics with Trends">
+	<Paragraph class="mb-2">Stats can display change indicators showing positive, negative, or neutral trends. Note: Change indicators only display when NOT using the icon layout.</Paragraph>
+	<Grid>
+		<Column size="100" sm="1-2" lg="1-3">
+			<Card stat>
+				<Stat number="1,234" label="Total Users" change="+12.5%" changeDirection="positive" />
+			</Card>
+		</Column>
+		<Column size="100" sm="1-2" lg="1-3">
+			<Card stat>
+				<Stat number="567" label="Orders" change="-5.2%" changeDirection="negative" />
+			</Card>
+		</Column>
+		<Column size="100" sm="1-2" lg="1-3">
+			<Card stat>
+				<Stat number="$89.50" label="Avg Order" change="0%" changeDirection="neutral" />
+			</Card>
+		</Column>
+	</Grid>
+</Section>
+
 <!-- Interactive Cards -->
 <Section title="Interactive Cards">
 	<Grid>
@@ -189,7 +267,7 @@
 		<Column size="100" md="1-2">
 			<Card title="Collapsible Card">
 				{#snippet tools()}
-					<Button variant="secondary" size="xs" onClick={toggleCard}>−</Button>
+					<Button variant="secondary" size="xs" onclick={toggleCard}>−</Button>
 				{/snippet}
 				<Paragraph>
 					This card can be collapsed and expanded. Click the minus/plus button in the header.

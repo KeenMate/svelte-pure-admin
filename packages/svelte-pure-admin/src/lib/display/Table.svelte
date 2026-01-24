@@ -4,13 +4,17 @@
 	 * Based on @keenmate/pure-admin-core snippets/tables.html
 	 */
 
-	type TableSpacing = '2x' | '3x';
+	type TableSize = 'xs' | 'sm' | 'lg' | 'xl';
 
 	interface Props {
 		/** Striped rows */
 		striped?: boolean;
-		/** Custom spacing (2x or 3x) */
-		spacing?: TableSpacing;
+		/** Table size (affects cell padding) - xs is compact, lg/xl are spacious */
+		size?: TableSize;
+		/** Responsive table with horizontal scrolling */
+		isResponsive?: boolean;
+		/** Responsive grid layout (collapses to cards on mobile) */
+		responsiveGrid?: boolean;
 		/** Additional CSS classes */
 		class?: string;
 		/** Children content */
@@ -19,7 +23,9 @@
 
 	let {
 		striped = false,
-		spacing,
+		size,
+		isResponsive = false,
+		responsiveGrid = false,
 		class: className = '',
 		children
 	}: Props = $props();
@@ -28,7 +34,9 @@
 	const classes = $derived(() => {
 		const base = ['pa-table'];
 		if (striped) base.push('pa-table--striped');
-		if (spacing) base.push(`pa-table--${spacing}`);
+		if (size) base.push(`pa-table--${size}`);
+		if (isResponsive) base.push('pa-table--responsive');
+		if (responsiveGrid) base.push('pa-table--responsive-grid');
 		if (className) base.push(className);
 		return base.join(' ');
 	});

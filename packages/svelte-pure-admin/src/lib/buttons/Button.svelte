@@ -35,8 +35,14 @@
 		disabled?: boolean;
 		/** Button type */
 		type?: 'button' | 'submit' | 'reset';
+		/** Link URL (renders as anchor tag instead of button) */
+		href?: string;
+		/** Link target (only used with href) */
+		target?: '_blank' | '_self' | '_parent' | '_top';
 		/** Click handler */
-		onClick?: (event: MouseEvent) => void;
+		onclick?: (event: MouseEvent) => void;
+		/** Title attribute (tooltip) */
+		title?: string;
 		/** Additional CSS classes */
 		class?: string;
 		/** Icon snippet (renders in pa-btn__icon) */
@@ -57,7 +63,10 @@
 		isInputGroupButton = false,
 		disabled = false,
 		type = 'button',
-		onClick,
+		href,
+		target,
+		onclick,
+		title,
 		class: className = '',
 		icon,
 		children
@@ -96,20 +105,43 @@
 	});
 </script>
 
-<button
-	{type}
-	disabled={disabled || loading}
-	class={classes()}
-	onclick={onClick}
-	data-ripple={ripple ? true : undefined}
->
-	{#if loading}
-		<span class="pa-btn__spinner"></span>
-	{/if}
-	{#if icon}
-		<span class="pa-btn__icon">
-			{@render icon()}
-		</span>
-	{/if}
-	{@render children?.()}
-</button>
+{#if href}
+	<a
+		{href}
+		{target}
+		{title}
+		class={classes()}
+		class:disabled={disabled || loading}
+		{onclick}
+		data-ripple={ripple ? true : undefined}
+	>
+		{#if loading}
+			<span class="pa-btn__spinner"></span>
+		{/if}
+		{#if icon}
+			<span class="pa-btn__icon">
+				{@render icon()}
+			</span>
+		{/if}
+		{@render children?.()}
+	</a>
+{:else}
+	<button
+		{type}
+		{title}
+		disabled={disabled || loading}
+		class={classes()}
+		{onclick}
+		data-ripple={ripple ? true : undefined}
+	>
+		{#if loading}
+			<span class="pa-btn__spinner"></span>
+		{/if}
+		{#if icon}
+			<span class="pa-btn__icon">
+				{@render icon()}
+			</span>
+		{/if}
+		{@render children?.()}
+	</button>
+{/if}

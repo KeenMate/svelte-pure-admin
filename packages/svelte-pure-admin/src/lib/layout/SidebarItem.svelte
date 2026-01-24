@@ -2,6 +2,16 @@
 	/**
 	 * Pure Admin Sidebar Item Component (Svelte 5)
 	 * Based on @keenmate/pure-admin-core snippets/layout.html
+	 *
+	 * SVELTEKIT USAGE:
+	 * Use with SvelteKit's page store for automatic active state:
+	 *
+	 * @example
+	 * // In your +layout.svelte or +page.svelte, import page from SvelteKit's app/stores
+	 * // then use it to determine active state:
+	 *
+	 * <SidebarItem href="/dashboard" label="Dashboard" active={$page.url.pathname === '/dashboard'} />
+	 * <SidebarItem href="/users" label="Users" active={$page.url.pathname.startsWith('/users')} />
 	 */
 
 	import { onMount } from 'svelte';

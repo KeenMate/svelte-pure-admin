@@ -26,6 +26,8 @@
 	const mergedConfig = $derived(() => mergeConfig(defaultConfig, config));
 
 	// Set context for child components
+	// Note: We pass the derived function itself, so consumers call getContext()() to get current value
+	// svelte-ignore state_referenced_locally
 	setContext('pure-admin-config', mergedConfig);
 
 	// Shortcut help dialog state

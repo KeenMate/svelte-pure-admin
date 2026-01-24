@@ -128,9 +128,9 @@
 	}
 
 	// Determine which mode we're in
-	const isDataMode = data && data.length > 0;
-	const isLegacyMode = badges && badges.length > 0;
-	const isSnippetMode = !isDataMode && !isLegacyMode;
+	const isDataMode = $derived(data && data.length > 0);
+	const isLegacyMode = $derived(badges && badges.length > 0);
+	const isSnippetMode = $derived(!isDataMode && !isLegacyMode);
 
 	// Determine which items to show (data mode)
 	const visibleData = $derived(() => {
@@ -228,7 +228,7 @@
 			>
 				{#if badge.icon}
 					{#snippet icon()}
-						{@render badge.icon()}
+						{@render badge.icon!()}
 					{/snippet}
 				{/if}
 				{badge.label}

@@ -57,8 +57,13 @@
 	}: Props = $props();
 
 	let popconfirmEl: HTMLDivElement;
-	let actualPosition = $state<Position>(position);
+	let actualPosition = $state<Position>('bottom');
 	let mounted = $state(false);
+
+	// Sync actualPosition with position prop (before Floating UI adjusts it)
+	$effect(() => {
+		actualPosition = position;
+	});
 
 	// Build class string
 	const classes = $derived(() => {

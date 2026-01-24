@@ -35,6 +35,10 @@
 		onClose?: () => void;
 		/** Additional CSS classes */
 		class?: string;
+		/** Additional CSS classes for body */
+		bodyClass?: string;
+		/** Additional CSS classes for footer */
+		footerClass?: string;
 		/** Header snippet */
 		header?: import('svelte').Snippet;
 		/** Body snippet */
@@ -57,6 +61,8 @@
 		onBeforeClose,
 		onClose,
 		class: className = '',
+		bodyClass = '',
+		footerClass = '',
 		header,
 		children,
 		footer
@@ -77,6 +83,14 @@
 	const bodyClasses = $derived(() => {
 		const base = ['pa-modal__body'];
 		if (scrollable) base.push('pa-modal__body--scrollable');
+		if (bodyClass) base.push(bodyClass);
+		return base.join(' ');
+	});
+
+	// Build class string for footer
+	const footerClasses = $derived(() => {
+		const base = ['pa-modal__footer'];
+		if (footerClass) base.push(footerClass);
 		return base.join(' ');
 	});
 
@@ -143,7 +157,7 @@
 		{/if}
 
 		{#if footer}
-			<div class="pa-modal__footer">
+			<div class={footerClasses()}>
 				{@render footer()}
 			</div>
 		{/if}

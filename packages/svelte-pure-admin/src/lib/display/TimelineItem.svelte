@@ -71,7 +71,16 @@
 	});
 </script>
 
-<li class={classes()} {onclick}>
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+<li
+	class={classes()}
+	onclick={onclick}
+	onkeydown={onclick ? (e) => e.key === 'Enter' && onclick(e as any) : undefined}
+	tabindex={onclick ? 0 : undefined}
+	role={onclick ? 'button' : undefined}
+>
 	{#if dateHeader}
 		<!-- Date header (for feed timeline) -->
 		{#if iconText || iconTemplate}

@@ -29,20 +29,20 @@
 		<Column size="100" md="1-2">
 			<Heading level={4}>Standard Sizes</Heading>
 			<ButtonGroup>
-				<Button variant="primary" onClick={() => (showSmall = true)}>Small Modal</Button>
-				<Button variant="primary" onClick={() => (showMedium = true)}>Medium Modal</Button>
-				<Button variant="primary" onClick={() => (showLarge = true)}>Large Modal</Button>
-				<Button variant="primary" onClick={() => (showXL = true)}>XL Modal</Button>
-				<Button variant="primary" onClick={() => (showXXL = true)}>XXL Modal</Button>
-				<Button variant="dark" onClick={() => (showFullWidth = true)}>Full Width</Button>
+				<Button variant="primary" onclick={() => (showSmall = true)}>Small Modal</Button>
+				<Button variant="primary" onclick={() => (showMedium = true)}>Medium Modal</Button>
+				<Button variant="primary" onclick={() => (showLarge = true)}>Large Modal</Button>
+				<Button variant="primary" onclick={() => (showXL = true)}>XL Modal</Button>
+				<Button variant="primary" onclick={() => (showXXL = true)}>XXL Modal</Button>
+				<Button variant="dark" onclick={() => (showFullWidth = true)}>Full Width</Button>
 			</ButtonGroup>
 		</Column>
 		<Column size="100" md="1-2">
 			<Heading level={4}>Modal Types</Heading>
 			<ButtonGroup>
-				<Button variant="success" onClick={() => (showSuccess = true)}>Success Modal</Button>
-				<Button variant="warning" onClick={() => (showWarning = true)}>Warning Modal</Button>
-				<Button variant="danger" onClick={() => (showDanger = true)}>Danger Modal</Button>
+				<Button variant="success" onclick={() => (showSuccess = true)}>Success Modal</Button>
+				<Button variant="warning" onclick={() => (showWarning = true)}>Warning Modal</Button>
+				<Button variant="danger" onclick={() => (showDanger = true)}>Danger Modal</Button>
 			</ButtonGroup>
 		</Column>
 	</Grid>
@@ -50,14 +50,14 @@
 		<Column size="100" md="1-2">
 			<Heading level={4}>Position Modifiers</Heading>
 			<ButtonGroup>
-				<Button variant="secondary" onClick={() => (showCentered = true)}>Centered (Default)</Button>
-				<Button variant="secondary" onClick={() => (showTop = true)}>Top-Aligned</Button>
+				<Button variant="secondary" onclick={() => (showCentered = true)}>Centered (Default)</Button>
+				<Button variant="secondary" onclick={() => (showTop = true)}>Top-Aligned</Button>
 			</ButtonGroup>
 		</Column>
 		<Column size="100" md="1-2">
 			<Heading level={4}>Behavior Modifiers</Heading>
 			<ButtonGroup>
-				<Button variant="warning" onClick={() => (showStatic = true)}>Static Modal</Button>
+				<Button variant="warning" onclick={() => (showStatic = true)}>Static Modal</Button>
 			</ButtonGroup>
 		</Column>
 	</Grid>
@@ -66,18 +66,18 @@
 <!-- Form Modals -->
 <Card title="Form Modals" subtitle="Modals containing forms and interactive content">
 	<ButtonGroup>
-		<Button variant="secondary" onClick={() => (showForm = true)}>Contact Form</Button>
-		<Button variant="info" onClick={() => (showLogin = true)}>Login Form</Button>
-		<Button variant="dark" onClick={() => (showSettings = true)}>Settings Modal</Button>
+		<Button variant="secondary" onclick={() => (showForm = true)}>Contact Form</Button>
+		<Button variant="info" onclick={() => (showLogin = true)}>Login Form</Button>
+		<Button variant="dark" onclick={() => (showSettings = true)}>Settings Modal</Button>
 	</ButtonGroup>
 </Card>
 
 <!-- Confirmation Modals -->
 <Card title="Confirmation Modals" subtitle="Action confirmation and decision dialogs">
 	<ButtonGroup>
-		<Button variant="danger" outline onClick={() => (showConfirmDelete = true)}>Delete Confirmation</Button>
-		<Button variant="warning" outline onClick={() => (showConfirmAction = true)}>Action Confirmation</Button>
-		<Button variant="info" outline onClick={() => (showInfo = true)}>Information Dialog</Button>
+		<Button variant="danger" outline onclick={() => (showConfirmDelete = true)}>Delete Confirmation</Button>
+		<Button variant="warning" outline onclick={() => (showConfirmAction = true)}>Action Confirmation</Button>
+		<Button variant="info" outline onclick={() => (showInfo = true)}>Information Dialog</Button>
 	</ButtonGroup>
 </Card>
 
@@ -87,7 +87,7 @@
 <Modal bind:show={showSmall} size="sm" title="Small Modal">
 	<Paragraph>This is a small modal dialog. Perfect for quick notifications or simple confirmations.</Paragraph>
 	{#snippet footer()}
-		<Button variant="secondary" onClick={() => (showSmall = false)}>Close</Button>
+		<Button variant="secondary" onclick={() => (showSmall = false)}>Close</Button>
 		<Button variant="primary">Save</Button>
 	{/snippet}
 </Modal>
@@ -102,7 +102,7 @@
 		<li>Feature 3</li>
 	</BasicList>
 	{#snippet footer()}
-		<Button variant="secondary" onClick={() => (showMedium = false)}>Cancel</Button>
+		<Button variant="secondary" onclick={() => (showMedium = false)}>Cancel</Button>
 		<Button variant="primary">Continue</Button>
 	{/snippet}
 </Modal>
@@ -124,7 +124,7 @@
 		</Column>
 	</Grid>
 	{#snippet footer()}
-		<Button variant="secondary" onClick={() => (showLarge = false)}>Cancel</Button>
+		<Button variant="secondary" onclick={() => (showLarge = false)}>Cancel</Button>
 		<Button variant="primary">Save Changes</Button>
 	{/snippet}
 </Modal>
@@ -151,7 +151,7 @@
 		</Column>
 	</Grid>
 	{#snippet footer()}
-		<Button variant="secondary" onClick={() => (showXL = false)}>Close</Button>
+		<Button variant="secondary" onclick={() => (showXL = false)}>Close</Button>
 		<Button variant="primary">Apply Changes</Button>
 	{/snippet}
 </Modal>
@@ -204,7 +204,7 @@
 		</Column>
 	</Grid>
 	{#snippet footer()}
-		<Button variant="secondary" onClick={() => (showXXL = false)}>Close</Button>
+		<Button variant="secondary" onclick={() => (showXXL = false)}>Close</Button>
 		<Button variant="info">Export</Button>
 		<Button variant="primary">Save All Changes</Button>
 	{/snippet}
@@ -292,7 +292,7 @@
 		</Column>
 	</Grid>
 	{#snippet footer()}
-		<Button variant="secondary" onClick={() => (showFullWidth = false)}>Close</Button>
+		<Button variant="secondary" onclick={() => (showFullWidth = false)}>Close</Button>
 		<Button variant="success">Save</Button>
 		<Button variant="primary">Apply</Button>
 	{/snippet}
@@ -306,7 +306,7 @@
 	<Paragraph>Your action has been completed successfully!</Paragraph>
 	<Alert variant="success">Operation completed without any errors.</Alert>
 	{#snippet footer()}
-		<Button variant="success" onClick={() => (showSuccess = false)}>Great!</Button>
+		<Button variant="success" onclick={() => (showSuccess = false)}>Great!</Button>
 	{/snippet}
 </Modal>
 
@@ -320,7 +320,7 @@
 		This action may have consequences that cannot be undone.
 	</Alert>
 	{#snippet footer()}
-		<Button variant="secondary" onClick={() => (showWarning = false)}>Cancel</Button>
+		<Button variant="secondary" onclick={() => (showWarning = false)}>Cancel</Button>
 		<Button variant="warning">Proceed</Button>
 	{/snippet}
 </Modal>
@@ -335,7 +335,7 @@
 		<strong>Warning:</strong> This action cannot be undone and may result in data loss.
 	</Alert>
 	{#snippet footer()}
-		<Button variant="secondary" onClick={() => (showDanger = false)}>Cancel</Button>
+		<Button variant="secondary" onclick={() => (showDanger = false)}>Cancel</Button>
 		<Button variant="danger">Delete Forever</Button>
 	{/snippet}
 </Modal>
@@ -365,7 +365,7 @@
 		</Grid>
 	</form>
 	{#snippet footer()}
-		<Button variant="secondary" onClick={() => (showForm = false)}>Cancel</Button>
+		<Button variant="secondary" onclick={() => (showForm = false)}>Cancel</Button>
 		<Button variant="primary">Send Message</Button>
 	{/snippet}
 </Modal>
@@ -388,13 +388,13 @@
 			</Column>
 			<Column size="100">
 				<FormGroup>
-					<Checkbox id="login-remember">Remember me</Checkbox>
+					<Checkbox id="login-remember" label="Remember me" />
 				</FormGroup>
 			</Column>
 		</Grid>
 	</form>
 	{#snippet footer()}
-		<Button variant="secondary" onClick={() => (showLogin = false)}>Cancel</Button>
+		<Button variant="secondary" onclick={() => (showLogin = false)}>Cancel</Button>
 		<Button variant="primary">Sign In</Button>
 	{/snippet}
 </Modal>
@@ -414,7 +414,7 @@
 					</Select>
 				</FormGroup>
 				<FormGroup>
-					<Checkbox id="settings-notifications" checked>Enable notifications</Checkbox>
+					<Checkbox id="settings-notifications" checked label="Enable notifications" />
 				</FormGroup>
 			</form>
 		</Column>
@@ -422,16 +422,16 @@
 			<Heading level={5}>Privacy Settings</Heading>
 			<form>
 				<FormGroup>
-					<Checkbox id="settings-analytics">Share analytics data</Checkbox>
+					<Checkbox id="settings-analytics" label="Share analytics data" />
 				</FormGroup>
 				<FormGroup>
-					<Checkbox id="settings-email" checked>Email updates</Checkbox>
+					<Checkbox id="settings-email" checked label="Email updates" />
 				</FormGroup>
 			</form>
 		</Column>
 	</Grid>
 	{#snippet footer()}
-		<Button variant="secondary" onClick={() => (showSettings = false)}>Cancel</Button>
+		<Button variant="secondary" onclick={() => (showSettings = false)}>Cancel</Button>
 		<Button variant="primary">Save Settings</Button>
 	{/snippet}
 </Modal>
@@ -443,7 +443,7 @@
 		<strong>This action cannot be undone.</strong>
 	</Alert>
 	{#snippet footer()}
-		<Button variant="secondary" onClick={() => (showConfirmDelete = false)}>Cancel</Button>
+		<Button variant="secondary" onclick={() => (showConfirmDelete = false)}>Cancel</Button>
 		<Button variant="danger">Delete</Button>
 	{/snippet}
 </Modal>
@@ -453,7 +453,7 @@
 	<Paragraph>Do you want to proceed with this action?</Paragraph>
 	<Paragraph>This will update your preferences and may affect other users.</Paragraph>
 	{#snippet footer()}
-		<Button variant="secondary" onClick={() => (showConfirmAction = false)}>Cancel</Button>
+		<Button variant="secondary" onclick={() => (showConfirmAction = false)}>Cancel</Button>
 		<Button variant="warning">Confirm</Button>
 	{/snippet}
 </Modal>
@@ -470,7 +470,7 @@
 		<li>You can renew at any time</li>
 	</BasicList>
 	{#snippet footer()}
-		<Button variant="secondary" onClick={() => (showInfo = false)}>Later</Button>
+		<Button variant="secondary" onclick={() => (showInfo = false)}>Later</Button>
 		<Button variant="info">Renew Now</Button>
 	{/snippet}
 </Modal>
@@ -480,7 +480,7 @@
 	<Paragraph>This is the default modal behavior - centered vertically and horizontally in the viewport.</Paragraph>
 	<Paragraph>This works well for most use cases where you want the modal to be the focal point.</Paragraph>
 	{#snippet footer()}
-		<Button variant="secondary" onClick={() => (showCentered = false)}>Close</Button>
+		<Button variant="secondary" onclick={() => (showCentered = false)}>Close</Button>
 		<Button variant="primary">Confirm</Button>
 	{/snippet}
 </Modal>
@@ -496,7 +496,7 @@
 		<li>Better visual flow when content extends below fold</li>
 	</BasicList>
 	{#snippet footer()}
-		<Button variant="secondary" onClick={() => (showTop = false)}>Close</Button>
+		<Button variant="secondary" onclick={() => (showTop = false)}>Close</Button>
 		<Button variant="primary">Confirm</Button>
 	{/snippet}
 </Modal>
@@ -516,7 +516,7 @@
 	</Callout>
 	<Paragraph>You must click a button below to close this modal.</Paragraph>
 	{#snippet footer()}
-		<Button variant="secondary" onClick={() => (showStatic = false)}>Cancel</Button>
-		<Button variant="warning" onClick={() => (showStatic = false)}>I Understand</Button>
+		<Button variant="secondary" onclick={() => (showStatic = false)}>Cancel</Button>
+		<Button variant="warning" onclick={() => (showStatic = false)}>I Understand</Button>
 	{/snippet}
 </Modal>

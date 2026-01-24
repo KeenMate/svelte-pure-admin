@@ -4,10 +4,12 @@
 	 * Based on @keenmate/pure-admin-core snippets/cards.html
 	 */
 
-	type CardVariant = 'primary' | 'success' | 'warning' | 'danger';
+	type CardVariant = 'primary' | 'success' | 'warning' | 'danger' | 'info'
+		| 'color-1' | 'color-2' | 'color-3' | 'color-4' | 'color-5'
+		| 'color-6' | 'color-7' | 'color-8' | 'color-9';
 
 	interface Props {
-		/** Card variant */
+		/** Card variant (applies to whole card) */
 		variant?: CardVariant;
 		/** Remove padding from body */
 		noPadding?: boolean;

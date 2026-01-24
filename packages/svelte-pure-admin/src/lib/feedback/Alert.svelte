@@ -28,6 +28,8 @@
 		list?: import('svelte').Snippet;
 		/** Actions snippet for alert action buttons */
 		actions?: import('svelte').Snippet;
+		/** Callback fired when alert is dismissed */
+		onDismiss?: () => void;
 	}
 
 	let {
@@ -40,7 +42,8 @@
 		icon,
 		children,
 		list,
-		actions
+		actions,
+		onDismiss
 	}: Props = $props();
 
 	let visible = $state(true);
@@ -70,6 +73,7 @@
 
 	function dismiss() {
 		visible = false;
+		onDismiss?.();
 	}
 </script>
 

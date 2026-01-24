@@ -200,6 +200,22 @@ Or use a theme package:
 </script>
 ```
 
+## Documentation Site
+
+The `docs/` folder contains a full documentation site showcasing all components with interactive examples.
+
+```bash
+cd docs
+npm install
+npm run dev       # Start docs site (http://localhost:5173)
+```
+
+The docs site includes:
+- Component examples matching [pure-admin demo](https://pure-admin.keenmate.dev)
+- Form validation patterns (inline errors, summary blocks, timing strategies)
+- Dashboard layouts with stats, charts, and activity feeds
+- Theme color variants and customization options
+
 ## Development
 
 ```bash

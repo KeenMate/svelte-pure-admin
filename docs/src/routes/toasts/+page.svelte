@@ -113,6 +113,8 @@
 	}
 </script>
 
+<Paragraph>Temporary notification messages that auto-dismiss with smooth animations.</Paragraph>
+
 <!-- Toast Container Positions -->
 <ToastContainer position="top-right">
 	{#each topRightToasts as toast (toast.id)}
@@ -332,7 +334,7 @@
 	<Grid>
 		<Column size="100" md="50">
 			<h4 class="mb-2">Basic Setup</h4>
-			<CodeBlock>{`<script>
+			<CodeBlock>{`${'<'}script>
   let toasts = $state([]);
   let id = 0;
 
@@ -345,7 +347,7 @@
   function removeToast(toastId) {
     toasts = toasts.filter(t => t.id !== toastId);
   }
-</script>
+${'<'}/script>
 
 <!-- Container positions toasts in viewport -->
 <ToastContainer position="top-right">

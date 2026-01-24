@@ -9,6 +9,8 @@
 	/>
 </svelte:head>
 
+<Paragraph>Two-column and three-column comparison patterns for version control, data changes, and A/B comparisons.</Paragraph>
+
 <!-- Two-Column Comparison -->
 <Card>
 	{#snippet header()}

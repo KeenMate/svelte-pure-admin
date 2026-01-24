@@ -145,26 +145,26 @@
 		{#snippet footer()}
 			{#if dialog.type === 'confirm'}
 				{@const confirmOptions = options as ConfirmDialogOptions}
-				<Button variant="secondary" onClick={() => handleCancel(dialog)}>
+				<Button variant="secondary" onclick={() => handleCancel(dialog)}>
 					{confirmOptions.cancelText || 'Cancel'}
 				</Button>
 				<Button
 					variant={confirmOptions.confirmVariant || confirmOptions.variant || 'primary'}
-					onClick={() => handleConfirm(dialog)}
+					onclick={() => handleConfirm(dialog)}
 				>
 					{confirmOptions.confirmText || 'OK'}
 				</Button>
 			{:else if dialog.type === 'alert'}
 				{@const alertOptions = options as AlertDialogOptions}
-				<Button variant={alertOptions.variant || 'primary'} onClick={() => handleOk(dialog)}>
+				<Button variant={alertOptions.variant || 'primary'} onclick={() => handleOk(dialog)}>
 					{alertOptions.okText || 'OK'}
 				</Button>
 			{:else if dialog.type === 'prompt'}
 				{@const promptOptions = options as PromptDialogOptions}
-				<Button variant="secondary" onClick={() => handlePromptCancel(dialog)}>
+				<Button variant="secondary" onclick={() => handlePromptCancel(dialog)}>
 					{promptOptions.cancelText || 'Cancel'}
 				</Button>
-				<Button variant={promptOptions.variant || 'primary'} onClick={() => handlePromptSubmit(dialog)}>
+				<Button variant={promptOptions.variant || 'primary'} onclick={() => handlePromptSubmit(dialog)}>
 					{promptOptions.confirmText || 'OK'}
 				</Button>
 			{:else if dialog.type === 'custom'}
@@ -175,7 +175,7 @@
 						outline={button.outline}
 						class={button.class}
 						disabled={button.disabled}
-						onClick={() => handleCustomButton(dialog, button.value)}
+						onclick={() => handleCustomButton(dialog, button.value)}
 					>
 						{button.label}
 					</Button>
@@ -198,7 +198,7 @@
 					value={inputValues[dialog.id] || ''}
 					placeholder={promptOptions.placeholder}
 					state={inputErrors[dialog.id] ? 'error' : undefined}
-					onInput={(e) => handleInputChange(dialog.id, e.currentTarget.value)}
+					oninput={(e) => handleInputChange(dialog.id, e.currentTarget.value)}
 					onkeydown={(e) => handleKeydown(e, dialog)}
 				/>
 				{#if inputErrors[dialog.id]}
