@@ -1,8 +1,15 @@
 <script lang="ts">
-			import { Heading, Paragraph, Card, CardTab, CardTabContent, Button, Badge, Grid, Column, Section, Table, Stat, List, ListItem } from '@keenmate/svelte-pure-admin';
-	import { onMount } from 'svelte';
+	import { Heading, Paragraph, Card, CardTab, CardTabContent, Button, Badge, Grid, Column, Section, Table, Stat, List, ListItem } from '@keenmate/svelte-pure-admin';
+
+	// Local type matching Card component's variant prop
+	type CardVariant = 'primary' | 'success' | 'warning' | 'danger' | 'info'
+		| 'color-1' | 'color-2' | 'color-3' | 'color-4' | 'color-5'
+		| 'color-6' | 'color-7' | 'color-8' | 'color-9';
 
 	let activeTab = $state('tab1');
+
+	// Color variants for theme color cards
+	const colorVariants: CardVariant[] = ['color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8', 'color-9'];
 
 	function toggleCard(event: MouseEvent) {
 		const button = event.currentTarget as HTMLButtonElement;
@@ -157,13 +164,13 @@
 <Section title="Theme Color Cards">
 	<Paragraph class="mb-2">Cards can use theme color slots (color-1 through color-9) for custom color schemes defined by your theme.</Paragraph>
 	<Grid>
-		{#each [1, 2, 3, 4, 5, 6, 7, 8, 9] as num}
+		{#each colorVariants as variant, i}
 			<Column size="100" md="1-3">
-				<Card variant="color-{num}">
+				<Card {variant}>
 					{#snippet header()}
-						<Heading level={4}>Color {num}</Heading>
+						<Heading level={4}>Color {i + 1}</Heading>
 					{/snippet}
-					<Paragraph>Theme color slot {num}</Paragraph>
+					<Paragraph>Theme color slot {i + 1}</Paragraph>
 				</Card>
 			</Column>
 		{/each}

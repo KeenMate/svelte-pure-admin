@@ -16,9 +16,9 @@
 		Heading,
 		Paragraph,
 		Alert,
-		Callout,
-		CodeBlock
+		Callout
 	} from '@keenmate/svelte-pure-admin';
+	import { HighlightedCode } from '$lib/components';
 
 	// ==========================================
 	// Test 1: Basic Email Validation
@@ -256,6 +256,71 @@
 	function firstError(errors: string[]): string | undefined {
 		return errors[0];
 	}
+
+	// Code examples (stored as constants to avoid Svelte parsing <script> tags)
+	const codeHowItWorks = `<!-- Field shows error only when touched AND has errors -->
+<Input
+  bind:value={email}
+  errors={emailErrors}
+  touched={emailTouched}
+  onblur={() => { emailTouched = true; validate(); }}
+/>
+
+<!-- FormHelp shows appropriate variant -->
+{#if emailTouched && emailErrors.length > 0}
+  <FormHelp variant="error">{emailErrors[0]}</FormHelp>
+{:else}
+  <FormHelp>Enter your email</FormHelp>
+{/if}`;
+
+	const codeSuperforms = '<' + `script>
+  import { superForm } from 'sveltekit-superforms/client';
+
+  const { form, errors, constraints } = superForm(data.form);
+</` + 'script>' + `
+
+<Input
+  bind:value={$form.email}
+  errors={$errors.email ?? []}
+  touched={true}
+  {...$constraints.email}
+/>`;
+
+	const codeFelte = '<' + `script>
+  import { createForm } from 'felte';
+
+  const { form, errors, touched } = createForm({
+    onSubmit: (values) => { /* ... */ }
+  });
+</` + 'script>' + `
+
+<form use:form>
+  <Input
+    name="email"
+    errors={$errors.email ?? []}
+    touched={$touched.email ?? false}
+  />
+</form>`;
+
+	const codeManualValidation = '<' + `script>
+  let email = $state('');
+  let errors = $state<string[]>([]);
+  let touched = $state(false);
+
+  function validate() {
+    errors = [];
+    if (!email) errors.push('Email is required');
+    else if (!email.includes('@')) errors.push('Invalid email');
+  }
+</` + 'script>' + `
+
+<Input
+  bind:value={email}
+  {errors}
+  {touched}
+  onblur={() => { touched = true; validate(); }}
+  oninput={() => { if (touched) validate(); }}
+/>`;
 </script>
 
 <Callout variant="info" class="mb-4">
@@ -277,20 +342,7 @@
 	</ul>
 
 	<Heading level={4} class="mt-4">How It Works</Heading>
-	<CodeBlock language="svelte" code={`<!-- Field shows error only when touched AND has errors -->
-<Input
-  bind:value={email}
-  errors={emailErrors}
-  touched={emailTouched}
-  onblur={() => { emailTouched = true; validate(); }}
-/>
-
-<!-- FormHelp shows appropriate variant -->
-{#if emailTouched && emailErrors.length > 0}
-  <FormHelp variant="error">{emailErrors[0]}</FormHelp>
-{:else}
-  <FormHelp>Enter your email</FormHelp>
-{/if}`} />
+	<HighlightedCode code={codeHowItWorks} language="svelte" />
 
 	<Heading level={4} class="mt-4">aria-invalid Accessibility</Heading>
 	<Paragraph>
@@ -301,56 +353,13 @@
 <!-- Library Integration -->
 <Card title="Library Integration Patterns">
 	<Heading level={4}>With Superforms</Heading>
-	<CodeBlock language="svelte" code={`<script>
-  import { superForm } from 'sveltekit-superforms/client';
-
-  const { form, errors, constraints } = superForm(data.form);
-</script>
-
-<Input
-  bind:value={$form.email}
-  errors={$errors.email ?? []}
-  touched={true}
-  {...$constraints.email}
-/>`} />
+	<HighlightedCode code={codeSuperforms} language="svelte" />
 
 	<Heading level={4} class="mt-4">With Felte</Heading>
-	<CodeBlock language="svelte" code={`<script>
-  import { createForm } from 'felte';
-
-  const { form, errors, touched } = createForm({
-    onSubmit: (values) => { /* ... */ }
-  });
-</script>
-
-<form use:form>
-  <Input
-    name="email"
-    errors={$errors.email ?? []}
-    touched={$touched.email ?? false}
-  />
-</form>`} />
+	<HighlightedCode code={codeFelte} language="svelte" />
 
 	<Heading level={4} class="mt-4">Manual Validation</Heading>
-	<CodeBlock language="svelte" code={`<script>
-  let email = $state('');
-  let errors = $state<string[]>([]);
-  let touched = $state(false);
-
-  function validate() {
-    errors = [];
-    if (!email) errors.push('Email is required');
-    else if (!email.includes('@')) errors.push('Invalid email');
-  }
-</script>
-
-<Input
-  bind:value={email}
-  {errors}
-  {touched}
-  onblur={() => { touched = true; validate(); }}
-  oninput={() => { if (touched) validate(); }}
-/>`} />
+	<HighlightedCode code={codeManualValidation} language="svelte" />
 </Card>
 
 <Heading level={2} class="mt-5 mb-4">Interactive Tests</Heading>

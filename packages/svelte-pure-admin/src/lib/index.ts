@@ -194,3 +194,29 @@ export type {
 	ShortcutRegistry
 } from './services/shortcut-registry-types';
 
+// Batch RPC Service
+export {
+	createBatch,
+	createSignalRTransport,
+	createPhoenixTransport,
+	createHttpTransport,
+	commonResponseConfig,
+	pureDataConfig
+} from './rpc';
+export type {
+	Batch,
+	BatchCall,
+	BatchRequest,
+	BatchResult,
+	BatchResponse,
+	RpcError,
+	RpcTransport,
+	RpcTransportConfig,
+	SignalRConnection,
+	SignalRTransportOptions,
+	PhoenixChannel,
+	PhoenixPush,
+	PhoenixTransportOptions,
+	HttpTransportOptions
+} from './rpc';
+

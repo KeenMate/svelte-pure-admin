@@ -1,5 +1,6 @@
 <script lang="ts">
-			import { Heading, Paragraph, Card, Timeline, TimelineItem, Button, BasicList } from '@keenmate/svelte-pure-admin';
+	import { Heading, Paragraph, Card, Timeline, TimelineItem, Button, BasicList } from '@keenmate/svelte-pure-admin';
+	import { HighlightedCode } from '$lib/components';
 
 	// Example: Activity feed data from API/database
 	interface Activity {
@@ -91,6 +92,31 @@
 			]
 		}
 	];
+
+	// Code examples (stored as constants to avoid Svelte parsing template syntax)
+	const codeBasicFeedItem = `<Timeline variant="feed">
+  <TimelineItem avatarUrl="..." avatarAlt="John Doe">
+    <span><a href="#">John Doe</a> created a new project</span>
+    <time>2 hours ago</time>
+  </TimelineItem>
+</Timeline>`;
+
+	const codeFeedItemWithComment = `<TimelineItem avatarUrl="..." avatarAlt="Luna">
+  <span><a href="#">Luna</a> commented on <a href="#">Issue #123</a></span>
+  <time>1 hour ago</time>
+
+  ` + '{#snippet commentTemplate()}' + `
+    <p>This looks great!</p>
+  ` + '{/snippet}' + `
+</TimelineItem>`;
+
+	const codeDateHeader = `<TimelineItem dateHeader iconText="📅">
+  January 22, 2025
+</TimelineItem>`;
+
+	const codeFeedItemWithTime = `<TimelineItem time="14:32" avatarUrl="..." avatarAlt="Sarah">
+  <span><a href="#">Sarah Chen</a> merged pull request</span>
+</TimelineItem>`;
 </script>
 
 <!-- Basic Feed Timeline -->
@@ -225,32 +251,16 @@
 <Card title="Usage Examples">
 
 	<Heading level={4}>Basic Feed Item</Heading>
-	<pre class="mb-4"><code>&lt;Timeline variant="feed"&gt;
-  &lt;TimelineItem avatarUrl="..." avatarAlt="John Doe"&gt;
-    &lt;span&gt;&lt;a href="#"&gt;John Doe&lt;/a&gt; created a new project&lt;/span&gt;
-    &lt;time&gt;2 hours ago&lt;/time&gt;
-  &lt;/TimelineItem&gt;
-&lt;/Timeline&gt;</code></pre>
+	<HighlightedCode code={codeBasicFeedItem} language="svelte" class="mb-4" />
 
 	<Heading level={4}>Feed Item with Comment</Heading>
-	<pre class="mb-4"><code>&lt;TimelineItem avatarUrl="..." avatarAlt="Luna"&gt;
-  &lt;span&gt;&lt;a href="#"&gt;Luna&lt;/a&gt; commented on &lt;a href="#"&gt;Issue #123&lt;/a&gt;&lt;/span&gt;
-  &lt;time&gt;1 hour ago&lt;/time&gt;
-
-  {#snippet commentTemplate()}
-    &lt;p&gt;This looks great!&lt;/p&gt;
-  {/snippet}
-&lt;/TimelineItem&gt;</code></pre>
+	<HighlightedCode code={codeFeedItemWithComment} language="svelte" class="mb-4" />
 
 	<Heading level={4}>Date Header</Heading>
-	<pre class="mb-4"><code>&lt;TimelineItem dateHeader iconText="📅"&gt;
-  January 22, 2025
-&lt;/TimelineItem&gt;</code></pre>
+	<HighlightedCode code={codeDateHeader} language="svelte" class="mb-4" />
 
 	<Heading level={4}>Feed Item with Time Prefix</Heading>
-	<pre class="mb-4"><code>&lt;TimelineItem time="14:32" avatarUrl="..." avatarAlt="Sarah"&gt;
-  &lt;span&gt;&lt;a href="#"&gt;Sarah Chen&lt;/a&gt; merged pull request&lt;/span&gt;
-&lt;/TimelineItem&gt;</code></pre>
+	<HighlightedCode code={codeFeedItemWithTime} language="svelte" class="mb-4" />
 
 	<Heading level={4}>Best Practices</Heading>
 	<BasicList>

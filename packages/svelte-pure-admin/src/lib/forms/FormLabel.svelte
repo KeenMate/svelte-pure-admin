@@ -7,17 +7,20 @@
 	interface Props {
 		/** Input ID for label */
 		for?: string;
+		/** Mark as required (adds asterisk indicator) */
+		required?: boolean;
 		/** Additional CSS classes */
 		class?: string;
 		/** Children content */
 		children?: import('svelte').Snippet;
 	}
 
-	let { for: htmlFor, class: className = '', children }: Props = $props();
+	let { for: htmlFor, required = false, class: className = '', children }: Props = $props();
 
 	// Build class string
 	const classes = $derived(() => {
 		const base = ['pa-form-label'];
+		if (required) base.push('pa-form-label--required');
 		if (className) base.push(className);
 		return base.join(' ');
 	});

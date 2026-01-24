@@ -17,6 +17,8 @@
 		isRequired?: boolean;
 		/** Horizontal layout (label left, input right) */
 		isHorizontal?: boolean;
+		/** Horizontal layout - alias for isHorizontal */
+		horizontal?: boolean;
 		/** Additional CSS classes */
 		class?: string;
 		/** Children content */
@@ -29,9 +31,13 @@
 		hasSuccess = false,
 		isRequired = false,
 		isHorizontal = false,
+		horizontal = false,
 		class: className = '',
 		children
 	}: Props = $props();
+
+	// Merge horizontal props (horizontal is alias for isHorizontal)
+	const effectiveHorizontal = $derived(isHorizontal || horizontal);
 
 	// Build class string
 	const classes = $derived(() => {
@@ -45,7 +51,7 @@
 			if (hasError) base.push('pa-form-group--error');
 		}
 		if (isRequired) base.push('pa-form-group--required');
-		if (isHorizontal) base.push('pa-form-group--horizontal');
+		if (effectiveHorizontal) base.push('pa-form-group--horizontal');
 		if (className) base.push(className);
 		return base.join(' ');
 	});

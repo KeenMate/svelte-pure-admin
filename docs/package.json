@@ -12,7 +12,8 @@
     "clean": "rm -rf build .svelte-kit"
   },
   "dependencies": {
-    "@keenmate/svelte-pure-admin": "*"
+    "@keenmate/svelte-pure-admin": "*",
+    "highlight.js": "^11.11.1"
   },
   "devDependencies": {
     "@keenmate/pure-admin-core": "file:../../pure-admin/packages/core",

@@ -1,5 +1,52 @@
 <script lang="ts">
-	import { Heading, Paragraph, Callout, Card, Alert, Grid, Column, Code, CodeBlock } from '@keenmate/svelte-pure-admin';
+	import { Heading, Paragraph, Callout, Card, Alert, Grid, Column, Code } from '@keenmate/svelte-pure-admin';
+	import { HighlightedCode } from '$lib/components';
+
+	// Code examples (stored as constants to avoid Svelte parsing template syntax)
+	const codeBasicUsage = `<Callout variant="info">
+  <strong>Note:</strong> This is an info callout.
+</Callout>
+
+<Callout variant="warning">
+  <strong>Warning:</strong> Be careful!
+</Callout>
+
+<Callout variant="danger">
+  <strong>Danger:</strong> Critical warning.
+</Callout>
+
+<Callout variant="success">
+  <strong>Success:</strong> Operation complete.
+</Callout>`;
+
+	const codeWithHeadingIcon = `<!-- With heading -->
+<Callout variant="info" heading="Note">
+  <p>Content with a heading above.</p>
+</Callout>
+
+<!-- With custom icon -->
+<Callout variant="warning">
+  ` + '{#snippet icon()}' + `⚠️` + '{/snippet}' + `
+  <strong>Caution:</strong> Back up first!
+</Callout>
+
+<!-- With size -->
+<Callout variant="info" size="sm">
+  Compact callout for inline tips.
+</Callout>
+
+<Callout variant="info" size="lg">
+  Large callout for emphasis.
+</Callout>`;
+
+	const codeProps = `interface CalloutProps {
+  variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
+  heading?: string;      // Optional heading text
+  size?: 'sm' | 'lg';    // Size variant (default: medium)
+  icon?: Snippet;        // Custom icon snippet
+  class?: string;        // Additional CSS classes
+  children?: Snippet;    // Content
+}`;
 </script>
 
 <Paragraph>Documentation-style callouts with left border accent for tips, notes, warnings in content areas.</Paragraph>
@@ -187,53 +234,14 @@
 	<Grid>
 		<Column size="100" md="50">
 			<h4 class="mb-2">Basic Usage</h4>
-			<CodeBlock>{`<Callout variant="info">
-  <strong>Note:</strong> This is an info callout.
-</Callout>
-
-<Callout variant="warning">
-  <strong>Warning:</strong> Be careful!
-</Callout>
-
-<Callout variant="danger">
-  <strong>Danger:</strong> Critical warning.
-</Callout>
-
-<Callout variant="success">
-  <strong>Success:</strong> Operation complete.
-</Callout>`}</CodeBlock>
+			<HighlightedCode code={codeBasicUsage} language="svelte" />
 		</Column>
 		<Column size="100" md="50">
 			<h4 class="mb-2">With Heading & Icon</h4>
-			<CodeBlock>{`<!-- With heading -->
-<Callout variant="info" heading="Note">
-  <p>Content with a heading above.</p>
-</Callout>
-
-<!-- With custom icon -->
-<Callout variant="warning">
-  {#snippet icon()}⚠️{/snippet}
-  <strong>Caution:</strong> Back up first!
-</Callout>
-
-<!-- With size -->
-<Callout variant="info" size="sm">
-  Compact callout for inline tips.
-</Callout>
-
-<Callout variant="info" size="lg">
-  Large callout for emphasis.
-</Callout>`}</CodeBlock>
+			<HighlightedCode code={codeWithHeadingIcon} language="svelte" />
 		</Column>
 	</Grid>
 
 	<h4 class="mb-2 mt-4">Available Props</h4>
-	<CodeBlock>{`interface CalloutProps {
-  variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
-  heading?: string;      // Optional heading text
-  size?: 'sm' | 'lg';    // Size variant (default: medium)
-  icon?: Snippet;        // Custom icon snippet
-  class?: string;        // Additional CSS classes
-  children?: Snippet;    // Content
-}`}</CodeBlock>
+	<HighlightedCode code={codeProps} language="typescript" />
 </Card>

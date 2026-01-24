@@ -5,6 +5,124 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.4] - 2026-01-24
+
+### Added
+
+#### Batch RPC Service
+New transport-agnostic batch RPC system for collecting multiple RPC calls into a single request. Reduces round-trips and enables backend parallelization.
+
+**New Files:**
+- `src/lib/rpc/types.ts` - Core types (BatchCall, BatchRequest, BatchResult, BatchResponse, RpcError)
+- `src/lib/rpc/batch.ts` - `createBatch()` function for collecting and executing calls
+- `src/lib/rpc/transport/types.ts` - Transport interfaces and configuration presets
+- `src/lib/rpc/transport/signalr.ts` - SignalR transport factory for ASP.NET
+- `src/lib/rpc/transport/phoenix.ts` - Phoenix Channels transport factory for Elixir
+- `src/lib/rpc/transport/http.ts` - HTTP transport factory for REST APIs
+- `src/lib/rpc/index.ts` - Module exports
+
+**Core API:**
+```typescript
+import { createBatch, createHttpTransport, pureDataConfig } from '@keenmate/svelte-pure-admin';
+
+const transport = createHttpTransport('/api/rpc/batch', pureDataConfig);
+const batch = createBatch(transport);
+
+// Queue calls - returns promises
+const users = batch.add<User[]>('users.getAll');
+const orders = batch.add<Order[]>('orders.getRecent');
+
+// Execute - single request, all promises resolve/reject independently
+await batch.execute();
+
+console.log(await users);  // User[]
+console.log(await orders); // Order[]
+```
+
+**Transport Factories:**
+- `createSignalRTransport(connection, config, options?)` - ASP.NET SignalR hubs
+- `createPhoenixTransport(channel, config)` - Elixir Phoenix channels
+- `createHttpTransport(url, config, options?)` - REST API endpoints
+
+**HTTP Transport Options:**
+- `headers` - Static headers
+- `getHeaders` - Dynamic headers callback (for auth tokens)
+- `getRequestMetadata` - Request metadata callback (for sessionId, tenantId in request body)
+- `onBeforeRequest` - Request interceptor
+- `onAfterResponse` - Response interceptor (for 401 handling)
+- `fetchOptions` - Additional fetch options (credentials, etc.)
+- `timeout` - Request timeout (default: 30000ms)
+
+**SignalR/Phoenix Transport Options:**
+- `methodName` / `eventName` - Hub method or channel event name
+- `getRequestMetadata` - Request metadata callback (same as HTTP)
+- `timeout` - Request timeout (Phoenix only)
+
+**Configuration Presets:**
+- `commonResponseConfig` - For ASP.NET CommonResponse wrapper pattern
+- `pureDataConfig` - For Phoenix/clean REST APIs returning data directly
+
+**Exports:**
+- `createBatch`, `createSignalRTransport`, `createPhoenixTransport`, `createHttpTransport`
+- `commonResponseConfig`, `pureDataConfig`
+- Types: `BatchCall`, `BatchRequest`, `BatchResult`, `BatchResponse`, `RpcError`
+- Types: `RpcTransport`, `RpcTransportConfig`, `HttpTransportOptions`, `SignalRTransportOptions`, `PhoenixTransportOptions`
+
+### Changed
+
+#### Peer Dependency Update
+- Updated `@keenmate/pure-admin-core` peer dependency: `^1.1.2` → `^1.1.3`
+
+#### Docs: Batch RPC Page
+New interactive documentation page at `/batch-rpc` demonstrating:
+- Live demo comparing batched vs sequential requests
+- Error handling with partial failures
+- Transport adapter examples (SignalR, Phoenix, HTTP)
+- Authentication patterns (dynamic headers, interceptors, cookies)
+- Configuration presets usage
+- Wire protocol format
+- Complete API reference
+
+#### Docs: Syntax Highlighting
+Added `HighlightedCode` component using highlight.js for code examples in documentation.
+- Languages: JavaScript, TypeScript, JSON, HTML, XML, CSS, Bash, SQL, Python, Svelte
+- GitHub Dark theme styling
+- Optional line numbers
+
+### Changed
+
+#### FormLabel Component
+- Added `required?: boolean` prop - adds `pa-form-label--required` class for asterisk indicator
+
+#### FormGroup Component
+- Added `horizontal?: boolean` prop as alias for `isHorizontal`
+
+### Fixed
+
+#### Docs Type Errors
+Fixed pre-existing type errors in documentation pages:
+
+**cards/+page.svelte:**
+- Fixed dynamic CardVariant type error by using typed array instead of string interpolation
+
+**validation/+page.svelte:**
+- Fixed `<script>` tag parsing in code examples by moving to constants with string concatenation
+- Replaced CodeBlock with HighlightedCode component
+
+**callouts/+page.svelte:**
+- Fixed `{#snippet}` syntax parsing in code examples
+- Replaced CodeBlock with HighlightedCode component
+
+**timeline-feed/+page.svelte:**
+- Fixed `{#snippet}` syntax parsing in raw `<pre><code>` blocks
+- Replaced with HighlightedCode component
+
+**validations/+page.svelte:**
+- Fixed FormLabel `required` prop (now supported)
+- Fixed FormGroup `horizontal` prop (now alias for `isHorizontal`)
+
+---
+
 ## [1.1.3] - 2026-01-24
 
 ### Changed

@@ -189,7 +189,8 @@
 		{ id: 'timeline-feed', title: 'Timeline Feed', path: '/timeline-feed', icon: '📰' },
 		{ id: 'theme-variables', title: 'Theme Variables', path: '/theme-variables', icon: '🎨' },
 		{ id: 'colors', title: 'Colors', path: '/colors', icon: '🎨' },
-		{ id: 'validations', title: 'Validation Patterns', path: '/validations', icon: '✓' }
+		{ id: 'validations', title: 'Validation Patterns', path: '/validations', icon: '✓' },
+		{ id: 'batch-rpc', title: 'Batch RPC', path: '/batch-rpc', icon: '📡' }
 	];
 
 	// Commands for the command palette
@@ -552,6 +553,9 @@
 					{#snippet submenu()}
 						<SidebarItem href="/validation" label="Validation">
 							{#snippet icon()}✓{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/batch-rpc" label="Batch RPC">
+							{#snippet icon()}📡{/snippet}
 						</SidebarItem>
 					{/snippet}
 				</SidebarItem>
