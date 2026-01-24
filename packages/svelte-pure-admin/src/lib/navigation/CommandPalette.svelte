@@ -10,6 +10,7 @@
 
 	import { onMount } from 'svelte';
 	import { shortcutRegistry } from '../services/shortcut-registry.svelte';
+	import { i18nStore } from '../i18n/store.svelte';
 	import type {
 		Command,
 		SearchContext,
@@ -50,10 +51,13 @@
 		contexts = [],
 		globalSearch,
 		onGlobalSelect,
-		placeholder = 'Type / for commands, : for search, or just type...',
+		placeholder,
 		class: className = '',
 		errorSnippet
 	}: Props = $props();
+
+	// Use i18n default if placeholder not provided
+	const resolvedPlaceholder = $derived(placeholder ?? i18nStore.t('commandPalette.placeholder'));
 
 	// =========================================================================
 	// STATE
@@ -305,7 +309,7 @@
 			}
 		} catch (err) {
 			console.error('Failed to load step options:', err);
-			error = 'Failed to load options. Please try again.';
+			error = i18nStore.t('commandPalette.loadOptionsFailed');
 			displayItems = [];
 		} finally {
 			loading = false;
@@ -369,7 +373,7 @@
 			activeIndex = results.length > 0 ? 0 : -1;
 		} catch (err) {
 			console.error('Context search failed:', err);
-			error = 'Search failed. Please try again.';
+			error = i18nStore.t('commandPalette.searchFailed');
 			displayItems = [];
 		} finally {
 			loading = false;
@@ -393,7 +397,7 @@
 				activeIndex = results.length > 0 ? 0 : -1;
 			} catch (err) {
 				console.error('Global search failed:', err);
-				error = 'Search failed. Please try again.';
+				error = i18nStore.t('commandPalette.searchFailed');
 				displayItems = [];
 			} finally {
 				loading = false;
@@ -643,8 +647,8 @@
 			id: 'command-palette-toggle',
 			key: 'k',
 			modifiers: { ctrl: true },
-			description: 'Open command palette',
-			category: 'Navigation',
+			description: i18nStore.t('commandPalette.openCommandPalette'),
+			category: i18nStore.t('shortcuts.generalCategory'),
 			action: () => {
 				show = !show;
 				if (!show) reset();
@@ -681,15 +685,15 @@
 	function getModeLabel(): string {
 		switch (mode) {
 			case 'command-list':
-				return 'Commands';
+				return i18nStore.t('commandPalette.commands');
 			case 'command-step':
-				return activeCommand?.name || 'Command';
+				return activeCommand?.name || i18nStore.t('commandPalette.commands');
 			case 'context-list':
-				return 'Search In';
+				return i18nStore.t('commandPalette.searchIn');
 			case 'context-search':
-				return `Search ${activeContext?.name || ''}`;
+				return `${i18nStore.t('commandPalette.search')} ${activeContext?.name || ''}`;
 			case 'global-search':
-				return 'Search';
+				return i18nStore.t('commandPalette.search');
 			default:
 				return '';
 		}
@@ -698,16 +702,16 @@
 	function getEmptyMessage(): string {
 		switch (mode) {
 			case 'idle':
-				return 'Type / for commands, : for search contexts, or start typing to search...';
+				return i18nStore.t('commandPalette.idleMessage');
 			case 'command-list':
-				return 'No matching commands';
+				return i18nStore.t('commandPalette.noMatchingCommands');
 			case 'command-step':
-				return currentStep()?.placeholder || 'Type to search...';
+				return currentStep()?.placeholder || i18nStore.t('commandPalette.typeToSearch');
 			case 'context-list':
-				return 'No matching search contexts';
+				return i18nStore.t('commandPalette.noMatchingContexts');
 			case 'context-search':
 			case 'global-search':
-				return 'No results found';
+				return i18nStore.t('commandPalette.noResults');
 			default:
 				return '';
 		}
@@ -730,7 +734,7 @@
 				bind:this={inputRef}
 				type="text"
 				class="pa-command-palette__input"
-				{placeholder}
+				placeholder={resolvedPlaceholder}
 				autocomplete="off"
 				spellcheck="false"
 				bind:value={inputValue}
@@ -749,7 +753,7 @@
 			{#if loading}
 				<div class="pa-command-palette__loader">
 					<div class="pa-spinner pa-spinner--sm pa-spinner--primary"></div>
-					<span>Loading...</span>
+					<span>{i18nStore.t('commandPalette.loading')}</span>
 				</div>
 			{:else if error}
 				{#if errorSnippet}
@@ -792,7 +796,7 @@
 			<!-- Preview (for commands) -->
 			{#if preview && mode === 'command-step'}
 				<div class="pa-command-palette__preview">
-					<span class="pa-command-palette__preview-label">Preview:</span>
+					<span class="pa-command-palette__preview-label">{i18nStore.t('commandPalette.preview')}</span>
 					{preview}
 				</div>
 			{/if}
@@ -802,19 +806,19 @@
 		<div class="pa-command-palette__footer">
 			<div class="pa-command-palette__hint">
 				<span class="pa-command-palette__key">↑↓</span>
-				<span>Navigate</span>
+				<span>{i18nStore.t('commandPalette.navigate')}</span>
 			</div>
 			<div class="pa-command-palette__hint">
 				<span class="pa-command-palette__key">↵</span>
-				<span>Select</span>
+				<span>{i18nStore.t('commandPalette.select')}</span>
 			</div>
 			<div class="pa-command-palette__hint">
 				<span class="pa-command-palette__key">Tab</span>
-				<span>Complete</span>
+				<span>{i18nStore.t('commandPalette.complete')}</span>
 			</div>
 			<div class="pa-command-palette__hint">
 				<span class="pa-command-palette__key">Esc</span>
-				<span>Close</span>
+				<span>{i18nStore.t('commandPalette.close')}</span>
 			</div>
 		</div>
 	</div>

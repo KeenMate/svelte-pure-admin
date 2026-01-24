@@ -10,6 +10,8 @@
  *   const value = await dialogService.prompt({ title: 'Enter name:', message: '...' });
  */
 
+import { i18nStore } from '../i18n/store.svelte';
+
 // Types
 export type DialogVariant = 'primary' | 'success' | 'warning' | 'danger' | 'info';
 export type DialogSize = 'sm' | 'md' | 'lg' | 'xl';
@@ -116,10 +118,10 @@ export const dialogService = {
 	 */
 	confirm(options: ConfirmDialogOptions = {}): Promise<boolean> {
 		const defaultOptions: ConfirmDialogOptions = {
-			title: 'Confirm',
-			message: 'Are you sure?',
-			confirmText: 'OK',
-			cancelText: 'Cancel',
+			title: i18nStore.t('dialog.confirm'),
+			message: i18nStore.t('dialog.areYouSure'),
+			confirmText: i18nStore.t('dialog.ok'),
+			cancelText: i18nStore.t('dialog.cancel'),
 			variant: 'primary',
 			size: 'sm',
 			position: 'center',
@@ -135,9 +137,9 @@ export const dialogService = {
 	 */
 	alert(options: AlertDialogOptions = {}): Promise<void> {
 		const defaultOptions: AlertDialogOptions = {
-			title: 'Alert',
+			title: i18nStore.t('dialog.alert'),
 			message: '',
-			okText: 'OK',
+			okText: i18nStore.t('dialog.ok'),
 			variant: 'primary',
 			size: 'sm',
 			position: 'center',
@@ -153,12 +155,12 @@ export const dialogService = {
 	 */
 	prompt(options: PromptDialogOptions = {}): Promise<string | null> {
 		const defaultOptions: PromptDialogOptions = {
-			title: 'Input',
-			message: 'Enter value:',
+			title: i18nStore.t('dialog.input'),
+			message: i18nStore.t('dialog.enterValue'),
 			defaultValue: '',
 			placeholder: '',
-			confirmText: 'OK',
-			cancelText: 'Cancel',
+			confirmText: i18nStore.t('dialog.ok'),
+			cancelText: i18nStore.t('dialog.cancel'),
 			variant: 'primary',
 			size: 'sm',
 			position: 'center',
@@ -174,7 +176,7 @@ export const dialogService = {
 	 */
 	custom<T>(options: CustomDialogOptions<T>): Promise<T> {
 		const defaultOptions: CustomDialogOptions<T> = {
-			title: 'Dialog',
+			title: i18nStore.t('dialog.defaultTitle'),
 			message: '',
 			variant: 'primary',
 			size: 'sm',

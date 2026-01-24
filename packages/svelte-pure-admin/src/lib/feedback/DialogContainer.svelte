@@ -20,6 +20,7 @@
 	import FormGroup from '../forms/FormGroup.svelte';
 	import Input from '../forms/Input.svelte';
 	import Paragraph from '../typography/Paragraph.svelte';
+	import { i18nStore } from '../i18n/store.svelte';
 
 	// Get dialogs reactively via getter
 	const dialogs = $derived(dialogStore.dialogs);
@@ -60,7 +61,7 @@
 		if (options.validator) {
 			const result = options.validator(value);
 			if (result !== true) {
-				inputErrors[dialog.id] = typeof result === 'string' ? result : 'Invalid input';
+				inputErrors[dialog.id] = typeof result === 'string' ? result : i18nStore.t('dialog.invalidInput');
 				return;
 			}
 		}
@@ -146,26 +147,26 @@
 			{#if dialog.type === 'confirm'}
 				{@const confirmOptions = options as ConfirmDialogOptions}
 				<Button variant="secondary" onclick={() => handleCancel(dialog)}>
-					{confirmOptions.cancelText || 'Cancel'}
+					{confirmOptions.cancelText || i18nStore.t('dialog.cancel')}
 				</Button>
 				<Button
 					variant={confirmOptions.confirmVariant || confirmOptions.variant || 'primary'}
 					onclick={() => handleConfirm(dialog)}
 				>
-					{confirmOptions.confirmText || 'OK'}
+					{confirmOptions.confirmText || i18nStore.t('dialog.ok')}
 				</Button>
 			{:else if dialog.type === 'alert'}
 				{@const alertOptions = options as AlertDialogOptions}
 				<Button variant={alertOptions.variant || 'primary'} onclick={() => handleOk(dialog)}>
-					{alertOptions.okText || 'OK'}
+					{alertOptions.okText || i18nStore.t('dialog.ok')}
 				</Button>
 			{:else if dialog.type === 'prompt'}
 				{@const promptOptions = options as PromptDialogOptions}
 				<Button variant="secondary" onclick={() => handlePromptCancel(dialog)}>
-					{promptOptions.cancelText || 'Cancel'}
+					{promptOptions.cancelText || i18nStore.t('dialog.cancel')}
 				</Button>
 				<Button variant={promptOptions.variant || 'primary'} onclick={() => handlePromptSubmit(dialog)}>
-					{promptOptions.confirmText || 'OK'}
+					{promptOptions.confirmText || i18nStore.t('dialog.ok')}
 				</Button>
 			{:else if dialog.type === 'custom'}
 				{@const customOptions = options as CustomDialogOptions}

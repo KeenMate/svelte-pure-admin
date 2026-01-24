@@ -9,6 +9,7 @@
 	import type { PureAdminConfig } from './config';
 	import { defaultConfig, mergeConfig } from './config';
 	import { shortcutRegistry } from '../services/shortcut-registry.svelte';
+	import { i18nStore } from '../i18n/store.svelte';
 	import ShortcutHelpDialog from '../feedback/ShortcutHelpDialog.svelte';
 
 	interface Props {
@@ -30,6 +31,14 @@
 	// svelte-ignore state_referenced_locally
 	setContext('pure-admin-config', mergedConfig);
 
+	// Initialize i18n from config
+	$effect(() => {
+		const i18nConfig = mergedConfig().i18n;
+		if (i18nConfig) {
+			i18nStore.initialize(i18nConfig);
+		}
+	});
+
 	// Shortcut help dialog state
 	let showShortcutHelp = $state(false);
 
@@ -49,8 +58,8 @@
 			id: 'shortcut-help',
 			key: '?',
 			modifiers: { shift: true },
-			description: 'Show keyboard shortcuts',
-			category: 'General',
+			description: i18nStore.t('shortcuts.showShortcuts'),
+			category: i18nStore.t('shortcuts.generalCategory'),
 			action: () => {
 				showShortcutHelp = true;
 			}

@@ -10,6 +10,7 @@
 	import Modal from './Modal.svelte';
 	import { shortcutRegistry, formatShortcut } from '../services/shortcut-registry.svelte';
 	import type { Shortcut } from '../services/shortcut-registry-types';
+	import { i18nStore } from '../i18n/store.svelte';
 
 	interface Props {
 		/** Show/hide the dialog (bindable) */
@@ -35,7 +36,7 @@
 	}
 </script>
 
-<Modal bind:show size="md" title="Keyboard Shortcuts" onClose={handleClose}>
+<Modal bind:show size="md" title={i18nStore.t('shortcuts.title')} onClose={handleClose}>
 	<div class="pa-shortcut-help">
 		{#each groupedShortcuts as [category, shortcuts]}
 			<div class="pa-shortcut-help__category">
@@ -60,7 +61,7 @@
 
 		{#if groupedShortcuts.size === 0}
 			<div class="pa-shortcut-help__empty">
-				No shortcuts registered.
+				{i18nStore.t('shortcuts.noShortcuts')}
 			</div>
 		{/if}
 	</div>

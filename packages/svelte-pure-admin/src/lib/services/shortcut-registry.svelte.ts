@@ -11,6 +11,7 @@ import type {
 	ShortcutRegistry,
 	ShortcutModifiers
 } from './shortcut-registry-types';
+import { i18nStore } from '../i18n/store.svelte';
 
 /**
  * Create a shortcut registry instance
@@ -132,7 +133,7 @@ function createShortcutRegistry(): ShortcutRegistry {
 		const grouped = new Map<string, Shortcut[]>();
 
 		for (const shortcut of shortcuts.values()) {
-			const category = shortcut.category ?? 'General';
+			const category = shortcut.category ?? i18nStore.t('shortcuts.generalCategory');
 			const list = grouped.get(category) ?? [];
 			list.push(shortcut);
 			grouped.set(category, list);
@@ -211,7 +212,7 @@ function createShortcutRegistry(): ShortcutRegistry {
 			const grouped = new Map<string, Shortcut[]>();
 
 			for (const shortcut of shortcuts.values()) {
-				const category = shortcut.category ?? 'General';
+				const category = shortcut.category ?? i18nStore.t('shortcuts.generalCategory');
 				const list = grouped.get(category) ?? [];
 				list.push(shortcut);
 				grouped.set(category, list);

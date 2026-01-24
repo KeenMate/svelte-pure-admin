@@ -10,6 +10,7 @@
 	 */
 
 	import { onMount } from 'svelte';
+	import { i18nStore } from '../i18n/store.svelte';
 
 	type Position = 'top' | 'bottom' | 'left' | 'right';
 	type IconVariant = 'danger' | 'warning' | 'info';
@@ -47,14 +48,18 @@
 		position = 'bottom',
 		icon,
 		compact = false,
-		confirmText = 'Confirm',
-		cancelText = 'Cancel',
+		confirmText,
+		cancelText,
 		confirmVariant = 'primary',
 		trigger = null,
 		onConfirm,
 		onCancel,
 		class: className = ''
 	}: Props = $props();
+
+	// Use i18n defaults if props not provided
+	const resolvedConfirmText = $derived(confirmText ?? i18nStore.t('popconfirm.confirm'));
+	const resolvedCancelText = $derived(cancelText ?? i18nStore.t('popconfirm.cancel'));
 
 	let popconfirmEl: HTMLDivElement;
 	let actualPosition = $state<Position>('bottom');
@@ -179,10 +184,10 @@
 		</div>
 		<div class="pa-popconfirm__actions">
 			<button class="pa-btn pa-btn--secondary" onclick={handleCancel}>
-				{cancelText}
+				{resolvedCancelText}
 			</button>
 			<button class={`pa-btn pa-btn--${confirmVariant}`} onclick={handleConfirm}>
-				{confirmText}
+				{resolvedConfirmText}
 			</button>
 		</div>
 	</div>

@@ -161,6 +161,17 @@ npm install @keenmate/svelte-pure-admin @keenmate/pure-admin-core
 | `formatShortcut` | Format shortcut for display |
 | `ShortcutHelpDialog` | Keyboard shortcuts help dialog |
 
+### Internationalization (i18n)
+| Export | Description |
+|--------|-------------|
+| `i18nStore` | Reactive i18n store for translations |
+| `useI18n` | Hook to access full i18n store |
+| `useTranslate` | Hook to get translation function |
+| `useScopedTranslate` | Hook for scoped translations |
+| `en`, `cs` | Built-in English and Czech translations |
+
+See [i18n Documentation](docs/i18n.md) for full usage guide.
+
 ## Svelte 5 Features
 
 This library uses **Svelte 5** runes and snippets:

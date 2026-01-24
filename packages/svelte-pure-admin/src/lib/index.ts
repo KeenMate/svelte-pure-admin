@@ -19,6 +19,16 @@ export type { PureAdminConfig } from './config/config';
 export { defaultConfig, mergeConfig } from './config/config';
 export { usePureAdminConfig } from './config/hooks';
 
+// Internationalization (i18n)
+export { i18nStore, useI18n, useTranslate, useScopedTranslate, en, cs } from './i18n';
+export type {
+	TranslationKeys,
+	LanguageItem,
+	I18nConfig,
+	TranslationParams,
+	TranslationKeyPath
+} from './i18n/types';
+
 // Layout Components
 export { default as Layout } from './layout/Layout.svelte';
 export { default as LayoutInner } from './layout/LayoutInner.svelte';

@@ -5,6 +5,8 @@
 	 * Load more button for infinite scroll/lazy loading
 	 */
 
+	import { i18nStore } from '../i18n/store.svelte';
+
 	type LoadMoreAlign = 'left' | 'center' | 'right';
 
 	interface Props {
@@ -29,13 +31,16 @@
 	let {
 		align = 'center',
 		loading = false,
-		text = 'Load More',
+		text,
 		count,
 		showCount = false,
 		onClick,
 		class: className = '',
 		children
 	}: Props = $props();
+
+	// Use i18n defaults if props not provided
+	const resolvedText = $derived(text ?? i18nStore.t('loadMore.loadMore'));
 
 	// Build class string
 	const classes = $derived(() => {
@@ -61,9 +66,9 @@
 		{:else}
 			{#if loading}
 				<span class="pa-load-more__spinner"></span>
-				<span class="pa-load-more__text">Loading...</span>
+				<span class="pa-load-more__text">{i18nStore.t('loadMore.loading')}</span>
 			{:else}
-				<span class="pa-load-more__text">{text}</span>
+				<span class="pa-load-more__text">{resolvedText}</span>
 				{#if showCount && count}
 					<span class="pa-load-more__count">({count})</span>
 				{/if}

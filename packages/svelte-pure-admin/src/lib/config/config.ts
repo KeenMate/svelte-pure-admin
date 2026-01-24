@@ -3,6 +3,8 @@
  * Defines configuration interface and default values
  */
 
+import type { I18nConfig } from '../i18n/types';
+
 export interface PureAdminConfig {
 	/** Application metadata */
 	app: {
@@ -49,6 +51,9 @@ export interface PureAdminConfig {
 		/** Enable specific features */
 		[key: string]: boolean;
 	};
+
+	/** Internationalization configuration */
+	i18n?: I18nConfig;
 }
 
 /**
@@ -91,6 +96,7 @@ export function mergeConfig(
 		app: { ...defaults.app, ...override.app },
 		defaults: { ...defaults.defaults, ...override.defaults },
 		ui: { ...defaults.ui, ...override.ui },
-		features: { ...defaults.features, ...override.features }
+		features: { ...defaults.features, ...override.features },
+		i18n: override.i18n ? { ...defaults.i18n, ...override.i18n } : defaults.i18n
 	};
 }
