@@ -23,7 +23,7 @@
 </script>
 
 <!-- Basic Modal Examples -->
-<Card title="Basic Modals" subtitle="Standard modal dialogs for user interactions">
+<Card titleText="Basic Modals" subtitleText="Standard modal dialogs for user interactions">
 
 	<Grid>
 		<Column size="100" md="1-2">
@@ -64,7 +64,7 @@
 </Card>
 
 <!-- Form Modals -->
-<Card title="Form Modals" subtitle="Modals containing forms and interactive content">
+<Card titleText="Form Modals" subtitleText="Modals containing forms and isInteractive content">
 	<ButtonGroup>
 		<Button variant="secondary" onclick={() => (showForm = true)}>Contact Form</Button>
 		<Button variant="info" onclick={() => (showLogin = true)}>Login Form</Button>
@@ -73,18 +73,18 @@
 </Card>
 
 <!-- Confirmation Modals -->
-<Card title="Confirmation Modals" subtitle="Action confirmation and decision dialogs">
+<Card titleText="Confirmation Modals" subtitleText="Action confirmation and decision dialogs">
 	<ButtonGroup>
-		<Button variant="danger" outline onclick={() => (showConfirmDelete = true)}>Delete Confirmation</Button>
-		<Button variant="warning" outline onclick={() => (showConfirmAction = true)}>Action Confirmation</Button>
-		<Button variant="info" outline onclick={() => (showInfo = true)}>Information Dialog</Button>
+		<Button variant="danger" isOutline onclick={() => (showConfirmDelete = true)}>Delete Confirmation</Button>
+		<Button variant="warning" isOutline onclick={() => (showConfirmAction = true)}>Action Confirmation</Button>
+		<Button variant="info" isOutline onclick={() => (showInfo = true)}>Information Dialog</Button>
 	</ButtonGroup>
 </Card>
 
 <!-- Modal Definitions -->
 
 <!-- Small Modal -->
-<Modal bind:show={showSmall} size="sm" title="Small Modal">
+<Modal bind:show={showSmall} size="sm" titleText="Small Modal">
 	<Paragraph>This is a small modal dialog. Perfect for quick notifications or simple confirmations.</Paragraph>
 	{#snippet footer()}
 		<Button variant="secondary" onclick={() => (showSmall = false)}>Close</Button>
@@ -93,7 +93,7 @@
 </Modal>
 
 <!-- Medium Modal -->
-<Modal bind:show={showMedium} title="Medium Modal">
+<Modal bind:show={showMedium} titleText="Medium Modal">
 	<Paragraph>This is a medium-sized modal dialog. Great for forms and detailed content.</Paragraph>
 	<Paragraph>You can include multiple paragraphs, lists, and other content here.</Paragraph>
 	<BasicList>
@@ -108,7 +108,7 @@
 </Modal>
 
 <!-- Large Modal -->
-<Modal bind:show={showLarge} size="lg" title="Large Modal">
+<Modal bind:show={showLarge} size="lg" titleText="Large Modal">
 	<Grid>
 		<Column size="100" md="1-2">
 			<Heading level={5}>Column 1</Heading>
@@ -130,7 +130,7 @@
 </Modal>
 
 <!-- Extra Large Modal -->
-<Modal bind:show={showXL} size="xl" title="Extra Large Modal">
+<Modal bind:show={showXL} size="xl" titleText="Extra Large Modal">
 	<Grid>
 		<Column size="100" md="1-3">
 			<Heading level={5}>Column 1</Heading>
@@ -157,7 +157,7 @@
 </Modal>
 
 <!-- XXL Modal -->
-<Modal bind:show={showXXL} size="xxl" title="XXL Modal - Maximum Size">
+<Modal bind:show={showXXL} size="xxl" titleText="XXL Modal - Maximum Size">
 	<Grid>
 		<Column size="100" md="1-4">
 			<Heading level={5}>Section 1</Heading>
@@ -198,7 +198,7 @@
 			<Card class="mt-3">
 				<Paragraph>
 					Nested cards and components work seamlessly within XXL modals, allowing you to create
-					rich, interactive interfaces.
+					rich, isInteractive interfaces.
 				</Paragraph>
 			</Card>
 		</Column>
@@ -211,7 +211,7 @@
 </Modal>
 
 <!-- Full Width Modal -->
-<Modal bind:show={showFullWidth} size="fw" title="Full Width Modal - Maximum Screen Coverage">
+<Modal bind:show={showFullWidth} size="fw" titleText="Full Width Modal - Maximum Screen Coverage">
 	<Grid>
 		<Column size="100">
 			<Alert variant="info" class="mb-4">
@@ -222,8 +222,8 @@
 	</Grid>
 	<Grid>
 		<Column size="100" lg="1-5">
-			<Card title="Navigation">
-				<BasicList unstyled>
+			<Card titleText="Navigation">
+				<BasicList isUnstyled>
 					<li class="py-2">Dashboard</li>
 					<li class="py-2">Analytics</li>
 					<li class="py-2">Reports</li>
@@ -232,7 +232,7 @@
 			</Card>
 		</Column>
 		<Column size="100" lg="3-5">
-			<Card title="Main Content Area">
+			<Card titleText="Main Content Area">
 				<Paragraph>
 					Full-width modals are perfect for complex applications that need to run within a modal
 					context. Examples include:
@@ -245,7 +245,7 @@
 					<li><strong>Document Viewers:</strong> PDF readers, document editors</li>
 				</BasicList>
 				<div class="mt-3">
-					<Table striped>
+					<Table isStriped>
 						<thead>
 							<tr>
 								<th>Feature</th>
@@ -275,7 +275,7 @@
 			</Card>
 		</Column>
 		<Column size="100" lg="1-5">
-			<Card title="Properties">
+			<Card titleText="Properties">
 				<FormGroup>
 					<FormLabel for="fw-width">Width</FormLabel>
 					<Input id="fw-width" value="100vw - 2rem" readonly />
@@ -341,7 +341,7 @@
 </Modal>
 
 <!-- Contact Form Modal -->
-<Modal bind:show={showForm} title="Contact Us">
+<Modal bind:show={showForm} titleText="Contact Us">
 	<form>
 		<Grid>
 			<Column size="100">
@@ -371,7 +371,7 @@
 </Modal>
 
 <!-- Login Form Modal -->
-<Modal bind:show={showLogin} size="sm" title="Sign In">
+<Modal bind:show={showLogin} size="sm" titleText="Sign In">
 	<form>
 		<Grid>
 			<Column size="100">
@@ -388,7 +388,7 @@
 			</Column>
 			<Column size="100">
 				<FormGroup>
-					<Checkbox id="login-remember" label="Remember me" />
+					<Checkbox id="login-remember" labelText="Remember me" />
 				</FormGroup>
 			</Column>
 		</Grid>
@@ -400,7 +400,7 @@
 </Modal>
 
 <!-- Settings Modal -->
-<Modal bind:show={showSettings} size="lg" title="Settings">
+<Modal bind:show={showSettings} size="lg" titleText="Settings">
 	<Grid>
 		<Column size="100" md="1-2">
 			<Heading level={5}>General Settings</Heading>
@@ -414,7 +414,7 @@
 					</Select>
 				</FormGroup>
 				<FormGroup>
-					<Checkbox id="settings-notifications" checked label="Enable notifications" />
+					<Checkbox id="settings-notifications" checked labelText="Enable notifications" />
 				</FormGroup>
 			</form>
 		</Column>
@@ -422,10 +422,10 @@
 			<Heading level={5}>Privacy Settings</Heading>
 			<form>
 				<FormGroup>
-					<Checkbox id="settings-analytics" label="Share analytics data" />
+					<Checkbox id="settings-analytics" labelText="Share analytics data" />
 				</FormGroup>
 				<FormGroup>
-					<Checkbox id="settings-email" checked label="Email updates" />
+					<Checkbox id="settings-email" checked labelText="Email updates" />
 				</FormGroup>
 			</form>
 		</Column>
@@ -437,7 +437,7 @@
 </Modal>
 
 <!-- Delete Confirmation Modal -->
-<Modal bind:show={showConfirmDelete} size="sm" headerVariant="danger" title="Confirm Delete">
+<Modal bind:show={showConfirmDelete} size="sm" headerVariant="danger" titleText="Confirm Delete">
 	<Paragraph>Are you sure you want to delete this item?</Paragraph>
 	<Alert variant="danger">
 		<strong>This action cannot be undone.</strong>
@@ -449,7 +449,7 @@
 </Modal>
 
 <!-- Action Confirmation Modal -->
-<Modal bind:show={showConfirmAction} size="sm" title="Confirm Action">
+<Modal bind:show={showConfirmAction} size="sm" titleText="Confirm Action">
 	<Paragraph>Do you want to proceed with this action?</Paragraph>
 	<Paragraph>This will update your preferences and may affect other users.</Paragraph>
 	{#snippet footer()}
@@ -459,7 +459,7 @@
 </Modal>
 
 <!-- Information Dialog -->
-<Modal bind:show={showInfo} headerVariant="info" title="Information">
+<Modal bind:show={showInfo} headerVariant="info" titleText="Information">
 	<Paragraph>Here's some important information you should know:</Paragraph>
 	<Alert variant="info">
 		Your subscription will expire in 7 days. Consider renewing to continue enjoying all features.
@@ -476,7 +476,7 @@
 </Modal>
 
 <!-- Centered Modal (Default) -->
-<Modal bind:show={showCentered} title="Centered Modal (Default)">
+<Modal bind:show={showCentered} titleText="Centered Modal (Default)">
 	<Paragraph>This is the default modal behavior - centered vertically and horizontally in the viewport.</Paragraph>
 	<Paragraph>This works well for most use cases where you want the modal to be the focal point.</Paragraph>
 	{#snippet footer()}
@@ -486,7 +486,7 @@
 </Modal>
 
 <!-- Top-Aligned Modal -->
-<Modal bind:show={showTop} position="top" title="Top-Aligned Modal">
+<Modal bind:show={showTop} position="top" titleText="Top-Aligned Modal">
 	<Paragraph>This modal uses the <code>position="top"</code> prop to position it near the top of the viewport.</Paragraph>
 	<Paragraph>This is useful for:</Paragraph>
 	<BasicList>
@@ -502,7 +502,7 @@
 </Modal>
 
 <!-- Static Modal (no ESC, no backdrop click) -->
-<Modal bind:show={showStatic} size="sm" isStatic headerVariant="warning" showClose={false}>
+<Modal bind:show={showStatic} size="sm" isStatic headerVariant="warning" shouldShowClose={false}>
 	{#snippet header()}
 		<Heading level={4}>Static Modal</Heading>
 	{/snippet}

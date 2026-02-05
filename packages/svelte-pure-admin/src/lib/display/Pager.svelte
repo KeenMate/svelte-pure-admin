@@ -5,7 +5,7 @@
 	 * Pagination component for tables
 	 */
 
-	type PagerAlign = 'left' | 'center' | 'right';
+	type PagerAlign = 'start' | 'center' | 'end';
 
 	interface Props {
 		/** Current page number */
@@ -18,16 +18,16 @@
 		showPageInput?: boolean;
 		/** Show info text */
 		showInfo?: boolean;
-		/** Previous button click handler */
-		onPrevious?: (event: MouseEvent) => void;
-		/** Next button click handler */
-		onNext?: (event: MouseEvent) => void;
-		/** Page change handler (from input) */
-		onPageChange?: (page: number) => void;
-		/** First button click handler */
-		onFirst?: (event: MouseEvent) => void;
-		/** Last button click handler */
-		onLast?: (event: MouseEvent) => void;
+		/** Previous button click callback */
+		onprevious?: (event: MouseEvent) => void;
+		/** Next button click callback */
+		onnext?: (event: MouseEvent) => void;
+		/** Page change callback (from input) */
+		onpagechange?: (page: number) => void;
+		/** First button click callback */
+		onfirst?: (event: MouseEvent) => void;
+		/** Last button click callback */
+		onlast?: (event: MouseEvent) => void;
 		/** Disable previous button */
 		disablePrevious?: boolean;
 		/** Disable next button */
@@ -48,11 +48,11 @@
 		align = 'center',
 		showPageInput = true,
 		showInfo = true,
-		onPrevious,
-		onNext,
-		onPageChange,
-		onFirst,
-		onLast,
+		onprevious,
+		onnext,
+		onpagechange,
+		onfirst,
+		onlast,
 		disablePrevious = false,
 		disableNext = false,
 		infoText,
@@ -64,8 +64,8 @@
 	// Build class string
 	const classes = $derived(() => {
 		const base = ['pa-pager'];
-		if (align === 'left') base.push('pa-pager--left');
-		if (align === 'right') base.push('pa-pager--right');
+		if (align === 'start') base.push('pa-pager--start');
+		if (align === 'end') base.push('pa-pager--end');
 		if (className) base.push(className);
 		return base.join(' ');
 	});
@@ -76,7 +76,7 @@
 		const page = parseInt(target.value, 10);
 		if (!isNaN(page) && page >= 1 && page <= totalPages) {
 			currentPage = page;
-			if (onPageChange) onPageChange(page);
+			if (onpagechange) onpagechange(page);
 		} else {
 			// Reset to current page if invalid
 			target.value = currentPage.toString();
@@ -90,19 +90,19 @@
 			{@render controls()}
 		{:else}
 			<div class="pa-pager__controls">
-				{#if onFirst}
-					<button class="pa-btn pa-btn--sm pa-btn--secondary" onclick={onFirst} disabled={disablePrevious}>
+				{#if onfirst}
+					<button class="pa-btn pa-btn--sm pa-btn--secondary" onclick={onfirst} disabled={disablePrevious}>
 						« First
 					</button>
 				{/if}
-				<button class="pa-btn pa-btn--sm pa-btn--secondary" onclick={onPrevious} disabled={disablePrevious}>
+				<button class="pa-btn pa-btn--sm pa-btn--secondary" onclick={onprevious} disabled={disablePrevious}>
 					‹ Previous
 				</button>
-				<button class="pa-btn pa-btn--sm pa-btn--secondary" onclick={onNext} disabled={disableNext}>
+				<button class="pa-btn pa-btn--sm pa-btn--secondary" onclick={onnext} disabled={disableNext}>
 					Next ›
 				</button>
-				{#if onLast}
-					<button class="pa-btn pa-btn--sm pa-btn--secondary" onclick={onLast} disabled={disableNext}>
+				{#if onlast}
+					<button class="pa-btn pa-btn--sm pa-btn--secondary" onclick={onlast} disabled={disableNext}>
 						Last »
 					</button>
 				{/if}

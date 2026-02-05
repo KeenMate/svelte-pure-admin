@@ -12,7 +12,7 @@
 		variant: ToastVariant;
 		show: boolean;
 		duration?: number;
-		showProgress?: boolean;
+		shouldShowProgress?: boolean;
 	}
 
 	// Separate toast arrays for each position
@@ -44,7 +44,7 @@
 		}
 	}
 
-	function addToast(position: ToastPosition, variant: ToastVariant, options: { duration?: number; showProgress?: boolean; title?: string; message?: string } = {}) {
+	function addToast(position: ToastPosition, variant: ToastVariant, options: { duration?: number; shouldShowProgress?: boolean; title?: string; message?: string } = {}) {
 		const id = toastId++;
 		const msg = toastMessages[variant];
 		const newToast: ToastData = {
@@ -54,7 +54,7 @@
 			variant,
 			show: true,
 			duration: options.duration ?? 5000,
-			showProgress: options.showProgress ?? false
+			shouldShowProgress: options.shouldShowProgress ?? false
 		};
 
 		switch (position) {
@@ -120,12 +120,12 @@
 	{#each topRightToasts as toast (toast.id)}
 		<Toast
 			variant={toast.variant}
-			title={toast.title}
-			message={toast.message}
+			titleText={toast.title}
+			messageText={toast.message}
 			bind:show={toast.show}
 			duration={toast.duration}
-			showProgress={toast.showProgress}
-			onClose={() => removeToast('top-right', toast.id)}
+			shouldShowProgress={toast.shouldShowProgress}
+			onclose={() => removeToast('top-right', toast.id)}
 		/>
 	{/each}
 </ToastContainer>
@@ -134,12 +134,12 @@
 	{#each topCenterToasts as toast (toast.id)}
 		<Toast
 			variant={toast.variant}
-			title={toast.title}
-			message={toast.message}
+			titleText={toast.title}
+			messageText={toast.message}
 			bind:show={toast.show}
 			duration={toast.duration}
-			showProgress={toast.showProgress}
-			onClose={() => removeToast('top-center', toast.id)}
+			shouldShowProgress={toast.shouldShowProgress}
+			onclose={() => removeToast('top-center', toast.id)}
 		/>
 	{/each}
 </ToastContainer>
@@ -148,12 +148,12 @@
 	{#each topLeftToasts as toast (toast.id)}
 		<Toast
 			variant={toast.variant}
-			title={toast.title}
-			message={toast.message}
+			titleText={toast.title}
+			messageText={toast.message}
 			bind:show={toast.show}
 			duration={toast.duration}
-			showProgress={toast.showProgress}
-			onClose={() => removeToast('top-left', toast.id)}
+			shouldShowProgress={toast.shouldShowProgress}
+			onclose={() => removeToast('top-left', toast.id)}
 		/>
 	{/each}
 </ToastContainer>
@@ -162,12 +162,12 @@
 	{#each bottomRightToasts as toast (toast.id)}
 		<Toast
 			variant={toast.variant}
-			title={toast.title}
-			message={toast.message}
+			titleText={toast.title}
+			messageText={toast.message}
 			bind:show={toast.show}
 			duration={toast.duration}
-			showProgress={toast.showProgress}
-			onClose={() => removeToast('bottom-right', toast.id)}
+			shouldShowProgress={toast.shouldShowProgress}
+			onclose={() => removeToast('bottom-right', toast.id)}
 		/>
 	{/each}
 </ToastContainer>
@@ -176,12 +176,12 @@
 	{#each bottomCenterToasts as toast (toast.id)}
 		<Toast
 			variant={toast.variant}
-			title={toast.title}
-			message={toast.message}
+			titleText={toast.title}
+			messageText={toast.message}
 			bind:show={toast.show}
 			duration={toast.duration}
-			showProgress={toast.showProgress}
-			onClose={() => removeToast('bottom-center', toast.id)}
+			shouldShowProgress={toast.shouldShowProgress}
+			onclose={() => removeToast('bottom-center', toast.id)}
 		/>
 	{/each}
 </ToastContainer>
@@ -190,48 +190,48 @@
 	{#each bottomLeftToasts as toast (toast.id)}
 		<Toast
 			variant={toast.variant}
-			title={toast.title}
-			message={toast.message}
+			titleText={toast.title}
+			messageText={toast.message}
 			bind:show={toast.show}
 			duration={toast.duration}
-			showProgress={toast.showProgress}
-			onClose={() => removeToast('bottom-left', toast.id)}
+			shouldShowProgress={toast.shouldShowProgress}
+			onclose={() => removeToast('bottom-left', toast.id)}
 		/>
 	{/each}
 </ToastContainer>
 
 <!-- Toast Positions -->
-<Card title="Toast Positions">
+<Card titleText="Toast Positions">
 	<Grid>
 		<Column size="100" md="1-3">
-			<Button variant="primary" block onclick={() => addToast('top-right', 'success')}>
+			<Button variant="primary" isBlock onclick={() => addToast('top-right', 'success')}>
 				Top Right
 			</Button>
 		</Column>
 		<Column size="100" md="1-3">
-			<Button variant="primary" block onclick={() => addToast('top-center', 'info')}>
+			<Button variant="primary" isBlock onclick={() => addToast('top-center', 'info')}>
 				Top Center
 			</Button>
 		</Column>
 		<Column size="100" md="1-3">
-			<Button variant="primary" block onclick={() => addToast('top-left', 'warning')}>
+			<Button variant="primary" isBlock onclick={() => addToast('top-left', 'warning')}>
 				Top Left
 			</Button>
 		</Column>
 	</Grid>
 	<Grid class="mt-4">
 		<Column size="100" md="1-3">
-			<Button variant="secondary" block onclick={() => addToast('bottom-right', 'danger')}>
+			<Button variant="secondary" isBlock onclick={() => addToast('bottom-right', 'danger')}>
 				Bottom Right
 			</Button>
 		</Column>
 		<Column size="100" md="1-3">
-			<Button variant="secondary" block onclick={() => addToast('bottom-center', 'primary')}>
+			<Button variant="secondary" isBlock onclick={() => addToast('bottom-center', 'primary')}>
 				Bottom Center
 			</Button>
 		</Column>
 		<Column size="100" md="1-3">
-			<Button variant="secondary" block onclick={() => addToast('bottom-left', 'success')}>
+			<Button variant="secondary" isBlock onclick={() => addToast('bottom-left', 'success')}>
 				Bottom Left
 			</Button>
 		</Column>
@@ -239,30 +239,30 @@
 </Card>
 
 <!-- Toast Variants -->
-<Card title="Toast Variants">
+<Card titleText="Toast Variants">
 	<Grid>
 		<Column size="100" md="50" lg="20">
-			<Button variant="primary" block onclick={() => addToast('top-right', 'primary')}>
+			<Button variant="primary" isBlock onclick={() => addToast('top-right', 'primary')}>
 				Primary
 			</Button>
 		</Column>
 		<Column size="100" md="50" lg="20">
-			<Button variant="success" block onclick={() => addToast('top-right', 'success')}>
+			<Button variant="success" isBlock onclick={() => addToast('top-right', 'success')}>
 				Success
 			</Button>
 		</Column>
 		<Column size="100" md="50" lg="20">
-			<Button variant="danger" block onclick={() => addToast('top-right', 'danger')}>
+			<Button variant="danger" isBlock onclick={() => addToast('top-right', 'danger')}>
 				Danger
 			</Button>
 		</Column>
 		<Column size="100" md="50" lg="20">
-			<Button variant="warning" block onclick={() => addToast('top-right', 'warning')}>
+			<Button variant="warning" isBlock onclick={() => addToast('top-right', 'warning')}>
 				Warning
 			</Button>
 		</Column>
 		<Column size="100" md="50" lg="20">
-			<Button variant="info" block onclick={() => addToast('top-right', 'info')}>
+			<Button variant="info" isBlock onclick={() => addToast('top-right', 'info')}>
 				Info
 			</Button>
 		</Column>
@@ -270,8 +270,8 @@
 </Card>
 
 <!-- Toast with Progress Bar -->
-<Card title="Toast with Progress Bar">
-	<Button variant="primary" onclick={() => addToast('top-right', 'primary', { showProgress: true, title: 'Processing', message: 'Your request is being processed...' })}>
+<Card titleText="Toast with Progress Bar">
+	<Button variant="primary" onclick={() => addToast('top-right', 'primary', { shouldShowProgress: true, title: 'Processing', message: 'Your request is being processed...' })}>
 		Show Toast with Progress
 	</Button>
 	<Paragraph class="pa-text--secondary mt-4">
@@ -280,20 +280,20 @@
 </Card>
 
 <!-- Persistent Toasts -->
-<Card title="Persistent Toasts (Manual Dismiss Only)">
+<Card titleText="Persistent Toasts (Manual Dismiss Only)">
 	<Grid>
 		<Column size="100" md="1-3">
-			<Button variant="warning" block onclick={() => addToast('top-right', 'warning', { duration: 0, title: 'Important Warning', message: 'This is an important warning that requires your attention. Click the close button to dismiss.' })}>
+			<Button variant="warning" isBlock onclick={() => addToast('top-right', 'warning', { duration: 0, title: 'Important Warning', message: 'This is an important warning that requires your attention. Click the close button to dismiss.' })}>
 				Important Warning
 			</Button>
 		</Column>
 		<Column size="100" md="1-3">
-			<Button variant="danger" block onclick={() => addToast('top-right', 'danger', { duration: 0, title: 'Critical Error', message: 'Critical error detected! This message will remain until you acknowledge it.' })}>
+			<Button variant="danger" isBlock onclick={() => addToast('top-right', 'danger', { duration: 0, title: 'Critical Error', message: 'Critical error detected! This message will remain until you acknowledge it.' })}>
 				Critical Error
 			</Button>
 		</Column>
 		<Column size="100" md="1-3">
-			<Button variant="info" block onclick={() => addToast('top-right', 'info', { duration: 0, title: 'Important Info', message: 'Important information that you should read carefully before dismissing.' })}>
+			<Button variant="info" isBlock onclick={() => addToast('top-right', 'info', { duration: 0, title: 'Important Info', message: 'Important information that you should read carefully before dismissing.' })}>
 				Important Info
 			</Button>
 		</Column>
@@ -304,7 +304,7 @@
 </Card>
 
 <!-- Action Toasts -->
-<Card title="Action Toasts">
+<Card titleText="Action Toasts">
 	<Grid>
 		<Column size="100" md="50">
 			<Button variant="success" onclick={() => addToast('top-right', 'success', { title: 'Upload Complete', message: 'File uploaded successfully!' })}>
@@ -320,7 +320,7 @@
 </Card>
 
 <!-- Multiple Toasts -->
-<Card title="Multiple Toasts (Stacking)">
+<Card titleText="Multiple Toasts (Stacking)">
 	<Button variant="primary" onclick={showMultipleToasts}>
 		Show 3 Toasts
 	</Button>
@@ -330,7 +330,7 @@
 </Card>
 
 <!-- Code Examples -->
-<Card title="Code Examples">
+<Card titleText="Code Examples">
 	<Grid>
 		<Column size="100" md="50">
 			<h4 class="mb-2">Basic Setup</h4>
@@ -354,10 +354,10 @@ ${'<'}/script>
   {#each toasts as toast (toast.id)}
     <Toast
       variant={toast.variant}
-      title={toast.title}
-      message={toast.message}
+      titleText={toast.title}
+      messageText={toast.message}
       bind:show={toast.show}
-      onClose={() => removeToast(toast.id)}
+      onclose={() => removeToast(toast.id)}
     />
   {/each}
 </ToastContainer>`}</CodeBlock>
@@ -366,12 +366,12 @@ ${'<'}/script>
 			<h4 class="mb-2">Toast Props</h4>
 			<CodeBlock>{`<Toast
   variant="success"     // primary|success|danger|warning|info
-  title="Success!"      // Header text
-  message="It worked!"  // Body text
+  titleText="Success!"      // Header text
+  messageText="It worked!"  // Body text
   duration={5000}       // Auto-dismiss (0 = manual)
-  showProgress          // Show countdown bar
+  shouldShowProgress          // Show countdown bar
   bind:show={visible}   // Control visibility
-  onClose={handleClose} // Called when dismissed
+  onclose={handleClose} // Called when dismissed
 />
 
 <!-- Container Positions -->
@@ -392,5 +392,5 @@ addToast('success', 'Changes saved successfully!');
 addToast('danger', 'Save failed!', { duration: 0 });
 
 // Info with progress bar
-addToast('info', 'Processing...', { showProgress: true });`}</CodeBlock>
+addToast('info', 'Processing...', { shouldShowProgress: true });`}</CodeBlock>
 </Card>

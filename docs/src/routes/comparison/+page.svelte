@@ -23,7 +23,7 @@
 				<Button variant="secondary" size="sm">
 					<i class="fa-solid fa-table"></i> View in table
 				</Button>
-				<Button variant="secondary" size="sm" iconOnly>
+				<Button variant="secondary" size="sm" isIconOnly>
 					<i class="fa-solid fa-location-dot"></i>
 				</Button>
 			</ButtonGroup>
@@ -45,7 +45,7 @@
 					<td>
 						<div class="pa-comparison-table__value">
 							<span>be</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -53,7 +53,7 @@
 					<td>
 						<div class="pa-comparison-table__value">
 							<span>be</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -74,7 +74,7 @@
 					<td>
 						<div class="pa-comparison-table__value">
 							<span>Beveren</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -82,7 +82,7 @@
 					<td class="pa-comparison-table__changed">
 						<div class="pa-comparison-table__value">
 							<span>Antwerpen</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -93,7 +93,7 @@
 					<td>
 						<div class="pa-comparison-table__value">
 							<span>9130</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -101,7 +101,7 @@
 					<td class="pa-comparison-table__changed">
 						<div class="pa-comparison-table__value">
 							<span>2018</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -117,7 +117,7 @@
 					<td>
 						<div class="pa-comparison-table__value">
 							<span>Ketenislaan 1</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -125,7 +125,7 @@
 					<td class="pa-comparison-table__changed">
 						<div class="pa-comparison-table__value">
 							<span>Desguinlei 100</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -139,7 +139,7 @@
 					<td>
 						<div class="pa-comparison-table__value">
 							<span>2243544870:Beveren:Ketenislaan 1</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -147,7 +147,7 @@
 					<td class="pa-comparison-table__changed">
 						<div class="pa-comparison-table__value">
 							<span>2243544870:Antwerpen:Desguinlei 100</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -205,7 +205,7 @@
 					<td>
 						<div class="pa-comparison-table__value">
 							<span>john.doe@company.com</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -213,7 +213,7 @@
 					<td class="pa-comparison-table__changed">
 						<div class="pa-comparison-table__value">
 							<span>john.doe@newcompany.com</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -221,7 +221,7 @@
 					<td>
 						<div class="pa-comparison-table__value">
 							<span>john.doe@company.com</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -232,7 +232,7 @@
 					<td>
 						<div class="pa-comparison-table__value">
 							<span>+32 123 456 789</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -240,7 +240,7 @@
 					<td>
 						<div class="pa-comparison-table__value">
 							<span>+32 123 456 789</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -248,7 +248,7 @@
 					<td class="pa-comparison-table__changed">
 						<div class="pa-comparison-table__value">
 							<span>+32 987 654 321</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -259,7 +259,7 @@
 					<td>
 						<div class="pa-comparison-table__value">
 							<span>Sales</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -267,7 +267,7 @@
 					<td class="pa-comparison-table__changed">
 						<div class="pa-comparison-table__value">
 							<span>Marketing</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -275,7 +275,7 @@
 					<td class="pa-comparison-table__changed pa-comparison-table__conflict">
 						<div class="pa-comparison-table__value">
 							<span>Engineering</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -289,7 +289,7 @@
 					<td>
 						<div class="pa-comparison-table__value">
 							<span>2020-01-15</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -297,7 +297,7 @@
 					<td>
 						<div class="pa-comparison-table__value">
 							<span>2020-01-15</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>
@@ -305,7 +305,7 @@
 					<td>
 						<div class="pa-comparison-table__value">
 							<span>2020-01-15</span>
-							<Button size="xs" iconOnly class="pa-comparison-table__copy">
+							<Button size="xs" isIconOnly class="pa-comparison-table__copy">
 								<i class="fa-solid fa-clipboard"></i>
 							</Button>
 						</div>

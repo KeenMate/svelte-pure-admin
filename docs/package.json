@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "clean": "rm -rf build .svelte-kit"
+    "clean": "rm -rf build .svelte-kit",
+    "postinstall": "node scripts/copy-themes.js"
   },
   "dependencies": {
     "@felte/validator-zod": "^1.0.18",
@@ -19,12 +20,12 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@keenmate/pure-admin-core": "file:../../pure-admin/packages/core",
-    "@keenmate/pure-admin-theme-audi": "file:../../pure-admin/packages/theme-audi",
-    "@keenmate/pure-admin-theme-corporate": "file:../../pure-admin/packages/theme-corporate",
-    "@keenmate/pure-admin-theme-dark": "file:../../pure-admin/packages/theme-dark",
-    "@keenmate/pure-admin-theme-express": "file:../../pure-admin/packages/theme-express",
-    "@keenmate/pure-admin-theme-minimal": "file:../../pure-admin/packages/theme-minimal",
+    "@keenmate/pure-admin-core": "^1.5.0",
+    "@keenmate/pure-admin-theme-audi": "^1.5.0",
+    "@keenmate/pure-admin-theme-corporate": "^1.5.0",
+    "@keenmate/pure-admin-theme-dark": "^1.5.0",
+    "@keenmate/pure-admin-theme-express": "^1.5.0",
+    "@keenmate/pure-admin-theme-minimal": "^1.5.0",
     "@sveltejs/adapter-static": "^3.0.0",
     "@sveltejs/kit": "^2.50.0",
     "@sveltejs/vite-plugin-svelte": "^6.2.4",

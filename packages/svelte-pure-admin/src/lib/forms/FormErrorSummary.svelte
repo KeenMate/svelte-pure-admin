@@ -33,7 +33,7 @@
 {#if shouldShow}
 	<Alert variant="danger" class="mb-4 {className}">
 		<Strong>{errorCount} {errorText} found:</Strong>
-		<BasicList class="mt-2 mb-0">
+		<BasicList class="mt-0 mb-0">
 			{#each errors as error}
 				<li><Link href="#{error.id}">{error.field}</Link> - {error.message}</li>
 			{/each}

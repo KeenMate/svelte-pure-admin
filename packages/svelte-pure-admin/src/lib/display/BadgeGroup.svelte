@@ -53,9 +53,9 @@
 
 		// EVENTS
 		/** Callback when a badge is clicked (data mode) */
-		onBadgeClick?: (item: T, event: MouseEvent) => void;
+		onbadgeclick?: (item: T, event: MouseEvent) => void;
 		/** Callback when a badge is clicked (legacy mode) */
-		onBadgeClickLegacy?: (badge: BadgeItem, event: MouseEvent) => void;
+		onbadgeclicklegacy?: (badge: BadgeItem, event: MouseEvent) => void;
 
 		// STYLING
 		/** Additional CSS classes */
@@ -89,8 +89,8 @@
 		showAll = false,
 
 		// Events
-		onBadgeClick,
-		onBadgeClickLegacy,
+		onbadgeclick,
+		onbadgeclicklegacy,
 
 		// Styling
 		class: className = '',
@@ -162,8 +162,8 @@
 	// Handle badge click (data mode)
 	function handleBadgeClick(item: T) {
 		return (event: MouseEvent) => {
-			if (onBadgeClick) {
-				onBadgeClick(item, event);
+			if (onbadgeclick) {
+				onbadgeclick(item, event);
 			}
 		};
 	}
@@ -171,8 +171,8 @@
 	// Handle badge click (legacy mode)
 	function handleBadgeClickLegacy(badge: BadgeItem) {
 		return (event: MouseEvent) => {
-			if (onBadgeClickLegacy) {
-				onBadgeClickLegacy(badge, event);
+			if (onbadgeclicklegacy) {
+				onbadgeclicklegacy(badge, event);
 			}
 		};
 	}
@@ -196,10 +196,10 @@
 		{#each visibleData() as item, index (getId(item, index))}
 			<Badge
 				variant={getVariant(item)}
-				pill={getPill(item)}
+				isPill={getPill(item)}
 				size={getSize(item)}
-				onclick={onBadgeClick ? handleBadgeClick(item) : undefined}
-				class={onBadgeClick ? 'cursor-pointer' : ''}
+				onclick={onbadgeclick ? handleBadgeClick(item) : undefined}
+				class={onbadgeclick ? 'cursor-pointer' : ''}
 			>
 				{getDisplayValue(item)}
 			</Badge>
@@ -221,10 +221,10 @@
 		{#each visibleBadges() as badge}
 			<Badge
 				variant={badge.variant}
-				pill={badge.pill}
+				isPill={badge.isPill}
 				size={badge.size}
-				onclick={onBadgeClickLegacy ? handleBadgeClickLegacy(badge) : undefined}
-				class={onBadgeClickLegacy ? 'cursor-pointer' : ''}
+				onclick={onbadgeclicklegacy ? handleBadgeClickLegacy(badge) : undefined}
+				class={onbadgeclicklegacy ? 'cursor-pointer' : ''}
 			>
 				{#if badge.icon}
 					{#snippet icon()}

@@ -12,7 +12,7 @@
 </script>
 
 <!-- Spinner Sizes -->
-<Card title="Spinner Sizes" class="mb-6">
+<Card titleText="Spinner Sizes" class="mb-6">
 
 	<Grid>
 		<Column size="100" md="1-4" class="text-center mb-4">
@@ -43,7 +43,7 @@
 </Card>
 
 <!-- Spinner Colors -->
-<Card title="Spinner Colors" class="mb-6">
+<Card titleText="Spinner Colors" class="mb-6">
 
 	<Grid>
 		<Column size="100" md="1-4" class="text-center mb-4">
@@ -74,11 +74,11 @@
 </Card>
 
 <!-- Inline Spinners -->
-<Card title="Inline Spinners" class="mb-6">
+<Card titleText="Inline Spinners" class="mb-6">
 
 	<Paragraph class="mb-4">
 		<Spinner size="xs" variant="primary" class="d-inline-block mr-2" />
-		Loading inline content...
+		Loading isInline content...
 	</Paragraph>
 	<Paragraph class="mb-4">
 		<Spinner size="sm" variant="success" class="d-inline-block mr-2" />
@@ -91,7 +91,7 @@
 </Card>
 
 <!-- Centered Loaders -->
-<Card title="Centered Loaders" class="mb-6">
+<Card titleText="Centered Loaders" class="mb-6">
 
 	<div class="h-20x position-relative border border-dashed rounded">
 		<div class="pa-loader-overlay">
@@ -101,7 +101,7 @@
 </Card>
 
 <!-- Loader with Text -->
-<Card title="Loaders with Text" class="mb-6">
+<Card titleText="Loaders with Text" class="mb-6">
 
 	<Grid>
 		<Column size="100" md="1-2" class="mb-4">
@@ -120,7 +120,7 @@
 </Card>
 
 <!-- Card Loading State -->
-<Card title="Card Loading States" class="mb-6">
+<Card titleText="Card Loading States" class="mb-6">
 
 	<Grid>
 		<Column size="100" md="1-3" class="mb-4">
@@ -159,7 +159,7 @@
 </Card>
 
 <!-- Loader Types -->
-<Card title="Loader Types" class="mb-6">
+<Card titleText="Loader Types" class="mb-6">
 
 	<Grid>
 		<!-- Dots Loader -->
@@ -207,7 +207,7 @@
 </Card>
 
 <!-- Usage Examples -->
-<Card title="Usage Examples">
+<Card titleText="Usage Examples">
 
 	<Heading level={4} class="mb-2">Basic Spinner</Heading>
 	<CodeBlock language="html" class="mb-4">&lt;div class="pa-spinner"&gt;&lt;/div&gt;</CodeBlock>

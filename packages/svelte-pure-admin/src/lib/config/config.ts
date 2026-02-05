@@ -3,7 +3,16 @@
  * Defines configuration interface and default values
  */
 
-import type { I18nConfig } from '../i18n/types';
+/**
+ * i18n configuration for PureAdminProvider
+ * Simplified to work with svelte-i18n
+ */
+export interface I18nConfig {
+	/** Initial locale code */
+	locale: string;
+	/** Fallback locale when translation is missing (default: 'en') */
+	fallbackLocale?: string;
+}
 
 export interface PureAdminConfig {
 	/** Application metadata */
@@ -36,8 +45,8 @@ export interface PureAdminConfig {
 
 	/** UI preferences */
 	ui: {
-		/** Default theme (light/dark) */
-		theme: 'light' | 'dark';
+		/** Default theme (light/dark/auto - auto follows OS preference) */
+		theme: 'light' | 'dark' | 'auto';
 		/** Enable animations */
 		animations: boolean;
 		/** Sidebar collapsed by default */

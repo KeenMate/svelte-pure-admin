@@ -33,22 +33,22 @@
 <Grid>
 	<Column size="100" md="25">
 		<Card>
-			<Stat variant="hero" label="Total Revenue" number="$847,392" change="▲ 12.5% vs last month" changeDirection="positive" />
+			<Stat variant="hero" labelText="Total Revenue" number="$847,392" changeText="▲ 12.5% vs last month" changeDirection="positive" />
 		</Card>
 	</Column>
 	<Column size="100" md="25">
 		<Card>
-			<Stat variant="hero" label="Active Users" number="24,583" change="▲ 8.3% vs last month" changeDirection="positive" />
+			<Stat variant="hero" labelText="Active Users" number="24,583" changeText="▲ 8.3% vs last month" changeDirection="positive" />
 		</Card>
 	</Column>
 	<Column size="100" md="25">
 		<Card>
-			<Stat variant="hero" label="Conversion Rate" number="3.47%" change="▼ 2.1% vs last month" changeDirection="negative" />
+			<Stat variant="hero" labelText="Conversion Rate" number="3.47%" changeText="▼ 2.1% vs last month" changeDirection="negative" />
 		</Card>
 	</Column>
 	<Column size="100" md="25">
 		<Card>
-			<Stat variant="hero" label="Avg Order Value" number="$134.52" change="▲ 5.7% vs last month" changeDirection="positive" />
+			<Stat variant="hero" labelText="Avg Order Value" number="$134.52" changeText="▲ 5.7% vs last month" changeDirection="positive" />
 		</Card>
 	</Column>
 </Grid>
@@ -56,7 +56,7 @@
 <!-- Top Sales Products & KPIs -->
 <Grid>
 	<Column size="100" md="2-3">
-		<Card title="Top Sales Products">
+		<Card titleText="Top Sales Products">
 			<div class="pa-chart-placeholder">
 				<Paragraph horizontalAlignment="center" mode="muted">Chart placeholder - integrate with Chart.js, D3.js, or similar</Paragraph>
 				<div class="pa-chart-mockup">
@@ -72,25 +72,25 @@
 		</Card>
 	</Column>
 	<Column size="100" md="1-3">
-		<Card title="Key Performance Indicators">
+		<Card titleText="Key Performance Indicators">
 			<Grid class="pa-kpi-grid">
 				<Column size="100" xl="50">
-					<Stat variant="square" color="primary" number={87} symbol="%" label="Completion Rate" />
+					<Stat variant="square" color="primary" number={87} symbolText="%" labelText="Completion Rate" />
 				</Column>
 				<Column size="100" xl="50">
-					<Stat variant="square" color="success" number={94} symbol="%" label="Customer Satisfaction" />
+					<Stat variant="square" color="success" number={94} symbolText="%" labelText="Customer Satisfaction" />
 				</Column>
 				<Column size="100" xl="50">
-					<Stat variant="square" color="info" number={62} symbol="%" label="Market Share" />
+					<Stat variant="square" color="info" number={62} symbolText="%" labelText="Market Share" />
 				</Column>
 				<Column size="100" xl="50">
-					<Stat variant="square" color="warning" number={78} symbol="%" label="Server Capacity" />
+					<Stat variant="square" color="warning" number={78} symbolText="%" labelText="Server Capacity" />
 				</Column>
 				<Column size="100" xl="50">
-					<Stat variant="square" color="danger" number={23} symbol="%" label="Error Rate" />
+					<Stat variant="square" color="danger" number={23} symbolText="%" labelText="Error Rate" />
 				</Column>
 				<Column size="100" xl="50">
-					<Stat variant="square" color="secondary" number={91} symbol="%" label="Uptime" />
+					<Stat variant="square" color="secondary" number={91} symbolText="%" labelText="Uptime" />
 				</Column>
 			</Grid>
 		</Card>
@@ -100,7 +100,7 @@
 <!-- Charts Section -->
 <Grid>
 	<Column size="100" md="2-3">
-		<Card title="Revenue Trend">
+		<Card titleText="Revenue Trend">
 			<div class="pa-chart-placeholder">
 				<Paragraph horizontalAlignment="center" mode="muted">Chart placeholder - integrate with Chart.js, D3.js, or similar</Paragraph>
 				<div class="pa-chart-mockup">
@@ -125,13 +125,13 @@
 		</Card>
 	</Column>
 	<Column size="100" md="1-3">
-		<Card title="Traffic Sources">
+		<Card titleText="Traffic Sources">
 			<MetricList>
-				<MetricListItem label="Organic Search" value="42.3%" />
-				<MetricListItem label="Direct" value="28.7%" />
-				<MetricListItem label="Social Media" value="15.8%" />
-				<MetricListItem label="Referral" value="9.4%" />
-				<MetricListItem label="Email" value="3.8%" />
+				<MetricListItem labelText="Organic Search" valueText="42.3%" />
+				<MetricListItem labelText="Direct" valueText="28.7%" />
+				<MetricListItem labelText="Social Media" valueText="15.8%" />
+				<MetricListItem labelText="Referral" valueText="9.4%" />
+				<MetricListItem labelText="Email" valueText="3.8%" />
 			</MetricList>
 		</Card>
 	</Column>
@@ -140,25 +140,25 @@
 <!-- Activity Feed & Recent Orders -->
 <Grid>
 	<Column size="100" md="50">
-		<Card title="Recent Activity">
+		<Card titleText="Recent Activity">
 			<ActivityFeed>
-				<ActivityFeedItem time="2 minutes ago">
+				<ActivityFeedItem timeText="2 minutes ago">
 					{#snippet icon()}👤{/snippet}
 					New user registration: <strong>john.smith@example.com</strong>
 				</ActivityFeedItem>
-				<ActivityFeedItem time="8 minutes ago">
+				<ActivityFeedItem timeText="8 minutes ago">
 					{#snippet icon()}🛒{/snippet}
 					Order #4892 completed - <strong>$234.50</strong>
 				</ActivityFeedItem>
-				<ActivityFeedItem time="15 minutes ago">
+				<ActivityFeedItem timeText="15 minutes ago">
 					{#snippet icon()}⚠{/snippet}
 					Low stock alert: <strong>Product A-123</strong>
 				</ActivityFeedItem>
-				<ActivityFeedItem time="23 minutes ago">
+				<ActivityFeedItem timeText="23 minutes ago">
 					{#snippet icon()}💳{/snippet}
 					Payment received: <strong>Invoice #2847</strong>
 				</ActivityFeedItem>
-				<ActivityFeedItem time="1 hour ago">
+				<ActivityFeedItem timeText="1 hour ago">
 					{#snippet icon()}📊{/snippet}
 					Monthly report generated
 				</ActivityFeedItem>
@@ -169,7 +169,7 @@
 		</Card>
 	</Column>
 	<Column size="100" md="50">
-		<Card title="Recent Orders">
+		<Card titleText="Recent Orders">
 			<TableResponsive>
 				<Table size="xs">
 					<thead>
@@ -224,32 +224,32 @@
 <!-- Bottom Row - Performance Metrics -->
 <Grid>
 	<Column size="100" md="1-3">
-		<Card title="Top Products">
+		<Card titleText="Top Products">
 			<MetricList>
-				<MetricListItem label="Product Alpha" value="$24,532" />
-				<MetricListItem label="Product Beta" value="$18,940" />
-				<MetricListItem label="Product Gamma" value="$15,677" />
-				<MetricListItem label="Product Delta" value="$12,234" />
+				<MetricListItem labelText="Product Alpha" valueText="$24,532" />
+				<MetricListItem labelText="Product Beta" valueText="$18,940" />
+				<MetricListItem labelText="Product Gamma" valueText="$15,677" />
+				<MetricListItem labelText="Product Delta" valueText="$12,234" />
 			</MetricList>
 		</Card>
 	</Column>
 	<Column size="100" md="1-3">
-		<Card title="System Status">
+		<Card titleText="System Status">
 			<StatusList>
-				<StatusListItem label="API Services" value="Operational" status="success" />
-				<StatusListItem label="Database" value="Operational" status="success" />
-				<StatusListItem label="Payment Gateway" value="Degraded" status="warning" />
-				<StatusListItem label="Email Service" value="Operational" status="success" />
+				<StatusListItem labelText="API Services" valueText="Operational" status="success" />
+				<StatusListItem labelText="Database" valueText="Operational" status="success" />
+				<StatusListItem labelText="Payment Gateway" valueText="Degraded" status="warning" />
+				<StatusListItem labelText="Email Service" valueText="Operational" status="success" />
 			</StatusList>
 		</Card>
 	</Column>
 	<Column size="100" md="1-3">
-		<Card title="Quick Actions">
+		<Card titleText="Quick Actions">
 			<QuickActions>
-				<Button variant="primary" block>New Order</Button>
-				<Button variant="secondary" block>Add Customer</Button>
-				<Button variant="secondary" block>Generate Report</Button>
-				<Button variant="secondary" block>Export Data</Button>
+				<Button variant="primary" isBlock>New Order</Button>
+				<Button variant="secondary" isBlock>Add Customer</Button>
+				<Button variant="secondary" isBlock>Generate Report</Button>
+				<Button variant="secondary" isBlock>Export Data</Button>
 			</QuickActions>
 		</Card>
 	</Column>

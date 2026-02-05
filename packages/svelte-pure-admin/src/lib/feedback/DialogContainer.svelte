@@ -7,6 +7,7 @@
 	 *   <DialogContainer />
 	 */
 
+	import { _ } from '../i18n';
 	import {
 		dialogStore,
 		type DialogState,
@@ -20,7 +21,6 @@
 	import FormGroup from '../forms/FormGroup.svelte';
 	import Input from '../forms/Input.svelte';
 	import Paragraph from '../typography/Paragraph.svelte';
-	import { i18nStore } from '../i18n/store.svelte';
 
 	// Get dialogs reactively via getter
 	const dialogs = $derived(dialogStore.dialogs);
@@ -61,7 +61,7 @@
 		if (options.validator) {
 			const result = options.validator(value);
 			if (result !== true) {
-				inputErrors[dialog.id] = typeof result === 'string' ? result : i18nStore.t('dialog.invalidInput');
+				inputErrors[dialog.id] = typeof result === 'string' ? result : $_('pureAdmin.dialog.invalidInput');
 				return;
 			}
 		}
@@ -130,13 +130,13 @@
 		show={true}
 		size={options.size || 'sm'}
 		variant={options.variant}
-		showClose={false}
+		shouldShowClose={false}
 		position={options.position || 'center'}
-		title={options.title}
+		titleText={options.title}
 		class={options.class}
 		bodyClass={options.bodyClass}
 		footerClass={options.footerClass}
-		onClose={() => {
+		onclose={() => {
 			if (dialog.type === 'confirm') handleCancel(dialog);
 			else if (dialog.type === 'alert') handleOk(dialog);
 			else if (dialog.type === 'prompt') handlePromptCancel(dialog);
@@ -147,33 +147,33 @@
 			{#if dialog.type === 'confirm'}
 				{@const confirmOptions = options as ConfirmDialogOptions}
 				<Button variant="secondary" onclick={() => handleCancel(dialog)}>
-					{confirmOptions.cancelText || i18nStore.t('dialog.cancel')}
+					{confirmOptions.cancelText || $_('pureAdmin.dialog.cancel')}
 				</Button>
 				<Button
 					variant={confirmOptions.confirmVariant || confirmOptions.variant || 'primary'}
 					onclick={() => handleConfirm(dialog)}
 				>
-					{confirmOptions.confirmText || i18nStore.t('dialog.ok')}
+					{confirmOptions.confirmText || $_('pureAdmin.dialog.ok')}
 				</Button>
 			{:else if dialog.type === 'alert'}
 				{@const alertOptions = options as AlertDialogOptions}
 				<Button variant={alertOptions.variant || 'primary'} onclick={() => handleOk(dialog)}>
-					{alertOptions.okText || i18nStore.t('dialog.ok')}
+					{alertOptions.okText || $_('pureAdmin.dialog.ok')}
 				</Button>
 			{:else if dialog.type === 'prompt'}
 				{@const promptOptions = options as PromptDialogOptions}
 				<Button variant="secondary" onclick={() => handlePromptCancel(dialog)}>
-					{promptOptions.cancelText || i18nStore.t('dialog.cancel')}
+					{promptOptions.cancelText || $_('pureAdmin.dialog.cancel')}
 				</Button>
 				<Button variant={promptOptions.variant || 'primary'} onclick={() => handlePromptSubmit(dialog)}>
-					{promptOptions.confirmText || i18nStore.t('dialog.ok')}
+					{promptOptions.confirmText || $_('pureAdmin.dialog.ok')}
 				</Button>
 			{:else if dialog.type === 'custom'}
 				{@const customOptions = options as CustomDialogOptions}
 				{#each customOptions.buttons as button}
 					<Button
 						variant={button.variant || 'secondary'}
-						outline={button.outline}
+						isOutline={button.isOutline}
 						class={button.class}
 						disabled={button.disabled}
 						onclick={() => handleCustomButton(dialog, button.value)}

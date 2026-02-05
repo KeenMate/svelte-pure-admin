@@ -7,10 +7,10 @@
 	 */
 
 	import { untrack } from 'svelte';
+	import { _ } from '../i18n';
 	import Modal from './Modal.svelte';
 	import { shortcutRegistry, formatShortcut } from '../services/shortcut-registry.svelte';
 	import type { Shortcut } from '../services/shortcut-registry-types';
-	import { i18nStore } from '../i18n/store.svelte';
 
 	interface Props {
 		/** Show/hide the dialog (bindable) */
@@ -36,7 +36,7 @@
 	}
 </script>
 
-<Modal bind:show size="md" title={i18nStore.t('shortcuts.title')} onClose={handleClose}>
+<Modal bind:show size="md" titleText={$_('pureAdmin.shortcuts.title')} onclose={handleClose}>
 	<div class="pa-shortcut-help">
 		{#each groupedShortcuts as [category, shortcuts]}
 			<div class="pa-shortcut-help__category">
@@ -61,7 +61,7 @@
 
 		{#if groupedShortcuts.size === 0}
 			<div class="pa-shortcut-help__empty">
-				{i18nStore.t('shortcuts.noShortcuts')}
+				{$_('pureAdmin.shortcuts.noShortcuts')}
 			</div>
 		{/if}
 	</div>

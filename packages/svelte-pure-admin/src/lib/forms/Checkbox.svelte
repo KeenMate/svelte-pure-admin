@@ -18,11 +18,11 @@
 		/** Checkbox checked state */
 		checked?: boolean;
 		/** Indeterminate state (partial selection) */
-		indeterminate?: boolean;
+		isIndeterminate?: boolean;
 		/** Disabled state */
 		disabled?: boolean;
 		/** Use X mark instead of checkmark when checked */
-		xMark?: boolean;
+		isXMark?: boolean;
 		/** Checkbox size */
 		size?: CheckboxSize;
 		/** Checkbox ID (required for label association) */
@@ -32,28 +32,28 @@
 		/** Checkbox value */
 		value?: string;
 		/** Label text */
-		label?: string;
+		labelText?: string;
 		/** Additional CSS classes for wrapper */
 		class?: string;
 		/** Label snippet (alternative to label prop for custom label content) */
 		labelSnippet?: import('svelte').Snippet;
 		/** Change handler */
-		onChange?: (event: Event & { currentTarget: HTMLInputElement }) => void;
+		onchange?: (event: Event & { currentTarget: HTMLInputElement }) => void;
 	}
 
 	let {
 		checked = $bindable(false),
-		indeterminate = false,
+		isIndeterminate = false,
 		disabled = false,
-		xMark = false,
+		isXMark = false,
 		size,
 		id,
 		name,
 		value,
-		label,
+		labelText,
 		class: className = '',
 		labelSnippet,
-		onChange
+		onchange
 	}: Props = $props();
 
 	let inputElement: HTMLInputElement;
@@ -61,7 +61,7 @@
 	// Sync indeterminate property (can only be set via JS, not attribute)
 	$effect(() => {
 		if (inputElement) {
-			inputElement.indeterminate = indeterminate;
+			inputElement.indeterminate = isIndeterminate;
 		}
 	});
 
@@ -69,7 +69,7 @@
 	const wrapperClasses = $derived(() => {
 		const base = ['pa-checkbox'];
 		if (size) base.push(`pa-checkbox--${size}`);
-		if (xMark) base.push('pa-checkbox--x');
+		if (isXMark) base.push('pa-checkbox--x');
 		if (disabled) base.push('pa-checkbox--disabled');
 		if (className) base.push(className);
 		return base.join(' ');
@@ -85,14 +85,14 @@
 		{name}
 		{value}
 		{disabled}
-		onchange={onChange}
+		{onchange}
 	/>
 	<span class="pa-checkbox__box"></span>
 	{#if labelSnippet}
 		<span class="pa-checkbox__label">
 			{@render labelSnippet()}
 		</span>
-	{:else if label}
-		<span class="pa-checkbox__label">{label}</span>
+	{:else if labelText}
+		<span class="pa-checkbox__label">{labelText}</span>
 	{/if}
 </label>

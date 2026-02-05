@@ -10,9 +10,9 @@
 		/** Validation state (success, warning, error) */
 		state?: ValidationState;
 		/** Has validation error (legacy, prefer state prop) */
-		hasError?: boolean;
+		isError?: boolean;
 		/** Has validation success (legacy, prefer state prop) */
-		hasSuccess?: boolean;
+		isSuccess?: boolean;
 		/** Mark as required */
 		isRequired?: boolean;
 		/** Horizontal layout (label left, input right) */
@@ -27,8 +27,8 @@
 
 	let {
 		state,
-		hasError = false,
-		hasSuccess = false,
+		isError = false,
+		isSuccess = false,
 		isRequired = false,
 		isHorizontal = false,
 		horizontal = false,
@@ -47,8 +47,8 @@
 			base.push(`pa-form-group--${state}`);
 		} else {
 			// Legacy boolean props
-			if (hasSuccess) base.push('pa-form-group--success');
-			if (hasError) base.push('pa-form-group--error');
+			if (isSuccess) base.push('pa-form-group--success');
+			if (isError) base.push('pa-form-group--error');
 		}
 		if (isRequired) base.push('pa-form-group--required');
 		if (effectiveHorizontal) base.push('pa-form-group--horizontal');

@@ -62,6 +62,7 @@ npm install @keenmate/svelte-pure-admin @keenmate/pure-admin-core
 | `Footer` | Page footer |
 | `Grid` | CSS grid container |
 | `Column` | Grid column |
+| `SlidePanel` | Fixed overlay panel that slides in from the right |
 
 ### Forms
 | Component | Description |
@@ -104,6 +105,9 @@ npm install @keenmate/svelte-pure-admin @keenmate/pure-admin-core
 ### Display
 | Component | Description |
 |-----------|-------------|
+| `Field` | Single label-value pair with optional copy-to-clipboard |
+| `Fields` | Container with layout modifiers (cols, horizontal, bordered, etc.) |
+| `FieldGroup` | Titled section for grouping fields |
 | `Badge` | Status badges with variants and sizes |
 | `BadgeGroup` | Group of badges |
 | `CompositeBadge` | Badge with icon, label, and action |
@@ -126,6 +130,8 @@ npm install @keenmate/svelte-pure-admin @keenmate/pure-admin-core
 | `Stat` | Statistics display |
 | `Pager` | Pagination controls |
 | `LoadMore` | Load more button |
+| `DetailView` | Detail panel wrapper with overlay/inline split-view modes |
+| `DetailPanel` | Detail panel content shell (header, tabs, body, footer) |
 
 ### Navigation
 | Component | Description |
@@ -248,6 +254,6 @@ MIT
 
 ## Links
 
-- [GitHub Repository](https://github.com/keenmate/svelte-pure-admin)
+- [GitHub Repository](https://github.com/KeenMate/svelte-pure-admin)
 - [@keenmate/pure-admin-core](https://www.npmjs.com/package/@keenmate/pure-admin-core) - Core CSS framework
 - [Svelte 5 Documentation](https://svelte.dev/docs/svelte/overview)

@@ -9,8 +9,9 @@
 	 */
 
 	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
+	import { _, locale } from '../i18n';
 	import { shortcutRegistry } from '../services/shortcut-registry.svelte';
-	import { i18nStore } from '../i18n/store.svelte';
 	import type {
 		Command,
 		SearchContext,
@@ -36,7 +37,7 @@
 		/** Global search function (when no prefix is used) */
 		globalSearch?: (query: string) => Promise<SearchResult[]> | SearchResult[];
 		/** Called when a global search result is selected */
-		onGlobalSelect?: (result: SearchResult) => void;
+		onglobalselect?: (result: SearchResult) => void;
 		/** Placeholder text */
 		placeholder?: string;
 		/** Additional CSS classes */
@@ -50,14 +51,14 @@
 		commands = [],
 		contexts = [],
 		globalSearch,
-		onGlobalSelect,
+		onglobalselect,
 		placeholder,
 		class: className = '',
 		errorSnippet
 	}: Props = $props();
 
 	// Use i18n default if placeholder not provided
-	const resolvedPlaceholder = $derived(placeholder ?? i18nStore.t('commandPalette.placeholder'));
+	const resolvedPlaceholder = $derived(placeholder ?? $_('pureAdmin.commandPalette.placeholder'));
 
 	// =========================================================================
 	// STATE
@@ -309,7 +310,7 @@
 			}
 		} catch (err) {
 			console.error('Failed to load step options:', err);
-			error = i18nStore.t('commandPalette.loadOptionsFailed');
+			error = $_('pureAdmin.commandPalette.loadOptionsFailed');
 			displayItems = [];
 		} finally {
 			loading = false;
@@ -373,7 +374,7 @@
 			activeIndex = results.length > 0 ? 0 : -1;
 		} catch (err) {
 			console.error('Context search failed:', err);
-			error = i18nStore.t('commandPalette.searchFailed');
+			error = $_('pureAdmin.commandPalette.searchFailed');
 			displayItems = [];
 		} finally {
 			loading = false;
@@ -397,7 +398,7 @@
 				activeIndex = results.length > 0 ? 0 : -1;
 			} catch (err) {
 				console.error('Global search failed:', err);
-				error = i18nStore.t('commandPalette.searchFailed');
+				error = $_('pureAdmin.commandPalette.searchFailed');
 				displayItems = [];
 			} finally {
 				loading = false;
@@ -508,8 +509,8 @@
 	}
 
 	function selectGlobalResult(result: SearchResult) {
-		if (onGlobalSelect) {
-			onGlobalSelect(result);
+		if (onglobalselect) {
+			onglobalselect(result);
 		}
 		close();
 	}
@@ -647,8 +648,8 @@
 			id: 'command-palette-toggle',
 			key: 'k',
 			modifiers: { ctrl: true },
-			description: i18nStore.t('commandPalette.openCommandPalette'),
-			category: i18nStore.t('shortcuts.generalCategory'),
+			description: get(_)('commandPalette.openCommandPalette'),
+			category: get(_)('shortcuts.generalCategory'),
 			action: () => {
 				show = !show;
 				if (!show) reset();
@@ -685,15 +686,15 @@
 	function getModeLabel(): string {
 		switch (mode) {
 			case 'command-list':
-				return i18nStore.t('commandPalette.commands');
+				return $_('pureAdmin.commandPalette.commands');
 			case 'command-step':
-				return activeCommand?.name || i18nStore.t('commandPalette.commands');
+				return activeCommand?.name || $_('pureAdmin.commandPalette.commands');
 			case 'context-list':
-				return i18nStore.t('commandPalette.searchIn');
+				return $_('pureAdmin.commandPalette.searchIn');
 			case 'context-search':
-				return `${i18nStore.t('commandPalette.search')} ${activeContext?.name || ''}`;
+				return `${$_('pureAdmin.commandPalette.search')} ${activeContext?.name || ''}`;
 			case 'global-search':
-				return i18nStore.t('commandPalette.search');
+				return $_('pureAdmin.commandPalette.search');
 			default:
 				return '';
 		}
@@ -702,16 +703,16 @@
 	function getEmptyMessage(): string {
 		switch (mode) {
 			case 'idle':
-				return i18nStore.t('commandPalette.idleMessage');
+				return $_('pureAdmin.commandPalette.idleMessage');
 			case 'command-list':
-				return i18nStore.t('commandPalette.noMatchingCommands');
+				return $_('pureAdmin.commandPalette.noMatchingCommands');
 			case 'command-step':
-				return currentStep()?.placeholder || i18nStore.t('commandPalette.typeToSearch');
+				return currentStep()?.placeholder || $_('pureAdmin.commandPalette.typeToSearch');
 			case 'context-list':
-				return i18nStore.t('commandPalette.noMatchingContexts');
+				return $_('pureAdmin.commandPalette.noMatchingContexts');
 			case 'context-search':
 			case 'global-search':
-				return i18nStore.t('commandPalette.noResults');
+				return $_('pureAdmin.commandPalette.noResults');
 			default:
 				return '';
 		}
@@ -753,7 +754,7 @@
 			{#if loading}
 				<div class="pa-command-palette__loader">
 					<div class="pa-spinner pa-spinner--sm pa-spinner--primary"></div>
-					<span>{i18nStore.t('commandPalette.loading')}</span>
+					<span>{$_('pureAdmin.commandPalette.loading')}</span>
 				</div>
 			{:else if error}
 				{#if errorSnippet}
@@ -796,7 +797,7 @@
 			<!-- Preview (for commands) -->
 			{#if preview && mode === 'command-step'}
 				<div class="pa-command-palette__preview">
-					<span class="pa-command-palette__preview-label">{i18nStore.t('commandPalette.preview')}</span>
+					<span class="pa-command-palette__preview-label">{$_('pureAdmin.commandPalette.preview')}</span>
 					{preview}
 				</div>
 			{/if}
@@ -806,19 +807,19 @@
 		<div class="pa-command-palette__footer">
 			<div class="pa-command-palette__hint">
 				<span class="pa-command-palette__key">↑↓</span>
-				<span>{i18nStore.t('commandPalette.navigate')}</span>
+				<span>{$_('pureAdmin.commandPalette.navigate')}</span>
 			</div>
 			<div class="pa-command-palette__hint">
 				<span class="pa-command-palette__key">↵</span>
-				<span>{i18nStore.t('commandPalette.select')}</span>
+				<span>{$_('pureAdmin.commandPalette.select')}</span>
 			</div>
 			<div class="pa-command-palette__hint">
 				<span class="pa-command-palette__key">Tab</span>
-				<span>{i18nStore.t('commandPalette.complete')}</span>
+				<span>{$_('pureAdmin.commandPalette.complete')}</span>
 			</div>
 			<div class="pa-command-palette__hint">
 				<span class="pa-command-palette__key">Esc</span>
-				<span>{i18nStore.t('commandPalette.close')}</span>
+				<span>{$_('pureAdmin.commandPalette.close')}</span>
 			</div>
 		</div>
 	</div>

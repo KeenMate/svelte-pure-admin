@@ -6,7 +6,7 @@
 
 	type ButtonVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark';
 	type ButtonSize = 'xs' | 'sm' | 'lg' | 'xl';
-	type ButtonAlign = 'left' | 'right' | 'center' | 'justify';
+	type ButtonAlign = 'start' | 'end' | 'center' | 'justify';
 
 	/**
 	 * Note: Fixed width buttons should use utility classes (e.g., `class="wr-5 minwr-5"`)
@@ -18,17 +18,19 @@
 		/** Button size */
 		size?: ButtonSize;
 		/** Outline style */
-		outline?: boolean;
+		isOutline?: boolean;
 		/** Block (full width) button */
-		block?: boolean;
+		isBlock?: boolean;
 		/** Icon-only button (no text) */
-		iconOnly?: boolean;
+		isIconOnly?: boolean;
 		/** Loading state */
-		loading?: boolean;
+		isLoading?: boolean;
 		/** Ripple effect on click */
-		ripple?: boolean;
+		isRipple?: boolean;
 		/** Button content alignment */
 		align?: ButtonAlign;
+		/** Icon position relative to children text */
+		iconPosition?: 'start' | 'end';
 		/** Used in input group (adds pa-input-group__button class) */
 		isInputGroupButton?: boolean;
 		/** Disabled state */
@@ -42,7 +44,7 @@
 		/** Click handler */
 		onclick?: (event: MouseEvent) => void;
 		/** Title attribute (tooltip) */
-		title?: string;
+		titleText?: string;
 		/** Additional CSS classes */
 		class?: string;
 		/** Icon snippet (renders in pa-btn__icon) */
@@ -54,19 +56,20 @@
 	let {
 		variant = 'primary',
 		size,
-		outline = false,
-		block = false,
-		iconOnly = false,
-		loading = false,
-		ripple = false,
+		isOutline = false,
+		isBlock = false,
+		isIconOnly = false,
+		isLoading = false,
+		isRipple = false,
 		align,
+		iconPosition = 'start',
 		isInputGroupButton = false,
 		disabled = false,
 		type = 'button',
 		href,
 		target,
 		onclick,
-		title,
+		titleText,
 		class: className = '',
 		icon,
 		children
@@ -77,7 +80,7 @@
 		const base = ['pa-btn'];
 
 		// Variant
-		if (outline) {
+		if (isOutline) {
 			base.push(`pa-btn--outline-${variant}`);
 		} else {
 			base.push(`pa-btn--${variant}`);
@@ -87,10 +90,10 @@
 		if (size) base.push(`pa-btn--${size}`);
 
 		// Modifiers
-		if (block) base.push('pa-btn--block');
-		if (iconOnly) base.push('pa-btn--icon-only');
-		if (loading) base.push('pa-btn--loading');
-		if (ripple) base.push('pa-btn--ripple');
+		if (isBlock) base.push('pa-btn--block');
+		if (isIconOnly) base.push('pa-btn--icon-only');
+		if (isLoading) base.push('pa-btn--loading');
+		if (isRipple) base.push('pa-btn--ripple');
 
 		// Alignment
 		if (align) base.push(`pa-btn--align-${align}`);
@@ -109,39 +112,49 @@
 	<a
 		{href}
 		{target}
-		{title}
+		title={titleText}
 		class={classes()}
-		class:disabled={disabled || loading}
+		class:disabled={disabled || isLoading}
 		{onclick}
-		data-ripple={ripple ? true : undefined}
+		data-ripple={isRipple ? true : undefined}
 	>
-		{#if loading}
+		{#if isLoading}
 			<span class="pa-btn__spinner"></span>
 		{/if}
-		{#if icon}
+		{#if icon && iconPosition !== 'end'}
 			<span class="pa-btn__icon">
 				{@render icon()}
 			</span>
 		{/if}
 		{@render children?.()}
+		{#if icon && iconPosition === 'end'}
+			<span class="pa-btn__icon">
+				{@render icon()}
+			</span>
+		{/if}
 	</a>
 {:else}
 	<button
 		{type}
-		{title}
-		disabled={disabled || loading}
+		title={titleText}
+		disabled={disabled || isLoading}
 		class={classes()}
 		{onclick}
-		data-ripple={ripple ? true : undefined}
+		data-ripple={isRipple ? true : undefined}
 	>
-		{#if loading}
+		{#if isLoading}
 			<span class="pa-btn__spinner"></span>
 		{/if}
-		{#if icon}
+		{#if icon && iconPosition !== 'end'}
 			<span class="pa-btn__icon">
 				{@render icon()}
 			</span>
 		{/if}
 		{@render children?.()}
+		{#if icon && iconPosition === 'end'}
+			<span class="pa-btn__icon">
+				{@render icon()}
+			</span>
+		{/if}
 	</button>
 {/if}

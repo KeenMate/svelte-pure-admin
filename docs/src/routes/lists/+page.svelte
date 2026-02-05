@@ -8,7 +8,7 @@
 	<!-- Left Column -->
 	<Column size="100" lg="1-2">
 		<!-- Basic Unordered Lists -->
-		<Card title="Basic Unordered Lists" class="mb-8">
+		<Card titleText="Basic Unordered Lists" class="mb-8">
 
 			<Heading level={4}>Default Spacing</Heading>
 			<BasicList>
@@ -36,7 +36,7 @@
 		</Card>
 
 		<!-- Ordered Lists -->
-		<Card title="Ordered Lists" class="mb-8">
+		<Card titleText="Ordered Lists" class="mb-8">
 
 			<Heading level={4}>Numeric (Default)</Heading>
 			<OrderedList>
@@ -64,7 +64,7 @@
 		</Card>
 
 		<!-- Definition Lists -->
-		<Card title="Definition Lists" class="mb-8">
+		<Card titleText="Definition Lists" class="mb-8">
 
 			<Heading level={4}>Standard Layout</Heading>
 			<DefinitionList>
@@ -79,7 +79,7 @@
 			</DefinitionList>
 
 			<Heading level={4} class="mt-8">Inline Layout</Heading>
-			<DefinitionList inline>
+			<DefinitionList isInline>
 				<dt>Status</dt>
 				<dd>Active</dd>
 				<dt>Created</dt>
@@ -95,10 +95,10 @@
 	<!-- Right Column -->
 	<Column size="100" lg="1-2">
 		<!-- Icon Lists -->
-		<Card title="Icon Lists" class="mb-8">
+		<Card titleText="Icon Lists" class="mb-8">
 
 			<Heading level={4}>Success (Checkmarks)</Heading>
-			<BasicList icon>
+			<BasicList hasIcon>
 				<li>SSL/TLS encryption enabled</li>
 				<li>Automatic daily backups</li>
 				<li>99.9% uptime SLA guarantee</li>
@@ -106,14 +106,14 @@
 			</BasicList>
 
 			<Heading level={4} class="mt-8">Danger (X marks)</Heading>
-			<BasicList icon iconVariant="danger">
+			<BasicList hasIcon iconVariant="danger">
 				<li>Deprecated API endpoint</li>
 				<li>Unsupported browser version</li>
 				<li>Missing required permissions</li>
 			</BasicList>
 
 			<Heading level={4} class="mt-8">Info (Arrows)</Heading>
-			<BasicList icon iconVariant="info">
+			<BasicList hasIcon iconVariant="info">
 				<li>Navigate to Settings panel</li>
 				<li>Select Integration options</li>
 				<li>Choose your provider</li>
@@ -121,7 +121,7 @@
 			</BasicList>
 
 			<Heading level={4} class="mt-8">Warning (Exclamation)</Heading>
-			<BasicList icon iconVariant="warning">
+			<BasicList hasIcon iconVariant="warning">
 				<li>Rate limit approaching threshold</li>
 				<li>Certificate expires in 30 days</li>
 				<li>Low disk space warning</li>
@@ -129,10 +129,10 @@
 		</Card>
 
 		<!-- Bordered & Striped Lists -->
-		<Card title="Bordered & Striped Lists" class="mb-8">
+		<Card titleText="Bordered & Striped Lists" class="mb-8">
 
 			<Heading level={4}>Bordered List</Heading>
-			<BasicList bordered>
+			<BasicList isBordered>
 				<li>User Management Module</li>
 				<li>Content Management System</li>
 				<li>Analytics Dashboard</li>
@@ -141,7 +141,7 @@
 			</BasicList>
 
 			<Heading level={4} class="mt-8">Striped List</Heading>
-			<BasicList striped>
+			<BasicList isStriped>
 				<li>Monthly subscription: $99/month</li>
 				<li>Annual subscription: $990/year (2 months free)</li>
 				<li>Enterprise plan: Custom pricing</li>
@@ -150,10 +150,10 @@
 		</Card>
 
 		<!-- Inline & Unstyled Lists -->
-		<Card title="Inline & Unstyled Lists" class="mb-8">
+		<Card titleText="Inline & Unstyled Lists" class="mb-8">
 
 			<Heading level={4}>Inline List</Heading>
-			<BasicList inline>
+			<BasicList isInline>
 				<li><a href="#home">Home</a></li>
 				<li><a href="#about">About</a></li>
 				<li><a href="#services">Services</a></li>
@@ -161,7 +161,7 @@
 			</BasicList>
 
 			<Heading level={4} class="mt-8">Unstyled List</Heading>
-			<BasicList unstyled>
+			<BasicList isUnstyled>
 				<li>No bullets or numbers</li>
 				<li>Just plain text items</li>
 				<li>Perfect for custom styling</li>
@@ -170,19 +170,19 @@
 		</Card>
 
 		<!-- Complex Lists -->
-		<Card title="Complex Lists with Avatars" class="mb-8" noPadding>
+		<Card titleText="Complex Lists with Avatars" class="mb-8" hasPadding={false}>
 
 			<List>
-				<ListItem avatar="👤" title="Sarah Johnson" subtitle="Product Manager" meta="Last active: 2 hours ago" />
-				<ListItem avatar="👤" title="Michael Chen" subtitle="Lead Developer" meta="Last active: 15 minutes ago" />
-				<ListItem avatar="👤" title="Emily Rodriguez" subtitle="UX Designer" meta="Last active: 1 day ago" />
+				<ListItem avatar="👤" titleText="Sarah Johnson" subtitleText="Product Manager" metaText="Last active: 2 hours ago" />
+				<ListItem avatar="👤" titleText="Michael Chen" subtitleText="Lead Developer" metaText="Last active: 15 minutes ago" />
+				<ListItem avatar="👤" titleText="Emily Rodriguez" subtitleText="UX Designer" metaText="Last active: 1 day ago" />
 			</List>
 		</Card>
 	</Column>
 </Grid>
 
 <!-- Implementation Notes -->
-<Card title="Implementation Guide">
+<Card titleText="Implementation Guide">
 
 	<Heading level={4}>Available Classes</Heading>
 

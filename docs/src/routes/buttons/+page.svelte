@@ -66,7 +66,7 @@
 <Grid>
 	<!-- Basic Buttons -->
 	<Column size="100" lg="1-2">
-		<Card title="Button Variants">
+		<Card titleText="Button Variants">
 			<ButtonGroup>
 				<Button variant="primary">Primary</Button>
 				<Button variant="secondary">Secondary</Button>
@@ -82,7 +82,7 @@
 
 	<!-- Button Sizes -->
 	<Column size="100" lg="1-2">
-		<Card title="Button Sizes">
+		<Card titleText="Button Sizes">
 			<ButtonGroup>
 				<Button variant="primary" size="xs">Extra Small</Button>
 				<Button variant="primary" size="sm">Small</Button>
@@ -98,35 +98,35 @@
 <Grid>
 	<!-- Outline Buttons -->
 	<Column size="100" lg="1-2">
-		<Card title="Outline Buttons">
+		<Card titleText="Outline Buttons">
 			<ButtonGroup>
-				<Button variant="primary" outline>Primary</Button>
-				<Button variant="secondary" outline>Secondary</Button>
-				<Button variant="success" outline>Success</Button>
-				<Button variant="warning" outline>Warning</Button>
-				<Button variant="danger" outline>Danger</Button>
-				<Button variant="info" outline>Info</Button>
+				<Button variant="primary" isOutline>Primary</Button>
+				<Button variant="secondary" isOutline>Secondary</Button>
+				<Button variant="success" isOutline>Success</Button>
+				<Button variant="warning" isOutline>Warning</Button>
+				<Button variant="danger" isOutline>Danger</Button>
+				<Button variant="info" isOutline>Info</Button>
 			</ButtonGroup>
 		</Card>
 	</Column>
 
 	<!-- Button States -->
 	<Column size="100" lg="1-2">
-		<Card title="Button States">
+		<Card titleText="Button States">
 			<ButtonGroup>
 				<Button variant="primary">Normal</Button>
 				<Button variant="primary" disabled>Disabled</Button>
-				<Button variant="primary" loading>Loading...</Button>
+				<Button variant="primary" isLoading>Loading...</Button>
 			</ButtonGroup>
 		</Card>
 	</Column>
 </Grid>
 
 <!-- Block Buttons -->
-<Card title="Block Buttons">
+<Card titleText="Block Buttons">
 	<ButtonGroup vertical>
-		<Button variant="primary" block>Block Level Button</Button>
-		<Button variant="secondary" block>Another Block Button</Button>
+		<Button variant="primary" isBlock>Block Level Button</Button>
+		<Button variant="secondary" isBlock>Another Block Button</Button>
 	</ButtonGroup>
 </Card>
 
@@ -134,12 +134,12 @@
 <Grid>
 	<!-- Basic Button Groups -->
 	<Column size="100" lg="1-2">
-		<Card title="Button Groups - Basic">
+		<Card titleText="Button Groups - Basic">
 			<Heading level={4}>Horizontal (default)</Heading>
 			<ButtonGroup>
-				<Button variant="secondary">Left</Button>
+				<Button variant="secondary">Start</Button>
 				<Button variant="secondary">Middle</Button>
-				<Button variant="secondary">Right</Button>
+				<Button variant="secondary">End</Button>
 			</ButtonGroup>
 
 			<Heading level={4} class="mt-2">Vertical</Heading>
@@ -162,7 +162,7 @@
 
 	<!-- Gap Variants -->
 	<Column size="100" lg="1-2">
-		<Card title="Button Groups - Gap Sizes">
+		<Card titleText="Button Groups - Gap Sizes">
 			<Heading level={4}>Semantic Gap Classes</Heading>
 			<Paragraph class="text-muted mb-1"><code>gap-xs</code> (4px)</Paragraph>
 			<ButtonGroup class="gap-xs mb-1">
@@ -214,11 +214,11 @@
 <Grid>
 	<!-- Vertical Alignment -->
 	<Column size="100" lg="1-2">
-		<Card title="Vertical Alignment">
+		<Card titleText="Vertical Alignment">
 			<Paragraph class="text-muted mb-md">Use semantic gap classes (<code>gap-sm</code>, <code>gap-md</code>, <code>gap-lg</code>, <code>gap-xl</code>) to control vertical spacing between buttons.</Paragraph>
 			<Grid>
 				<Column size="50" xl="25">
-					<Heading level={4}>Left <code>gap-sm</code></Heading>
+					<Heading level={4}>Start <code>gap-sm</code></Heading>
 					<ButtonGroup vertical class="gap-sm">
 						<Button variant="secondary" class="text-truncate">Short</Button>
 						<Button variant="secondary" class="text-truncate">Medium Btn</Button>
@@ -255,7 +255,7 @@
 
 	<!-- Responsive Direction -->
 	<Column size="100" lg="1-2">
-		<Card title="Responsive Direction">
+		<Card titleText="Responsive Direction">
 			<Heading level={4}>Horizontal → Vertical at md (768px)</Heading>
 			<Paragraph class="text-muted mb-1">Resize window to see change</Paragraph>
 			<ButtonGroup mdVertical>
@@ -284,7 +284,7 @@
 </Grid>
 
 <!-- Text Truncation -->
-<Card title="Text Truncation">
+<Card titleText="Text Truncation">
 	<Paragraph class="text-muted mb-1">Use <code>.text-truncate</code> with a fixed width (<code>.wr-*</code>) to truncate long text with ellipsis</Paragraph>
 	<div class="component-showcase">
 		<Tooltip text="This is a very long button text that will be truncated with ellipsis" position="bottom" multiline>
@@ -309,7 +309,7 @@
 <Grid>
 	<!-- Button with Icons -->
 	<Column size="100" lg="1-2">
-		<Card title="Buttons with Text Icons">
+		<Card titleText="Buttons with Text Icons">
 			<Paragraph class="mb-1">
 				Buttons with icons are automatically left-aligned with fixed-width icon container:
 			</Paragraph>
@@ -336,7 +336,7 @@
 
 	<!-- Icon Only Buttons -->
 	<Column size="100" lg="1-2">
-		<Card title="Icon Only Buttons">
+		<Card titleText="Icon Only Buttons">
 			<Paragraph class="mb-2">Icon-only button sizes (XS → XL):</Paragraph>
 			<Grid class="mb-2">
 				<Column size="100">
@@ -449,7 +449,7 @@
 </Grid>
 
 <!-- Fixed Width Buttons -->
-<Card title="Fixed Width Buttons">
+<Card titleText="Fixed Width Buttons">
 	<Paragraph class="mb-1">
 		Use <code>minwr-*</code> + <code>maxwr-*</code> to constrain width. Add <code>text-truncate</code> on an inner span for ellipsis:
 	</Paragraph>
@@ -481,64 +481,64 @@
 <Grid>
 	<!-- Left Column: Text Icons -->
 	<Column size="100" lg="1-2">
-		<Card title="Button Text Alignment">
-			<Paragraph class="mb-1">Control text alignment within fixed-width buttons:</Paragraph>
+		<Card titleText="Button Text Alignment">
+			<Paragraph class="mb-1">Control text alignment within fixed-width buttons. Note the varied text lengths to show the effect:</Paragraph>
 
-			<Heading level={4}>Left Aligned (icon has no left padding)</Heading>
+			<Heading level={4}>Inline Start Aligned</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" class="wr-8" align="left">
+				<Button variant="primary" class="wr-15" align="start">
 					{#snippet icon()}✓{/snippet}
-					Save
+					OK
 				</Button>
-				<Button variant="success" class="wr-8" align="left">
+				<Button variant="success" class="wr-15" align="start">
 					{#snippet icon()}→{/snippet}
 					Continue
 				</Button>
-				<Button variant="secondary" class="wr-8" align="left">
+				<Button variant="secondary" class="wr-15" align="start">
 					{#snippet icon()}×{/snippet}
-					Cancel
+					Discard All Changes
 				</Button>
 			</ButtonGroup>
 
-			<Heading level={4} class="mt-6">Right Aligned (icon has no right padding)</Heading>
+			<Heading level={4} class="mt-6">Inline End Aligned</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" class="wr-8" align="right">
-					Save
+				<Button variant="primary" class="wr-15" align="end" iconPosition="end">
 					{#snippet icon()}✓{/snippet}
+					OK
 				</Button>
-				<Button variant="success" class="wr-8" align="right">
-					Continue
+				<Button variant="success" class="wr-15" align="end" iconPosition="end">
 					{#snippet icon()}→{/snippet}
+					Continue
 				</Button>
-				<Button variant="secondary" class="wr-8" align="right">
-					Cancel
+				<Button variant="secondary" class="wr-15" align="end" iconPosition="end">
 					{#snippet icon()}×{/snippet}
+					Discard All Changes
 				</Button>
 			</ButtonGroup>
 
 			<Heading level={4} class="mt-6">Center Aligned</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" class="wr-8" align="center">
+				<Button variant="primary" class="wr-15" align="center">
 					{#snippet icon()}✓{/snippet}
-					Save
+					OK
 				</Button>
-				<Button variant="success" class="wr-8" align="center">Continue</Button>
-				<Button variant="secondary" class="wr-8" align="center">Cancel</Button>
+				<Button variant="success" class="wr-15" align="center">Continue</Button>
+				<Button variant="secondary" class="wr-15" align="center">Discard All Changes</Button>
 			</ButtonGroup>
 
 			<Heading level={4} class="mt-6">Justified</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" class="wr-8" align="justify">
+				<Button variant="primary" class="wr-15" align="justify">
 					{#snippet icon()}✓{/snippet}
-					Save
+					OK
 				</Button>
-				<Button variant="success" class="wr-8" align="justify">
+				<Button variant="success" class="wr-15" align="justify">
 					{#snippet icon()}→{/snippet}
 					Continue
 				</Button>
-				<Button variant="secondary" class="wr-8" align="justify">
+				<Button variant="secondary" class="wr-15" align="justify">
 					{#snippet icon()}×{/snippet}
-					Cancel
+					Discard All Changes
 				</Button>
 			</ButtonGroup>
 		</Card>
@@ -546,68 +546,68 @@
 
 	<!-- Right Column: Font Awesome Icons -->
 	<Column size="100" lg="1-2">
-		<Card title="Font Awesome Icons">
-			<Paragraph class="mb-1">Demonstrating Font Awesome icons with alignments:</Paragraph>
+		<Card titleText="Font Awesome Icons">
+			<Paragraph class="mb-1">Font Awesome icons with varied text lengths to show alignment:</Paragraph>
 
-			<Heading level={4}>Left Aligned</Heading>
+			<Heading level={4}>Inline Start Aligned</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" class="wr-10" align="left">
+				<Button variant="primary" class="wr-15" align="start">
 					{#snippet icon()}<i class="fa-solid fa-floppy-disk"></i>{/snippet}
-					Save Changes
+					Save
 				</Button>
-				<Button variant="success" class="wr-10" align="left">
+				<Button variant="success" class="wr-15" align="start">
 					{#snippet icon()}<i class="fa-solid fa-check"></i>{/snippet}
-					Approve
+					Approve Request
 				</Button>
-				<Button variant="danger" class="wr-10" align="left">
+				<Button variant="danger" class="wr-15" align="start">
 					{#snippet icon()}<i class="fa-solid fa-trash"></i>{/snippet}
-					Delete
+					Delete Selected Items
 				</Button>
 			</ButtonGroup>
 
-			<Heading level={4} class="mt-6">Right Aligned</Heading>
+			<Heading level={4} class="mt-6">Inline End Aligned</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" class="wr-10" align="right">
-					Save Changes
+				<Button variant="primary" class="wr-15" align="end" iconPosition="end">
 					{#snippet icon()}<i class="fa-solid fa-floppy-disk"></i>{/snippet}
+					Save
 				</Button>
-				<Button variant="success" class="wr-10" align="right">
-					Continue
+				<Button variant="success" class="wr-15" align="end" iconPosition="end">
 					{#snippet icon()}<i class="fa-solid fa-arrow-right"></i>{/snippet}
+					Approve Request
 				</Button>
-				<Button variant="secondary" class="wr-10" align="right">
-					Settings
+				<Button variant="secondary" class="wr-15" align="end" iconPosition="end">
 					{#snippet icon()}<i class="fa-solid fa-gear"></i>{/snippet}
+					Delete Selected Items
 				</Button>
 			</ButtonGroup>
 
 			<Heading level={4} class="mt-6">Center Aligned</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" class="wr-10" align="center">
+				<Button variant="primary" class="wr-15" align="center">
 					{#snippet icon()}<i class="fa-solid fa-upload"></i>{/snippet}
-					Upload File
+					Upload
 				</Button>
-				<Button variant="success" class="wr-10" align="center">
+				<Button variant="success" class="wr-15" align="center">
 					{#snippet icon()}<i class="fa-solid fa-plus"></i>{/snippet}
-					Add New
+					Add New Item
 				</Button>
-				<Button variant="info" class="wr-10" align="center">
+				<Button variant="info" class="wr-15" align="center">
 					{#snippet icon()}<i class="fa-solid fa-magnifying-glass"></i>{/snippet}
-					Search
+					Search Entire Database
 				</Button>
 			</ButtonGroup>
 
 			<Heading level={4} class="mt-6">Justified</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" class="wr-10" align="justify">
+				<Button variant="primary" class="wr-15" align="justify">
 					{#snippet icon()}<i class="fa-solid fa-user"></i>{/snippet}
 					Profile
 				</Button>
-				<Button variant="success" class="wr-10" align="justify">
+				<Button variant="success" class="wr-15" align="justify">
 					{#snippet icon()}<i class="fa-solid fa-envelope"></i>{/snippet}
 					Messages
 				</Button>
-				<Button variant="danger" class="wr-10" align="justify">
+				<Button variant="danger" class="wr-15" align="justify">
 					{#snippet icon()}<i class="fa-solid fa-right-from-bracket"></i>{/snippet}
 					Logout
 				</Button>
@@ -620,21 +620,21 @@
 <Grid>
 	<!-- Ripple Effect Buttons -->
 	<Column size="100" lg="1-2">
-		<Card title="Ripple Effect Buttons">
+		<Card titleText="Ripple Effect Buttons">
 			<Paragraph class="mb-1">Click buttons to see ripple animation effect:</Paragraph>
 			<ButtonGroup>
-				<Button variant="primary" ripple>Primary Ripple</Button>
-				<Button variant="secondary" ripple>Secondary Ripple</Button>
-				<Button variant="success" ripple>Success Ripple</Button>
-				<Button variant="warning" ripple>Warning Ripple</Button>
-				<Button variant="danger" ripple>Danger Ripple</Button>
+				<Button variant="primary" isRipple>Primary Ripple</Button>
+				<Button variant="secondary" isRipple>Secondary Ripple</Button>
+				<Button variant="success" isRipple>Success Ripple</Button>
+				<Button variant="warning" isRipple>Warning Ripple</Button>
+				<Button variant="danger" isRipple>Danger Ripple</Button>
 			</ButtonGroup>
 		</Card>
 	</Column>
 
 	<!-- Loading State Buttons -->
 	<Column size="100" lg="1-2">
-		<Card title="Loading State Buttons">
+		<Card titleText="Loading State Buttons">
 			<Paragraph class="mb-1">Click buttons to simulate loading states:</Paragraph>
 			<ButtonGroup>
 				<button class="pa-btn pa-btn--primary pa-btn--ripple" data-loading-demo data-ripple>
@@ -658,7 +658,7 @@
 </Grid>
 
 <!-- Usage Examples -->
-<Card title="Usage Guide">
+<Card titleText="Usage Guide">
 	<Heading level={4}>Ripple Effect</Heading>
 	<Paragraph>
 		Add <code>pa-btn--ripple</code> class and <code>data-ripple</code> attribute to any button for
@@ -686,7 +686,7 @@
 </Card>
 
 <!-- CSS Classes Reference -->
-<Card title="CSS Classes Reference">
+<Card titleText="CSS Classes Reference">
 	<Heading level={4}>Button Base</Heading>
 	<BasicList class="pa-list-basic--compact">
 		<li><code>pa-btn</code> - Base button styling</li>
@@ -726,14 +726,14 @@
 	<BasicList class="pa-list-basic--compact">
 		<li><code>pa-btn--loading</code> - Loading state with spinner</li>
 		<li><code>pa-btn--ripple</code> - Enable ripple click effect</li>
-		<li><code>pa-btn--block</code> - Full width block button</li>
+		<li><code>pa-btn--block</code> - Full width isBlock button</li>
 		<li><code>pa-btn--icon-only</code> - Square icon-only button</li>
 	</BasicList>
 
 	<Heading level={4} class="mt-4">Content Alignment</Heading>
 	<BasicList class="pa-list-basic--compact">
-		<li><code>pa-btn--align-left</code> - Left-align content</li>
-		<li><code>pa-btn--align-right</code> - Right-align content</li>
+		<li><code>pa-btn--align-start</code> - Inline-start align content (RTL: right)</li>
+		<li><code>pa-btn--align-end</code> - Inline-end align content (RTL: left)</li>
 		<li><code>pa-btn--align-center</code> - Center-align content</li>
 		<li><code>pa-btn--align-justify</code> - Space-between content</li>
 	</BasicList>
@@ -754,7 +754,7 @@
 	<Heading level={4} class="mt-4">Button Group Alignment (vertical only)</Heading>
 	<BasicList class="pa-list-basic--compact">
 		<li><code>pa-btn-group--center</code> - Center-align buttons</li>
-		<li><code>pa-btn-group--end</code> - Right-align buttons</li>
+		<li><code>pa-btn-group--end</code> - End-align buttons</li>
 		<li><code>pa-btn-group--stretch</code> - Full width buttons</li>
 	</BasicList>
 

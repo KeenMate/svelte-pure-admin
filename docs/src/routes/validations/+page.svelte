@@ -36,7 +36,7 @@
 <Paragraph>Different UI patterns for displaying form validation errors. Choose the pattern that best fits your UX requirements.</Paragraph>
 
 <!-- Pattern 1: Inline Field Errors -->
-<Card title="1. Inline Field Errors">
+<Card titleText="1. Inline Field Errors">
 	<Paragraph class="mb-3">The most common pattern. Error messages appear directly below each field. Best for forms where users need immediate field-level feedback.</Paragraph>
 
 	<Form class="pa-form">
@@ -78,13 +78,13 @@
 </Card>
 
 <!-- Pattern 2: Summary Block -->
-<Card title="2. Summary Block (Top of Form)">
+<Card titleText="2. Summary Block (Top of Form)">
 	<Paragraph class="mb-3">All errors collected in a single alert at the top. Good for accessibility and giving users a quick overview of all issues.</Paragraph>
 
 	<Form class="pa-form">
 		<Alert variant="danger" class="mb-4">
 			<Strong>Please fix the following errors:</Strong>
-			<BasicList class="mt-2 mb-0">
+			<BasicList class="mt-0 mb-0">
 				<li>First name is required</li>
 				<li>Email address is not valid</li>
 				<li>Password must contain at least one uppercase letter</li>
@@ -128,18 +128,18 @@
 	</Form>
 
 	<Callout variant="info" class="mt-4">
-		<Strong>Best Practice:</Strong> Combine summary block with inline errors for maximum accessibility. Screen readers can announce all errors at once.
+		<Strong>Best Practice:</Strong> Combine summary isBlock with isInline errors for maximum accessibility. Screen readers can announce all errors at once.
 	</Callout>
 </Card>
 
 <!-- Pattern 3: Inline + Summary Combined -->
-<Card title="3. Combined: Summary + Inline (Recommended)">
-	<Paragraph class="mb-3">The best of both worlds. Summary for overview, inline for specific guidance. Most accessible approach.</Paragraph>
+<Card titleText="3. Combined: Summary + Inline (Recommended)">
+	<Paragraph class="mb-3">The best of both worlds. Summary for overview, isInline for specific guidance. Most accessible approach.</Paragraph>
 
 	<Form class="pa-form">
 		<Alert variant="danger" class="mb-4">
 			<Strong>2 errors found:</Strong>
-			<BasicList class="mt-2 mb-0">
+			<BasicList class="mt-0 mb-0">
 				<li><Link href="#card-number">Card number</Link> - Invalid card number format</li>
 				<li><Link href="#cvv">CVV</Link> - Must be 3 or 4 digits</li>
 			</BasicList>
@@ -176,7 +176,7 @@
 </Card>
 
 <!-- Pattern 4: Border + Icon Only -->
-<Card title="4. Border + Icon Only (Minimal)">
+<Card titleText="4. Border + Icon Only (Minimal)">
 	<Paragraph class="mb-3">Space-efficient but less informative. Red border and icon indicate error without text message. User must infer the issue or hover/click for details.</Paragraph>
 
 	<Form class="pa-form">
@@ -187,7 +187,7 @@
 					<InputGroup>
 						<Input type="text" value="" state="error" />
 						<InputGroupAppend>
-							<Text variant="danger" title="This field is required">!</Text>
+							<Text variant="danger" titleText="This field is required">!</Text>
 						</InputGroupAppend>
 					</InputGroup>
 				</FormGroup>
@@ -198,7 +198,7 @@
 					<InputGroup>
 						<Input type="email" value="bad@" state="error" />
 						<InputGroupAppend>
-							<Text variant="danger" title="Invalid email format">!</Text>
+							<Text variant="danger" titleText="Invalid email format">!</Text>
 						</InputGroupAppend>
 					</InputGroup>
 				</FormGroup>
@@ -223,7 +223,7 @@
 </Card>
 
 <!-- Pattern 5: Right-side Indicators -->
-<Card title="5. Right-side Indicators">
+<Card titleText="5. Right-side Indicators">
 	<Paragraph class="mb-3">Error text positioned to the right of the input. Works well in horizontal form layouts with more screen real estate.</Paragraph>
 
 	<Form class="pa-form">
@@ -260,7 +260,7 @@
 </Card>
 
 <!-- Pattern 6: Helper Text Transforms to Error -->
-<Card title="6. Helper Text Transforms to Error">
+<Card titleText="6. Helper Text Transforms to Error">
 	<Paragraph class="mb-3">Helper text below the field transforms into error text when validation fails. Maintains consistent spacing.</Paragraph>
 
 	<Form class="pa-form">
@@ -284,7 +284,7 @@
 </Card>
 
 <!-- Pattern 7: Toast Notifications -->
-<Card title="7. Toast Notifications">
+<Card titleText="7. Toast Notifications">
 	<Paragraph class="mb-3">Validation errors shown as toast notifications. Best for submit-level errors or async validation (e.g., server-side checks).</Paragraph>
 
 	<Form class="pa-form">
@@ -308,9 +308,9 @@
 	</Form>
 
 	<!-- Simulated toast preview -->
-	<Card class="mt-4 bg-light" noPadding={false}>
+	<Card class="mt-4 bg-light" hasPadding>
 		<Paragraph class="text-muted mb-2"><Em>Toast preview (normally appears in corner):</Em></Paragraph>
-		<Toast variant="danger" title="Validation Failed" message="Invalid credentials. Please check your email and password." show={true} duration={0} />
+		<Toast variant="danger" titleText="Validation Failed" messageText="Invalid credentials. Please check your email and password." show={true} duration={0} />
 	</Card>
 
 	<Callout variant="warning" class="mt-4">
@@ -319,12 +319,12 @@
 </Card>
 
 <!-- Pattern 8: Validation Timing -->
-<Card title="8. Validation Timing Strategies">
+<Card titleText="8. Validation Timing Strategies">
 	<Paragraph class="mb-3">When to trigger validation affects user experience significantly.</Paragraph>
 
 	<Grid>
 		<Column size="100" md="1-3">
-			<Card class="pa-card--bordered h-100" variant="warning" title="On Input (Real-time)">
+			<Card class="pa-card--bordered h-100" variant="warning" titleText="On Input (Real-time)">
 				<FormGroup state="error">
 					<FormLabel>Email</FormLabel>
 					<Input type="email" value="user@" state="error" placeholder="Type to see validation..." />
@@ -334,7 +334,7 @@
 			</Card>
 		</Column>
 		<Column size="100" md="1-3">
-			<Card class="pa-card--bordered h-100" variant="success" title="On Blur (Recommended)">
+			<Card class="pa-card--bordered h-100" variant="success" titleText="On Blur (Recommended)">
 				<FormGroup state="error">
 					<FormLabel>Email</FormLabel>
 					<Input type="email" value="invalid" state="error" placeholder="Tab out to validate..." />
@@ -344,7 +344,7 @@
 			</Card>
 		</Column>
 		<Column size="100" md="1-3">
-			<Card class="pa-card--bordered h-100" variant="info" title="On Submit">
+			<Card class="pa-card--bordered h-100" variant="info" titleText="On Submit">
 				<FormGroup>
 					<FormLabel>Email</FormLabel>
 					<Input type="email" value="anything" placeholder="No validation until submit" />
@@ -356,7 +356,7 @@
 </Card>
 
 <!-- Pattern 9: Multi-field Validation -->
-<Card title="9. Multi-field / Cross-field Validation">
+<Card titleText="9. Multi-field / Cross-field Validation">
 	<Paragraph class="mb-3">When validation depends on multiple fields (e.g., password confirmation, date ranges).</Paragraph>
 
 	<Form class="pa-form">
@@ -402,7 +402,7 @@
 </Card>
 
 <!-- Pattern 10: Progressive/Stepped Validation -->
-<Card title="10. Progressive Validation (Multi-step Forms)">
+<Card titleText="10. Progressive Validation (Multi-step Forms)">
 	<Paragraph class="mb-3">Validate each step before allowing progression. Prevents users from reaching the end with invalid data.</Paragraph>
 
 	<!-- Step indicators -->
@@ -450,7 +450,7 @@
 </Card>
 
 <!-- CSS Classes Reference -->
-<Card title="CSS Classes Reference">
+<Card titleText="CSS Classes Reference">
 	<Heading level={4}>Form Group States</Heading>
 	<BasicList spacing="compact">
 		<li><Code>pa-form-group--success</Code> - Success state (green)</li>

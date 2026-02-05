@@ -31,23 +31,15 @@
 	import { page } from '$app/stores';
 	import '../app.css';
 
-	// Import default theme statically to prevent FOUC on initial load
-	import '@keenmate/pure-admin-theme-audi';
-
-	// Import theme CSS URLs using Vite's ?url suffix for dynamic switching
-	import audiCssUrl from '@keenmate/pure-admin-theme-audi?url';
-	import corporateCssUrl from '@keenmate/pure-admin-theme-corporate?url';
-	import darkCssUrl from '@keenmate/pure-admin-theme-dark?url';
-	import expressCssUrl from '@keenmate/pure-admin-theme-express?url';
-	import minimalCssUrl from '@keenmate/pure-admin-theme-minimal?url';
-
-	// Available themes for the settings panel
+	// Theme CSS files are served from static/themes/ to avoid Vite's CSS
+	// injection side-effects that occur with ?url imports of CSS-only packages.
+	// The correct theme is loaded via a blocking <link> in app.html (no FOUC).
 	const availableThemes: ThemeOption[] = [
-		{ id: 'audi', name: 'Audi', cssPath: audiCssUrl },
-		{ id: 'corporate', name: 'Corporate', cssPath: corporateCssUrl },
-		{ id: 'dark', name: 'Dark', cssPath: darkCssUrl },
-		{ id: 'express', name: 'Express', cssPath: expressCssUrl },
-		{ id: 'minimal', name: 'Minimal', cssPath: minimalCssUrl }
+		{ id: 'audi', name: 'Audi', cssPath: '/themes/audi.css' },
+		{ id: 'corporate', name: 'Corporate', cssPath: '/themes/corporate.css' },
+		{ id: 'dark', name: 'Dark', cssPath: '/themes/dark.css' },
+		{ id: 'express', name: 'Express', cssPath: '/themes/express.css' },
+		{ id: 'minimal', name: 'Minimal', cssPath: '/themes/minimal.css' }
 	];
 
 	let { data, children } = $props();
@@ -58,6 +50,17 @@
 	let showNotifications = $state(false);
 	let showCommandPalette = $state(false);
 	let activeProfileTab = $state<'profile' | 'favorites'>('profile');
+
+	// ProfilePanel settings from SettingsPanel
+	// These would typically be app-level config, but we wire them up for demo purposes
+	let profileHasAvatar = $state(true);
+	let profileIconOnlyTabs = $state(false);
+
+	// Handle settings changes from SettingsPanel
+	function handleSettingsChange(settings: { profileHasAvatar: boolean; profileIconOnlyTabs: boolean }) {
+		profileHasAvatar = settings.profileHasAvatar;
+		profileIconOnlyTabs = settings.profileIconOnlyTabs;
+	}
 	let favorites = $state([
 		{ id: 1, href: '/', icon: '📊', label: 'Dashboard' },
 		{ id: 2, href: '/forms', icon: '📝', label: 'Forms' },
@@ -136,6 +139,11 @@
 			sidebar.classList.add('pa-layout__sidebar--icon-collapse');
 		}
 
+		// Initialize ProfilePanel settings from localStorage
+		// Note: profileHasAvatar uses inverted storage (profile-no-avatar)
+		profileHasAvatar = localStorage.getItem('profile-no-avatar') !== 'true';
+		profileIconOnlyTabs = localStorage.getItem('profile-icon-only-tabs') === 'true';
+
 		// Cleanup function to remove classes when unmounting
 		return () => {
 			// Remove click outside handler
@@ -184,13 +192,19 @@
 		{ id: 'tables', title: 'Tables', path: '/tables', icon: '📊' },
 		{ id: 'tables-sizing', title: 'Table Sizing', path: '/tables-sizing', icon: '📏' },
 		{ id: 'tables-responsive', title: 'Responsive Tables', path: '/tables-responsive', icon: '📱' },
+		{ id: 'table-filters', title: 'Table Filters', path: '/table-filters', icon: '🔍' },
+		{ id: 'comparison', title: 'Comparison', path: '/comparison', icon: '⚖️' },
+		{ id: 'detail-panel', title: 'Detail Panel', path: '/detail-panel', icon: '📋' },
+		{ id: 'data-display', title: 'Data Display', path: '/data-display', icon: '📄' },
 		{ id: 'timeline-simple', title: 'Timeline Simple', path: '/timeline-simple', icon: '⏱️' },
 		{ id: 'timeline-block', title: 'Timeline Block', path: '/timeline-block', icon: '📦' },
 		{ id: 'timeline-feed', title: 'Timeline Feed', path: '/timeline-feed', icon: '📰' },
 		{ id: 'theme-variables', title: 'Theme Variables', path: '/theme-variables', icon: '🎨' },
 		{ id: 'colors', title: 'Colors', path: '/colors', icon: '🎨' },
 		{ id: 'validations', title: 'Validation Patterns', path: '/validations', icon: '✓' },
-		{ id: 'batch-rpc', title: 'Batch RPC', path: '/batch-rpc', icon: '📡' }
+		{ id: 'batch-rpc', title: 'Batch RPC', path: '/batch-rpc', icon: '📡' },
+		{ id: 'i18n', title: 'Internationalization (i18n)', path: '/i18n', icon: '🌐' },
+		{ id: 'auto-theme', title: 'Auto Theme', path: '/auto-theme', icon: '🌓' }
 	];
 
 	// Commands for the command palette
@@ -363,12 +377,14 @@
 
 <PureAdminProvider config={myConfig}>
 	<PopoverContainer />
-	<SettingsPanel {availableThemes} defaultTheme="audi" />
+	<SettingsPanel {availableThemes} defaultTheme={data.theme} onsettingschange={handleSettingsChange} />
 	<ProfilePanel
 		bind:show={showProfilePanel}
 		name="John Doe"
 		email="john.doe@company.com"
 		role="Administrator"
+		hasAvatar={profileHasAvatar}
+		hasIconOnlyTabs={profileIconOnlyTabs}
 	>
 		{#snippet tabs()}
 			<div class="pa-tabs pa-tabs--full">
@@ -423,14 +439,14 @@
 				{#each favorites as fav (fav.id)}
 					<ProfilePanelFavoriteItem
 						href={fav.href}
-						label={fav.label}
-						onRemove={() => removeFavorite(fav.id)}
+						labelText={fav.label}
+						onremove={() => removeFavorite(fav.id)}
 					>
 						{#snippet icon()}{fav.icon}{/snippet}
 					</ProfilePanelFavoriteItem>
 				{/each}
 				{#snippet addButton()}
-					<Button variant="secondary" size="sm" outline block>
+					<Button variant="secondary" size="sm" isOutline isBlock>
 						+ Add Current Page
 					</Button>
 				{/snippet}
@@ -438,8 +454,8 @@
 		</div>
 
 		{#snippet footer()}
-			<Button variant="secondary" block>Switch Account</Button>
-			<Button variant="danger" block>Sign Out</Button>
+			<Button variant="secondary" isBlock>Switch Account</Button>
+			<Button variant="danger" isBlock>Sign Out</Button>
 		{/snippet}
 	</ProfilePanel>
 	<DialogContainer />
@@ -448,11 +464,11 @@
 		{commands}
 		{contexts}
 		{globalSearch}
-		onGlobalSelect={handleGlobalSelect}
+		onglobalselect={handleGlobalSelect}
 	/>
 
-	<Navbar onBurgerClick={toggleSidebar} showBurger={true} burgerActive={sidebarHidden || sidebarMobileVisible}>
-		{#snippet navLeft()}
+	<Navbar onburgerclick={toggleSidebar} showBurger={true} burgerActive={sidebarHidden || sidebarMobileVisible}>
+		{#snippet navStart()}
 			<NavItem href="/">📊 Dashboard</NavItem>
 			<NavItem href="/components" hasDropdown>
 				🧩 Components
@@ -486,7 +502,7 @@
 		{#snippet search()}
 			<NavbarSearch
 				placeholder="Search..."
-				onClick={() => (showCommandPalette = true)}
+				onclick={() => (showCommandPalette = true)}
 			/>
 		{/snippet}
 
@@ -496,7 +512,7 @@
 			{/if}
 		{/snippet}
 
-		{#snippet navRight()}
+		{#snippet navEnd()}
 			<NavItem href="/alerts">⚠️ Alerts</NavItem>
 			<NavItem href="/tables">📋 Tables</NavItem>
 		{/snippet}
@@ -523,150 +539,168 @@
 		<LayoutInner>
 			<Sidebar isResizable>
 				<!-- Getting Started -->
-				<SidebarItem href="/getting-started" label="Getting Started">
+				<SidebarItem href="/getting-started" labelText="Getting Started">
 					{#snippet icon()}🚀{/snippet}
 				</SidebarItem>
 
 				<!-- Dashboard -->
-				<SidebarItem href="/" label="Dashboard">
+				<SidebarItem href="/" labelText="Dashboard">
 					{#snippet icon()}📊{/snippet}
 				</SidebarItem>
 
 				<!-- Theme Variables -->
-				<SidebarItem href="/theme-variables" label="Theme Variables">
+				<SidebarItem href="/theme-variables" labelText="Theme Variables">
 					{#snippet icon()}🎨{/snippet}
 				</SidebarItem>
 
 				<!-- Colors -->
-				<SidebarItem href="/colors" label="Colors">
+				<SidebarItem href="/colors" labelText="Colors">
 					{#snippet icon()}🎨{/snippet}
 				</SidebarItem>
 
 				<!-- Forms -->
-				<SidebarItem href="/forms" label="Forms">
+				<SidebarItem href="/forms" labelText="Forms">
 					{#snippet icon()}📝{/snippet}
 				</SidebarItem>
 
 				<!-- Svelte Integration -->
-				<SidebarItem label="Svelte" hasSubmenu={true}>
+				<SidebarItem labelText="Svelte" hasSubmenu={true}>
 					{#snippet icon()}🔥{/snippet}
 					{#snippet submenu()}
-						<SidebarItem href="/validation" label="Validation">
+						<SidebarItem href="/validation" labelText="Validation">
 							{#snippet icon()}✓{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/batch-rpc" label="Batch RPC">
+						<SidebarItem href="/batch-rpc" labelText="Batch RPC">
 							{#snippet icon()}📡{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/i18n" labelText="i18n">
+							{#snippet icon()}🌐{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/auto-theme" labelText="Auto Theme">
+							{#snippet icon()}🌓{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/events-callbacks" labelText="Events & Callbacks">
+							{#snippet icon()}🎯{/snippet}
 						</SidebarItem>
 					{/snippet}
 				</SidebarItem>
 
 				<!-- Components with submenu -->
-				<SidebarItem label="Components" hasSubmenu={true}>
+				<SidebarItem labelText="Components" hasSubmenu={true}>
 					{#snippet icon()}🧩{/snippet}
 					{#snippet submenu()}
-						<SidebarItem href="/components" label="Overview">
+						<SidebarItem href="/components" labelText="Overview">
 							{#snippet icon()}🧩{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/buttons" label="Buttons">
+						<SidebarItem href="/buttons" labelText="Buttons">
 							{#snippet icon()}🔘{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/inputs" label="Inputs">
+						<SidebarItem href="/inputs" labelText="Inputs">
 							{#snippet icon()}✏️{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/validations" label="Validations">
+						<SidebarItem href="/validations" labelText="Validations">
 							{#snippet icon()}✓{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/cards" label="Cards">
+						<SidebarItem href="/cards" labelText="Cards">
 							{#snippet icon()}🃏{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/grid" label="Grid System">
+						<SidebarItem href="/grid" labelText="Grid System">
 							{#snippet icon()}⊞{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/tabs" label="Tabs">
+						<SidebarItem href="/tabs" labelText="Tabs">
 							{#snippet icon()}📑{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/badges" label="Badges">
+						<SidebarItem href="/badges" labelText="Badges">
 							{#snippet icon()}🏷️{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/lists" label="Lists">
+						<SidebarItem href="/lists" labelText="Lists">
 							{#snippet icon()}📃{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/checkbox-lists" label="Checkbox Lists">
+						<SidebarItem href="/checkbox-lists" labelText="Checkbox Lists">
 							{#snippet icon()}☑️{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/code" label="Code">
+						<SidebarItem href="/code" labelText="Code">
 							{#snippet icon()}💻{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/alerts" label="Alerts">
+						<SidebarItem href="/alerts" labelText="Alerts">
 							{#snippet icon()}⚠️{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/callouts" label="Callouts">
+						<SidebarItem href="/callouts" labelText="Callouts">
 							{#snippet icon()}📌{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/toasts" label="Toasts">
+						<SidebarItem href="/toasts" labelText="Toasts">
 							{#snippet icon()}🔔{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/loaders" label="Loaders">
+						<SidebarItem href="/loaders" labelText="Loaders">
 							{#snippet icon()}⏳{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/tooltips" label="Tooltips">
+						<SidebarItem href="/tooltips" labelText="Tooltips">
 							{#snippet icon()}💬{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/modals" label="Modals">
+						<SidebarItem href="/modals" labelText="Modals">
 							{#snippet icon()}🔳{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/modal-dialogs" label="Modal Dialogs">
+						<SidebarItem href="/modal-dialogs" labelText="Modal Dialogs">
 							{#snippet icon()}💬{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/popconfirm" label="Popconfirm">
+						<SidebarItem href="/popconfirm" labelText="Popconfirm">
 							{#snippet icon()}💬{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/command-palette" label="Command Palette">
+						<SidebarItem href="/command-palette" labelText="Command Palette">
 							{#snippet icon()}🔍{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/detail-panel" labelText="Detail Panel">
+							{#snippet icon()}📋{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/data-display" labelText="Data Display">
+							{#snippet icon()}📄{/snippet}
 						</SidebarItem>
 					{/snippet}
 				</SidebarItem>
 
 				<!-- Tables with submenu -->
-				<SidebarItem label="Tables" hasSubmenu={true}>
+				<SidebarItem labelText="Tables" hasSubmenu={true}>
 					{#snippet icon()}📋{/snippet}
 					{#snippet submenu()}
-						<SidebarItem href="/tables" label="Standard Tables">
+						<SidebarItem href="/tables" labelText="Standard Tables">
 							{#snippet icon()}📊{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/tables-sizing" label="Table Sizing">
+						<SidebarItem href="/tables-sizing" labelText="Table Sizing">
 							{#snippet icon()}📏{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/tables-responsive" label="Responsive">
+						<SidebarItem href="/tables-responsive" labelText="Responsive">
 							{#snippet icon()}📱{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/comparison" label="Comparison">
-							{#snippet icon()}📈{/snippet}
+						<SidebarItem href="/table-filters" labelText="Filters">
+							{#snippet icon()}🔍{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/comparison" labelText="Comparison">
+							{#snippet icon()}⚖️{/snippet}
 						</SidebarItem>
 					{/snippet}
 				</SidebarItem>
 
 				<!-- Timeline with submenu -->
-				<SidebarItem label="Timeline" hasSubmenu={true}>
+				<SidebarItem labelText="Timeline" hasSubmenu={true}>
 					{#snippet icon()}⏱️{/snippet}
 					{#snippet submenu()}
-						<SidebarItem href="/timeline-simple" label="Simple">
+						<SidebarItem href="/timeline-simple" labelText="Simple">
 							{#snippet icon()}•{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/timeline-block" label="Block">
+						<SidebarItem href="/timeline-block" labelText="Block">
 							{#snippet icon()}•{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/timeline-feed" label="Feed">
+						<SidebarItem href="/timeline-feed" labelText="Feed">
 							{#snippet icon()}•{/snippet}
 						</SidebarItem>
 					{/snippet}
 				</SidebarItem>
 
 				<!-- Layout with submenu -->
-				<SidebarItem label="Layout" hasSubmenu={true}>
+				<SidebarItem labelText="Layout" hasSubmenu={true}>
 					{#snippet icon()}📐{/snippet}
 					{#snippet submenu()}
-						<SidebarItem href="/layouts" label="Page Layouts">
+						<SidebarItem href="/layouts" labelText="Page Layouts">
 							{#snippet icon()}•{/snippet}
 						</SidebarItem>
 					{/snippet}
@@ -681,8 +715,8 @@
 	</LayoutInner>
 
 	<Footer>
-		{#snippet right()}
-			<span>App version: 1.0.0</span>
+		{#snippet end()}
+			<span>App version: 1.5.0</span>
 		{/snippet}
 	</Footer>
 	</Layout>

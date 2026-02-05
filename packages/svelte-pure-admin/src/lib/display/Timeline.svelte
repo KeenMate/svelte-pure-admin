@@ -78,9 +78,9 @@
 
 		// EVENTS
 		/** Callback when a timeline item is clicked (data mode) */
-		onItemClick?: (item: T, event: MouseEvent) => void;
+		onitemclick?: (item: T, event: MouseEvent) => void;
 		/** Callback when a timeline item is clicked (legacy mode) */
-		onItemClickLegacy?: (item: TimelineItemData, event: MouseEvent) => void;
+		onitemclicklegacy?: (item: TimelineItemData, event: MouseEvent) => void;
 
 		// STYLING
 		/** Additional CSS classes */
@@ -132,8 +132,8 @@
 		commentTemplate: commentSnippet,
 
 		// Events
-		onItemClick,
-		onItemClickLegacy,
+		onitemclick,
+		onitemclicklegacy,
 
 		// Styling
 		class: className = '',
@@ -206,8 +206,8 @@
 	// Handle item click (data mode)
 	function handleItemClick(item: T) {
 		return (event: MouseEvent) => {
-			if (onItemClick) {
-				onItemClick(item, event);
+			if (onitemclick) {
+				onitemclick(item, event);
 			}
 		};
 	}
@@ -215,8 +215,8 @@
 	// Handle item click (legacy mode)
 	function handleItemClickLegacy(item: TimelineItemData) {
 		return (event: MouseEvent) => {
-			if (onItemClickLegacy) {
-				onItemClickLegacy(item, event);
+			if (onitemclicklegacy) {
+				onitemclicklegacy(item, event);
 			}
 		};
 	}
@@ -241,14 +241,14 @@
 		{#each data as item, index (getId(item, index))}
 			<TimelineItem
 				variant={getVariant(item)}
-				filled={getFilled(item)}
-				dateHeader={getDateHeader(item)}
-				time={getTime(item)}
+				isFilled={getFilled(item)}
+				isDateHeader={getDateHeader(item)}
+				timeText={getTime(item)}
 				date={getDate(item)}
 				iconText={getIconText(item)}
 				avatarUrl={getAvatarUrl(item)}
 				avatarAlt={getAvatarAlt(item)}
-				onclick={onItemClick ? handleItemClick(item) : undefined}
+				onclick={onitemclick ? handleItemClick(item) : undefined}
 			>
 				{#if contentSnippet}
 					{@render contentSnippet(item)}
@@ -278,14 +278,14 @@
 		{#each items as item}
 			<TimelineItem
 				variant={item.variant}
-				filled={item.filled}
-				dateHeader={item.dateHeader}
-				time={item.time}
+				isFilled={item.isFilled}
+				isDateHeader={item.isDateHeader}
+				timeText={item.time}
 				date={item.date}
 				iconText={item.iconText}
 				avatarUrl={item.avatarUrl}
 				avatarAlt={item.avatarAlt}
-				onclick={onItemClickLegacy ? handleItemClickLegacy(item) : undefined}
+				onclick={onitemclicklegacy ? handleItemClickLegacy(item) : undefined}
 			>
 				{item.content ?? ''}
 

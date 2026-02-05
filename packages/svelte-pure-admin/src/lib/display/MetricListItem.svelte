@@ -6,14 +6,14 @@
 
 	interface Props {
 		/** Label text */
-		label: string;
+		labelText: string;
 		/** Value text */
-		value: string | number;
+		valueText: string | number;
 		/** Additional CSS classes */
 		class?: string;
 	}
 
-	let { label, value, class: className = '' }: Props = $props();
+	let { labelText, valueText, class: className = '' }: Props = $props();
 
 	const classes = $derived(() => {
 		const base = ['pa-metric-list__item'];
@@ -23,6 +23,6 @@
 </script>
 
 <div class={classes()}>
-	<div class="pa-metric-list__label">{label}</div>
-	<div class="pa-metric-list__value">{value}</div>
+	<div class="pa-metric-list__label">{labelText}</div>
+	<div class="pa-metric-list__value">{valueText}</div>
 </div>

@@ -1,56 +1,76 @@
 /**
  * Czech translations
+ * Flat structure with pureAdmin.* namespace
  */
-import type { TranslationKeys } from '../types';
 
-export const cs: TranslationKeys = {
-	dialog: {
-		confirm: 'Potvrdit',
-		cancel: 'Zrušit',
-		ok: 'OK',
-		alert: 'Upozornění',
-		input: 'Vstup',
-		areYouSure: 'Jste si jisti?',
-		enterValue: 'Zadejte hodnotu:',
-		defaultTitle: 'Dialog',
-		invalidInput: 'Neplatný vstup'
-	},
+export const cs: Record<string, string> = {
+	// Dialog
+	'pureAdmin.dialog.confirm': 'Potvrdit',
+	'pureAdmin.dialog.cancel': 'Zrušit',
+	'pureAdmin.dialog.ok': 'OK',
+	'pureAdmin.dialog.alert': 'Upozornění',
+	'pureAdmin.dialog.input': 'Vstup',
+	'pureAdmin.dialog.areYouSure': 'Jste si jisti?',
+	'pureAdmin.dialog.enterValue': 'Zadejte hodnotu:',
+	'pureAdmin.dialog.defaultTitle': 'Dialog',
+	'pureAdmin.dialog.invalidInput': 'Neplatný vstup',
 
-	popconfirm: {
-		confirm: 'Potvrdit',
-		cancel: 'Zrušit'
-	},
+	// Popconfirm
+	'pureAdmin.popconfirm.confirm': 'Potvrdit',
+	'pureAdmin.popconfirm.cancel': 'Zrušit',
 
-	shortcuts: {
-		title: 'Klávesové zkratky',
-		noShortcuts: 'Žádné zkratky nejsou registrovány.',
-		generalCategory: 'Obecné',
-		showShortcuts: 'Zobrazit klávesové zkratky'
-	},
+	// Shortcuts
+	'pureAdmin.shortcuts.title': 'Klávesové zkratky',
+	'pureAdmin.shortcuts.noShortcuts': 'Žádné zkratky nejsou registrovány.',
+	'pureAdmin.shortcuts.generalCategory': 'Obecné',
+	'pureAdmin.shortcuts.showShortcuts': 'Zobrazit klávesové zkratky',
 
-	commandPalette: {
-		placeholder: 'Napište / pro příkazy, : pro vyhledávání, nebo začněte psát...',
-		loading: 'Načítání...',
-		commands: 'Příkazy',
-		searchIn: 'Hledat v',
-		search: 'Hledat',
-		noMatchingCommands: 'Žádné odpovídající příkazy',
-		typeToSearch: 'Začněte psát pro vyhledávání...',
-		noMatchingContexts: 'Žádné odpovídající kontexty vyhledávání',
-		noResults: 'Žádné výsledky',
-		idleMessage: 'Napište / pro příkazy, : pro kontexty vyhledávání, nebo začněte psát...',
-		preview: 'Náhled:',
-		navigate: 'Navigace',
-		select: 'Vybrat',
-		complete: 'Doplnit',
-		close: 'Zavřít',
-		searchFailed: 'Vyhledávání selhalo. Zkuste to prosím znovu.',
-		loadOptionsFailed: 'Načtení možností selhalo. Zkuste to prosím znovu.',
-		openCommandPalette: 'Otevřít paletu příkazů'
-	},
+	// Command Palette
+	'pureAdmin.commandPalette.placeholder': 'Napište / pro příkazy, : pro vyhledávání, nebo začněte psát...',
+	'pureAdmin.commandPalette.loading': 'Načítání...',
+	'pureAdmin.commandPalette.commands': 'Příkazy',
+	'pureAdmin.commandPalette.searchIn': 'Hledat v',
+	'pureAdmin.commandPalette.search': 'Hledat',
+	'pureAdmin.commandPalette.noMatchingCommands': 'Žádné odpovídající příkazy',
+	'pureAdmin.commandPalette.typeToSearch': 'Začněte psát pro vyhledávání...',
+	'pureAdmin.commandPalette.noMatchingContexts': 'Žádné odpovídající kontexty vyhledávání',
+	'pureAdmin.commandPalette.noResults': 'Žádné výsledky',
+	'pureAdmin.commandPalette.idleMessage':
+		'Napište / pro příkazy, : pro kontexty vyhledávání, nebo začněte psát...',
+	'pureAdmin.commandPalette.preview': 'Náhled:',
+	'pureAdmin.commandPalette.navigate': 'Navigace',
+	'pureAdmin.commandPalette.select': 'Vybrat',
+	'pureAdmin.commandPalette.complete': 'Doplnit',
+	'pureAdmin.commandPalette.close': 'Zavřít',
+	'pureAdmin.commandPalette.searchFailed': 'Vyhledávání selhalo. Zkuste to prosím znovu.',
+	'pureAdmin.commandPalette.loadOptionsFailed': 'Načtení možností selhalo. Zkuste to prosím znovu.',
+	'pureAdmin.commandPalette.openCommandPalette': 'Otevřít paletu příkazů',
 
-	loadMore: {
-		loadMore: 'Načíst další',
-		loading: 'Načítání...'
-	}
+	// Load More
+	'pureAdmin.loadMore.loadMore': 'Načíst další',
+	'pureAdmin.loadMore.loading': 'Načítání...',
+
+	// Field (copyable)
+	'pureAdmin.field.clickToCopy': 'Klikněte pro zkopírování',
+	'pureAdmin.field.copied': 'Zkopírováno!',
+
+	// Common buttons
+	'pureAdmin.common.buttons.close': 'Zavřít',
+	'pureAdmin.common.buttons.clearAll': 'Vymazat vše',
+	'pureAdmin.common.buttons.refresh': 'Obnovit',
+	'pureAdmin.common.buttons.moreFilters': 'Více filtrů',
+	'pureAdmin.common.buttons.hideFilters': 'Skrýt filtry',
+	'pureAdmin.common.buttons.clearFilters': 'Vymazat filtry',
+	'pureAdmin.common.buttons.applyFilters': 'Použít filtry',
+
+	// Accessibility labels
+	'pureAdmin.a11y.closeProfile': 'Zavřít profil',
+	'pureAdmin.a11y.closeDetailPanel': 'Zavřít panel detailů',
+	'pureAdmin.a11y.scrollTabsLeft': 'Posunout záložky doleva',
+	'pureAdmin.a11y.scrollTabsRight': 'Posunout záložky doprava',
+	'pureAdmin.a11y.openSearch': 'Otevřít vyhledávání (Ctrl+K)',
+	'pureAdmin.a11y.toggleSidebar': 'Přepnout postranní panel',
+	'pureAdmin.a11y.removeFromFavorites': 'Odebrat z oblíbených',
+	'pureAdmin.a11y.dragToResizeSidebar': 'Tažením změníte velikost postranního panelu',
+	'pureAdmin.a11y.settings': 'Nastavení'
 };

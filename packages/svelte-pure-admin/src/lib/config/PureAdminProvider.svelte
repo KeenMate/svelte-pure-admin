@@ -6,10 +6,12 @@
 	 */
 
 	import { setContext, onMount } from 'svelte';
+	import { get } from 'svelte/store';
+	import { _, locale } from '../i18n';
 	import type { PureAdminConfig } from './config';
 	import { defaultConfig, mergeConfig } from './config';
 	import { shortcutRegistry } from '../services/shortcut-registry.svelte';
-	import { i18nStore } from '../i18n/store.svelte';
+	import { initI18n } from '../i18n/setup';
 	import ShortcutHelpDialog from '../feedback/ShortcutHelpDialog.svelte';
 
 	interface Props {
@@ -35,7 +37,10 @@
 	$effect(() => {
 		const i18nConfig = mergedConfig().i18n;
 		if (i18nConfig) {
-			i18nStore.initialize(i18nConfig);
+			initI18n({
+				locale: i18nConfig.locale,
+				fallbackLocale: i18nConfig.fallbackLocale
+			});
 		}
 	});
 
@@ -58,8 +63,8 @@
 			id: 'shortcut-help',
 			key: '?',
 			modifiers: { shift: true },
-			description: i18nStore.t('shortcuts.showShortcuts'),
-			category: i18nStore.t('shortcuts.generalCategory'),
+			description: get(_)('shortcuts.showShortcuts'),
+			category: get(_)('shortcuts.generalCategory'),
 			action: () => {
 				showShortcutHelp = true;
 			}

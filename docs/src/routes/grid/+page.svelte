@@ -3,7 +3,7 @@
 </script>
 
 <!-- Overview -->
-<Card title="Overview">
+<Card titleText="Overview">
 	<Paragraph class="pa-text--secondary mb-4">
 		Pure Admin uses a custom flexbox grid system with intuitive naming. Columns use <Code>pa-col-&#123;size&#125;</Code> for percentages
 		and <Code>pa-col-&#123;x&#125;-&#123;y&#125;</Code> for fractions.
@@ -22,7 +22,7 @@
 		</Column>
 		<Column size="100" md="50">
 			<h4>Breakpoints</h4>
-			<Table striped>
+			<Table isStriped>
 				<thead>
 					<tr>
 						<th>Prefix</th>
@@ -42,7 +42,7 @@
 </Card>
 
 <!-- Basic Usage -->
-<Card title="Basic Usage" subtitle="Auto-equal width columns with .pa-col">
+<Card titleText="Basic Usage" subtitleText="Auto-equal width columns with .pa-col">
 	<h4>Two Equal Columns</h4>
 	<Grid class="mb-4">
 		<div class="pa-col">
@@ -94,7 +94,7 @@
 </Card>
 
 <!-- Percentage Columns -->
-<Card title="Percentage Columns" subtitle="Fixed widths in 5% increments: .pa-col-5 through .pa-col-100">
+<Card titleText="Percentage Columns" subtitleText="Fixed widths in 5% increments: .pa-col-5 through .pa-col-100">
 	<Grid class="mb-2">
 		<Column size="25"><Alert variant="primary">.pa-col-25</Alert></Column>
 		<Column size="75"><Alert variant="primary">.pa-col-75</Alert></Column>
@@ -128,7 +128,7 @@
 </Card>
 
 <!-- Fraction Columns -->
-<Card title="Fraction Columns" subtitle="Intuitive naming for common layouts: .pa-col-1-3, .pa-col-2-3, etc.">
+<Card titleText="Fraction Columns" subtitleText="Intuitive naming for common layouts: .pa-col-1-3, .pa-col-2-3, etc.">
 	<h4>Halves (1/2)</h4>
 	<Grid class="mb-4">
 		<Column size="1-2"><Alert variant="primary">.pa-col-1-2 (50%)</Alert></Column>
@@ -194,7 +194,7 @@
 </Card>
 
 <!-- Responsive Grid -->
-<Card title="Responsive Grid" subtitle="Stack on mobile, columns on larger screens. Resize your browser to see the effect.">
+<Card titleText="Responsive Grid" subtitleText="Stack on mobile, columns on larger screens. Resize your browser to see the effect.">
 	<h4>Mobile-First Pattern</h4>
 	<Paragraph class="pa-text--secondary mb-2">Full width on mobile, 50% on medium screens and up:</Paragraph>
 	<Grid class="mb-4">
@@ -228,7 +228,7 @@
 </Card>
 
 <!-- Offsets -->
-<Card title="Offsets" subtitle={`Push columns with left margin: .pa-offset-{size}`}>
+<Card titleText="Offsets" subtitleText={`Push columns with left margin: .pa-offset-{size}`}>
 	<h4>Centering with Offsets</h4>
 	<Grid class="mb-2">
 		<Column size="50" offset="25"><Alert variant="primary">.pa-col-50 .pa-offset-25</Alert></Column>
@@ -252,7 +252,7 @@
 </Card>
 
 <!-- Row Alignment -->
-<Card title="Row Alignment" subtitle="Control horizontal and vertical alignment of columns">
+<Card titleText="Row Alignment" subtitleText="Control horizontal and vertical alignment of columns">
 	<h4>Horizontal Alignment</h4>
 
 	<Paragraph class="pa-text--secondary mb-2"><Code>.pa-row--center</Code></Paragraph>
@@ -305,7 +305,7 @@
 </Card>
 
 <!-- No Gutter -->
-<Card title="No Gutter" subtitle="Remove spacing between columns with .pa-row--no-gutter">
+<Card titleText="No Gutter" subtitleText="Remove spacing between columns with .pa-row--no-gutter">
 	<h4>Default (with gutter)</h4>
 	<Grid class="mb-4">
 		<Column size="1-3"><Alert variant="primary">1/3</Alert></Column>
@@ -322,8 +322,8 @@
 </Card>
 
 <!-- Visibility Utilities -->
-<Card title="Visibility Utilities" subtitle="Show/hide elements at different breakpoints">
-	<Table striped class="mb-4">
+<Card titleText="Visibility Utilities" subtitleText="Show/hide elements at different breakpoints">
+	<Table isStriped class="mb-4">
 		<thead>
 			<tr>
 				<th>Class</th>
@@ -354,7 +354,7 @@
 </Card>
 
 <!-- Nested Grids -->
-<Card title="Nested Grids" subtitle="Grids can be nested inside columns">
+<Card titleText="Nested Grids" subtitleText="Grids can be nested inside columns">
 	<Grid>
 		<Column size="1-3">
 			<Alert variant="primary">1/3</Alert>
@@ -372,7 +372,7 @@
 </Card>
 
 <!-- Quick Reference -->
-<Card title="Quick Reference">
+<Card titleText="Quick Reference">
 	<Grid>
 		<Column size="100" md="50">
 			<h4>Percentage Classes</h4>
@@ -398,7 +398,7 @@
 </Card>
 
 <!-- Code Examples -->
-<Card title="Code Examples">
+<Card titleText="Code Examples">
 	<Grid>
 		<Column size="100" md="50">
 			<h4 class="mb-2">Basic Grid</h4>

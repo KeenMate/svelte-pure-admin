@@ -3,7 +3,7 @@
 </script>
 
 <!-- Hero/Intro Section -->
-<Card title="Welcome to Svelte Pure Admin">
+<Card titleText="Welcome to Svelte Pure Admin">
 	<Paragraph>
 		<strong>@keenmate/svelte-pure-admin</strong> is a Svelte 5 component library that wraps the Pure Admin CSS framework
 		(<code>@keenmate/pure-admin-core</code>) into type-safe, reactive Svelte components.
@@ -35,26 +35,65 @@
 </Card>
 
 <!-- About This Demo -->
-<Card title="About This Demo">
+<Card titleText="About This Demo">
 	<Paragraph>
 		This documentation site showcases the svelte-pure-admin component library with multiple theme options.
 		Use the settings panel (gear icon) to switch between themes and customize the appearance.
 	</Paragraph>
 
-	<Callout variant="info" heading="Theme Switching & FOUC">
+	<Callout variant="info" headingText="Theme Switching & FOUC">
 		<p>On initial page load, you may notice a brief flash of the Audi theme before your selected theme loads. This is expected behavior in this demo.</p>
 		<p class="mb-0"><strong>Why?</strong> The Audi theme is bundled statically to prevent unstyled content (FOUC), then your saved theme preference loads dynamically via JavaScript.</p>
 	</Callout>
 
-	<Callout variant="success" heading="Production Usage">
+	<Callout variant="success" headingText="Production Usage">
 		<p>In a production application, you would import only <strong>one</strong> theme statically:</p>
 		<p><Code>import '@keenmate/pure-admin-theme-corporate';</Code></p>
 		<p class="mb-0">This eliminates the flash entirely since there's no theme switching overhead.</p>
 	</Callout>
 </Card>
 
+<!-- SettingsPanel Note -->
+<Card titleText="About SettingsPanel">
+	<Paragraph>
+		The <code>SettingsPanel</code> component (gear icon in the corner) is primarily a <strong>demo and development tool</strong>
+		to showcase what's possible with pure-admin-core. It's not typically something you'd expose to end users in production.
+	</Paragraph>
+
+	<Callout variant="warning" headingText="Production Architecture">
+		<p>In a real application, these settings would be handled differently:</p>
+		<BasicList>
+			<li><strong>App-level constants</strong> (hardcoded): theme, layout width, sidebar behavior - decided during development</li>
+			<li><strong>User preferences</strong> (stored per-user): font size, compact mode - saved to user profile/database</li>
+			<li><strong>Design decisions</strong> (not configurable): avatar visibility, icon-only tabs - part of your app's design</li>
+		</BasicList>
+		<p class="mb-0">The SettingsPanel demonstrates runtime customization, but most apps would make these choices at build time or store them server-side.</p>
+	</Callout>
+
+	<Callout variant="info" headingText="Wiring Up Reactive Settings">
+		<p>If you do need runtime settings that affect Svelte components (like ProfilePanel), use the <code>onsettingschange</code> prop to pass settings as reactive props:</p>
+		<CodeBlock language="svelte">{`${'<'}script>
+  let profileHasAvatar = $state(true);
+  let profileIconOnlyTabs = $state(false);
+
+  function handleSettingsChange(settings) {
+    profileHasAvatar = settings.profileHasAvatar;
+    profileIconOnlyTabs = settings.profileIconOnlyTabs;
+  }
+${'<'}/script>
+
+<SettingsPanel onsettingschange={handleSettingsChange} />
+<ProfilePanel
+  hasAvatar={profileHasAvatar}
+  hasIconOnlyTabs={profileIconOnlyTabs}
+  ...
+/>`}</CodeBlock>
+		<p class="mb-0">This ensures Svelte's reactivity system updates the components correctly, rather than relying on DOM manipulation which can be lost on re-render.</p>
+	</Callout>
+</Card>
+
 <!-- Installation -->
-<Card title="Installation">
+<Card titleText="Installation">
 	<Paragraph>Install the library and your preferred theme:</Paragraph>
 
 	<CodeBlock language="bash">{`npm install @keenmate/svelte-pure-admin @keenmate/pure-admin-theme-audi`}</CodeBlock>
@@ -74,7 +113,7 @@ yarn add @keenmate/svelte-pure-admin @keenmate/pure-admin-theme-audi`}</CodeBloc
 </Card>
 
 <!-- Basic Setup -->
-<Card title="Basic Setup">
+<Card titleText="Basic Setup">
 	<Paragraph>
 		After installation, import your chosen theme CSS and wrap your app in the <code>PureAdminProvider</code> component.
 	</Paragraph>
@@ -117,7 +156,7 @@ ${'<'}/script>
   import { Button, Card, Alert, Input } from '@keenmate/svelte-pure-admin';
 ${'<'}/script>
 
-<Card title="My Card">
+<Card titleText="My Card">
   <Alert variant="info">Welcome to Pure Admin!</Alert>
 
   <Input placeholder="Enter your name" />
@@ -127,7 +166,7 @@ ${'<'}/script>
 </Card>
 
 <!-- PureAdminProvider -->
-<Card title="What is PureAdminProvider?">
+<Card titleText="What is PureAdminProvider?">
 	<Paragraph>
 		<code>PureAdminProvider</code> is a context provider that wraps your application and provides two main features:
 	</Paragraph>
@@ -200,7 +239,7 @@ ${'<'}/script>
 </Card>
 
 <!-- Available Themes -->
-<Card title="Available Themes">
+<Card titleText="Available Themes">
 	<Paragraph>
 		Pure Admin comes with 5 example themes that serve as starter packs for your own customization.
 		Each theme demonstrates different color schemes and provides a foundation you can build upon.
@@ -285,7 +324,7 @@ ${'<'}/script>
 </Card>
 
 <!-- Component Categories -->
-<Card title="Component Overview">
+<Card titleText="Component Overview">
 	<Paragraph>
 		The library includes 40+ components organized into logical categories:
 	</Paragraph>
@@ -358,7 +397,7 @@ ${'<'}/script>
 </Card>
 
 <!-- Next Steps -->
-<Card title="Next Steps">
+<Card titleText="Next Steps">
 	<Grid>
 		<Column size="100" md="1-2">
 			<Callout variant="primary">

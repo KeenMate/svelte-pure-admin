@@ -5,6 +5,1154 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Breaking Changes
+
+#### Prop Naming Convention Alignment (KeenMate Standard)
+
+All component props have been renamed to follow the KeenMate naming methodology: `is*`/`has*`/`should*` for booleans, `*Text` for string content props, lowercase `on*` for fire-and-forget events, and `*Callback` only when the return value controls behavior.
+
+**Button.svelte:**
+- `outline` → `isOutline`
+- `block` → `isBlock`
+- `iconOnly` → `isIconOnly`
+- `loading` → `isLoading`
+- `ripple` → `isRipple`
+- `title` → `titleText`
+
+**Alert.svelte:**
+- `dismissible` → `isDismissible`
+- `outline` → `isOutline`
+- `heading` → `headingText`
+- `onDismiss` → `ondismiss`
+
+**Modal.svelte:**
+- `scrollable` → `isScrollable`
+- `title` → `titleText`
+- `showClose` → `shouldShowClose`
+- `closeOnEscape` → `shouldCloseOnEscape`
+- `onBeforeClose` → `beforeCloseCallback`
+- `onClose` → `onclose`
+
+**Toast.svelte:**
+- `title` → `titleText`
+- `message` → `messageText`
+- `showProgress` → `shouldShowProgress`
+- `onClose` → `onclose`
+
+**Popconfirm.svelte:**
+- `message` → `messageText`
+- `compact` → `isCompact`
+- `onConfirm` → `onconfirm`
+- `onCancel` → `oncancel`
+
+**Popover.svelte:**
+- `title` → `titleText`
+
+**Callout.svelte:**
+- `heading` → `headingText`
+
+**Card.svelte:**
+- `noPadding` → `hasPadding` (inverted logic: default changed from `false` to `true`)
+- `stat` → `isStat`
+- `title` → `titleText`
+- `subtitle` → `subtitleText`
+- `inlineTabs` → `hasInlineTabs`
+
+**Badge.svelte:**
+- `pill` → `isPill`
+- `ellipsisLeft` → `isEllipsisStart`
+
+**CompositeBadge.svelte:**
+- `label` → `labelText`
+- `interactive` → `isInteractive`
+- `onButtonClick` → `onbuttonclick`
+- `onLabelClick` → `onlabelclick`
+
+**BadgeGroup.svelte:**
+- `onBadgeClick` → `onbadgeclick`
+
+**CompositeBadgeGroup.svelte:**
+- `onLabelClick` → `onlabelclick`
+- `onButtonClick` → `onbuttonclick`
+
+**Table.svelte:**
+- `striped` → `isStriped`
+- `responsiveGrid` → `isResponsiveGrid`
+
+**Timeline.svelte:**
+- `onItemClick` → `onitemclick`
+
+**TimelineItem.svelte:**
+- `filled` → `isFilled`
+- `dateHeader` → `isDateHeader`
+- `time` → `timeText`
+
+**Pager.svelte:**
+- `onPrevious` → `onprevious`
+- `onNext` → `onnext`
+- `onPageChange` → `onpagechange`
+- `onFirst` → `onfirst`
+- `onLast` → `onlast`
+
+**LoadMore.svelte:**
+- `loading` → `isLoading`
+- `showCount` → `shouldShowCount`
+- `onClick` → `onclick`
+
+**CheckboxListItem.svelte:**
+- `label` → `labelText`
+- `description` → `descriptionText`
+- `onChange` → `onchange`
+
+**ListItem.svelte:**
+- `title` → `titleText`
+- `subtitle` → `subtitleText`
+- `meta` → `metaText`
+
+**Stat.svelte:**
+- `label` → `labelText`
+- `change` → `changeText`
+- `symbol` → `symbolText`
+
+**BasicList.svelte:**
+- `unstyled` → `isUnstyled`
+- `inline` → `isInline`
+- `bordered` → `isBordered`
+- `striped` → `isStriped`
+- `icon` → `hasIcon`
+
+**ActivityFeedItem.svelte:**
+- `time` → `timeText`
+
+**CodeBlock.svelte:**
+- `compact` → `isCompact`
+
+**CodeBlockWithHeader.svelte:**
+- `title` → `titleText`
+
+**DefinitionList.svelte:**
+- `inline` → `isInline`
+
+**Label.svelte:**
+- `outline` → `isOutline`
+
+**MetricListItem.svelte:**
+- `label` → `labelText`
+- `value` → `valueText`
+
+**StatusListItem.svelte:**
+- `label` → `labelText`
+- `value` → `valueText`
+
+**Navbar.svelte:**
+- `onBurgerClick` → `onburgerclick`
+
+**Section.svelte:**
+- `title` → `titleText`
+
+**SidebarItem.svelte:**
+- `label` → `labelText`
+- `onClick` → `onclick`
+
+**Checkbox.svelte:**
+- `indeterminate` → `isIndeterminate`
+- `xMark` → `isXMark`
+- `label` → `labelText`
+- `onChange` → `onchange`
+
+**CheckboxBox.svelte:**
+- `indeterminate` → `isIndeterminate`
+- `xMark` → `isXMark`
+- `onChange` → `onchange`
+
+**FormField.svelte:**
+- `label` → `labelText`
+- `help` → `helpText`
+
+**FormGroup.svelte:**
+- `hasError` → `isError`
+- `hasSuccess` → `isSuccess`
+
+**Radio.svelte:**
+- `label` → `labelText`
+- `onChange` → `onchange`
+
+**Tabs.svelte:**
+- `borderTop` → `isBorderTop`
+
+**TabsContainer.svelte:**
+- `bordered` → `isBordered`
+- `card` → `isCard`
+
+**TabsVerticalLayout.svelte:**
+- `bordered` → `isBordered`
+
+**CommandPalette.svelte:**
+- `onGlobalSelect` → `onglobalselect`
+
+**NavbarSearch.svelte:**
+- `onClick` → `onclick`
+
+**ProfilePanel.svelte:**
+- `noAvatar` → `hasAvatar` (inverted logic: default `true` = show avatar)
+- `onClose` → `onclose`
+
+**ProfilePanelFavoriteItem.svelte:**
+- `label` → `labelText`
+- `onClick` → `onclick`
+- `onRemove` → `onremove`
+
+**ProfilePanelNavItem.svelte:**
+- `onClick` → `onclick`
+
+**SettingsPanel.svelte:**
+- `onSettingsChange` → `onsettingschange`
+- `profileNoAvatar` → `profileHasAvatar` (inverted logic)
+
+**Text.svelte:**
+- `title` → `titleText`
+
+**DialogContainer.svelte (internal):**
+- Modal props updated: `showClose` → `shouldShowClose`, `title` → `titleText`, `onClose` → `onclose`
+- Button `outline` → `isOutline` (custom dialog buttons)
+
+**ShortcutHelpDialog.svelte (internal):**
+- Modal props updated: `title` → `titleText`, `onClose` → `onclose`
+
+#### Type Changes
+
+**badge-types.ts:**
+- `BaseBadgeProps.pill` → `isPill`
+- `BaseBadgeProps.ellipsisLeft` → `isEllipsisStart`
+- `BadgeItem.pill` → `isPill`
+- `CompositeBadgeItem.label` → `labelText`
+- `CompositeBadgeItem.interactive` → `isInteractive`
+
+**timeline-types.ts:**
+- `TimelineItemData.filled` → `isFilled`
+- `TimelineItemData.dateHeader` → `isDateHeader`
+
+**command-palette-types.ts:**
+- `onGlobalSelect` → `onglobalselect`
+
+**dialog-service.svelte.ts:**
+- `DialogButton.outline` → `DialogButton.isOutline`
+
+**popover-manager.svelte.ts:**
+- `PopoverState.alignment`: `'center' | 'right'` → `'center' | 'end'`
+
+**ToastContainer.svelte:**
+- `ToastPosition` default changed from `'top-right'` to `'top-end'`
+- Old physical positions (`'top-right'`, `'top-left'`, `'bottom-right'`, `'bottom-left'`) are still accepted but deprecated; use logical `'top-end'`, `'top-start'`, `'bottom-end'`, `'bottom-start'` instead
+
+#### i18n System Rewrite
+
+The entire i18n subsystem has been replaced. The custom runes-based `i18nStore` singleton is removed in favor of a `svelte-i18n`-based architecture.
+
+**Deleted files:**
+- `src/lib/i18n/store.svelte.ts` — old 351-line custom store with `$state`/`$derived` reactive state
+- `src/lib/i18n/hooks.ts` — old convenience wrappers (`useI18n`, `useTranslate`, `useScopedTranslate`)
+
+**New files:**
+- `src/lib/i18n/i18n-service.svelte.ts` — new i18n service singleton using `svelte-i18n` under the hood, supports bundled/injected/async loading strategies
+- `src/lib/i18n/setup.ts` — backwards-compatible wrapper with deprecated shims (`initI18n`, `loadLocale`, `isLocaleLoaded`)
+
+**Removed exports:**
+- `i18nStore`, `useI18n`, `useTranslate`, `useScopedTranslate`
+- Types: `AppTranslations`, `TranslationKeys`, `LanguageItem`, `I18nConfig`, `TranslationParams`, `TranslationKeyPath`
+
+**New exports:**
+- `i18n` (primary API), `_` (translation store), `locale`, `locales`, `isLoading`
+- `initI18n`, `registerLibraryTranslations`, `loadLocale`, `isLocaleLoaded` (backwards compat)
+- `addMessages`, `register`, `init`, `getLocaleFromNavigator`, `getLocaleFromQueryString`, `getLocaleFromHash`, `getLocaleFromPathname` (re-exports from `svelte-i18n`)
+- Types: `I18nInitOptions`, `Language`, `PureAdminTranslations`
+
+**Translation key format changed:**
+- Old: nested typed interface (`TranslationKeys.dialog.confirm`)
+- New: flat `Record<string, string>` with `pureAdmin.*` namespace (`pureAdmin.dialog.confirm`)
+
+**Migration example:**
+```typescript
+// Before
+import { i18nStore } from '@keenmate/svelte-pure-admin';
+i18nStore.initialize({ locale: 'en' });
+i18nStore.t('dialog.confirm');
+
+// After
+import { i18n, _ } from '@keenmate/svelte-pure-admin';
+i18n.init({ locale: 'en' });
+$_('pureAdmin.dialog.confirm'); // in .svelte files
+```
+
+**config.ts:**
+- `I18nConfig` simplified to `{ locale: string; fallbackLocale?: string }` (removed `translations`, `customTranslations`, `languages`, `loadTranslations` fields — use `i18n.init()` directly for advanced configuration)
+- `ui.theme` type widened: `'light' | 'dark'` → `'light' | 'dark' | 'auto'`
+
+#### New Dependency
+
+- Added `svelte-i18n ^4.0.0` as a runtime dependency (previously i18n was self-contained)
+
+### Added
+
+#### New Components
+
+- **SlidePanel** — Fixed overlay panel that slides in from the right. Handles escape key, backdrop click, and body scroll lock. Props: `show` (bindable), `onclose`
+- **DetailPanel** — Content shell for detail panels with header (title + close button), scrollable body, optional footer, and drag-to-resize support. Props: `titleText`, `header`, `tabs`, `footer`, `onclose`, `isResizable`, `isBordered`
+- **DetailView** — Card overlay wrapper for DetailPanel. Positions panel as overlay within a card/container with optional backdrop. Props: `show` (bindable), `shouldShowBackdrop`, `isOverlay`, `main`, `onclose`
+- **FilterCard** — Expandable filter card with inline filters and collapsible advanced section. Props: `isExpanded` (bindable), `shouldShowToggle`, `shouldShowClear`, `shouldShowRefresh`, `onclear`, `onrefresh`, `onapply`, `ontoggle`, `filters`, `advancedFilters`, `actions`
+- **TableCard** — Card container designed for tables with no body padding, overflow handling, and border-radius. Props: `titleText`, `variant`, `color` (1-9), `isScrollable`, `isPlain`, `header`, `actions`, `footer`
+- **TableContainer** — Table container with optional panel styling (overflow-x scroll, border, border-radius). Props: `isPanel`, `titleText`, `header`, `actions`
+- **Field** — Single label-value pair for read-only data display. Supports copy-to-clipboard modes (btn, click, hover). Props: `labelText`, `valueText`, `full`, `copyMode`, `copyValue`, `copyValueCallback`, `oncopy`, `labelSnippet`, `valueSnippet`
+- **Fields** — Container for multiple Field components with layout modifiers. Props: `cols` (2/3/4), `isHorizontal`, `isTable`, `isBordered`, `isStriped`, `isCompact`, `isRelaxed`, `isInline`, `isRow`, `isFilled`, `color` (1-9), `hasBorder`
+- **FieldGroup** — Labeled section containing Fields with title. Props: `titleText`, `titleSnippet`
+
+#### New Props on Existing Components
+
+- **Button**: `iconPosition` (`'start' | 'end'`, default `'start'`) — controls icon placement relative to children text
+- **Card**: `descriptionText` — inline description in header that truncates with ellipsis (three-part header)
+- **Card**: `headerWrap` — allows header description to wrap to its own line (`pa-card__header--wrap` modifier)
+- **Table**: `isBordered` — adds `pa-table--bordered` class for full cell borders
+- **ProfilePanel**: `hasIconOnlyTabs` — shows profile panel tabs as icon-only (hides text labels, adds `pa-profile-panel__tabs--icon-only`)
+- **ProfilePanel**: Body scroll lock — automatically adds `pa-scroll-lock` class to `document.body` when panel is open
+- **SettingsPanel**: Auto theme mode — `'auto'` option follows OS preference via `prefers-color-scheme` media query
+- **SettingsPanel**: RTL mode toggle — sets `dir="rtl"` on `<html>` element
+- **SettingsPanel**: Sidebar resizable checkbox
+- **SettingsPanel**: Profile icon-only tabs checkbox
+
+#### Accessibility Improvements
+
+- **All close/dismiss buttons** (Modal, Alert, Toast, PopoverContainer): Text characters (`✕`, `×`) replaced with inline SVG X icons
+- **All close/dismiss buttons**: `aria-label` changed from hardcoded English strings to i18n-driven `$_('pureAdmin.common.buttons.close')`
+- **Navbar**: Burger button `aria-label` now uses `$_('pureAdmin.a11y.toggleSidebar')`
+- **NavbarSearch**: `aria-label` now uses `$_('pureAdmin.a11y.openSearch')`
+- **TabsScrollable**: Scroll button `aria-label` values now i18n-driven
+- **ProfilePanel**: Close button `aria-label` now uses `$_('pureAdmin.a11y.closeProfile')`
+- **ProfilePanelFavoriteItem**: Remove button `title` now uses `$_('pureAdmin.a11y.removeFromFavorites')`
+- **Sidebar**: Resize handle `title` now uses `$_('pureAdmin.a11y.dragToResizeSidebar')`
+
+#### New i18n Translation Keys
+
+- `pureAdmin.field.clickToCopy`, `pureAdmin.field.copied`
+- `pureAdmin.common.buttons.close`, `pureAdmin.common.buttons.clearAll`, `pureAdmin.common.buttons.refresh`, `pureAdmin.common.buttons.moreFilters`, `pureAdmin.common.buttons.hideFilters`, `pureAdmin.common.buttons.clearFilters`, `pureAdmin.common.buttons.applyFilters`
+- `pureAdmin.a11y.closeProfile`, `pureAdmin.a11y.closeDetailPanel`, `pureAdmin.a11y.scrollTabsLeft`, `pureAdmin.a11y.scrollTabsRight`, `pureAdmin.a11y.openSearch`, `pureAdmin.a11y.toggleSidebar`, `pureAdmin.a11y.removeFromFavorites`, `pureAdmin.a11y.dragToResizeSidebar`, `pureAdmin.a11y.settings`
+
+#### Docs Pages
+
+- **Events & Callbacks** (`/events-callbacks`) — Interactive test page with 17 components wired to a shared event log for testing all `on*` event handlers and `*Callback` props
+- **Auto Theme** (`/auto-theme`)
+- **Data Display** (`/data-display`)
+- **Detail Panel** (`/detail-panel`)
+- **i18n** (`/i18n`)
+- **Table Filters** (`/table-filters`)
+
+### Fixed
+
+- **Modal**: Setting `show` to `false` via binding (e.g., parent toggling `bind:show`) now triggers `beforeCloseCallback` and `onclose`, matching the behavior of closing via X button, backdrop click, or Escape key. Previously, only internal close actions ran the callback flow. Implemented via `$effect.pre()` with `wasOpen`/`internalClose` tracking flags
+- **FormErrorSummary**: Changed inner BasicList margin from `mt-2 mb-0` to `mt-0 mb-0`
+
+### Changed
+
+- **SettingsPanel**: Container width and sidebar mode now use `localStorage` instead of URL query params (no more page reloads for layout changes)
+- **SettingsPanel**: Removed `'font-family-delivery'` font option
+- **package.json**: GitHub URLs corrected from `keenmate` (lowercase) to `KeenMate` (proper case) in repository URL, homepage, and bugs URL
+- **package.json**: Dev dependencies changed from `file:` references to versioned `^1.5.0` for `@keenmate/pure-admin-core` and `@keenmate/pure-admin-theme-audi`
+
+### CSS Features (via pure-admin-core unreleased)
+These features are available through CSS classes (use via `class` prop) without dedicated Svelte component props:
+- **Detail view min-height support**: `.pa-table-card` with `.pa-detail-view` properly fills available height when using min-height utilities (e.g., `minhr-25`)
+
+---
+
+## [1.5.0] - 2026-02-03
+
+### Breaking Changes
+
+#### Left/Right → Start/End Rename (RTL Consistency)
+All component props and CSS class references using physical `left`/`right` have been renamed to logical `start`/`end` for full RTL (Right-to-Left) support. This aligns with **pure-admin-core v1.5.0**.
+
+**Button.svelte:**
+- `ButtonAlign` type: `'left' | 'right' | 'center' | 'justify'` → `'start' | 'end' | 'center' | 'justify'`
+- CSS classes: `pa-btn--align-left` → `pa-btn--align-start`, `pa-btn--align-right` → `pa-btn--align-end`
+
+**Pager.svelte:**
+- `PagerAlign` type: `'left' | 'center' | 'right'` → `'start' | 'center' | 'end'`
+- CSS classes: `pa-pager--left` → `pa-pager--start`, `pa-pager--right` → `pa-pager--end`
+
+**LoadMore.svelte:**
+- `LoadMoreAlign` type: `'left' | 'center' | 'right'` → `'start' | 'center' | 'end'`
+- CSS classes: `pa-load-more--left` → `pa-load-more--start`, `pa-load-more--right` → `pa-load-more--end`
+
+**Navbar.svelte:**
+- Props renamed: `navLeft` → `navStart`, `navRight` → `navEnd`
+- CSS classes: `pa-header__left` → `pa-header__start`, `pa-header__right` → `pa-header__end`, `pa-header__nav--left` → `pa-header__nav--start`, `pa-header__nav--right` → `pa-header__nav--end`
+
+**Footer.svelte:**
+- Props renamed: `left` → `start`, `right` → `end`, `rightVertical` → `endVertical`
+- CSS classes: `pa-footer__left` → `pa-footer__start`, `pa-footer__right` → `pa-footer__end`, `pa-footer__right--vertical` → `pa-footer__end--vertical`
+
+**TabsScrollable.svelte:**
+- CSS classes: `pa-tabs__scroll-btn--left` → `pa-tabs__scroll-btn--start`, `pa-tabs__scroll-btn--right` → `pa-tabs__scroll-btn--end`
+
+**Popover.svelte:**
+- `PopoverAlignment` type: `'center' | 'right'` → `'center' | 'end'`
+
+**Migration Example:**
+```svelte
+<!-- Before -->
+<Button align="left">Save</Button>
+<Pager align="right" />
+<LoadMore align="left" />
+<Navbar>
+  {#snippet navLeft()}...{/snippet}
+  {#snippet navRight()}...{/snippet}
+</Navbar>
+<Footer>
+  {#snippet left()}...{/snippet}
+  {#snippet right()}...{/snippet}
+</Footer>
+<Popover alignment="right" />
+
+<!-- After -->
+<Button align="start">Save</Button>
+<Pager align="end" />
+<LoadMore align="start" />
+<Navbar>
+  {#snippet navStart()}...{/snippet}
+  {#snippet navEnd()}...{/snippet}
+</Navbar>
+<Footer>
+  {#snippet start()}...{/snippet}
+  {#snippet end()}...{/snippet}
+</Footer>
+<Popover alignment="end" />
+```
+
+### Changed
+
+#### Peer Dependency Update
+- **@keenmate/pure-admin-core**: Updated minimum version from `^1.4.1` to `^1.5.0`
+
+#### Buttons Demo Page: Improved Text Alignment Examples
+- Button alignment examples now use wider buttons (`minwr-15`/`minwr-18`) with varied text lengths to clearly demonstrate alignment differences
+- Updated alignment values from `left`/`right` to `start`/`end`
+
+### CSS Features (via pure-admin-core 1.5.0)
+These features are available through CSS without Svelte component changes:
+- **Text alignment utilities**: `pa-text--left`/`pa-text--right` removed, use `pa-text--start`/`pa-text--end`
+- **Timeline positioning**: `pa-timeline--left`/`pa-timeline--right` renamed to `pa-timeline--start`/`pa-timeline--end`
+
+---
+
+## [1.4.0] - 2026-02-02
+
+### Changed
+
+#### Peer Dependency Update
+- **@keenmate/pure-admin-core**: Updated minimum version from `^1.4.0` to `^1.4.1`
+- **Theme packages**: Updated to v1.4.0 (`@keenmate/pure-admin-theme-audi`, `theme-corporate`, `theme-dark`, `theme-express`, `theme-minimal`)
+
+#### ToastContainer Default Position (RTL Improvement)
+- Default position changed from `'top-right'` to `'top-end'` for better RTL support
+- Physical position props (`top-right`, `top-left`, etc.) are now deprecated but still supported
+- Documentation updated to recommend logical positions for all new code
+
+#### Card Component: Three-Part Header Layout (v1.4.1)
+- New `descriptionText` prop for inline description that truncates with ellipsis
+- New `headerWrap` prop adds `--wrap` modifier to allow description to wrap to its own line
+- Three-part layout: `[Title]` — `[Description (truncates)]` — `[Tools/Actions]`
+- Existing `subtitleText` prop still works for below-title descriptions
+
+```svelte
+<!-- Three-part header with truncating description -->
+<Card
+  titleText="Analytics Dashboard"
+  descriptionText="Real-time metrics and performance indicators for your application"
+  headerWrap={false}
+>
+  {#snippet tools()}
+    <Button size="sm">Refresh</Button>
+  {/snippet}
+  ...
+</Card>
+```
+
+#### Scroll Lock Support (v1.4.1)
+- **SlidePanel**: Now adds `pa-scroll-lock` class to body when open, preventing background scrolling
+- **ProfilePanel**: Now adds `pa-scroll-lock` class to body when open
+- Scroll lock is automatically removed when panels are closed or unmounted
+
+### CSS Features (via pure-admin-core 1.4.1)
+These features are available through CSS without Svelte component changes:
+- **Height utilities**: `.h-full`, `.h-screen`, `.min-h-full`, `.min-h-screen`, `.max-h-full`, `.max-h-screen`
+- **Flex utilities**: `.flex-1`, `.flex-auto`, `.flex-grow`, `.flex-shrink-0`
+- **Scroll lock**: `.pa-scroll-lock` utility class for disabling body scroll
+- **Detail panel z-index fix**: Card overlay mode stays below header
+- **Card title truncation fix**: Nested titles in `.pa-card__title` now truncate correctly
+
+---
+
+## [1.3.0] - 2026-01-31
+
+### Changed
+
+#### Peer Dependency Update
+- **@keenmate/pure-admin-core**: Updated minimum version from `^1.2.0` to `^1.4.0`
+- **Theme packages**: Updated to v1.3.0 (`@keenmate/pure-admin-theme-audi`, `theme-corporate`, `theme-dark`, `theme-express`, `theme-minimal`)
+
+#### Font Size Scaling Fix (via pure-admin-core 1.4.0)
+- Fixed `html.font-size-small`, `font-size-large`, etc. classes using incorrect rem values
+- Font size settings in SettingsPanel now work correctly
+
+#### RTL (Right-to-Left) Support
+**ToastContainer.svelte:**
+- Now uses logical CSS position classes internally (`--top-end`, `--top-start`, etc.) for RTL support
+- Physical position props (`top-right`, `top-left`, etc.) still work and are mapped automatically
+- New logical position props available: `top-end`, `top-start`, `bottom-end`, `bottom-start`
+- Toasts will automatically flip position in RTL layouts
+
+```svelte
+<!-- Both work - physical positions mapped to logical internally -->
+<ToastContainer position="top-right" />  <!-- Maps to --top-end -->
+<ToastContainer position="top-end" />    <!-- Direct logical position -->
+```
+
+#### SettingsPanel Sync with pure-admin-core
+**SettingsPanel.svelte:**
+- Added **RTL Mode** checkbox - toggles `dir="rtl"` on `<html>` element
+- Added **Sidebar Resizable** checkbox - toggles resizable sidebar
+- Added **Profile Icon-Only Tabs** checkbox - toggles icon-only tabs in profile panel
+- Renamed internal state `profileNoAvatar` → `profileHasAvatar` (inverted logic for consistency)
+- Removed "Delivery" from font family options (not in pure-admin-core)
+- **Fixed Layout Width** - now applies `pa-container-*` classes to body and persists to localStorage (no page reload)
+- **Fixed Sidebar Mode** - now applies `pa-layout--sticky` class to body and persists to localStorage (no page reload)
+- **Fixed Icon-Only Tabs** - ProfilePanel now has `hasIconOnlyTabs` prop for reactive Svelte 5 integration (DOM manipulation alone loses class on re-render)
+
+New settings state properties:
+- `rtlMode: boolean` - RTL layout mode
+- `sidebarResizable: boolean` - Sidebar resize handle
+- `profileHasAvatar: boolean` - Show avatar (true) or hide (false)
+- `profileIconOnlyTabs: boolean` - Icon-only profile tabs
+
+### Breaking Changes
+
+#### Naming Convention: Boolean Props Use `is*`/`should*`/`has*` Prefixes
+Renamed boolean props to follow naming conventions per CLAUDE.md guidelines:
+- `is*` prefix for state flags (what something IS)
+- `should*` prefix for behavior flags (what component SHOULD do)
+- `has*` prefix for presence flags (what component HAS)
+
+**Table.svelte:**
+- `striped` → `isStriped`
+- `bordered` → `isBordered`
+- `responsiveGrid` → `isResponsiveGrid`
+
+**TableCard.svelte:**
+- `plain` → `isPlain`
+- `scrollable` → `isScrollable`
+
+**TableContainer.svelte:**
+- `panel` → `isPanel`
+
+**Button.svelte:**
+- `outline` → `isOutline`
+- `block` → `isBlock`
+- `iconOnly` → `isIconOnly`
+- `loading` → `isLoading`
+- `ripple` → `isRipple`
+
+**Alert.svelte:**
+- `dismissible` → `isDismissible`
+- `outline` → `isOutline`
+
+**Badge.svelte:**
+- `pill` → `isPill`
+- `ellipsisLeft` → `isEllipsisStart` (renamed for RTL compatibility - uses logical direction)
+
+**Checkbox.svelte & CheckboxBox.svelte:**
+- `indeterminate` → `isIndeterminate`
+- `xMark` → `isXMark`
+
+**Modal.svelte:**
+- `scrollable` → `isScrollable`
+- `showClose` → `shouldShowClose`
+- `closeOnEscape` → `shouldCloseOnEscape`
+
+**Tabs.svelte:**
+- `borderTop` → `isBorderTop`
+
+**TabsContainer.svelte:**
+- `bordered` → `isBordered`
+- `card` → `isCard`
+
+**TabsVerticalLayout.svelte:**
+- `bordered` → `isBordered`
+
+**Card.svelte:**
+- `noPadding` → `hasPadding` (inverted logic, default `true` - set to `false` to remove padding)
+- `stat` → `isStat`
+- `inlineTabs` → `hasInlineTabs`
+
+**CompositeBadge.svelte:**
+- `interactive` → `isInteractive`
+- `label` → `labelText` (consistency with `buttonText` - both are string props, not slots)
+
+**FilterCard.svelte:**
+- `expanded` → `isExpanded`
+- `showToggle` → `shouldShowToggle`
+- `showClear` → `shouldShowClear`
+- `showRefresh` → `shouldShowRefresh`
+- `showAdvancedActions` → `shouldShowAdvancedActions`
+- `loading` → `isLoading`
+
+**LoadMore.svelte:**
+- `loading` → `isLoading`
+- `showCount` → `shouldShowCount`
+
+**Fields.svelte:**
+- `horizontal` → `isHorizontal`
+- `table` → `isTable`
+- `bordered` → `isBordered`
+- `striped` → `isStriped`
+- `compact` → `isCompact`
+- `relaxed` → `isRelaxed`
+- `inline` → `isInline`
+- `row` → `isRow`
+- `filled` → `isFilled`
+- `noBorder` → `hasBorder` (inverted logic, default `true` - set to `false` to remove border)
+
+**FormGroup.svelte:**
+- `hasError` → `isError`
+- `hasSuccess` → `isSuccess`
+
+**Toast.svelte:**
+- `showProgress` → `shouldShowProgress`
+
+**ProfilePanel.svelte:**
+- `noAvatar` → `hasAvatar` (inverted logic, default `true` - set to `false` to hide avatar)
+- Added `hasIconOnlyTabs?: boolean` prop - hides tab text labels, shows icons only (for SettingsPanel integration)
+
+**Label.svelte:**
+- `outline` → `isOutline`
+
+**DefinitionList.svelte:**
+- `inline` → `isInline`
+
+**TimelineItem.svelte & timeline-types.ts:**
+- `filled` → `isFilled`
+- `dateHeader` → `isDateHeader`
+
+**CodeBlock.svelte:**
+- `compact` → `isCompact`
+
+**BasicList.svelte:**
+- `unstyled` → `isUnstyled`
+- `inline` → `isInline`
+- `bordered` → `isBordered`
+- `striped` → `isStriped`
+- `icon` → `hasIcon`
+
+**DialogButton interface (dialog-service.svelte.ts):**
+- `outline` → `isOutline`
+
+#### Naming Convention: Event Handlers Use Lowercase
+Renamed event handler props to match Svelte 5/DOM event naming convention (lowercase):
+
+**ProfilePanelNavItem.svelte, ProfilePanelFavoriteItem.svelte, NavbarSearch.svelte, SidebarItem.svelte, LoadMore.svelte:**
+- `onClick` → `onclick`
+
+**Checkbox.svelte, CheckboxBox.svelte, Radio.svelte:**
+- `onChange` → `onchange`
+
+#### Naming Convention: Custom Callbacks Use `*Callback` Suffix
+Renamed all custom callbacks (non-DOM event forwarders) to use `*Callback` suffix for clarity and consistency:
+
+**Alert.svelte:**
+- `onDismiss` → `dismissCallback`
+
+**Modal.svelte:**
+- `onBeforeClose` → `beforeCloseCallback`
+- `onClose` → `closeCallback`
+
+**Toast.svelte:**
+- `onClose` → `closeCallback`
+
+**Popconfirm.svelte:**
+- `onConfirm` → `confirmCallback`
+- `onCancel` → `cancelCallback`
+- `compact` → `isCompact` (boolean prop, uses is*/has*/should* prefix)
+
+**ProfilePanel.svelte:**
+- `onClose` → `closeCallback`
+
+**ProfilePanelFavoriteItem.svelte:**
+- `onRemove` → `removeCallback`
+
+**SlidePanel.svelte:**
+- `onClose` → `closeCallback`
+
+**DetailPanel.svelte:**
+- `onClose` → `closeCallback`
+
+**DetailView.svelte:**
+- `onClose` → `closeCallback`
+
+**Navbar.svelte:**
+- `onBurgerClick` → `burgerClickCallback`
+
+**SettingsPanel.svelte:**
+- `onSettingsChange` → `settingsChangeCallback`
+
+**CommandPalette.svelte & command-palette-types.ts:**
+- `onGlobalSelect` → `globalSelectCallback`
+
+**FilterCard.svelte:**
+- `onClear` → `clearCallback`
+- `onRefresh` → `refreshCallback`
+- `onApply` → `applyCallback`
+- `onToggle` → `toggleCallback`
+
+**Pager.svelte:**
+- `onPrevious` → `previousCallback`
+- `onNext` → `nextCallback`
+- `onPageChange` → `pageChangeCallback`
+- `onFirst` → `firstCallback`
+- `onLast` → `lastCallback`
+
+**Field.svelte:**
+- `onCopy` → `copyCallback`
+
+**CheckboxListItem.svelte:**
+- `onChange` → `changeCallback`
+
+**BadgeGroup.svelte:**
+- `onBadgeClick` → `badgeClickCallback`
+- `onBadgeClickLegacy` → `badgeClickLegacyCallback`
+
+**CompositeBadge.svelte:**
+- `onButtonClick` → `buttonClickCallback`
+- `onLabelClick` → `labelClickCallback`
+
+**CompositeBadgeGroup.svelte:**
+- `onLabelClick` → `labelClickCallback`
+- `onButtonClick` → `buttonClickCallback`
+- `onLabelClickLegacy` → `labelClickLegacyCallback`
+- `onButtonClickLegacy` → `buttonClickLegacyCallback`
+
+**Timeline.svelte:**
+- `onItemClick` → `itemClickCallback`
+- `onItemClickLegacy` → `itemClickLegacyCallback`
+
+#### Naming Convention: String Props Use `*Text` Suffix
+Renamed string props representing text content to use `*Text` suffix for consistency and clarity:
+
+**Alert.svelte & Callout.svelte:**
+- `heading` → `headingText`
+
+**Toast.svelte:**
+- `title` → `titleText`
+- `message` → `messageText`
+
+**Modal.svelte:**
+- `title` → `titleText`
+
+**Popconfirm.svelte:**
+- `message` → `messageText`
+
+**Popover.svelte:**
+- `title` → `titleText`
+
+**Card.svelte:**
+- `title` → `titleText`
+- `subtitle` → `subtitleText`
+
+**DetailPanel.svelte, TableCard.svelte, TableContainer.svelte, FieldGroup.svelte, CodeBlockWithHeader.svelte, Section.svelte:**
+- `title` → `titleText`
+
+**Field.svelte:**
+- `label` → `labelText`
+- `value` → `valueText`
+
+**Stat.svelte:**
+- `label` → `labelText`
+- `change` → `changeText`
+- `symbol` → `symbolText`
+
+**SidebarItem.svelte, Checkbox.svelte, Radio.svelte, ProfilePanelFavoriteItem.svelte:**
+- `label` → `labelText`
+
+**FormField.svelte:**
+- `label` → `labelText`
+- `help` → `helpText`
+
+**ListItem.svelte:**
+- `title` → `titleText`
+- `subtitle` → `subtitleText`
+- `meta` → `metaText`
+
+**MetricListItem.svelte & StatusListItem.svelte:**
+- `label` → `labelText`
+- `value` → `valueText`
+
+**CheckboxListItem.svelte:**
+- `label` → `labelText`
+- `description` → `descriptionText`
+
+**ActivityFeedItem.svelte & TimelineItem.svelte:**
+- `time` → `timeText`
+
+**Button.svelte:**
+- `title` → `titleText`
+
+**Text.svelte (typography):**
+- `title` → `titleText`
+
+**Migration Example:**
+```svelte
+<!-- Before (boolean props) -->
+<Table bordered striped />
+<Button outline block loading title="Save" />
+<Modal scrollable showClose closeOnEscape title="Edit" />
+<Badge pill ellipsisLeft /> <!-- ellipsisLeft is now isEllipsisStart -->
+<BasicList icon bordered unstyled />
+
+<!-- After (boolean props with is*/should*/has* prefix) -->
+<Table isBordered isStriped />
+<Button isOutline isBlock isLoading titleText="Save" />
+<Modal isScrollable shouldShowClose shouldCloseOnEscape titleText="Edit" />
+<Badge isPill isEllipsisStart />
+<BasicList hasIcon isBordered isUnstyled />
+
+<!-- Before (string props) -->
+<Card title="My Card" subtitle="Info" />
+<Toast title="Success" message="Saved!" />
+<TimelineItem time="14:32" />
+
+<!-- After (string props with *Text suffix) -->
+<Card titleText="My Card" subtitleText="Info" />
+<Toast titleText="Success" messageText="Saved!" />
+<TimelineItem timeText="14:32" />
+
+<!-- Before (event handlers - DOM events) -->
+<Checkbox onChange={handleChange} />
+<LoadMore onClick={loadMore} />
+<NavbarSearch onClick={openSearch} />
+
+<!-- After (event handlers - DOM events use lowercase) -->
+<Checkbox onchange={handleChange} />
+<LoadMore onclick={loadMore} />
+<NavbarSearch onclick={openSearch} />
+
+<!-- Before (custom callbacks) -->
+<Modal onClose={handleClose} onBeforeClose={validate} />
+<Popconfirm onConfirm={handleDelete} onCancel={handleCancel} compact />
+<Toast onClose={dismiss} />
+<FilterCard onClear={clear} onRefresh={refresh} onToggle={handleToggle} />
+<Timeline onItemClick={handleClick} />
+
+<!-- After (custom callbacks use *Callback suffix) -->
+<Modal closeCallback={handleClose} beforeCloseCallback={validate} />
+<Popconfirm confirmCallback={handleDelete} cancelCallback={handleCancel} isCompact />
+<Toast closeCallback={dismiss} />
+<FilterCard clearCallback={clear} refreshCallback={refresh} toggleCallback={handleToggle} />
+<Timeline itemClickCallback={handleClick} />
+```
+
+#### i18n: Flat Structure with `pureAdmin.*` Namespace
+All library translation keys now use a flat structure with `pureAdmin.` prefix for easy merging with app translations.
+
+**Before (nested):**
+```typescript
+{
+  dialog: { confirm: 'Confirm', cancel: 'Cancel' },
+  field: { clickToCopy: 'Click to copy' }
+}
+```
+
+**After (flat with namespace):**
+```typescript
+{
+  'pureAdmin.dialog.confirm': 'Confirm',
+  'pureAdmin.dialog.cancel': 'Cancel',
+  'pureAdmin.field.clickToCopy': 'Click to copy'
+}
+```
+
+**Migration:** If you had custom translations, update keys to flat format with `pureAdmin.` prefix.
+
+**Benefits:**
+- App translations merge cleanly: just spread library + app objects
+- Easy to search: `grep "pureAdmin.field"` finds all field translations
+- No collisions: library keys won't conflict with app keys
+- Override any key: `{ 'pureAdmin.dialog.confirm': 'Yes!' }` in your locale file
+
+**Type change:** `TranslationKeys` → `PureAdminTranslations` (now `Record<string, string>`)
+
+### Added
+
+#### Table Card Component
+New component for card-like table containers. Synced with `@keenmate/pure-admin-core` v1.3.0.
+
+**`TableCard`** (`display/TableCard.svelte`) - Card container specifically designed for tables and web-grids
+- `titleText?: string` - Card title text
+- `variant?: 'primary' | 'success' | 'warning' | 'danger'` - Semantic color variant
+- `color?: 1-9` - Theme color variant
+- `isScrollable?: boolean` - Enable horizontal scrolling for wide tables
+- `isPlain?: boolean` - Plain variant removes card styling (border, shadow, background)
+- `header?: Snippet` - Custom header content (replaces title)
+- `actions?: Snippet` - Actions in header (buttons, etc.)
+- `children?: Snippet` - Table content
+- `footer?: Snippet` - Footer content (pagination, summary)
+- CSS classes: `pa-table-card`, `pa-table-card--{variant}`, `pa-table-card--color-{n}`, `pa-table-card--plain`
+
+```svelte
+<TableCard titleText="Orders" variant="primary">
+  {#snippet actions()}
+    <Button size="sm">Export</Button>
+  {/snippet}
+  <Table isStriped>...</Table>
+  {#snippet footer()}
+    <Pager ... />
+  {/snippet}
+</TableCard>
+```
+
+#### Table Container Panel Modifier
+New component for table containers with optional panel styling. Synced with `@keenmate/pure-admin-core` v1.3.0.
+
+**`TableContainer`** (`display/TableContainer.svelte`) - Container with optional panel styling
+- `isPanel?: boolean` - Panel modifier adds card-like visual containment (shadow, border-radius, hover effect)
+- `titleText?: string` - Title text (only shown when `isPanel=true`)
+- `header?: Snippet` - Custom header content (only shown when `isPanel=true`)
+- `actions?: Snippet` - Actions in header (only shown when `isPanel=true`)
+- `children?: Snippet` - Table content
+- CSS classes: `pa-table-container`, `pa-table-container--panel`
+
+```svelte
+<TableContainer isPanel titleText="Customer Orders">
+  {#snippet actions()}
+    <Button size="sm" isOutline>Filter</Button>
+  {/snippet}
+  <Table>...</Table>
+</TableContainer>
+```
+
+#### Data Display Components
+New components for displaying read-only label-value field pairs. Synced with `@keenmate/pure-admin-core` v1.3.0 data-display feature.
+
+**New Components:**
+
+**`Field`** (`display/Field.svelte`) - Single label-value pair with optional copy-to-clipboard
+- `label?: string` - Label text (simple mode)
+- `value?: string | number` - Value text (simple mode)
+- `full?: boolean` - Full width in grid layouts (spans entire row)
+- `copyMode?: 'btn' | 'click' | 'hover'` - Copy to clipboard mode
+  - `'btn'` - Copy button always visible next to value
+  - `'click'` - Entire value clickable with "Click to copy" hint
+  - `'hover'` - Copy button appears only on field hover
+- `copyValue?: string` - Override what gets copied (useful for masked values like passwords)
+- `copyValueCallback?: () => string` - Callback to get value to copy (for dynamic values)
+- `copyHintText?: string` - Hint text override (default: uses i18n `pureAdmin.field.clickToCopy`)
+- `copiedText?: string` - Feedback text override (default: uses i18n `pureAdmin.field.copied`)
+- `onCopy?: (value: string) => void` - Callback after successful copy
+- `labelSnippet?: Snippet` - Complex label content
+- `valueSnippet?: Snippet` - Complex value content
+- `children?: Snippet` - Alias for valueSnippet
+- CSS classes: `pa-field`, `pa-field--full`, `pa-field--copy-btn`, `pa-field--copy-click`, `pa-field--copy-hover`, `pa-field--copied`
+- Uses `navigator.clipboard.writeText()` for clipboard access
+- Visual feedback: "Copied!" state shown for 1.5 seconds after copy (checkmark icon + green color for button modes)
+- Smart copy detection: Copy UI (button, click handler, hint text) only renders when there's something to copy (`value`, `copyValue`, or `copyValueCallback`). This prevents showing non-functional copy buttons when using snippet content without explicit copy value.
+- i18n support: Automatically uses `pureAdmin.field.clickToCopy` and `pureAdmin.field.copied` from locale files (built-in `en` and `cs` translations included). Use `copyHintText`/`copiedText` props only to override.
+
+**`Fields`** (`display/Fields.svelte`) - Container with layout modifiers
+- `cols?: 2 | 3 | 4` - Grid columns (`--cols-2/3/4`)
+- `horizontal?: boolean` - Label left, value right
+- `table?: boolean` - Consistent label widths
+- `bordered?: boolean` - Bottom border separators
+- `striped?: boolean` - Alternating backgrounds
+- `compact?: boolean` - Tighter spacing
+- `relaxed?: boolean` - Larger gaps
+- `inline?: boolean` - Fields flow on one line
+- `row?: boolean` - Equal-width auto columns
+- `filled?: boolean` - Subtle background panel
+- `color?: 1-9` - Theme color for left border
+- `noBorder?: boolean` - Remove left border
+- CSS classes: `pa-fields`, `pa-fields--cols-{2,3,4}`, `pa-fields--horizontal`, `pa-fields--table`, `pa-fields--bordered`, `pa-fields--striped`, `pa-fields--compact`, `pa-fields--relaxed`, `pa-fields--inline`, `pa-fields--row`, `pa-fields--filled`, `pa-fields--color-{1-9}`, `pa-fields--no-border`
+
+**`FieldGroup`** (`display/FieldGroup.svelte`) - Titled section
+- `title?: string` - Group title text
+- `titleSnippet?: Snippet` - Complex title content
+- CSS classes: `pa-field-group`, `pa-field-group__title`
+
+**Usage Examples:**
+```svelte
+<!-- Basic stacked fields -->
+<Fields>
+  <Field label="Name" value="John Doe" />
+  <Field label="Email" value="john@example.com" />
+</Fields>
+
+<!-- Multi-column grid -->
+<Fields cols={3}>
+  <Field label="City" value="New York" />
+  <Field label="State" value="NY" />
+  <Field label="ZIP" value="10001" />
+</Fields>
+
+<!-- Horizontal with border -->
+<Fields horizontal bordered>
+  <Field label="Order ID" value="#ORD-12345" />
+  <Field label="Status" value="Processing" />
+</Fields>
+
+<!-- Themed section -->
+<Fields color={1} filled>
+  <Field label="Primary Contact" value="John Doe" />
+</Fields>
+
+<!-- Grouped sections -->
+<FieldGroup title="Customer Information">
+  <Fields cols={2}>
+    <Field label="Name" value="John Doe" />
+    <Field label="Email" value="john@example.com" />
+    <Field label="Address" value="123 Main St" full />
+  </Fields>
+</FieldGroup>
+
+<!-- Complex value with snippet -->
+<Field label="Status">
+  <Badge variant="success">Active</Badge>
+</Field>
+
+<!-- Copyable fields -->
+<Field label="API Key" value="sk-1234567890abcdef" copyMode="btn" />
+<Field label="Order ID" value="#ORD-12345" copyMode="click" />
+<Field label="Account ID" value="ACC-001" copyMode="hover" />
+<Field label="Password" value="••••••••" copyValue="actual-password" copyMode="btn" />
+```
+
+**Exports:**
+- `Field`, `Fields`, `FieldGroup` components
+
+#### Docs: Data Display Demo Page
+New `/data-display` demo page with comprehensive examples:
+- Basic stacked fields
+- Multi-column layouts (2, 3, 4 columns)
+- Full-width fields in grids
+- Layout modifiers (horizontal, table, inline, row)
+- Visual modifiers (bordered, striped, filled)
+- Spacing modifiers (compact, relaxed)
+- Theme colors (1-9) with filled backgrounds
+- No border variant
+- Copyable fields (all three modes: btn, click, hover)
+- Field groups with titled sections
+- Complex values using snippets (badges, links, progress bars)
+- Practical order details example
+
+---
+
+## [1.2.0] - 2026-01-26
+
+### Added
+
+#### Detail Panel Components
+Three new components for displaying detail views alongside data tables. The system separates content (DetailPanel) from positioning (DetailView for card overlay, SlidePanel for full-screen overlay).
+
+**New Components:**
+
+**`SlidePanel`** (`layout/`) - Fixed overlay panel that slides in from the right. Shared behavioral base for full-screen overlay panels.
+- `show: boolean` (bindable) - Controls panel visibility
+- `onClose?: () => void` - Called on escape key or backdrop click
+- `children: Snippet` - Panel content
+- `class?: string` - Additional CSS classes
+- Escape key listener (only active when open)
+- Backdrop click-to-close
+
+**`DetailPanel`** (`display/`) - Mode-agnostic content shell with header, scrollable body, and optional footer. Works inside either DetailView or SlidePanel.
+- `title?: string` - Panel title text
+- `header?: Snippet` - Custom header content (replaces title, close button always rendered)
+- `children: Snippet` - Body content (scrollable)
+- `footer?: Snippet` - Footer content (action buttons, fixed at bottom)
+- `onClose?: () => void` - Close button callback
+- `isResizable?: boolean` (default `true`) - Drag-to-resize handle on left edge (min 28rem, max 64rem, double-click to reset, persisted to localStorage)
+- `class?: string` - Additional CSS classes
+
+**`DetailView`** (`display/`) - Card overlay wrapper that positions a DetailPanel over a main content area within a card/container.
+- `show: boolean` (bindable) - Controls panel visibility
+- `shouldShowBackdrop?: boolean` (default `true`) - Show/hide backdrop overlay
+- `main?: Snippet` - Main content area (table, list, etc.)
+- `children: Snippet` - Panel content (DetailPanel goes here)
+- `onClose?: () => void` - Called on backdrop click or escape key
+- `class?: string` - Additional CSS classes
+
+**Usage - Card Overlay:**
+```svelte
+<DetailView bind:show={panelOpen} shouldShowBackdrop>
+  {#snippet main()}
+    <Table>...</Table>
+  {/snippet}
+  <DetailPanel title="User Details" onClose={() => panelOpen = false}>
+    <p>Content here</p>
+    {#snippet footer()}
+      <Button variant="primary">Save</Button>
+    {/snippet}
+  </DetailPanel>
+</DetailView>
+```
+
+**Usage - Full-Screen Overlay:**
+```svelte
+<SlidePanel bind:show={panelOpen}>
+  <DetailPanel title="User Details" onClose={() => panelOpen = false}>
+    <p>Content here</p>
+    {#snippet footer()}
+      <Button variant="primary">Save</Button>
+    {/snippet}
+  </DetailPanel>
+</SlidePanel>
+```
+
+**Supported modes:**
+- **Inline split-view** — table shrinks and panel appears alongside (`isOverlay={false}`)
+- Card overlay with backdrop (click backdrop to close)
+- Card overlay without backdrop (table stays interactive for rapid row browsing)
+- **Tabbed panel** — tabs between header and body for content sections (`tabs` snippet)
+- **Header actions** — custom header with icon buttons, no footer
+- Full-screen fixed overlay (slides in from right, like ProfilePanel)
+
+**`DetailView` — new prop:**
+- `isOverlay?: boolean` (default `true`) — When `false`, omits `pa-detail-view--overlay` class and backdrop element, enabling inline split-view mode where the table shrinks and the panel appears alongside
+
+**`DetailPanel` — new prop:**
+- `tabs?: Snippet` — Renders between header and body inside `<div class="pa-detail-panel__tabs">`. Use with `<Tabs>` + `<TabItem>` for tabbed panel content
+
+#### Docs: Detail Panel Demo Page
+Rewritten `/detail-panel` demo page with 6 interactive sections matching the pure-admin demo:
+1. **Inline Split-View** — `isOverlay={false}`, table shrinks alongside panel
+2. **Card Overlay (with Backdrop)** — panel overlays table, backdrop click closes
+3. **Card Overlay (No Backdrop)** — panel stays open while clicking rows
+4. **Tabbed Detail Panel** — 3 tabs (Details/Activity/Notes) with tab switching
+5. **Header Actions (No Footer)** — custom header with icon ButtonGroup
+6. **Full-Screen Overlay** — SlidePanel + DetailPanel slide-in
+
+All demos include 8 users (expanded from 6) with `location` and `joined` fields, 600ms simulated loading with Spinner, avatar initial circle + key-value table detail layout, and reusable `{#snippet}` blocks.
+
+4 reference tables: Component Props (updated), CSS Reference, SCSS Variables, CSS Custom Properties.
+
+#### Docs: Sidebar Navigation Sync
+Synced sidebar navigation with pure-admin demo:
+- Moved **Detail Panel** from Tables to Components section (after Command Palette)
+- Tables section reordered: **Filters** (renamed from "Table Filters") moved before **Comparison**
+- Added `detail-panel` and `comparison` to command palette search pages
+
+### Changed
+
+- **Close button icons:** Replaced unicode characters (✕, ×, &#x2715;) with inline Lucide X SVG icon across all components (Alert, Modal, Toast, PopoverContainer, ProfilePanel, DetailPanel) for consistent rendering across platforms
+- **Peer dependency:** `@keenmate/pure-admin-core` bumped from `^1.1.3` to `^1.2.0` (required for detail-panel CSS classes)
+
+---
+
 ## [1.1.5] - 2026-01-24
 
 ### Added

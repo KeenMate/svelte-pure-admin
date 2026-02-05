@@ -24,13 +24,13 @@
 		/** Icon snippet */
 		icon?: import('svelte').Snippet;
 		/** Label text */
-		label: string;
+		labelText: string;
 		/** Has submenu */
 		hasSubmenu?: boolean;
 		/** Submenu items */
 		submenu?: import('svelte').Snippet;
 		/** Click handler */
-		onClick?: (event: MouseEvent) => void;
+		onclick?: (event: MouseEvent) => void;
 		/** Additional CSS classes */
 		class?: string;
 		/** Keep icon space even without icon (for alignment) */
@@ -41,10 +41,10 @@
 		href,
 		active = false,
 		icon,
-		label,
+		labelText,
 		hasSubmenu = false,
 		submenu,
-		onClick,
+		onclick,
 		class: className = '',
 		shouldKeepIconSpace = true
 	}: Props = $props();
@@ -71,16 +71,16 @@
 		isOpen = !isOpen;
 
 		// Save state to localStorage
-		const submenuId = label.toLowerCase().replace(/\s+/g, '-');
+		const submenuId = labelText.toLowerCase().replace(/\s+/g, '-');
 		localStorage.setItem(`submenu-${submenuId}`, isOpen ? 'open' : 'closed');
 
-		if (onClick) onClick(event);
+		if (onclick) onclick(event);
 	}
 
 	// Restore submenu state from localStorage
 	onMount(() => {
 		if (hasSubmenu) {
-			const submenuId = label.toLowerCase().replace(/\s+/g, '-');
+			const submenuId = labelText.toLowerCase().replace(/\s+/g, '-');
 			const savedState = localStorage.getItem(`submenu-${submenuId}`);
 			if (savedState === 'open') {
 				isOpen = true;
@@ -106,7 +106,7 @@
 			{:else if shouldKeepIconSpace}
 				<span class="pa-sidebar__icon"></span>
 			{/if}
-			<span class="pa-sidebar__label">{label}</span>
+			<span class="pa-sidebar__label">{labelText}</span>
 			<span class="pa-sidebar__chevron">›</span>
 		</button>
 
@@ -116,7 +116,7 @@
 			</ul>
 		{/if}
 	{:else if href}
-		<a {href} class={linkClasses()} onclick={onClick}>
+		<a {href} class={linkClasses()} {onclick}>
 			{#if icon}
 				<span class="pa-sidebar__icon">
 					{@render icon()}
@@ -124,10 +124,10 @@
 			{:else if shouldKeepIconSpace}
 				<span class="pa-sidebar__icon"></span>
 			{/if}
-			<span class="pa-sidebar__label">{label}</span>
+			<span class="pa-sidebar__label">{labelText}</span>
 		</a>
 	{:else}
-		<button class={linkClasses()} onclick={onClick}>
+		<button class={linkClasses()} {onclick}>
 			{#if icon}
 				<span class="pa-sidebar__icon">
 					{@render icon()}
@@ -135,7 +135,7 @@
 			{:else if shouldKeepIconSpace}
 				<span class="pa-sidebar__icon"></span>
 			{/if}
-			<span class="pa-sidebar__label">{label}</span>
+			<span class="pa-sidebar__label">{labelText}</span>
 		</button>
 	{/if}
 </li>

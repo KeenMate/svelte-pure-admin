@@ -4,6 +4,8 @@
 	 * Based on @keenmate/pure-admin-core snippets/profile.html
 	 */
 
+	import { _ } from '../i18n';
+
 	interface Props {
 		/** Show panel */
 		show?: boolean;
@@ -13,8 +15,10 @@
 		email: string;
 		/** User role */
 		role?: string;
-		/** Hide avatar - for corporate apps without user photos */
-		noAvatar?: boolean;
+		/** Show avatar (set false to hide for corporate apps without user photos) */
+		hasAvatar?: boolean;
+		/** Show tabs as icon-only (hides text labels) */
+		hasIconOnlyTabs?: boolean;
 		/** Avatar snippet */
 		avatar?: import('svelte').Snippet;
 		/** Tabs snippet - renders between header and body for tabbed interface */
@@ -27,8 +31,8 @@
 		footer?: import('svelte').Snippet;
 		/** Full body content snippet - replaces nav+actions when using tabs */
 		children?: import('svelte').Snippet;
-		/** Close handler */
-		onClose?: () => void;
+		/** Close callback */
+		onclose?: () => void;
 		/** Additional CSS classes */
 		class?: string;
 	}
@@ -38,14 +42,15 @@
 		name,
 		email,
 		role,
-		noAvatar = false,
+		hasAvatar = true,
+		hasIconOnlyTabs = false,
 		avatar,
 		tabs,
 		nav,
 		actions,
 		footer,
 		children,
-		onClose,
+		onclose,
 		class: className = ''
 	}: Props = $props();
 
@@ -60,18 +65,35 @@
 	// Build header class string
 	const headerClasses = $derived(() => {
 		const base = ['pa-profile-panel__header'];
-		if (noAvatar) base.push('pa-profile-panel__header--no-avatar');
+		if (!hasAvatar) base.push('pa-profile-panel__header--no-avatar');
+		return base.join(' ');
+	});
+
+	// Build tabs class string
+	const tabsClasses = $derived(() => {
+		const base = ['pa-profile-panel__tabs'];
+		if (hasIconOnlyTabs) base.push('pa-profile-panel__tabs--icon-only');
 		return base.join(' ');
 	});
 
 	function handleClose() {
 		show = false;
-		if (onClose) onClose();
+		if (onclose) onclose();
 	}
 
 	function handleOverlayClick() {
 		handleClose();
 	}
+
+	// Scroll lock: prevent body scroll when overlay is open (v1.4.1)
+	$effect(() => {
+		if (show) {
+			document.body.classList.add('pa-scroll-lock');
+		} else {
+			document.body.classList.remove('pa-scroll-lock');
+		}
+		return () => document.body.classList.remove('pa-scroll-lock');
+	});
 </script>
 
 <div class={classes()}>
@@ -100,14 +122,14 @@
 			<button
 				class="pa-profile-panel__close"
 				onclick={handleClose}
-				aria-label="Close Profile"
+				aria-label={$_('pureAdmin.a11y.closeProfile')}
 			>
-				✕
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
 			</button>
 		</div>
 
 		{#if tabs}
-			<div class="pa-profile-panel__tabs">
+			<div class={tabsClasses()}>
 				{@render tabs()}
 			</div>
 		{/if}

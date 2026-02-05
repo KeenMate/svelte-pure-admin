@@ -14,7 +14,7 @@
 		/** Content children */
 		children?: import('svelte').Snippet;
 		/** Click handler */
-		onClick?: () => void;
+		onclick?: () => void;
 		/** Additional CSS classes */
 		class?: string;
 	}
@@ -23,7 +23,7 @@
 		href,
 		icon,
 		children,
-		onClick,
+		onclick,
 		class: className = ''
 	}: Props = $props();
 
@@ -38,7 +38,7 @@
 	<a
 		{href}
 		class={classes()}
-		onclick={onClick}
+		{onclick}
 	>
 		{#if icon}
 			<span class="pa-profile-panel__nav-icon">{@render icon()}</span>

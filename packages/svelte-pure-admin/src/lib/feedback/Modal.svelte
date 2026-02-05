@@ -4,6 +4,8 @@
 	 * Based on @keenmate/pure-admin-core snippets/modals.html
 	 */
 
+	import { _ } from '../i18n';
+
 	type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'fw';
 	type ModalVariant = 'primary' | 'success' | 'warning' | 'danger' | 'info';
 	type ModalPosition = 'center' | 'top';
@@ -20,19 +22,19 @@
 		/** Modal position */
 		position?: ModalPosition;
 		/** Scrollable body content */
-		scrollable?: boolean;
+		isScrollable?: boolean;
 		/** Static modal - prevents closing via ESC key or backdrop click */
 		isStatic?: boolean;
-		/** Modal title */
-		title?: string;
+		/** Modal title text */
+		titleText?: string;
 		/** Show close button in header (default: true) */
-		showClose?: boolean;
+		shouldShowClose?: boolean;
 		/** Close on Escape key (default: true, ignored when isStatic is true) */
-		closeOnEscape?: boolean;
+		shouldCloseOnEscape?: boolean;
 		/** Called before close - return false to prevent closing */
-		onBeforeClose?: () => boolean | void;
-		/** Close handler (called after close) */
-		onClose?: () => void;
+		beforeCloseCallback?: () => boolean | void;
+		/** Close callback (called after close) */
+		onclose?: () => void;
 		/** Additional CSS classes */
 		class?: string;
 		/** Additional CSS classes for body */
@@ -53,13 +55,13 @@
 		variant,
 		headerVariant,
 		position = 'center',
-		scrollable = false,
+		isScrollable = false,
 		isStatic = false,
-		title,
-		showClose = true,
-		closeOnEscape = true,
-		onBeforeClose,
-		onClose,
+		titleText,
+		shouldShowClose = true,
+		shouldCloseOnEscape = true,
+		beforeCloseCallback,
+		onclose,
 		class: className = '',
 		bodyClass = '',
 		footerClass = '',
@@ -82,7 +84,7 @@
 	// Build class string for body
 	const bodyClasses = $derived(() => {
 		const base = ['pa-modal__body'];
-		if (scrollable) base.push('pa-modal__body--scrollable');
+		if (isScrollable) base.push('pa-modal__body--scrollable');
 		if (bodyClass) base.push(bodyClass);
 		return base.join(' ');
 	});
@@ -108,13 +110,34 @@
 		return base.join(' ');
 	});
 
+	// Track external show changes so that setting show=false via binding
+	// goes through the same close flow (beforeCloseCallback / onclose)
+	let wasOpen = false;
+	let internalClose = false;
+
+	$effect.pre(() => {
+		if (wasOpen && !show && !internalClose) {
+			// show was set to false externally (e.g., parent toggled bind:show)
+			if (beforeCloseCallback && beforeCloseCallback() === false) {
+				// Prevent close - restore show
+				show = true;
+				internalClose = false;
+				return;
+			}
+			onclose?.();
+		}
+		wasOpen = show;
+		internalClose = false;
+	});
+
 	function handleClose() {
 		// Check if close should be prevented
-		if (onBeforeClose && onBeforeClose() === false) {
+		if (beforeCloseCallback && beforeCloseCallback() === false) {
 			return;
 		}
+		internalClose = true;
 		show = false;
-		if (onClose) onClose();
+		if (onclose) onclose();
 	}
 
 	function handleBackdropClick() {
@@ -126,7 +149,7 @@
 	function handleKeyDown(event: KeyboardEvent) {
 		// Static modals don't close on ESC key
 		if (isStatic) return;
-		if (show && closeOnEscape && event.key === 'Escape') {
+		if (show && shouldCloseOnEscape && event.key === 'Escape') {
 			handleClose();
 		}
 	}
@@ -139,14 +162,14 @@
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div class="pa-modal__backdrop" onclick={handleBackdropClick}></div>
 	<div class={containerClasses()}>
-		{#if header || title}
+		{#if header || titleText}
 			<div class={headerClasses()}>
 				{#if header}
 					{@render header()}
-				{:else if title}
-					<h3 class="pa-modal__title">{title}</h3>
+				{:else if titleText}
+					<h3 class="pa-modal__title">{titleText}</h3>
 				{/if}
-				{#if showClose}<button class="pa-btn pa-btn--primary pa-btn--icon-only pa-btn--sm" onclick={handleClose}>✕</button>{/if}
+				{#if shouldShowClose}<button class="pa-btn pa-btn--primary pa-btn--icon-only pa-btn--sm" onclick={handleClose} aria-label={$_('pureAdmin.common.buttons.close')}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>{/if}
 			</div>
 		{/if}
 

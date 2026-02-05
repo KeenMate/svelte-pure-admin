@@ -3,7 +3,7 @@
 </script>
 
 <!-- Centered Alternating Layout -->
-<Card title="Centered Alternating Layout">
+<Card titleText="Centered Alternating Layout">
 
 	<Timeline variant="alternating">
 		<TimelineItem date="15 Dec" iconText="🏠">
@@ -39,7 +39,7 @@
 </Card>
 
 <!-- Future Planning -->
-<Card title="Future Planning">
+<Card titleText="Future Planning">
 
 	<Timeline variant="alternating">
 		<TimelineItem date="Q1 2024" iconText="📋">
@@ -65,7 +65,7 @@
 </Card>
 
 <!-- Load More Example -->
-<Card title="Timeline with Load More">
+<Card titleText="Timeline with Load More">
 
 	<Timeline variant="alternating">
 		<TimelineItem date="Jan 1" iconText="🎉">
@@ -92,7 +92,7 @@
 </Card>
 
 <!-- Virtual Scroll Example -->
-<Card title="Virtual Scroll (Large Dataset)">
+<Card titleText="Virtual Scroll (Large Dataset)">
 
 	<Paragraph class="mb-4">For project timelines with many milestones, virtual scrolling optimizes rendering performance.</Paragraph>
 
@@ -111,7 +111,7 @@
 
 			<TimelineItem date="Week 3" iconText="⚡">
 				<Heading level={4}>Prototype Development</Heading>
-				<Paragraph>Built interactive prototype for user testing and feedback collection.</Paragraph>
+				<Paragraph>Built isInteractive prototype for user testing and feedback collection.</Paragraph>
 			</TimelineItem>
 
 			{#each Array.from({ length: 20 }, (_, i) => i) as index}
@@ -133,7 +133,7 @@
 </Card>
 
 <!-- Usage Examples -->
-<Card title="Usage Examples">
+<Card titleText="Usage Examples">
 
 	<Heading level={4}>Basic Alternating Timeline</Heading>
 	<pre class="mb-4"><code>&lt;Timeline variant="alternating"&gt;
@@ -153,7 +153,7 @@
 	<BasicList>
 		<li>Use <code>variant="alternating"</code> for project roadmaps and milestone timelines</li>
 		<li>Add emojis or icons to timeline headers for visual interest</li>
-		<li>Use filled markers for future/planned events vs. regular markers for completed events</li>
+		<li>Use isFilled markers for future/planned events vs. regular markers for completed events</li>
 		<li>Keep descriptions concise - one or two sentences maximum</li>
 		<li>Use consistent time formats (dates, quarters, weeks, etc.)</li>
 	</BasicList>

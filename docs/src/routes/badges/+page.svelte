@@ -148,8 +148,8 @@
 </script>
 
 <!-- Badge Sizes Reference -->
-<Card title="Badge Sizes Reference" noPadding>
-	<Table striped>
+<Card titleText="Badge Sizes Reference" hasPadding={false}>
+	<Table isStriped>
 		<thead>
 			<tr>
 				<th>Size</th>
@@ -200,7 +200,7 @@
 </Card>
 
 <!-- Basic Badges -->
-<Card title="Basic Badges">
+<Card titleText="Basic Badges">
 	{#snippet header()}
 		<Paragraph>Simple badges for status indication and categorization</Paragraph>
 	{/snippet}
@@ -238,7 +238,7 @@
 </Card>
 
 <!-- Pill Badges -->
-<Card title="Pill Badges">
+<Card titleText="Pill Badges">
 	{#snippet header()}
 		<Paragraph>Rounded badges for a softer, modern appearance</Paragraph>
 	{/snippet}
@@ -247,32 +247,32 @@
 		<Column size="100" md="1-2">
 			<Heading level={4}>Regular Pills</Heading>
 			<div class="component-showcase">
-				<Badge pill>Default</Badge>
-				<Badge pill variant="primary">Primary</Badge>
-				<Badge pill variant="secondary">Secondary</Badge>
-				<Badge pill variant="success">Success</Badge>
-				<Badge pill variant="warning">Warning</Badge>
-				<Badge pill variant="danger">Danger</Badge>
-				<Badge pill variant="info">Info</Badge>
+				<Badge isPill>Default</Badge>
+				<Badge isPill variant="primary">Primary</Badge>
+				<Badge isPill variant="secondary">Secondary</Badge>
+				<Badge isPill variant="success">Success</Badge>
+				<Badge isPill variant="warning">Warning</Badge>
+				<Badge isPill variant="danger">Danger</Badge>
+				<Badge isPill variant="info">Info</Badge>
 			</div>
 		</Column>
 		<Column size="100" md="1-2">
 			<Heading level={4}>Small Pills</Heading>
 			<div class="component-showcase">
-				<Badge pill size="sm">Default</Badge>
-				<Badge pill size="sm" variant="primary">Primary</Badge>
-				<Badge pill size="sm" variant="secondary">Secondary</Badge>
-				<Badge pill size="sm" variant="success">Success</Badge>
-				<Badge pill size="sm" variant="warning">Warning</Badge>
-				<Badge pill size="sm" variant="danger">Danger</Badge>
-				<Badge pill size="sm" variant="info">Info</Badge>
+				<Badge isPill size="sm">Default</Badge>
+				<Badge isPill size="sm" variant="primary">Primary</Badge>
+				<Badge isPill size="sm" variant="secondary">Secondary</Badge>
+				<Badge isPill size="sm" variant="success">Success</Badge>
+				<Badge isPill size="sm" variant="warning">Warning</Badge>
+				<Badge isPill size="sm" variant="danger">Danger</Badge>
+				<Badge isPill size="sm" variant="info">Info</Badge>
 			</div>
 		</Column>
 	</Grid>
 </Card>
 
 <!-- Badges with Icons -->
-<Card title="Badges with Icons">
+<Card titleText="Badges with Icons">
 	{#snippet header()}
 		<Paragraph>Enhanced badges with icon indicators</Paragraph>
 	{/snippet}
@@ -306,8 +306,8 @@
 </Card>
 
 <!-- Label Sizes Reference -->
-<Card title="Label Sizes Reference" noPadding>
-	<Table striped>
+<Card titleText="Label Sizes Reference" hasPadding={false}>
+	<Table isStriped>
 		<thead>
 			<tr>
 				<th>Size</th>
@@ -358,7 +358,7 @@
 </Card>
 
 <!-- Labels -->
-<Card title="Labels">
+<Card titleText="Labels">
 	{#snippet header()}
 		<Paragraph>Text labels for categorization and tagging</Paragraph>
 	{/snippet}
@@ -379,20 +379,20 @@
 		<Column size="100" md="1-2">
 			<Heading level={4}>Outlined Labels</Heading>
 			<div class="component-showcase">
-				<Label outline>Frontend</Label>
-				<Label outline variant="primary">React</Label>
-				<Label outline variant="secondary">TypeScript</Label>
-				<Label outline variant="success">Bug Fix</Label>
-				<Label outline variant="warning">Enhancement</Label>
-				<Label outline variant="danger">Breaking Change</Label>
-				<Label outline variant="info">Documentation</Label>
+				<Label isOutline>Frontend</Label>
+				<Label isOutline variant="primary">React</Label>
+				<Label isOutline variant="secondary">TypeScript</Label>
+				<Label isOutline variant="success">Bug Fix</Label>
+				<Label isOutline variant="warning">Enhancement</Label>
+				<Label isOutline variant="danger">Breaking Change</Label>
+				<Label isOutline variant="info">Documentation</Label>
 			</div>
 		</Column>
 	</Grid>
 </Card>
 
 <!-- Badge Groups with Limits -->
-<Card title="Badge Groups with Limits">
+<Card titleText="Badge Groups with Limits">
 	{#snippet header()}
 		<Paragraph>
 			Display many badges with automatic overflow handling - shows 5 badges and "... N more"
@@ -404,7 +404,7 @@
 			<Heading level={4}>Legacy Mode: Project Tags (15 total)</Heading>
 			<BadgeGroup badges={projectTags} limit={5} class="mb-3" />
 
-			<Heading level={4}>Legacy Mode: User Skills (7 total, pill style)</Heading>
+			<Heading level={4}>Legacy Mode: User Skills (7 total, isPill style)</Heading>
 			<BadgeGroup badges={userSkills} limit={5} class="mb-3" />
 
 			<Heading level={4}>Status Badges (8 total, small size)</Heading>
@@ -502,7 +502,7 @@
 </Card>
 
 <!-- Data-Driven Badge Groups (KeenMate Pattern) -->
-<Card title="Data-Driven Badge Groups (KeenMate Pattern)">
+<Card titleText="Data-Driven Badge Groups (KeenMate Pattern)">
 	{#snippet header()}
 		<Paragraph>
 			Use generic data from database/API with member mappings - no need to transform data first!
@@ -528,7 +528,7 @@
 				data={products}
 				getDisplayValueCallback={getProductDisplay}
 				getVariantCallback={getCategoryVariant}
-				onBadgeClick={handleProductClick}
+				onbadgeclick={handleProductClick}
 				idMember="id"
 				limit={4}
 			/>
@@ -540,14 +540,14 @@
 			><strong>KeenMate Pattern:</strong> Use <code>displayValueMember</code>,
 			<code>variantMember</code>, <code>pillMember</code>, <code>sizeMember</code> to map
 			properties, or use callbacks like <code>getDisplayValueCallback</code> for custom logic.
-			Add <code>onBadgeClick</code> to handle clicks and get the full data item back! Works with
+			Add <code>onbadgeclick</code> to handle clicks and get the full data item back! Works with
 			any data structure from your API/database.</small
 		>
 	</Alert>
 </Card>
 
 <!-- Fixed-Width Badges with Ellipsis -->
-<Card title="Fixed-Width Badges with Ellipsis">
+<Card titleText="Fixed-Width Badges with Ellipsis">
 	{#snippet header()}
 		<Paragraph>
 			Badges with constrained width show ellipsis for overflow text. Hover for tooltip with full
@@ -604,22 +604,22 @@
 				<Heading level={4}>Practical Example: Tags with Consistent Width</Heading>
 				<div class="component-showcase">
 					<Tooltip text="JavaScript" position="bottom">
-						<Badge pill variant="secondary" class="wr-5 text-truncate">JavaScript</Badge>
+						<Badge isPill variant="secondary" class="wr-5 text-truncate">JavaScript</Badge>
 					</Tooltip>
 					<Tooltip text="TypeScript" position="bottom">
-						<Badge pill variant="secondary" class="wr-5 text-truncate">TypeScript</Badge>
+						<Badge isPill variant="secondary" class="wr-5 text-truncate">TypeScript</Badge>
 					</Tooltip>
 					<Tooltip text="React" position="bottom">
-						<Badge pill variant="secondary" class="wr-5 text-truncate">React</Badge>
+						<Badge isPill variant="secondary" class="wr-5 text-truncate">React</Badge>
 					</Tooltip>
 					<Tooltip text="Node.js" position="bottom">
-						<Badge pill variant="secondary" class="wr-5 text-truncate">Node.js</Badge>
+						<Badge isPill variant="secondary" class="wr-5 text-truncate">Node.js</Badge>
 					</Tooltip>
 					<Tooltip text="PostgreSQL Database" position="bottom">
-						<Badge pill variant="secondary" class="wr-5 text-truncate">PostgreSQL Database</Badge>
+						<Badge isPill variant="secondary" class="wr-5 text-truncate">PostgreSQL Database</Badge>
 					</Tooltip>
 					<Tooltip text="Express.js Framework" position="bottom">
-						<Badge pill variant="secondary" class="wr-5 text-truncate">Express.js Framework</Badge>
+						<Badge isPill variant="secondary" class="wr-5 text-truncate">Express.js Framework</Badge>
 					</Tooltip>
 				</div>
 			</Column>
@@ -637,7 +637,7 @@
 						position="bottom"
 						multiline
 					>
-						<Badge variant="secondary" class="wr-6 text-truncate" ellipsisLeft
+						<Badge variant="secondary" class="wr-6 text-truncate" isEllipsisStart
 							>Settings > User Preferences > Notifications > Email</Badge
 						>
 					</Tooltip>
@@ -646,7 +646,7 @@
 						position="bottom"
 						multiline
 					>
-						<Badge variant="info" class="wr-7 text-truncate" ellipsisLeft
+						<Badge variant="info" class="wr-7 text-truncate" isEllipsisStart
 							>/var/www/html/application/config/database.php</Badge
 						>
 					</Tooltip>
@@ -655,7 +655,7 @@
 						position="bottom"
 						multiline
 					>
-						<Badge variant="primary" class="wr-6 text-truncate" ellipsisLeft
+						<Badge variant="primary" class="wr-6 text-truncate" isEllipsisStart
 							>Components > Forms > Inputs > TextArea.svelte</Badge
 						>
 					</Tooltip>
@@ -664,7 +664,7 @@
 						position="bottom"
 						multiline
 					>
-						<Badge variant="warning" class="wr-5 text-truncate" ellipsisLeft
+						<Badge variant="warning" class="wr-5 text-truncate" isEllipsisStart
 							>Europe > Germany > Berlin > Mitte > Alexanderplatz</Badge
 						>
 					</Tooltip>
@@ -676,13 +676,13 @@
 			<small
 				><strong>Note:</strong> Custom tooltips show full text on hover. Use utility width classes like
 				<code>wr-3</code> to <code>wr-10</code> combined with <code>text-truncate</code> for fixed-width badges.
-				Use <code>ellipsisLeft</code> prop to truncate from the left side instead.</small
+				Use <code>isEllipsisStart</code> prop to truncate from the left side instead.</small
 			>
 		</Alert>
 </Card>
 
 <!-- Composite Badge Groups (Data-Driven) -->
-<Card title="Composite Badge Groups (Data-Driven)">
+<Card titleText="Composite Badge Groups (Data-Driven)">
 	{#snippet header()}
 		<Paragraph>
 			Display composite badges from database/API data with member mappings and click handlers
@@ -699,8 +699,8 @@
 				buttonTextMember="commentCount"
 				getVariantCallback={getTaskVariant}
 				interactiveMember="interactive"
-				onLabelClick={handleTaskLabelClick}
-				onButtonClick={handleTaskButtonClick}
+				onlabelclick={handleTaskLabelClick}
+				onbuttonclick={handleTaskButtonClick}
 				idMember="id"
 			/>
 		</Column>
@@ -709,14 +709,14 @@
 	<Alert variant="info" class="mt-4">
 		<small
 			><strong>Composite Badges:</strong> Perfect for items with two parts - a label and a
-			count/action. Use <code>onLabelClick</code> and <code>onButtonClick</code> to handle
+			count/action. Use <code>onlabelclick</code> and <code>onbuttonclick</code> to handle
 			interactions separately. Works with any data structure!</small
 		>
 	</Alert>
 </Card>
 
 <!-- Usage Examples -->
-<Card title="Usage Examples">
+<Card titleText="Usage Examples">
 	{#snippet header()}
 		<Paragraph>Real-world examples of badges and labels in context</Paragraph>
 	{/snippet}
@@ -763,7 +763,7 @@
 </Card>
 
 <!-- Composite Badges -->
-<Card title="Composite Badges">
+<Card titleText="Composite Badges">
 	{#snippet header()}
 		<Paragraph>Three-part badges with separate icon, label, and button sections</Paragraph>
 	{/snippet}
@@ -771,35 +771,35 @@
 			<Column size="100" md="1-2">
 				<Heading level={4}>Standard Color Variations</Heading>
 				<div class="component-showcase">
-					<CompositeBadge variant="primary" label="Primary" buttonText="×" interactive>
+					<CompositeBadge variant="primary" labelText="Primary" buttonText="×" isInteractive>
 						{#snippet icon()}✓{/snippet}
 					</CompositeBadge>
 
-					<CompositeBadge variant="secondary" label="Secondary" buttonText="×" interactive>
+					<CompositeBadge variant="secondary" labelText="Secondary" buttonText="×" isInteractive>
 						{#snippet icon()}⚙{/snippet}
 					</CompositeBadge>
 
-					<CompositeBadge variant="success" label="Success" buttonText="×" interactive>
+					<CompositeBadge variant="success" labelText="Success" buttonText="×" isInteractive>
 						{#snippet icon()}★{/snippet}
 					</CompositeBadge>
 
-					<CompositeBadge variant="danger" label="Danger" buttonText="×" interactive>
+					<CompositeBadge variant="danger" labelText="Danger" buttonText="×" isInteractive>
 						{#snippet icon()}🔥{/snippet}
 					</CompositeBadge>
 
-					<CompositeBadge variant="warning" label="Warning" buttonText="×" interactive>
+					<CompositeBadge variant="warning" labelText="Warning" buttonText="×" isInteractive>
 						{#snippet icon()}⚠{/snippet}
 					</CompositeBadge>
 
-					<CompositeBadge variant="info" label="Info" buttonText="×" interactive>
+					<CompositeBadge variant="info" labelText="Info" buttonText="×" isInteractive>
 						{#snippet icon()}ℹ{/snippet}
 					</CompositeBadge>
 
-					<CompositeBadge variant="light" label="Light" buttonText="×" interactive>
+					<CompositeBadge variant="light" labelText="Light" buttonText="×" isInteractive>
 						{#snippet icon()}◇{/snippet}
 					</CompositeBadge>
 
-					<CompositeBadge variant="dark" label="Dark" buttonText="×" interactive>
+					<CompositeBadge variant="dark" labelText="Dark" buttonText="×" isInteractive>
 						{#snippet icon()}◆{/snippet}
 					</CompositeBadge>
 				</div>
@@ -807,15 +807,15 @@
 			<Column size="100" md="1-2">
 				<Heading level={4}>More Examples</Heading>
 				<div class="component-showcase">
-					<CompositeBadge variant="danger" label="Critical" buttonText="×" interactive>
+					<CompositeBadge variant="danger" labelText="Critical" buttonText="×" isInteractive>
 						{#snippet icon()}🔥{/snippet}
 					</CompositeBadge>
 
-					<CompositeBadge variant="light" label="Draft" buttonText="↗" interactive>
+					<CompositeBadge variant="light" labelText="Draft" buttonText="↗" isInteractive>
 						{#snippet icon()}◇{/snippet}
 					</CompositeBadge>
 
-					<CompositeBadge variant="dark" label="Published" buttonText="⚙" interactive>
+					<CompositeBadge variant="dark" labelText="Published" buttonText="⚙" isInteractive>
 						{#snippet icon()}◆{/snippet}
 					</CompositeBadge>
 				</div>
@@ -833,9 +833,9 @@
 						variant="primary"
 						labelVariant="secondary"
 						buttonVariant="danger"
-						label="Project Alpha"
+						labelText="Project Alpha"
 						buttonText="×"
-						interactive
+						isInteractive
 					>
 						{#snippet icon()}📁{/snippet}
 					</CompositeBadge>
@@ -844,9 +844,9 @@
 						variant="success"
 						labelVariant="light"
 						buttonVariant="warning"
-						label="Target Met"
+						labelText="Target Met"
 						buttonText="⋯"
-						interactive
+						isInteractive
 					>
 						{#snippet icon()}🎯{/snippet}
 					</CompositeBadge>
@@ -855,9 +855,9 @@
 						variant="dark"
 						labelVariant="primary"
 						buttonVariant="info"
-						label="High Performance"
+						labelText="High Performance"
 						buttonText="↑"
-						interactive
+						isInteractive
 					>
 						{#snippet icon()}⚡{/snippet}
 					</CompositeBadge>
@@ -866,9 +866,9 @@
 						variant="secondary"
 						labelVariant="warning"
 						buttonVariant="success"
-						label="Maintenance"
+						labelText="Maintenance"
 						buttonText="✓"
-						interactive
+						isInteractive
 					>
 						{#snippet icon()}🔧{/snippet}
 					</CompositeBadge>
@@ -878,40 +878,40 @@
 </Card>
 
 <!-- Interactive Examples -->
-<Card title="Interactive Composite Badges">
+<Card titleText="Interactive Composite Badges">
 	{#snippet header()}
 		<Paragraph>Examples with click handlers and dynamic behavior</Paragraph>
 	{/snippet}
 		<div class="component-showcase">
 			<CompositeBadge
 				variant="info"
-				label="Task #1234"
+				labelText="Task #1234"
 				buttonText="×"
-				interactive
-				onLabelClick={() => handleLabelClick('Task #1234')}
-				onButtonClick={() => handleRemove('demo-badge-1')}
+				isInteractive
+				onlabelclick={() => handleLabelClick('Task #1234')}
+				onbuttonclick={() => handleRemove('demo-badge-1')}
 			>
 				{#snippet icon()}📋{/snippet}
 			</CompositeBadge>
 
 			<CompositeBadge
 				variant="success"
-				label="John Doe"
+				labelText="John Doe"
 				buttonText="✎"
-				interactive
-				onLabelClick={() => handleLabelClick('John Doe')}
-				onButtonClick={() => handleEdit('demo-badge-2')}
+				isInteractive
+				onlabelclick={() => handleLabelClick('John Doe')}
+				onbuttonclick={() => handleEdit('demo-badge-2')}
 			>
 				{#snippet icon()}👤{/snippet}
 			</CompositeBadge>
 
 			<CompositeBadge
 				variant="warning"
-				label="v2.1.0"
+				labelText="v2.1.0"
 				buttonText="↓"
-				interactive
-				onLabelClick={() => handleLabelClick('v2.1.0')}
-				onButtonClick={() => handleDownload('v2.1.0')}
+				isInteractive
+				onlabelclick={() => handleLabelClick('v2.1.0')}
+				onbuttonclick={() => handleDownload('v2.1.0')}
 			>
 				{#snippet icon()}🏷️{/snippet}
 			</CompositeBadge>

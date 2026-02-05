@@ -94,60 +94,60 @@
 </script>
 
 <!-- Color-coded Events -->
-<Card title="Color-coded Events">
+<Card titleText="Color-coded Events">
 
 	<Timeline variant="simple">
-		<TimelineItem time="09:00 AM" variant="primary">
+		<TimelineItem timeText="09:00 AM" variant="primary">
 			System startup initialized
 		</TimelineItem>
-		<TimelineItem time="09:15 AM" variant="success">
+		<TimelineItem timeText="09:15 AM" variant="success">
 			Database connection established successfully
 		</TimelineItem>
-		<TimelineItem time="09:30 AM" variant="info">
+		<TimelineItem timeText="09:30 AM" variant="info">
 			Running scheduled maintenance tasks
 		</TimelineItem>
-		<TimelineItem time="10:00 AM" variant="warning">
+		<TimelineItem timeText="10:00 AM" variant="warning">
 			High memory usage detected (85%)
 		</TimelineItem>
-		<TimelineItem time="10:15 AM" variant="danger">
+		<TimelineItem timeText="10:15 AM" variant="danger">
 			Critical error in payment processor - investigation required
 		</TimelineItem>
-		<TimelineItem time="10:30 AM" variant="success">
+		<TimelineItem timeText="10:30 AM" variant="success">
 			Payment processor issue resolved
 		</TimelineItem>
-		<TimelineItem time="11:00 AM" variant="secondary">
+		<TimelineItem timeText="11:00 AM" variant="secondary">
 			System backup completed
 		</TimelineItem>
-		<TimelineItem time="11:30 AM" variant="primary">
+		<TimelineItem timeText="11:30 AM" variant="primary">
 			New deployment scheduled for 2:00 PM
 		</TimelineItem>
 	</Timeline>
 </Card>
 
 <!-- Filled Bullets -->
-<Card title="Filled Bullets">
+<Card titleText="Filled Bullets">
 
 	<Timeline variant="simple">
-		<TimelineItem time="Jan 2025" variant="primary" filled>
+		<TimelineItem timeText="Jan 2025" variant="primary" isFilled>
 			Project kickoff meeting with stakeholders
 		</TimelineItem>
-		<TimelineItem time="Feb 2025" variant="success" filled>
+		<TimelineItem timeText="Feb 2025" variant="success" isFilled>
 			Phase 1 development completed
 		</TimelineItem>
-		<TimelineItem time="Mar 2025" variant="info" filled>
+		<TimelineItem timeText="Mar 2025" variant="info" isFilled>
 			User acceptance testing in progress
 		</TimelineItem>
-		<TimelineItem time="Apr 2025" variant="warning" filled>
+		<TimelineItem timeText="Apr 2025" variant="warning" isFilled>
 			Performance optimization required before launch
 		</TimelineItem>
-		<TimelineItem time="May 2025" variant="secondary" filled>
+		<TimelineItem timeText="May 2025" variant="secondary" isFilled>
 			Production deployment scheduled
 		</TimelineItem>
 	</Timeline>
 </Card>
 
 <!-- Data-Driven Timeline (KeenMate Pattern) -->
-<Card title="Data-Driven Timeline (KeenMate Pattern)">
+<Card titleText="Data-Driven Timeline (KeenMate Pattern)">
 	{#snippet header()}
 		<Paragraph>
 			Timeline populated from database/API data with member mappings and callbacks
@@ -164,7 +164,7 @@
 		getVariantCallback={getLogVariant}
 		getContentCallback={getDisplayMessage}
 		filledMember="isCritical"
-		onItemClick={handleLogClick}
+		onitemclick={handleLogClick}
 		idMember="id"
 	/>
 
@@ -179,7 +179,7 @@
 </Card>
 
 <!-- Load More Example -->
-<Card title="Timeline with Load More (Pagination)">
+<Card titleText="Timeline with Load More (Pagination)">
 	{#snippet header()}
 		<Paragraph>
 			Data-driven timeline with pagination - showing {visibleActivities.length} of {allActivities.length} activities
@@ -211,7 +211,7 @@
 </Card>
 
 <!-- Virtual Scroll Example -->
-<Card title="Virtual Scroll (Large Dataset)">
+<Card titleText="Virtual Scroll (Large Dataset)">
 
 	<Paragraph class="mb-4">For very large timelines with hundreds or thousands of events, virtual scrolling can improve performance.</Paragraph>
 
@@ -221,7 +221,7 @@
 		<Timeline variant="simple">
 			{#each Array.from({ length: 50 }, (_, i) => i) as index}
 				<TimelineItem
-					time={`Event ${index + 1}`}
+					timeText={`Event ${index + 1}`}
 					variant={(['primary', 'secondary', 'success', 'info', 'warning', 'danger'] as const)[index % 6]}
 				>
 					Activity log entry #{index + 1} - {['User login', 'File uploaded', 'Settings changed', 'Report generated', 'Email sent', 'Task completed'][index % 6]}
@@ -237,20 +237,20 @@
 </Card>
 
 <!-- Usage Examples -->
-<Card title="Usage Examples">
+<Card titleText="Usage Examples">
 
 	<Heading level={4}>Basic Timeline</Heading>
 	<pre class="mb-4"><code>&lt;Timeline variant="simple"&gt;
-  &lt;TimelineItem time="09:00 AM" variant="primary"&gt;
+  &lt;TimelineItem timeText="09:00 AM" variant="primary"&gt;
     Event description
   &lt;/TimelineItem&gt;
-  &lt;TimelineItem time="10:00 AM" variant="success"&gt;
+  &lt;TimelineItem timeText="10:00 AM" variant="success"&gt;
     Another event
   &lt;/TimelineItem&gt;
 &lt;/Timeline&gt;</code></pre>
 
 	<Heading level={4}>Filled Bullets</Heading>
-	<pre class="mb-4"><code>&lt;TimelineItem time="Jan 2025" variant="primary" filled&gt;
+	<pre class="mb-4"><code>&lt;TimelineItem timeText="Jan 2025" variant="primary" filled&gt;
   Milestone completed
 &lt;/TimelineItem&gt;</code></pre>
 

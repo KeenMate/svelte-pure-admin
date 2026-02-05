@@ -26,7 +26,7 @@
 	<Grid>
 		<!-- Form Components -->
 		<Column size="100" md="1-2" lg="1-3">
-			<Card title="Form Components">
+			<Card titleText="Form Components">
 				<Paragraph class="mb-3">Input elements, selects, checkboxes, radio buttons, and form layouts.</Paragraph>
 				<BasicList class="mb-4">
 					<li>Form Groups</li>
@@ -43,7 +43,7 @@
 
 		<!-- Button Components -->
 		<Column size="100" md="1-2" lg="1-3">
-			<Card title="Buttons">
+			<Card titleText="Buttons">
 				<Paragraph class="mb-3">Various button styles, sizes, and states for user interactions.</Paragraph>
 				<BasicList class="mb-4">
 					<li>8 Color Variants</li>
@@ -59,7 +59,7 @@
 
 		<!-- Card Components -->
 		<Column size="100" md="1-2" lg="1-3">
-			<Card title="Cards">
+			<Card titleText="Cards">
 				<Paragraph class="mb-3">Flexible content containers with headers, footers, and custom styling.</Paragraph>
 				<BasicList class="mb-4">
 					<li>Basic Cards</li>
@@ -75,7 +75,7 @@
 
 		<!-- Badge Components -->
 		<Column size="100" md="1-2" lg="1-3">
-			<Card title="Badges & Labels">
+			<Card titleText="Badges & Labels">
 				<Paragraph class="mb-3">Small count and labeling components for UI indicators.</Paragraph>
 				<BasicList class="mb-4">
 					<li>8 Color Variants</li>
@@ -91,7 +91,7 @@
 
 		<!-- Alert Components -->
 		<Column size="100" md="1-2" lg="1-3">
-			<Card title="Alerts">
+			<Card titleText="Alerts">
 				<Paragraph class="mb-3">Contextual feedback messages for user actions and notifications.</Paragraph>
 				<BasicList class="mb-4">
 					<li>8 Alert Types</li>
@@ -107,7 +107,7 @@
 
 		<!-- Tooltip Components -->
 		<Column size="100" md="1-2" lg="1-3">
-			<Card title="Tooltips & Popovers">
+			<Card titleText="Tooltips & Popovers">
 				<Paragraph class="mb-3">Hover tooltips and click popovers for contextual information.</Paragraph>
 				<BasicList class="mb-4">
 					<li>4 Positions</li>
@@ -123,7 +123,7 @@
 
 		<!-- Modal Components -->
 		<Column size="100" md="1-2" lg="1-3">
-			<Card title="Modal Windows">
+			<Card titleText="Modal Windows">
 				<Paragraph class="mb-3">Dialog boxes and overlays for focused user interactions.</Paragraph>
 				<BasicList class="mb-4">
 					<li>Multiple Sizes</li>
@@ -138,7 +138,7 @@
 
 		<!-- Loader Components -->
 		<Column size="100" md="1-2" lg="1-3">
-			<Card title="Loaders & Spinners">
+			<Card titleText="Loaders & Spinners">
 				<Paragraph class="mb-3">Loading indicators and progress animations.</Paragraph>
 				<BasicList class="mb-4">
 					<li>Spinner Animations</li>
@@ -153,7 +153,7 @@
 
 		<!-- Table Components -->
 		<Column size="100" md="1-2" lg="1-3">
-			<Card title="Tables">
+			<Card titleText="Tables">
 				<Paragraph class="mb-3">Data tables with sorting, filtering, and pagination.</Paragraph>
 				<BasicList class="mb-4">
 					<li>Basic Tables</li>
@@ -174,7 +174,7 @@
 	<Grid>
 		<!-- Form Example -->
 		<Column size="100" lg="1-2">
-			<Card title="Basic Form">
+			<Card titleText="Basic Form">
 				<form>
 					<FormGroup class="mb-3">
 						<FormLabel for="example-email">Email address</FormLabel>
@@ -192,7 +192,7 @@
 					</FormGroup>
 
 					<FormGroup class="mb-3">
-						<Checkbox id="demo-checkbox" label="Check me out" />
+						<Checkbox id="demo-checkbox" labelText="Check me out" />
 					</FormGroup>
 
 					<ButtonGroup>
@@ -205,7 +205,7 @@
 
 		<!-- Alert Examples -->
 		<Column size="100" lg="1-2">
-			<Card title="Alert Messages">
+			<Card titleText="Alert Messages">
 				<Alert variant="success" class="mb-3">
 					{#snippet icon()}✓{/snippet}
 					<strong>Success!</strong> Your changes have been saved.
@@ -232,7 +232,7 @@
 	<!-- Component Showcase -->
 	<Heading level={2} class="mt-6 mb-4">Component Showcase</Heading>
 
-	<Card title="Buttons & Badges">
+	<Card titleText="Buttons & Badges">
 		<Grid>
 			<Column size="100" md="1-2">
 				<Heading level={4} class="mb-3 text-sm">Button Variants</Heading>
@@ -255,7 +255,7 @@
 					<Badge variant="danger">Danger</Badge>
 					<Badge variant="warning">Warning</Badge>
 					<Badge variant="info">Info</Badge>
-					<Badge variant="primary" pill>Pill</Badge>
+					<Badge variant="primary" isPill>Pill</Badge>
 				</div>
 			</Column>
 		</Grid>

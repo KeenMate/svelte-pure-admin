@@ -6,11 +6,11 @@
 
 	interface Props {
 		/** Title text */
-		title?: string;
+		titleText?: string;
 		/** Subtitle text */
-		subtitle?: string;
+		subtitleText?: string;
 		/** Meta text */
-		meta?: string;
+		metaText?: string;
 		/** Avatar content (string) or snippet */
 		avatar?: string | import('svelte').Snippet;
 		/** Additional CSS classes */
@@ -19,7 +19,7 @@
 		children?: import('svelte').Snippet;
 	}
 
-	let { title, subtitle, meta, class: className = '', avatar, children }: Props = $props();
+	let { titleText, subtitleText, metaText, class: className = '', avatar, children }: Props = $props();
 
 	const classes = $derived(() => {
 		const base = ['pa-list__item'];
@@ -42,14 +42,14 @@
 		{@render children()}
 	{:else}
 		<div class="pa-list__content">
-			{#if title}
-				<div class="pa-list__title">{title}</div>
+			{#if titleText}
+				<div class="pa-list__title">{titleText}</div>
 			{/if}
-			{#if subtitle}
-				<div class="pa-list__subtitle">{subtitle}</div>
+			{#if subtitleText}
+				<div class="pa-list__subtitle">{subtitleText}</div>
 			{/if}
-			{#if meta}
-				<div class="pa-list__meta">{meta}</div>
+			{#if metaText}
+				<div class="pa-list__meta">{metaText}</div>
 			{/if}
 		</div>
 	{/if}

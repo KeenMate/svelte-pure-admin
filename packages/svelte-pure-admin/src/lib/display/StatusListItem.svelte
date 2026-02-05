@@ -8,16 +8,16 @@
 
 	interface Props {
 		/** Label text */
-		label: string;
+		labelText: string;
 		/** Value/status text */
-		value: string;
+		valueText: string;
 		/** Status type for indicator color */
 		status: StatusType;
 		/** Additional CSS classes */
 		class?: string;
 	}
 
-	let { label, value, status, class: className = '' }: Props = $props();
+	let { labelText, valueText, status, class: className = '' }: Props = $props();
 
 	const classes = $derived(() => {
 		const base = ['pa-status-list__item'];
@@ -28,6 +28,6 @@
 
 <div class={classes()}>
 	<div class="pa-status-list__indicator pa-status-list__indicator--{status}"></div>
-	<div class="pa-status-list__label">{label}</div>
-	<div class="pa-status-list__value">{value}</div>
+	<div class="pa-status-list__label">{labelText}</div>
+	<div class="pa-status-list__value">{valueText}</div>
 </div>

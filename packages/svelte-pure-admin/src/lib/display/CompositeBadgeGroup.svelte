@@ -53,13 +53,13 @@
 
 		// EVENTS
 		/** Callback when a badge label is clicked (data mode) */
-		onLabelClick?: (item: T, event: MouseEvent) => void;
+		onlabelclick?: (item: T, event: MouseEvent) => void;
 		/** Callback when a badge button is clicked (data mode) */
-		onButtonClick?: (item: T, event: MouseEvent) => void;
+		onbuttonclick?: (item: T, event: MouseEvent) => void;
 		/** Callback when a badge label is clicked (legacy mode) */
-		onLabelClickLegacy?: (badge: CompositeBadgeItem, event: MouseEvent) => void;
+		onlabelclicklegacy?: (badge: CompositeBadgeItem, event: MouseEvent) => void;
 		/** Callback when a badge button is clicked (legacy mode) */
-		onButtonClickLegacy?: (badge: CompositeBadgeItem, event: MouseEvent) => void;
+		onbuttonclicklegacy?: (badge: CompositeBadgeItem, event: MouseEvent) => void;
 
 		// STYLING
 		/** Additional CSS classes */
@@ -93,10 +93,10 @@
 		getInteractiveCallback,
 
 		// Events
-		onLabelClick,
-		onButtonClick,
-		onLabelClickLegacy,
-		onButtonClickLegacy,
+		onlabelclick,
+		onbuttonclick,
+		onlabelclicklegacy,
+		onbuttonclicklegacy,
 
 		// Styling
 		class: className = '',
@@ -149,8 +149,8 @@
 	// Handle label click (data mode)
 	function handleLabelClick(item: T) {
 		return (event: MouseEvent) => {
-			if (onLabelClick) {
-				onLabelClick(item, event);
+			if (onlabelclick) {
+				onlabelclick(item, event);
 			}
 		};
 	}
@@ -158,8 +158,8 @@
 	// Handle button click (data mode)
 	function handleButtonClick(item: T) {
 		return (event: MouseEvent) => {
-			if (onButtonClick) {
-				onButtonClick(item, event);
+			if (onbuttonclick) {
+				onbuttonclick(item, event);
 			}
 		};
 	}
@@ -167,8 +167,8 @@
 	// Handle label click (legacy mode)
 	function handleLabelClickLegacy(badge: CompositeBadgeItem) {
 		return (event: MouseEvent) => {
-			if (onLabelClickLegacy) {
-				onLabelClickLegacy(badge, event);
+			if (onlabelclicklegacy) {
+				onlabelclicklegacy(badge, event);
 			}
 		};
 	}
@@ -176,8 +176,8 @@
 	// Handle button click (legacy mode)
 	function handleButtonClickLegacy(badge: CompositeBadgeItem) {
 		return (event: MouseEvent) => {
-			if (onButtonClickLegacy) {
-				onButtonClickLegacy(badge, event);
+			if (onbuttonclicklegacy) {
+				onbuttonclicklegacy(badge, event);
 			}
 		};
 	}
@@ -198,11 +198,11 @@
 				variant={getVariant(item)}
 				labelVariant={getLabelVariant(item)}
 				buttonVariant={getButtonVariant(item)}
-				label={getLabel(item)}
+				labelText={getLabel(item)}
 				buttonText={getButtonText(item)}
-				interactive={getInteractive(item)}
-				onLabelClick={onLabelClick ? handleLabelClick(item) : undefined}
-				onButtonClick={onButtonClick ? handleButtonClick(item) : undefined}
+				isInteractive={getInteractive(item)}
+				onlabelclick={onlabelclick ? handleLabelClick(item) : undefined}
+				onbuttonclick={onbuttonclick ? handleButtonClick(item) : undefined}
 			/>
 		{/each}
 	{:else if isLegacyMode}
@@ -212,12 +212,12 @@
 				variant={badge.variant}
 				labelVariant={badge.labelVariant}
 				buttonVariant={badge.buttonVariant}
-				label={badge.label}
+				labelText={badge.labelText}
 				buttonText={badge.buttonText}
-				interactive={badge.interactive}
+				isInteractive={badge.isInteractive}
 				icon={badge.icon}
-				onLabelClick={onLabelClickLegacy ? handleLabelClickLegacy(badge) : undefined}
-				onButtonClick={onButtonClickLegacy ? handleButtonClickLegacy(badge) : undefined}
+				onlabelclick={onlabelclicklegacy ? handleLabelClickLegacy(badge) : undefined}
+				onbuttonclick={onbuttonclicklegacy ? handleButtonClickLegacy(badge) : undefined}
 			/>
 		{/each}
 	{:else}

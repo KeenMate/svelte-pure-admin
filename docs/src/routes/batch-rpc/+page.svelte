@@ -540,7 +540,7 @@ const transport = createPhoenixTransport(channel, {
 </Callout>
 
 <!-- Overview -->
-<Card title="Overview">
+<Card titleText="Overview">
 	<Paragraph>
 		When loading a detail form with multiple comboboxes (e.g., 7 dropdowns + business data), each typically needs a separate RPC call.
 		The Batch RPC Service solves this by:
@@ -558,7 +558,7 @@ const transport = createPhoenixTransport(channel, {
 </Card>
 
 <!-- Live Demo -->
-<Card title="Live Demo: Batch vs Sequential">
+<Card titleText="Live Demo: Batch vs Sequential">
 	<Paragraph class="mb-4">
 		Compare the performance difference between batched and sequential requests.
 		The mock transport simulates 300ms network delay per request.
@@ -607,7 +607,7 @@ const transport = createPhoenixTransport(channel, {
 		<Grid>
 			<Column size="100" md="50" lg="1-3">
 				<Heading level={5}>Countries ({countries.length})</Heading>
-				<Table striped size="xs">
+				<Table isStriped size="xs">
 					<thead>
 						<tr><th>Code</th><th>Name</th></tr>
 					</thead>
@@ -620,7 +620,7 @@ const transport = createPhoenixTransport(channel, {
 			</Column>
 			<Column size="100" md="50" lg="1-3">
 				<Heading level={5}>Currencies ({currencies.length})</Heading>
-				<Table striped size="xs">
+				<Table isStriped size="xs">
 					<thead>
 						<tr><th>Code</th><th>Name</th></tr>
 					</thead>
@@ -633,7 +633,7 @@ const transport = createPhoenixTransport(channel, {
 			</Column>
 			<Column size="100" md="50" lg="1-3">
 				<Heading level={5}>Users ({users.length})</Heading>
-				<Table striped size="xs">
+				<Table isStriped size="xs">
 					<thead>
 						<tr><th>Name</th><th>Email</th></tr>
 					</thead>
@@ -647,7 +647,7 @@ const transport = createPhoenixTransport(channel, {
 		</Grid>
 
 		{#if orderDetail}
-			<Card class="mt-4" title="Order Detail">
+			<Card class="mt-4" titleText="Order Detail">
 				<Grid>
 					<Column size="50" md="25">
 						<FormGroup>
@@ -682,7 +682,7 @@ const transport = createPhoenixTransport(channel, {
 </Card>
 
 <!-- Error Handling Demo -->
-<Card title="Error Handling: Partial Failures">
+<Card titleText="Error Handling: Partial Failures">
 	<Paragraph class="mb-4">
 		Each call in a batch resolves or rejects <strong>independently</strong>.
 		If one call fails, others still succeed.
@@ -697,7 +697,7 @@ const transport = createPhoenixTransport(channel, {
 	</Button>
 
 	{#if demo2Results.length > 0}
-		<Table striped>
+		<Table isStriped>
 			<thead>
 				<tr>
 					<th>Method</th>
@@ -732,7 +732,7 @@ const transport = createPhoenixTransport(channel, {
 </Card>
 
 <!-- Transforming Results -->
-<Card title="Transforming Results">
+<Card titleText="Transforming Results">
 	<Paragraph>
 		Use standard Promise <code>.then()</code> chaining to transform results before awaiting.
 		This is useful when endpoints return arrays for single items or nested response structures.
@@ -747,7 +747,7 @@ const transport = createPhoenixTransport(channel, {
 </Card>
 
 <!-- Transport Adapters -->
-<Card title="Transport Adapters">
+<Card titleText="Transport Adapters">
 	<Paragraph>
 		The batch RPC is <strong>transport-agnostic</strong>. Use the factory functions to create adapters for your backend.
 	</Paragraph>
@@ -763,7 +763,7 @@ const transport = createPhoenixTransport(channel, {
 </Card>
 
 <!-- Transport Authentication -->
-<Card title="Transport Authentication">
+<Card titleText="Transport Authentication">
 	<Paragraph>
 		Each transport type handles authentication differently. HTTP transport supports dynamic headers and interceptors,
 		while SignalR and Phoenix configure auth on the connection itself.
@@ -800,7 +800,7 @@ const transport = createPhoenixTransport(channel, {
 </Card>
 
 <!-- Request Metadata -->
-<Card title="Request Metadata (Session ID, Tenant ID, etc.)">
+<Card titleText="Request Metadata (Session ID, Tenant ID, etc.)">
 	<Paragraph>
 		Use <code>getRequestMetadata</code> to add contextual data to every batch request body.
 		This is useful for session tracking, multi-tenancy, or debugging.
@@ -822,7 +822,7 @@ const transport = createPhoenixTransport(channel, {
 </Card>
 
 <!-- Configuration Presets -->
-<Card title="Configuration Presets">
+<Card titleText="Configuration Presets">
 	<Paragraph>
 		Two presets are provided for common response patterns:
 	</Paragraph>
@@ -846,7 +846,7 @@ const transport = createPhoenixTransport(channel, {
 </Card>
 
 <!-- Real-World Example -->
-<Card title="Real-World Example: Order Form">
+<Card titleText="Real-World Example: Order Form">
 	<Paragraph>
 		Here's how you'd use batch RPC to load all data for an order detail form:
 	</Paragraph>
@@ -855,7 +855,7 @@ const transport = createPhoenixTransport(channel, {
 </Card>
 
 <!-- Wire Protocol -->
-<Card title="Wire Protocol">
+<Card titleText="Wire Protocol">
 	<Paragraph>
 		The batch RPC uses a simple JSON protocol for requests and responses.
 	</Paragraph>
@@ -873,10 +873,10 @@ const transport = createPhoenixTransport(channel, {
 </Card>
 
 <!-- API Reference -->
-<Card title="API Reference">
+<Card titleText="API Reference">
 	<Heading level={4}>createBatch(transport)</Heading>
 	<Paragraph>Creates a new batch for collecting and executing RPC calls.</Paragraph>
-	<Table striped size="xs" class="mt-2">
+	<Table isStriped size="xs" class="mt-2">
 		<thead>
 			<tr><th>Method</th><th>Description</th></tr>
 		</thead>
@@ -901,7 +901,7 @@ const transport = createPhoenixTransport(channel, {
 	</Table>
 
 	<Heading level={4} class="mt-4">Transport Factories</Heading>
-	<Table striped size="xs" class="mt-2">
+	<Table isStriped size="xs" class="mt-2">
 		<thead>
 			<tr><th>Function</th><th>Description</th></tr>
 		</thead>
@@ -922,7 +922,7 @@ const transport = createPhoenixTransport(channel, {
 	</Table>
 
 	<Heading level={4} class="mt-4">RpcTransportConfig</Heading>
-	<Table striped size="xs" class="mt-2">
+	<Table isStriped size="xs" class="mt-2">
 		<thead>
 			<tr><th>Property</th><th>Type</th><th>Description</th></tr>
 		</thead>
@@ -951,7 +951,7 @@ const transport = createPhoenixTransport(channel, {
 	</Table>
 
 	<Heading level={4} class="mt-4">HttpTransportOptions</Heading>
-	<Table striped size="xs" class="mt-2">
+	<Table isStriped size="xs" class="mt-2">
 		<thead>
 			<tr><th>Property</th><th>Type</th><th>Description</th></tr>
 		</thead>
@@ -1000,7 +1000,7 @@ const transport = createPhoenixTransport(channel, {
 	</Table>
 
 	<Heading level={4} class="mt-4">SignalRTransportOptions / PhoenixTransportOptions</Heading>
-	<Table striped size="xs" class="mt-2">
+	<Table isStriped size="xs" class="mt-2">
 		<thead>
 			<tr><th>Property</th><th>Type</th><th>Description</th></tr>
 		</thead>

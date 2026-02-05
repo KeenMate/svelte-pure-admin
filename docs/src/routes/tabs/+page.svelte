@@ -38,12 +38,12 @@
 <Heading level={3} class="mt-4 mb-4">Tabs as Card Header (Same Height)</Heading>
 <Grid sameHeight>
 	<Column size="100" md="1-2">
-		<Card title="Normal Card">
+		<Card titleText="Normal Card">
 			<Paragraph>This is a regular card with a header. The header has a min-height of 40px.</Paragraph>
 		</Card>
 	</Column>
 	<Column size="100" md="1-2">
-		<TabsContainer card>
+		<TabsContainer isCard>
 			<Tabs>
 				<TabItem active={cardCompareActive === 'card-compare-1'} onclick={() => (cardCompareActive = 'card-compare-1')}>
 					Overview
@@ -57,7 +57,7 @@
 			</Tabs>
 			<TabsContent>
 				<TabPanel active={cardCompareActive === 'card-compare-1'} id="card-compare-1">
-					<Paragraph>Tabs replace the header using <code>TabsContainer card</code>. The tabs row has the same height (40px) as a card header.</Paragraph>
+					<Paragraph>Tabs replace the header using <code>TabsContainer card</code>. The tabs isRow has the same height (40px) as a card header.</Paragraph>
 				</TabPanel>
 				<TabPanel active={cardCompareActive === 'card-compare-2'} id="card-compare-2">
 					<Paragraph>Details content.</Paragraph>
@@ -74,7 +74,7 @@
 <Grid>
 	<Column size="100" md="1-2">
 		<!-- Card-Based Tabs -->
-		<Card title="Card Tabs (Built-in)">
+		<Card titleText="Card Tabs (Built-in)">
 			{#snippet tabs()}
 				<CardTab active={cardTabsActive === 'card-tab-1'} onclick={() => (cardTabsActive = 'card-tab-1')}>Overview</CardTab>
 				<CardTab active={cardTabsActive === 'card-tab-2'} onclick={() => (cardTabsActive = 'card-tab-2')}>Details</CardTab>
@@ -101,7 +101,7 @@
 	</Column>
 	<Column size="100" md="1-2">
 		<!-- Standalone Tabs - Underline Style -->
-		<Card title="Standalone Tabs">
+		<Card titleText="Standalone Tabs">
 			<Tabs>
 				<TabItem active={standaloneActive === 'tab-1'} onclick={() => (standaloneActive = 'tab-1')}>
 					Home
@@ -142,7 +142,7 @@
 <Grid>
 	<Column size="100" md="1-2">
 		<!-- Tabs with Icons -->
-		<Card title="Tabs with Icons">
+		<Card titleText="Tabs with Icons">
 			<Tabs>
 				<TabItem active={iconsActive === 'icon-tab-1'} onclick={() => (iconsActive = 'icon-tab-1')}>
 					{#snippet icon()}
@@ -188,7 +188,7 @@
 
 	<Column size="100" md="1-2">
 		<!-- Fixed Width Tabs -->
-		<Card title="Fixed Width Tabs">
+		<Card titleText="Fixed Width Tabs">
 			<Alert variant="info">
 				<strong>Available widths:</strong> Use <code>pa-tabs__item--w-1x</code> through <code>pa-tabs__item--w-10x</code> for 1rem to 10rem min-width.
 			</Alert>
@@ -248,7 +248,7 @@
 <Grid>
 	<Column size="100" md="1-2">
 		<!-- Pills Style Tabs -->
-		<Card title="Pills Style Tabs">
+		<Card titleText="Pills Style Tabs">
 			<Tabs style="pills">
 				<TabItem active={pillsActive === 'pills-tab-1'} onclick={() => (pillsActive = 'pills-tab-1')}>
 					Dashboard
@@ -279,7 +279,7 @@
 
 	<Column size="100" md="1-2">
 		<!-- Pills with Icons -->
-		<Card title="Pills with Icons">
+		<Card titleText="Pills with Icons">
 			<Tabs style="pills">
 				<TabItem active={iconPillsActive === 'icon-pills-1'} onclick={() => (iconPillsActive = 'icon-pills-1')}>
 					{#snippet icon()}
@@ -319,7 +319,7 @@
 <Grid>
 	<Column size="100" lg="1-2">
 		<!-- Vertical Tabs -->
-		<Card title="Vertical Tabs">
+		<Card titleText="Vertical Tabs">
 			<TabsVerticalLayout>
 				<Tabs style="vertical">
 					<TabItem active={verticalActive === 'vert-tab-1'} onclick={() => (verticalActive = 'vert-tab-1')}>
@@ -371,7 +371,7 @@
 
 	<Column size="100" lg="1-2">
 		<!-- Boxed Style Tabs -->
-		<Card title="Boxed Tabs">
+		<Card titleText="Boxed Tabs">
 			<Tabs style="boxed">
 				<TabItem active={boxedActive === 'boxed-tab-1'} onclick={() => (boxedActive = 'boxed-tab-1')}>
 					Code
@@ -399,7 +399,7 @@
 </Grid>
 
 <!-- Tab Sizes -->
-<Card title="Tab Sizes">
+<Card titleText="Tab Sizes">
 	<Heading level={4}>Small Tabs</Heading>
 	<Tabs size="sm">
 		<TabItem active={sizeSmallActive === 'size-sm-1'} onclick={() => (sizeSmallActive = 'size-sm-1')}>
@@ -414,7 +414,7 @@
 	</Tabs>
 	<TabsContent>
 		<TabPanel active={sizeSmallActive === 'size-sm-1'} id="size-sm-1">
-			<Paragraph>Small tabs content - compact and space-efficient.</Paragraph>
+			<Paragraph>Small tabs content - isCompact and space-efficient.</Paragraph>
 		</TabPanel>
 		<TabPanel active={sizeSmallActive === 'size-sm-2'} id="size-sm-2">
 			<Paragraph>Small tabs - Tab 2</Paragraph>
@@ -474,7 +474,7 @@
 </Card>
 
 <!-- Tabs with Badges -->
-<Card title="Tabs with Badges">
+<Card titleText="Tabs with Badges">
 	<Tabs>
 		<TabItem active={badgesActive === 'badge-tab-1'} onclick={() => (badgesActive = 'badge-tab-1')}>
 			<span>All</span>
@@ -510,7 +510,7 @@
 </Card>
 
 <!-- Centered Tabs -->
-<Card title="Centered Tabs">
+<Card titleText="Centered Tabs">
 	<Tabs align="centered">
 		<TabItem active={centeredActive === 'center-tab-1'} onclick={() => (centeredActive = 'center-tab-1')}>
 			Features
@@ -536,7 +536,7 @@
 </Card>
 
 <!-- Full Width Tabs -->
-<Card title="Full Width Tabs">
+<Card titleText="Full Width Tabs">
 	<Tabs align="full">
 		<TabItem active={fullActive === 'full-tab-1'} onclick={() => (fullActive = 'full-tab-1')}>
 			{#snippet icon()}
@@ -573,7 +573,7 @@
 <!-- Icon-Only Tabs -->
 <Grid>
 	<Column size="100" md="1-2">
-		<Card title="Icon-Only Tabs - Horizontal">
+		<Card titleText="Icon-Only Tabs - Horizontal">
 			<Tabs>
 				<TabItem
 					active={iconOnlyActive === 'icon-only-1'}
@@ -630,7 +630,7 @@
 	</Column>
 
 	<Column size="100" md="1-2">
-		<Card title="Icon-Only Tabs - Vertical">
+		<Card titleText="Icon-Only Tabs - Vertical">
 			<TabsVerticalLayout>
 				<Tabs style="vertical" align="centered">
 					<TabItem
@@ -769,17 +769,17 @@
 	</Tabs>
 	<TabsContent class="flex-grow-1">
 		<TabPanel active={standaloneVertActive === 'standalone-vert-1'} id="standalone-vert-1">
-			<Card title="Dashboard">
+			<Card titleText="Dashboard">
 				<Paragraph>Vertical tabs work great for sidebar-style navigation outside of cards.</Paragraph>
 			</Card>
 		</TabPanel>
 		<TabPanel active={standaloneVertActive === 'standalone-vert-2'} id="standalone-vert-2">
-			<Card title="Analytics">
+			<Card titleText="Analytics">
 				<Paragraph>Analytics content goes here.</Paragraph>
 			</Card>
 		</TabPanel>
 		<TabPanel active={standaloneVertActive === 'standalone-vert-3'} id="standalone-vert-3">
-			<Card title="Users">
+			<Card titleText="Users">
 				<Paragraph>User management content here.</Paragraph>
 			</Card>
 		</TabPanel>
@@ -789,7 +789,7 @@
 <Heading level={3} class="mt-8 mb-4">Bordered Tabs - Card-Like Wrapper</Heading>
 
 <!-- Bordered Horizontal Tabs -->
-<TabsContainer bordered>
+<TabsContainer isBordered>
 	<Tabs>
 		<TabItem active={borderedActive === 'bordered-1'} onclick={() => (borderedActive = 'bordered-1')}>
 			Dashboard
@@ -819,7 +819,7 @@
 
 <Heading level={3} class="mt-8 mb-4">Bordered Vertical Tabs</Heading>
 
-<TabsVerticalLayout bordered>
+<TabsVerticalLayout isBordered>
 	<Tabs style="vertical">
 		<TabItem
 			active={borderedVertActive === 'bordered-vert-1'}
@@ -873,7 +873,7 @@
 
 <Grid>
 	<Column size="100" md="1-3">
-		<Card title="Default (Wrap)">
+		<Card titleText="Default (Wrap)">
 			<Tabs>
 				<TabItem active={longWrapActive === 'long-1'} onclick={() => (longWrapActive = 'long-1')}>
 					Organizations Tree
@@ -906,7 +906,7 @@
 	</Column>
 
 	<Column size="100" md="1-3">
-		<Card title="Collapse Modifier">
+		<Card titleText="Collapse Modifier">
 			<Tabs overflow="collapse">
 				<TabItem
 					active={longCollapseActive === 'collapse-1'}
@@ -971,7 +971,7 @@
 	</Column>
 
 	<Column size="100" md="1-3">
-		<Card title="Scrollable Modifier">
+		<Card titleText="Scrollable Modifier">
 			<TabsScrollable>
 				<TabItem active={longScrollActive === 'long-boxed-1'} onclick={() => (longScrollActive = 'long-boxed-1')}>
 					Organizations Tree
@@ -1009,7 +1009,7 @@
 <!-- Inline Tabs Demo - Cards align when side by side -->
 <Grid sameHeight>
 	<Column size="100" md="1-2">
-		<Card title="Card with Title + Inline Tabs" inlineTabs>
+		<Card titleText="Card with Title + Inline Tabs" hasInlineTabs>
 			{#snippet tabs()}
 				<CardTab active={inlineTabsActive === 'inline-tab-1'} onclick={() => (inlineTabsActive = 'inline-tab-1')}>Active</CardTab>
 				<CardTab active={inlineTabsActive === 'inline-tab-2'} onclick={() => (inlineTabsActive = 'inline-tab-2')}>Pending</CardTab>
@@ -1027,7 +1027,7 @@
 		</Card>
 	</Column>
 	<Column size="100" md="1-2">
-		<Card title="Regular Card (Header Only)">
+		<Card titleText="Regular Card (Header Only)">
 			<Paragraph>This card has no tabs - just a header. Notice how both card headers align perfectly when side by side.</Paragraph>
 			<Paragraph>Use <code>inlineTabs</code> prop when you need cards with tabs to match the height of cards without tabs.</Paragraph>
 		</Card>
@@ -1037,7 +1037,7 @@
 <!-- Inline Tabs - Tabs Only in Header -->
 <Grid sameHeight>
 	<Column size="100" md="1-2">
-		<Card inlineTabs>
+		<Card hasInlineTabs>
 			{#snippet tabs()}
 				<CardTab active={inlineOnlyActive === 'inline-only-1'} onclick={() => (inlineOnlyActive = 'inline-only-1')}>Overview</CardTab>
 				<CardTab active={inlineOnlyActive === 'inline-only-2'} onclick={() => (inlineOnlyActive = 'inline-only-2')}>Details</CardTab>
@@ -1055,13 +1055,13 @@
 		</Card>
 	</Column>
 	<Column size="100" md="1-2">
-		<Card title="Summary Stats">
+		<Card titleText="Summary Stats">
 			{#snippet tools()}
-				<Button variant="secondary" size="sm" iconOnly>
+				<Button variant="secondary" size="sm" isIconOnly>
 					<i class="fa-solid fa-refresh"></i>
 				</Button>
 			{/snippet}
-			<Paragraph>Cards with different header content still align because inline tabs use the same header height.</Paragraph>
+			<Paragraph>Cards with different header content still align because isInline tabs use the same header height.</Paragraph>
 		</Card>
 	</Column>
 </Grid>

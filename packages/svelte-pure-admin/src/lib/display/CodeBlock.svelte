@@ -11,21 +11,21 @@
 		/** Programming language for styling */
 		language?: Language;
 		/** Compact layout (smaller padding) */
-		compact?: boolean;
+		isCompact?: boolean;
 		/** Additional CSS classes */
 		class?: string;
 		/** Code content */
 		children?: import('svelte').Snippet;
 	}
 
-	let { language, compact = false, class: className = '', children }: Props = $props();
+	let { language, isCompact = false, class: className = '', children }: Props = $props();
 
 	// Build class string
 	const classes = $derived(() => {
 		const base = ['pa-code'];
 
 		// Compact modifier
-		if (compact) base.push('pa-code--compact');
+		if (isCompact) base.push('pa-code--compact');
 
 		// Language variant
 		if (language) base.push(`pa-code--${language}`);

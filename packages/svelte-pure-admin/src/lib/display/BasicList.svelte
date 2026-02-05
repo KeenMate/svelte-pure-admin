@@ -12,16 +12,16 @@
 		/** Spacing variant */
 		spacing?: ListSpacing;
 		/** Remove bullets and padding */
-		unstyled?: boolean;
+		isUnstyled?: boolean;
 		/** Display items inline (horizontal) */
-		inline?: boolean;
+		isInline?: boolean;
 		/** Add borders between items */
-		bordered?: boolean;
+		isBordered?: boolean;
 		/** Zebra striping on even rows */
-		striped?: boolean;
+		isStriped?: boolean;
 		/** Show icons (checkmarks by default) */
-		icon?: boolean;
-		/** Icon variant (when icon=true) */
+		hasIcon?: boolean;
+		/** Icon variant (when hasIcon=true) */
 		iconVariant?: ListIconVariant;
 		/** Additional CSS classes */
 		class?: string;
@@ -31,11 +31,11 @@
 
 	let {
 		spacing,
-		unstyled = false,
-		inline = false,
-		bordered = false,
-		striped = false,
-		icon = false,
+		isUnstyled = false,
+		isInline = false,
+		isBordered = false,
+		isStriped = false,
+		hasIcon = false,
 		iconVariant = 'success',
 		class: className = '',
 		children
@@ -49,13 +49,13 @@
 		if (spacing) base.push(`pa-list-basic--${spacing}`);
 
 		// Modifiers
-		if (unstyled) base.push('pa-list-basic--unstyled');
-		if (inline) base.push('pa-list-basic--inline');
-		if (bordered) base.push('pa-list-basic--bordered');
-		if (striped) base.push('pa-list-basic--striped');
+		if (isUnstyled) base.push('pa-list-basic--unstyled');
+		if (isInline) base.push('pa-list-basic--inline');
+		if (isBordered) base.push('pa-list-basic--bordered');
+		if (isStriped) base.push('pa-list-basic--striped');
 
 		// Icon modifiers
-		if (icon) {
+		if (hasIcon) {
 			base.push('pa-list-basic--icon');
 			if (iconVariant !== 'success') {
 				base.push(`pa-list-basic--${iconVariant}`);

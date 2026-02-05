@@ -99,8 +99,8 @@
 <Paragraph>Complete set of form elements with various styles and states for data input.</Paragraph>
 
 <!-- Input Sizes Reference -->
-<Card title="Input Sizes Reference" noPadding>
-	<Table striped>
+<Card titleText="Input Sizes Reference" hasPadding={false}>
+	<Table isStriped>
 		<thead>
 			<tr>
 				<th>Size</th>
@@ -234,7 +234,7 @@
 </Card>
 
 <!-- Form with Buttons in Footer -->
-<Card title="Contact Information">
+<Card titleText="Contact Information">
 	<form class="pa-form">
 		<Grid>
 			<Column size="100" md="50">
@@ -282,7 +282,7 @@
 </Card>
 
 <!-- Form with Buttons in Body -->
-<Card title="Quick Settings">
+<Card titleText="Quick Settings">
 	<form class="pa-form">
 		<FormGroup>
 			<FormLabel for="setting1">Setting Name</FormLabel>
@@ -313,7 +313,7 @@
 </Card>
 
 <!-- Three Column Compact Form -->
-<Card title="Compact Three Column Layout">
+<Card titleText="Compact Three Column Layout">
 	<form class="pa-form">
 		<Grid>
 			<Column size="100" md="1-3">
@@ -366,7 +366,7 @@
 </Card>
 
 <!-- Input Groups with Icons -->
-<Card title="Input Groups">
+<Card titleText="Input Groups">
 	<form class="pa-form">
 		<Grid>
 			<Column size="100" md="50">
@@ -470,7 +470,7 @@
 </Card>
 
 <!-- Form States -->
-<Card title="Form States">
+<Card titleText="Form States">
 	<form class="pa-form">
 		<Grid>
 			<Column size="100" md="1-3">
@@ -496,7 +496,7 @@
 			</Column>
 
 			<Column size="100" md="50">
-				<FormGroup hasError>
+				<FormGroup isError>
 					<FormLabel for="error-input">Input with Error</FormLabel>
 					<Input id="error-input" state="error" placeholder="Invalid input" bind:value={errorInput} />
 					<FormHelp variant="error">This field is required</FormHelp>
@@ -504,7 +504,7 @@
 			</Column>
 
 			<Column size="100" md="50">
-				<FormGroup hasSuccess>
+				<FormGroup isSuccess>
 					<FormLabel for="success-input">Input with Success</FormLabel>
 					<Input id="success-input" state="success" bind:value={successInput} />
 					<FormHelp variant="success">Looks good!</FormHelp>
@@ -515,7 +515,7 @@
 </Card>
 
 <!-- Input Sizes -->
-<Card title="Input Sizes">
+<Card titleText="Input Sizes">
 	<form class="pa-form">
 		<FormGroup>
 			<FormLabel for="xs-input">Extra Small Input</FormLabel>
@@ -545,41 +545,41 @@
 </Card>
 
 <!-- Checkboxes and Radio Buttons -->
-<Card title="Checkboxes and Radio Buttons">
+<Card titleText="Checkboxes and Radio Buttons">
 	<form class="pa-form">
 		<FormGroup>
 			<FormLabel>Checkboxes (Custom Tri-State)</FormLabel>
 			<CheckboxGroup>
-				<Checkbox id="check1" label="Option 1 (checked)" bind:checked={check1} />
-				<Checkbox id="check2" label="Option 2" bind:checked={check2} />
-				<Checkbox id="check3" label="Option 3 (disabled)" disabled />
+				<Checkbox id="check1" labelText="Option 1 (checked)" bind:checked={check1} />
+				<Checkbox id="check2" labelText="Option 2" bind:checked={check2} />
+				<Checkbox id="check3" labelText="Option 3 (disabled)" disabled />
 			</CheckboxGroup>
 		</FormGroup>
 
 		<FormGroup>
 			<FormLabel>Radio Buttons</FormLabel>
 			<RadioGroup>
-				<Radio name="radio-group" value="a" bind:group={radioGroup} label="Choice A (selected)" />
-				<Radio name="radio-group" value="b" bind:group={radioGroup} label="Choice B" />
-				<Radio name="radio-group" value="c" disabled label="Choice C (disabled)" />
+				<Radio name="radio-group" value="a" bind:group={radioGroup} labelText="Choice A (selected)" />
+				<Radio name="radio-group" value="b" bind:group={radioGroup} labelText="Choice B" />
+				<Radio name="radio-group" value="c" disabled labelText="Choice C (disabled)" />
 			</RadioGroup>
 		</FormGroup>
 	</form>
 </Card>
 
 <!-- Checkbox and Radio Sizes -->
-<Card title="Checkbox & Radio Sizes">
+<Card titleText="Checkbox & Radio Sizes">
 	<form class="pa-form">
 		<Grid>
 			<Column size="100" md="50">
 				<FormGroup>
 					<FormLabel>Checkbox Sizes</FormLabel>
 					<CheckboxGroup>
-						<Checkbox id="check-xs" size="xs" label="Extra Small (12px)" bind:checked={checkXs} />
-						<Checkbox id="check-sm" size="sm" label="Small (14px)" bind:checked={checkSm} />
-						<Checkbox id="check-default" label="Default (16px)" bind:checked={checkDefault} />
-						<Checkbox id="check-lg" size="lg" label="Large (20px)" bind:checked={checkLg} />
-						<Checkbox id="check-xl" size="xl" label="Extra Large (24px)" bind:checked={checkXl} />
+						<Checkbox id="check-xs" size="xs" labelText="Extra Small (12px)" bind:checked={checkXs} />
+						<Checkbox id="check-sm" size="sm" labelText="Small (14px)" bind:checked={checkSm} />
+						<Checkbox id="check-default" labelText="Default (16px)" bind:checked={checkDefault} />
+						<Checkbox id="check-lg" size="lg" labelText="Large (20px)" bind:checked={checkLg} />
+						<Checkbox id="check-xl" size="xl" labelText="Extra Large (24px)" bind:checked={checkXl} />
 					</CheckboxGroup>
 				</FormGroup>
 			</Column>
@@ -588,11 +588,11 @@
 				<FormGroup>
 					<FormLabel>Radio Button Sizes</FormLabel>
 					<RadioGroup>
-						<Radio name="radio-sizes" value="xs" size="xs" bind:group={radioSizes} label="Extra Small (12px)" />
-						<Radio name="radio-sizes" value="sm" size="sm" bind:group={radioSizes} label="Small (14px)" />
-						<Radio name="radio-sizes" value="default" bind:group={radioSizes} label="Default (16px)" />
-						<Radio name="radio-sizes" value="lg" size="lg" bind:group={radioSizes} label="Large (20px)" />
-						<Radio name="radio-sizes" value="xl" size="xl" bind:group={radioSizes} label="Extra Large (24px)" />
+						<Radio name="radio-sizes" value="xs" size="xs" bind:group={radioSizes} labelText="Extra Small (12px)" />
+						<Radio name="radio-sizes" value="sm" size="sm" bind:group={radioSizes} labelText="Small (14px)" />
+						<Radio name="radio-sizes" value="default" bind:group={radioSizes} labelText="Default (16px)" />
+						<Radio name="radio-sizes" value="lg" size="lg" bind:group={radioSizes} labelText="Large (20px)" />
+						<Radio name="radio-sizes" value="xl" size="xl" bind:group={radioSizes} labelText="Extra Large (24px)" />
 					</RadioGroup>
 				</FormGroup>
 			</Column>

@@ -18,11 +18,11 @@
 		/** Checkbox checked state */
 		checked?: boolean;
 		/** Indeterminate state (partial selection) */
-		indeterminate?: boolean;
+		isIndeterminate?: boolean;
 		/** Disabled state */
 		disabled?: boolean;
 		/** Use X mark instead of checkmark when checked */
-		xMark?: boolean;
+		isXMark?: boolean;
 		/** Checkbox size */
 		size?: CheckboxSize;
 		/** Checkbox ID */
@@ -34,20 +34,20 @@
 		/** Additional CSS classes */
 		class?: string;
 		/** Change handler */
-		onChange?: (event: Event & { currentTarget: HTMLInputElement }) => void;
+		onchange?: (event: Event & { currentTarget: HTMLInputElement }) => void;
 	}
 
 	let {
 		checked = $bindable(false),
-		indeterminate = false,
+		isIndeterminate = false,
 		disabled = false,
-		xMark = false,
+		isXMark = false,
 		size,
 		id,
 		name,
 		value,
 		class: className = '',
-		onChange
+		onchange
 	}: Props = $props();
 
 	let inputElement: HTMLInputElement;
@@ -55,7 +55,7 @@
 	// Sync indeterminate property (can only be set via JS, not attribute)
 	$effect(() => {
 		if (inputElement) {
-			inputElement.indeterminate = indeterminate;
+			inputElement.indeterminate = isIndeterminate;
 		}
 	});
 
@@ -63,7 +63,7 @@
 	const wrapperClasses = $derived(() => {
 		const base = ['pa-checkbox'];
 		if (size) base.push(`pa-checkbox--${size}`);
-		if (xMark) base.push('pa-checkbox--x');
+		if (isXMark) base.push('pa-checkbox--x');
 		if (disabled) base.push('pa-checkbox--disabled');
 		if (className) base.push(className);
 		return base.join(' ');
@@ -79,7 +79,7 @@
 		{name}
 		{value}
 		{disabled}
-		onchange={onChange}
+		{onchange}
 	/>
 	<span class="pa-checkbox__box"></span>
 </span>

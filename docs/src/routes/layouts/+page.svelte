@@ -3,16 +3,16 @@
 </script>
 
 <!-- Full Width Layout -->
-<Card title="Full Width Layout">
+<Card titleText="Full Width Layout">
 	<Grid>
 		<Column size="100">
-			<Alert variant="primary">Full width content block spanning the entire row</Alert>
+			<Alert variant="primary">Full width content isBlock spanning the entire row</Alert>
 		</Column>
 	</Grid>
 </Card>
 
 <!-- Two Columns Layout -->
-<Card title="Two Columns Layout (50/50)">
+<Card titleText="Two Columns Layout (50/50)">
 	<Grid>
 		<Column size="100" md="50">
 			<Alert variant="primary">Left Column</Alert>
@@ -24,7 +24,7 @@
 </Card>
 
 <!-- Three Columns Layout -->
-<Card title="Three Columns Layout (33/33/33)">
+<Card titleText="Three Columns Layout (33/33/33)">
 	<Grid>
 		<Column size="100" md="1-3">
 			<Alert variant="primary">Column 1</Alert>
@@ -39,7 +39,7 @@
 </Card>
 
 <!-- Sidebar Layout -->
-<Card title="Sidebar Layout (25/75)">
+<Card titleText="Sidebar Layout (25/75)">
 	<Grid>
 		<Column size="100" md="25">
 			<Alert variant="primary">Sidebar</Alert>
@@ -51,7 +51,7 @@
 </Card>
 
 <!-- Asymmetric Layout -->
-<Card title="Asymmetric Layout (67/33)">
+<Card titleText="Asymmetric Layout (67/33)">
 	<Grid>
 		<Column size="100" md="2-3">
 			<Alert variant="primary">Main Content (2/3)</Alert>
@@ -63,7 +63,7 @@
 </Card>
 
 <!-- Four Columns Layout -->
-<Card title="Four Columns Layout (25/25/25/25)">
+<Card titleText="Four Columns Layout (25/25/25/25)">
 	<Grid>
 		<Column size="100" md="25">
 			<Alert variant="primary">Col 1</Alert>
@@ -81,7 +81,7 @@
 </Card>
 
 <!-- Mixed Pattern -->
-<Card title="Mixed Pattern (1-2-1-2-1)">
+<Card titleText="Mixed Pattern (1-2-1-2-1)">
 	<Grid>
 		<Column size="100">
 			<Alert variant="primary">Full Width Header</Alert>
@@ -108,7 +108,7 @@
 </Card>
 
 <!-- Complex Nested Layout -->
-<Card title="Complex Nested Layout">
+<Card titleText="Complex Nested Layout">
 	<Grid>
 		<Column size="100" md="2-3">
 			<Grid>
@@ -137,7 +137,7 @@
 <Heading level={4}>Full Width Card</Heading>
 <Grid>
 	<Column size="100">
-		<Card title="Full Width Card">
+		<Card titleText="Full Width Card">
 			<p>This card spans the entire width of the container.</p>
 		</Card>
 	</Column>
@@ -147,12 +147,12 @@
 <Heading level={4}>Two Column Cards (50/50)</Heading>
 <Grid sameHeight>
 	<Column size="100" md="50">
-		<Card title="Left Card">
+		<Card titleText="Left Card">
 			<p>Half width card on the left side.</p>
 		</Card>
 	</Column>
 	<Column size="100" md="50">
-		<Card title="Right Card">
+		<Card titleText="Right Card">
 			<p>Half width card on the right side.</p>
 		</Card>
 	</Column>
@@ -162,17 +162,17 @@
 <Heading level={4}>Three Column Cards (33/33/33)</Heading>
 <Grid sameHeight>
 	<Column size="100" md="1-3">
-		<Card title="Card 1">
+		<Card titleText="Card 1">
 			<p>First of three equal cards.</p>
 		</Card>
 	</Column>
 	<Column size="100" md="1-3">
-		<Card title="Card 2">
+		<Card titleText="Card 2">
 			<p>Second of three equal cards.</p>
 		</Card>
 	</Column>
 	<Column size="100" md="1-3">
-		<Card title="Card 3">
+		<Card titleText="Card 3">
 			<p>Third of three equal cards.</p>
 		</Card>
 	</Column>
@@ -182,12 +182,12 @@
 <Heading level={4}>Sidebar + Main Cards (25/75)</Heading>
 <Grid sameHeight>
 	<Column size="100" md="25">
-		<Card title="Sidebar Card">
+		<Card titleText="Sidebar Card">
 			<p>Narrow sidebar card for navigation or quick info.</p>
 		</Card>
 	</Column>
 	<Column size="100" md="75">
-		<Card title="Main Content Card">
+		<Card titleText="Main Content Card">
 			<p>Wide main content card taking up most of the space.</p>
 		</Card>
 	</Column>
@@ -197,22 +197,22 @@
 <Heading level={4}>Four Column Cards (25/25/25/25)</Heading>
 <Grid sameHeight>
 	<Column size="100" md="25">
-		<Card title="Card A">
+		<Card titleText="Card A">
 			<p>Quarter width card.</p>
 		</Card>
 	</Column>
 	<Column size="100" md="25">
-		<Card title="Card B">
+		<Card titleText="Card B">
 			<p>Quarter width card.</p>
 		</Card>
 	</Column>
 	<Column size="100" md="25">
-		<Card title="Card C">
+		<Card titleText="Card C">
 			<p>Quarter width card.</p>
 		</Card>
 	</Column>
 	<Column size="100" md="25">
-		<Card title="Card D">
+		<Card titleText="Card D">
 			<p>Quarter width card.</p>
 		</Card>
 	</Column>
@@ -222,19 +222,19 @@
 <Heading level={4}>Asymmetric Cards (67/33)</Heading>
 <Grid sameHeight>
 	<Column size="100" md="2-3">
-		<Card title="Main Content Card">
+		<Card titleText="Main Content Card">
 			<p>Larger card taking up 2/3 of the space for main content.</p>
 		</Card>
 	</Column>
 	<Column size="100" md="1-3">
-		<Card title="Side Panel Card">
+		<Card titleText="Side Panel Card">
 			<p>Smaller card for supplementary content.</p>
 		</Card>
 	</Column>
 </Grid>
 
 <!-- Code Examples -->
-<Card title="Code Examples" class="mt-6">
+<Card titleText="Code Examples" class="mt-6">
 	<Grid>
 		<Column size="100" md="50">
 			<h4 class="mb-2">Common Layout Patterns</h4>
@@ -262,18 +262,18 @@
 			<CodeBlock>{`<!-- Same height cards in grid -->
 <Grid sameHeight>
   <Column size="100" md="1-3">
-    <Card title="Card 1">
+    <Card titleText="Card 1">
       <p>Short content</p>
     </Card>
   </Column>
   <Column size="100" md="1-3">
-    <Card title="Card 2">
+    <Card titleText="Card 2">
       <p>Longer content stretches,
          and sibling cards match height.</p>
     </Card>
   </Column>
   <Column size="100" md="1-3">
-    <Card title="Card 3">
+    <Card titleText="Card 3">
       <p>Also matches height</p>
     </Card>
   </Column>
@@ -292,7 +292,7 @@
     </Grid>
   </Column>
   <Column size="100" md="1-3">
-    <Card title="Sidebar">Content</Card>
+    <Card titleText="Sidebar">Content</Card>
   </Column>
 </Grid>`}</CodeBlock>
 </Card>

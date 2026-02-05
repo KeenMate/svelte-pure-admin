@@ -3,7 +3,7 @@
 </script>
 
 <!-- Introduction -->
-<Card title="Base CSS Variables for Web Components">
+<Card titleText="Base CSS Variables for Web Components">
 	<Paragraph class="mb-3">
 		Pure Admin exports <Code>--base-*</Code> CSS custom properties that enable automatic theming for web components
 		like <strong>web-daterangepicker</strong>, <strong>web-multiselect</strong>, and others.
@@ -16,7 +16,7 @@
 </Card>
 
 <!-- How It Works -->
-<Card title="How It Works">
+<Card titleText="How It Works">
 	<h3 class="mb-2">Architecture</h3>
 	<OrderedList class="mb-3">
 		<li><strong>Pure Admin defines SCSS variables</strong> - <Code>$base-*</Code> variables in <Code>_variables.scss</Code></li>
@@ -43,8 +43,8 @@ $base-accent-color:     $base-accent-color:          :root {
 </Card>
 
 <!-- Variable Reference -->
-<Card title="Variable Reference" noPadding>
-	<Table striped>
+<Card titleText="Variable Reference" hasPadding={false}>
+	<Table isStriped>
 		<thead>
 			<tr>
 				<th>Category</th>
@@ -145,7 +145,7 @@ $base-accent-color:     $base-accent-color:          :root {
 </Card>
 
 <!-- Current Theme Values -->
-<Card title="Current Theme Values">
+<Card titleText="Current Theme Values">
 	<Paragraph class="mb-2">These are the <Code>--base-*</Code> CSS variable values from the currently selected theme:</Paragraph>
 
 	<Grid>
@@ -214,7 +214,7 @@ $base-accent-color:     $base-accent-color:          :root {
 </Card>
 
 <!-- Theme Implementation Pattern -->
-<Card title="Theme Implementation Pattern">
+<Card titleText="Theme Implementation Pattern">
 	<Paragraph class="mb-2">Each theme follows this pattern to output base CSS variables:</Paragraph>
 
 	<CodeBlock>{`// themes/express.scss
@@ -246,8 +246,8 @@ $base-accent-color-active: lighten($express-red, 15%);
 </Card>
 
 <!-- Files Reference -->
-<Card title="Files Reference" noPadding>
-	<Table striped>
+<Card titleText="Files Reference" hasPadding={false}>
+	<Table isStriped>
 		<thead>
 			<tr>
 				<th>File</th>
@@ -276,7 +276,7 @@ $base-accent-color-active: lighten($express-red, 15%);
 </Card>
 
 <!-- Benefits -->
-<Card title="Benefits">
+<Card titleText="Benefits">
 	<Grid>
 		<Column size="50" md="25">
 			<Alert variant="success">

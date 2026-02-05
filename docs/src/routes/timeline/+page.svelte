@@ -13,7 +13,7 @@
 </script>
 
 <!-- Activity Feed -->
-<Card title="Activity Feed">
+<Card titleText="Activity Feed">
 
 	<Timeline variant="feed">
 		<TimelineItem
@@ -127,7 +127,7 @@
 </Card>
 
 <!-- Team Collaboration Feed -->
-<Card title="Team Collaboration Feed">
+<Card titleText="Team Collaboration Feed">
 
 	<Timeline variant="feed">
 		<TimelineItem
@@ -175,7 +175,7 @@
 </Card>
 
 <!-- Usage Examples -->
-<Card title="Usage Examples">
+<Card titleText="Usage Examples">
 
 	<Heading level={4}>Basic Feed Timeline</Heading>
 	<CodeBlock language="html" class="mb-4">&lt;Timeline variant="feed"&gt;

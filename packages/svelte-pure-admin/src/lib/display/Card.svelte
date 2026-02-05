@@ -11,16 +11,20 @@
 	interface Props {
 		/** Card variant (applies to whole card) */
 		variant?: CardVariant;
-		/** Remove padding from body */
-		noPadding?: boolean;
+		/** Body has padding (set false to remove) */
+		hasPadding?: boolean;
 		/** Stat card style */
-		stat?: boolean;
+		isStat?: boolean;
 		/** Simple title text (alternative to header snippet) */
-		title?: string;
-		/** Subtitle/description text (shown below title) */
-		subtitle?: string;
+		titleText?: string;
+		/** Description text shown inline with title, truncates with ellipsis (v1.4.1 three-part header) */
+		descriptionText?: string;
+		/** Subtitle/description text (shown below title) - deprecated, use descriptionText for inline layout */
+		subtitleText?: string;
+		/** Allow header description to wrap to its own line (v1.4.1 --wrap modifier) */
+		headerWrap?: boolean;
 		/** Inline tabs style (pill-style buttons inside card header row) */
-		inlineTabs?: boolean;
+		hasInlineTabs?: boolean;
 		/** Additional CSS classes */
 		class?: string;
 		/** Header snippet (for complex headers) */
@@ -41,11 +45,13 @@
 
 	let {
 		variant,
-		noPadding = false,
-		stat = false,
-		title,
-		subtitle,
-		inlineTabs = false,
+		hasPadding = true,
+		isStat = false,
+		titleText,
+		descriptionText,
+		subtitleText,
+		headerWrap = false,
+		hasInlineTabs = false,
 		class: className = '',
 		header,
 		titleIcon,
@@ -60,7 +66,7 @@
 	const classes = $derived(() => {
 		const base = ['pa-card'];
 		if (variant) base.push(`pa-card--${variant}`);
-		if (stat) base.push('pa-card--stat');
+		if (isStat) base.push('pa-card--stat');
 		if (className) base.push(className);
 		return base.join(' ');
 	});
@@ -68,26 +74,33 @@
 	// Build body class string
 	const bodyClasses = $derived(() => {
 		const base = ['pa-card__body'];
-		if (noPadding) base.push('pa-card__body--no-padding');
+		if (!hasPadding) base.push('pa-card__body--no-padding');
 		return base.join(' ');
 	});
 
 	// Build tabs class string
 	const tabsClasses = $derived(() => {
 		const base = ['pa-card__tabs'];
-		if (inlineTabs) base.push('pa-card__tabs--inline');
+		if (hasInlineTabs) base.push('pa-card__tabs--inline');
+		return base.join(' ');
+	});
+
+	// Build header class string (v1.4.1 three-part layout with --wrap modifier)
+	const headerClasses = $derived(() => {
+		const base = ['pa-card__header'];
+		if (headerWrap) base.push('pa-card__header--wrap');
 		return base.join(' ');
 	});
 
 	// Determine if we should show header
-	const hasHeader = $derived(header || title || titleIcon || subtitle || tools || tabs);
+	const hasHeader = $derived(header || titleText || titleIcon || descriptionText || subtitleText || tools || tabs);
 	// Determine if we should show footer
 	const hasFooter = $derived(footer || actions);
 </script>
 
 <div class={classes()}>
 	{#if hasHeader}
-		<div class="pa-card__header">
+		<div class={headerClasses()}>
 			{#if tabs}
 				<div class={tabsClasses()}>
 					{@render tabs()}
@@ -95,18 +108,23 @@
 			{:else if header}
 				{@render header()}
 			{:else}
-				{#if titleIcon && title}
+				<!-- Three-part header layout (v1.4.1): Title - Description - Tools/Actions -->
+				{#if titleIcon && titleText}
 					<div class="pa-card__title">
 						<span class="pa-card__title-icon">
 							{@render titleIcon()}
 						</span>
-						<h4 class="pa-card__title-text">{title}</h4>
+						<h4 class="pa-card__title-text">{titleText}</h4>
 					</div>
-				{:else if title}
-					<h4>{title}</h4>
+				{:else if titleText}
+					<h4>{titleText}</h4>
 				{/if}
-				{#if subtitle}
-					<p class="pa-text pa-text--secondary">{subtitle}</p>
+				{#if descriptionText}
+					<!-- Description fills available space and truncates with ellipsis -->
+					<p>{descriptionText}</p>
+				{:else if subtitleText}
+					<!-- Legacy subtitleText (shown as secondary text) -->
+					<p class="pa-text pa-text--secondary">{subtitleText}</p>
 				{/if}
 				{#if tools}
 					<div class="pa-card__tools">

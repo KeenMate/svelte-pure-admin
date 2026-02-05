@@ -24,13 +24,13 @@
 		/** Radio size */
 		size?: RadioSize;
 		/** Label text */
-		label?: string;
+		labelText?: string;
 		/** Additional CSS classes for wrapper */
 		class?: string;
 		/** Label snippet (alternative to label prop for custom content) */
 		labelSnippet?: import('svelte').Snippet;
 		/** Change handler */
-		onChange?: (event: Event & { currentTarget: HTMLInputElement }) => void;
+		onchange?: (event: Event & { currentTarget: HTMLInputElement }) => void;
 	}
 
 	let {
@@ -39,10 +39,10 @@
 		disabled = false,
 		name,
 		size,
-		label,
+		labelText,
 		class: className = '',
 		labelSnippet,
-		onChange
+		onchange
 	}: Props = $props();
 
 	// Build class string for label wrapper
@@ -62,11 +62,11 @@
 		{value}
 		{name}
 		{disabled}
-		onchange={onChange}
+		{onchange}
 	/>
 	{#if labelSnippet}
 		{@render labelSnippet()}
-	{:else if label}
-		{label}
+	{:else if labelText}
+		{labelText}
 	{/if}
 </label>

@@ -28,7 +28,7 @@
 </script>
 
 <!-- Semantic Colors -->
-<Card title="Semantic Colors">
+<Card titleText="Semantic Colors">
 	<Paragraph>Standard semantic colors used throughout the framework for status indication.</Paragraph>
 
 	<Grid class="gap-base">
@@ -49,7 +49,7 @@
 </Card>
 
 <!-- Theme Color Slots -->
-<Card title="Theme Color Slots (1-9)">
+<Card titleText="Theme Color Slots (1-9)">
 	<Paragraph>Custom theme colors that can be overridden per-theme. Use these for branded elements.</Paragraph>
 
 	<Grid class="gap-base">
@@ -70,7 +70,7 @@
 </Card>
 
 <!-- Utility Classes -->
-<Card title="Color Utility Classes">
+<Card titleText="Color Utility Classes">
 	<Paragraph>Apply theme colors to any element using these utility classes.</Paragraph>
 
 	<Grid>
@@ -114,7 +114,7 @@
 </Card>
 
 <!-- Applied to Components -->
-<Card title="Applied to Components">
+<Card titleText="Applied to Components">
 	<Paragraph>Examples of color utilities applied to various components.</Paragraph>
 
 	<Heading level={4}>Alerts with Theme Colors</Heading>

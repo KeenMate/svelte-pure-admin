@@ -15,7 +15,7 @@
 		<!-- Left Column -->
 		<Column size="100" lg="1-2">
 			<!-- Tooltip Positions & Colors -->
-			<Card title="Tooltip Positions & Colors" class="mb-4">
+			<Card titleText="Tooltip Positions & Colors" class="mb-4">
 				<Grid>
 					<Column size="1-2" md="1-4" class="text-center mb-3 p-4">
 						<Tooltip text="Tooltip on top">Top</Tooltip>
@@ -82,7 +82,7 @@
 			</Card>
 
 			<!-- Buttons with Tooltips -->
-			<Card title="Buttons & Icon-Only" class="mb-4">
+			<Card titleText="Buttons & Icon-Only" class="mb-4">
 				<Paragraph class="mb-3 text-sm">Regular buttons:</Paragraph>
 				<div class="text-center mb-4">
 					<ButtonGroup>
@@ -107,32 +107,32 @@
 				<div class="text-center">
 					<ButtonGroup>
 						<Tooltip text="Edit" position="bottom">
-							<Button variant="primary" size="sm" iconOnly title="">
+							<Button variant="primary" size="sm" isIconOnly titleText="">
 								<i class="fa-solid fa-pen"></i>
 							</Button>
 						</Tooltip>
 						<Tooltip text="Copy" position="bottom">
-							<Button variant="secondary" size="sm" iconOnly title="">
+							<Button variant="secondary" size="sm" isIconOnly titleText="">
 								<i class="fa-solid fa-copy"></i>
 							</Button>
 						</Tooltip>
 						<Tooltip text="Download" position="bottom">
-							<Button variant="success" size="sm" iconOnly title="">
+							<Button variant="success" size="sm" isIconOnly titleText="">
 								<i class="fa-solid fa-download"></i>
 							</Button>
 						</Tooltip>
 						<Tooltip text="Settings" position="bottom">
-							<Button variant="warning" size="sm" iconOnly title="">
+							<Button variant="warning" size="sm" isIconOnly titleText="">
 								<i class="fa-solid fa-gear"></i>
 							</Button>
 						</Tooltip>
 						<Tooltip text="Delete" position="bottom">
-							<Button variant="danger" size="sm" iconOnly title="">
+							<Button variant="danger" size="sm" isIconOnly titleText="">
 								<i class="fa-solid fa-trash"></i>
 							</Button>
 						</Tooltip>
 						<Tooltip text="Info" position="bottom">
-							<Button variant="info" size="sm" iconOnly title="">
+							<Button variant="info" size="sm" isIconOnly titleText="">
 								<i class="fa-solid fa-circle-info"></i>
 							</Button>
 						</Tooltip>
@@ -141,7 +141,7 @@
 			</Card>
 
 			<!-- Multiline Tooltips -->
-			<Card title="Multiline Tooltips" class="mb-4">
+			<Card titleText="Multiline Tooltips" class="mb-4">
 				<Paragraph class="mb-3 text-sm">
 					Use <code>multiline</code> prop for longer text (20rem width, left-aligned):
 				</Paragraph>
@@ -170,7 +170,7 @@
 			</Card>
 
 			<!-- Inline Text Tooltips -->
-			<Card title="Inline Text Tooltips" class="mb-4">
+			<Card titleText="Inline Text Tooltips" class="mb-4">
 				<Paragraph>
 					Tooltips can explain <Tooltip
 						text="Application Programming Interface"
@@ -189,7 +189,7 @@
 		<!-- Right Column -->
 		<Column size="100" lg="1-2">
 			<!-- Popovers -->
-			<Card title="Popovers - Interactive Help" class="mb-4">
+			<Card titleText="Popovers - Interactive Help" class="mb-4">
 				<Paragraph class="mb-3 text-sm">
 					Rich content with links, formatting. Click <strong>?</strong> to open:
 				</Paragraph>
@@ -197,7 +197,7 @@
 					<Column size="1-2" md="1-4" class="mb-3 text-center p-2">
 						<label class="text-sm">
 							Basic
-							<Popover title="Help" placement="bottom">
+							<Popover titleText="Help" placement="bottom">
 								<Paragraph>
 									Basic popover with <strong>bold</strong>, <em>italic</em>, and <a href="#"
 										>links</a
@@ -209,7 +209,7 @@
 					<Column size="1-2" md="1-4" class="mb-3 text-center p-2">
 						<label class="text-sm">
 							With List
-							<Popover title="Options" placement="bottom">
+							<Popover titleText="Options" placement="bottom">
 								<Paragraph>Select from:</Paragraph>
 								<BasicList>
 									<li>Option A</li>
@@ -222,7 +222,7 @@
 					<Column size="1-2" md="1-4" class="mb-3 text-center p-2">
 						<label class="text-sm">
 							Large
-							<Popover title="Documentation" placement="bottom" size="lg">
+							<Popover titleText="Documentation" placement="bottom" size="lg">
 								<Paragraph>Use <code>size="lg"</code> prop for wider content (up to 28rem).</Paragraph>
 								<Paragraph>
 									Perfect for detailed explanations and <a href="/components">documentation</a>.
@@ -233,7 +233,7 @@
 					<Column size="1-2" md="1-4" class="mb-3 text-center p-2">
 						<label class="text-sm">
 							Small
-							<Popover title="Tip" placement="bottom" size="sm">
+							<Popover titleText="Tip" placement="bottom" size="sm">
 								<Paragraph>Brief hints use <code>size="sm"</code>.</Paragraph>
 							</Popover>
 						</label>
@@ -245,7 +245,7 @@
 					<Column size="1-3" class="mb-3 text-center p-2">
 						<label class="text-sm">
 							Left (default)
-							<Popover title="Left Aligned" placement="bottom">
+							<Popover titleText="Left Aligned" placement="bottom">
 								<Paragraph>Default alignment is left.</Paragraph>
 								<BasicList>
 									<li>Lists look natural</li>
@@ -258,7 +258,7 @@
 					<Column size="1-3" class="mb-3 text-center p-2">
 						<label class="text-sm">
 							Center
-							<Popover title="Centered" placement="bottom" alignment="center">
+							<Popover titleText="Centered" placement="bottom" alignment="center">
 								<Paragraph>Use <code>alignment="center"</code> prop.</Paragraph>
 								<Paragraph>Good for short messages or confirmations.</Paragraph>
 							</Popover>
@@ -266,9 +266,9 @@
 					</Column>
 					<Column size="1-3" class="mb-3 text-center p-2">
 						<label class="text-sm">
-							Right
-							<Popover title="Right Aligned" placement="bottom" alignment="right">
-								<Paragraph>Use <code>alignment="right"</code> prop.</Paragraph>
+							End
+							<Popover titleText="End Aligned" placement="bottom" alignment="end">
+								<Paragraph>Use <code>alignment="end"</code> prop.</Paragraph>
 								<Paragraph>For RTL or special layouts.</Paragraph>
 							</Popover>
 						</label>
@@ -277,29 +277,29 @@
 			</Card>
 
 			<!-- Popover Positions -->
-			<Card title="Popover Positions" class="mb-4">
+			<Card titleText="Popover Positions" class="mb-4">
 				<Grid>
 					<Column size="1-2" md="1-4" class="text-center mb-3 p-4">
 						<span class="text-sm">Top </span>
-					<Popover title="Top">
+					<Popover titleText="Top">
 						<Paragraph>Appears above trigger.</Paragraph>
 					</Popover>
 					</Column>
 					<Column size="1-2" md="1-4" class="text-center mb-3 p-4">
 						<span class="text-sm">Right </span>
-					<Popover title="Right" placement="right">
+					<Popover titleText="Right" placement="right">
 						<Paragraph>Appears to the right.</Paragraph>
 					</Popover>
 					</Column>
 					<Column size="1-2" md="1-4" class="text-center mb-3 p-4">
 						<span class="text-sm">Bottom </span>
-					<Popover title="Bottom" placement="bottom">
+					<Popover titleText="Bottom" placement="bottom">
 						<Paragraph>Appears below trigger.</Paragraph>
 					</Popover>
 					</Column>
 					<Column size="1-2" md="1-4" class="text-center mb-3 p-4">
 						<span class="text-sm">Left </span>
-					<Popover title="Left" placement="left">
+					<Popover titleText="Left" placement="left">
 						<Paragraph>Appears to the left.</Paragraph>
 					</Popover>
 					</Column>
@@ -309,7 +309,7 @@
 	</Grid>
 
 	<!-- Usage Examples -->
-	<Card title="Code Examples">
+	<Card titleText="Code Examples">
 		<Grid>
 				<Column size="100" md="1-2">
 					<Heading level={4} class="mb-2 text-sm">Tooltips</Heading>
@@ -331,15 +331,15 @@
 					<Heading level={4} class="mb-2 text-sm">Popovers</Heading>
 					<pre class="mb-3 text-sm"><code
 							>&lt;!-- Basic --&gt;
-&lt;Popover title="Title" placement="bottom"&gt;
+&lt;Popover titleText="Title" placement="bottom"&gt;
   &lt;p&gt;Rich &lt;strong&gt;HTML&lt;/strong&gt; content.&lt;/p&gt;
 &lt;/Popover&gt;
 
 &lt;!-- Sizes: sm, lg (default: medium) --&gt;
-&lt;Popover title="Title" size="lg"&gt;...&lt;/Popover&gt;
+&lt;Popover titleText="Title" size="lg"&gt;...&lt;/Popover&gt;
 
 &lt;!-- Custom trigger --&gt;
-&lt;Popover title="Title"&gt;
+&lt;Popover titleText="Title"&gt;
   &#123;#snippet trigger()&#125;&lt;i class="icon"&gt;&lt;/i&gt;&#123;/snippet&#125;
   &lt;p&gt;Content&lt;/p&gt;
 &lt;/Popover&gt;</code

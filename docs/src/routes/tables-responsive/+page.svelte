@@ -3,15 +3,15 @@
 </script>
 
 <!-- How It Works -->
-<Card title="How It Works" class="mb-4">
+<Card titleText="How It Works" class="mb-4">
 	<Grid>
 		<Column size="100" md="1-3">
 			<h4 class="mb-2">Desktop (&gt;1024px)</h4>
 			<BasicList>
-				<li>Standard table layout with columns</li>
+				<li>Standard isTable layout with columns</li>
 				<li>Headers visible at top</li>
 				<li>Data in rows and columns</li>
-				<li>Full table width displayed</li>
+				<li>Full isTable width displayed</li>
 			</BasicList>
 		</Column>
 		<Column size="100" md="1-3">
@@ -26,7 +26,7 @@
 		<Column size="100" md="1-3">
 			<h4 class="mb-2">Mobile (≤768px)</h4>
 			<BasicList>
-				<li>Each row becomes a card</li>
+				<li>Each isRow becomes a card</li>
 				<li>Headers hidden</li>
 				<li>Labels from <Code>data-label</Code></li>
 				<li>Label: Value pattern</li>
@@ -38,14 +38,14 @@
 	<Alert variant="info" class="mt-4">
 		<strong>Try it:</strong> Resize your browser window to see the responsive behavior:
 		<BasicList class="mt-2">
-			<li><strong>1024px → 769px:</strong> Table becomes scrollable (prevents cramping)</li>
+			<li><strong>1024px → 769px:</strong> Table becomes isScrollable (prevents cramping)</li>
 			<li><strong>768px and below:</strong> Transforms into stacked cards</li>
 		</BasicList>
 	</Alert>
 </Card>
 
 <!-- Basic Responsive Table -->
-<Card title="Basic Responsive Table" subtitle="Simple user data table with automatic mobile transformation" noPadding class="mb-4">
+<Card titleText="Basic Responsive Table" subtitleText="Simple user data isTable with automatic mobile transformation" hasPadding={false} class="mb-4">
 	<table class="pa-table pa-table--responsive">
 		<thead>
 			<tr>
@@ -90,7 +90,7 @@
 </Card>
 
 <!-- Product Table -->
-<Card title="Product Catalog" subtitle="E-commerce product table with images, prices, and stock status" noPadding class="mb-4">
+<Card titleText="Product Catalog" subtitleText="E-commerce product isTable with images, prices, and stock status" hasPadding={false} class="mb-4">
 	<table class="pa-table pa-table--responsive pa-table--striped">
 		<thead>
 			<tr>
@@ -106,8 +106,8 @@
 			<tr>
 				<td data-label="Actions" class="col-auto">
 					<ButtonGroup>
-						<Button size="xs" variant="primary" title="View">👁️</Button>
-						<Button size="xs" variant="secondary" title="Edit">✏️</Button>
+						<Button size="xs" variant="primary" titleText="View">👁️</Button>
+						<Button size="xs" variant="secondary" titleText="Edit">✏️</Button>
 					</ButtonGroup>
 				</td>
 				<td data-label="Product"><strong>MacBook Pro 16"</strong></td>
@@ -119,8 +119,8 @@
 			<tr>
 				<td data-label="Actions" class="col-auto">
 					<ButtonGroup>
-						<Button size="xs" variant="primary" title="View">👁️</Button>
-						<Button size="xs" variant="secondary" title="Edit">✏️</Button>
+						<Button size="xs" variant="primary" titleText="View">👁️</Button>
+						<Button size="xs" variant="secondary" titleText="Edit">✏️</Button>
 					</ButtonGroup>
 				</td>
 				<td data-label="Product"><strong>iPhone 15 Pro</strong></td>
@@ -132,8 +132,8 @@
 			<tr>
 				<td data-label="Actions" class="col-auto">
 					<ButtonGroup>
-						<Button size="xs" variant="primary" title="View">👁️</Button>
-						<Button size="xs" variant="secondary" title="Edit">✏️</Button>
+						<Button size="xs" variant="primary" titleText="View">👁️</Button>
+						<Button size="xs" variant="secondary" titleText="Edit">✏️</Button>
 					</ButtonGroup>
 				</td>
 				<td data-label="Product"><strong>AirPods Pro (2nd gen)</strong></td>
@@ -145,8 +145,8 @@
 			<tr>
 				<td data-label="Actions" class="col-auto">
 					<ButtonGroup>
-						<Button size="xs" variant="primary" title="View">👁️</Button>
-						<Button size="xs" variant="secondary" title="Edit">✏️</Button>
+						<Button size="xs" variant="primary" titleText="View">👁️</Button>
+						<Button size="xs" variant="secondary" titleText="Edit">✏️</Button>
 					</ButtonGroup>
 				</td>
 				<td data-label="Product"><strong>iPad Air M2</strong></td>
@@ -160,7 +160,7 @@
 </Card>
 
 <!-- Orders Table -->
-<Card title="Recent Orders" subtitle="Order management table with dates, customers, and amounts" noPadding class="mb-4">
+<Card titleText="Recent Orders" subtitleText="Order management isTable with dates, customers, and amounts" hasPadding={false} class="mb-4">
 	<table class="pa-table pa-table--responsive">
 		<thead>
 			<tr>
@@ -223,11 +223,11 @@
 </Card>
 
 <!-- Code Example -->
-<Card title="HTML Implementation" subtitle="How to make your tables responsive" class="mb-4">
+<Card titleText="HTML Implementation" subtitleText="How to make your tables responsive" class="mb-4">
 	<h4 class="mb-2">1. Add the class modifier</h4>
-	<Paragraph class="mb-3">Add <Code>.pa-table--responsive</Code> to your table element:</Paragraph>
+	<Paragraph class="mb-3">Add <Code>.pa-table--responsive</Code> to your isTable element:</Paragraph>
 	<CodeBlock class="mb-4">{`<table class="pa-table pa-table--responsive">
-  <!-- table content -->
+  <!-- isTable content -->
 </table>`}</CodeBlock>
 
 	<h4 class="mb-2">2. Add data-label attributes</h4>
@@ -252,7 +252,7 @@
 </table>`}</CodeBlock>
 
 	<h4 class="mb-2">3. That's it!</h4>
-	<Paragraph>The table will automatically transform on screens smaller than 768px. No JavaScript required!</Paragraph>
+	<Paragraph>The isTable will automatically transform on screens smaller than 768px. No JavaScript required!</Paragraph>
 
 	<Alert variant="success" class="mt-4">
 		<strong>Pro tip:</strong> Combine with <Code>.pa-table--striped</Code> for better readability on desktop. The striping is automatically disabled on mobile.
@@ -260,7 +260,7 @@
 </Card>
 
 <!-- SCSS Variables Reference -->
-<Card title="Customization Variables" subtitle="SCSS variables for responsive table styling" class="mb-4">
+<Card titleText="Customization Variables" subtitleText="SCSS variables for responsive isTable styling" class="mb-4">
 	<Table>
 		<thead>
 			<tr>
@@ -278,7 +278,7 @@
 			<tr>
 				<td><Code>$table-responsive-card-margin</Code></td>
 				<td><Code>1rem</Code></td>
-				<td>Space between stacked row cards</td>
+				<td>Space between stacked isRow cards</td>
 			</tr>
 			<tr>
 				<td><Code>$table-responsive-card-padding</Code></td>
@@ -304,7 +304,7 @@
 </Card>
 
 <!-- Mobile Testing Tips -->
-<Card title="Testing Tips">
+<Card titleText="Testing Tips">
 	<Grid>
 		<Column size="100" md="1-3">
 			<h4>Desktop Browser</h4>
@@ -334,12 +334,12 @@
 </Card>
 
 <!-- Svelte Component Usage -->
-<Card title="Svelte Component Code Examples">
+<Card titleText="Svelte Component Code Examples">
 	<Grid>
 		<Column size="100" md="50">
 			<h4 class="mb-2">Using Table Component</h4>
 			<CodeBlock>{`<!-- Add responsive class via class prop -->
-<Table class="pa-table--responsive" striped>
+<Table class="pa-table--responsive" isStriped>
   <thead>
     <tr>
       <th>Name</th>
@@ -360,8 +360,8 @@
 		</Column>
 		<Column size="100" md="50">
 			<h4 class="mb-2">Using Raw HTML Table</h4>
-			<CodeBlock>{`<!-- Wrap in Card with noPadding for flush edges -->
-<Card title="Users" noPadding>
+			<CodeBlock>{`<!-- Wrap in Card with hasPadding={false} for flush edges -->
+<Card titleText="Users" hasPadding={false}>
   <table class="pa-table pa-table--responsive">
     <thead>
       <tr>
@@ -390,7 +390,7 @@
 	<CodeBlock>{`// Essential: Every <td> needs a matching data-label
 <td data-label="Column Name">Cell Value</td>
 
-// Combine with table variants
+// Combine with isTable variants
 <table class="pa-table pa-table--responsive pa-table--striped">
 <table class="pa-table pa-table--responsive pa-table--hover">
 <table class="pa-table pa-table--responsive pa-table--compact">

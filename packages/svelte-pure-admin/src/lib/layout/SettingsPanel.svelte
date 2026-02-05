@@ -1,26 +1,30 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Settings Panel Component (Svelte 5)
-	 * Based on pure-admin-visual layout.mustache settings panel
+	 * Based on pure-admin demo settings-panel.mustache
 	 *
 	 * Provides runtime-configurable settings:
-	 * - Sidebar mode and behavior
-	 * - Compact mode
+	 * - Theme and theme mode (light/dark/auto)
+	 * - Layout width and sidebar options
+	 * - Display options (compact mode, RTL mode)
+	 * - Profile panel options
 	 * - Font size and family
-	 *
-	 * Note: Theme and Layout Width require component props (not runtime switching)
 	 */
 
 	import { onMount } from 'svelte';
 	import type { ThemeOption } from './types';
+	import { _ } from '../i18n';
 
 	interface SettingsPanelState {
 		theme: string;
 		themeMode: string;
 		sidebarBehavior: string;
 		sidebarCollapsed: boolean;
+		sidebarResizable: boolean;
 		compactMode: boolean;
-		profileNoAvatar: boolean;
+		rtlMode: boolean;
+		profileHasAvatar: boolean;
+		profileIconOnlyTabs: boolean;
 		fontSize: string;
 		fontFamily: string;
 		containerWidth: string;
@@ -29,14 +33,14 @@
 
 	interface Props {
 		/** Callback when settings change */
-		onSettingsChange?: (settings: SettingsPanelState) => void;
+		onsettingschange?: (settings: SettingsPanelState) => void;
 		/** Available themes for the theme selector. If not provided, theme selector is hidden. */
 		availableThemes?: ThemeOption[];
 		/** Default theme ID (defaults to first theme in availableThemes) */
 		defaultTheme?: string;
 	}
 
-	let { onSettingsChange, availableThemes = [], defaultTheme }: Props = $props();
+	let { onsettingschange, availableThemes = [], defaultTheme }: Props = $props();
 
 	let isOpen = $state(false);
 	// svelte-ignore state_referenced_locally - intentionally capturing initial values for default state
@@ -45,8 +49,11 @@
 		themeMode: 'light',
 		sidebarBehavior: 'hide',
 		sidebarCollapsed: false,
+		sidebarResizable: false,
 		compactMode: false,
-		profileNoAvatar: false,
+		rtlMode: false,
+		profileHasAvatar: true,
+		profileIconOnlyTabs: false,
 		fontSize: 'default',
 		fontFamily: 'default',
 		containerWidth: 'fluid',
@@ -69,13 +76,14 @@
 		settings.fontFamily = localStorage.getItem('font-family') || 'default';
 		settings.sidebarCollapsed = localStorage.getItem('sidebar-hidden') === 'true';
 		settings.sidebarBehavior = localStorage.getItem('sidebar-behavior') || 'hide';
+		settings.sidebarResizable = localStorage.getItem('sidebar-resizable') === 'true';
 		settings.compactMode = localStorage.getItem('compact-mode') === 'true';
-		settings.profileNoAvatar = localStorage.getItem('profile-no-avatar') === 'true';
-
-		// Load URL-based settings from query params
-		const url = new URL(window.location.href);
-		settings.containerWidth = url.searchParams.get('containerWidth') || 'fluid';
-		settings.sidebarMode = url.searchParams.get('sidebarMode') || '';
+		settings.rtlMode = localStorage.getItem('rtl-mode') === 'true';
+		// Note: profileHasAvatar uses inverted logic (true = show avatar)
+		settings.profileHasAvatar = localStorage.getItem('profile-no-avatar') !== 'true';
+		settings.profileIconOnlyTabs = localStorage.getItem('profile-icon-only-tabs') === 'true';
+		settings.containerWidth = localStorage.getItem('container-width') || 'fluid';
+		settings.sidebarMode = localStorage.getItem('sidebar-mode') || '';
 
 		applySettings();
 	}
@@ -101,9 +109,19 @@
 			}
 		}
 
-		// Theme mode (light/dark)
-		document.body.classList.remove('pa-mode-light', 'pa-mode-dark');
-		document.body.classList.add(`pa-mode-${settings.themeMode}`);
+		// Theme mode (light/dark/auto)
+		const resolvedMode = getResolvedThemeMode(settings.themeMode);
+		applyThemeToDOM(resolvedMode);
+
+		// Set up listener for auto mode
+		setupAutoThemeListener();
+
+		// RTL mode
+		if (settings.rtlMode) {
+			document.documentElement.setAttribute('dir', 'rtl');
+		} else {
+			document.documentElement.setAttribute('dir', 'ltr');
+		}
 
 		// Font size
 		document.documentElement.classList.remove(
@@ -120,7 +138,6 @@
 		document.body.classList.remove(
 			'font-family-serif',
 			'font-family-mono',
-			'font-family-delivery',
 			'font-family-cuprum',
 			'font-family-fira-sans-condensed',
 			'font-family-manrope',
@@ -149,6 +166,13 @@
 			if (settings.sidebarBehavior === 'icon-collapse') {
 				sidebar.classList.add('pa-layout__sidebar--icon-collapse');
 			}
+
+			// Sidebar resizable
+			if (settings.sidebarResizable) {
+				sidebar.classList.add('pa-layout__sidebar--resizable');
+			} else {
+				sidebar.classList.remove('pa-layout__sidebar--resizable');
+			}
 		}
 
 		// Compact mode
@@ -158,19 +182,48 @@
 			document.body.classList.remove('compact-mode');
 		}
 
-		// Profile panel no-avatar mode
+		// Container width
+		document.body.classList.remove(
+			'pa-container-sm',
+			'pa-container-md',
+			'pa-container-lg',
+			'pa-container-xl',
+			'pa-container-2xl'
+		);
+		if (settings.containerWidth && settings.containerWidth !== 'fluid') {
+			document.body.classList.add(`pa-container-${settings.containerWidth}`);
+		}
+
+		// Sidebar mode (sticky)
+		if (settings.sidebarMode === 'sticky') {
+			document.body.classList.add('pa-layout--sticky');
+		} else {
+			document.body.classList.remove('pa-layout--sticky');
+		}
+
+		// Profile panel - avatar visibility (hasAvatar: true = show, false = hide)
 		const profileHeader = document.querySelector('.pa-profile-panel__header');
 		if (profileHeader) {
-			if (settings.profileNoAvatar) {
+			if (!settings.profileHasAvatar) {
 				profileHeader.classList.add('pa-profile-panel__header--no-avatar');
 			} else {
 				profileHeader.classList.remove('pa-profile-panel__header--no-avatar');
 			}
 		}
 
+		// Profile panel - icon-only tabs
+		const profileTabs = document.querySelector('.pa-profile-panel__tabs');
+		if (profileTabs) {
+			if (settings.profileIconOnlyTabs) {
+				profileTabs.classList.add('pa-profile-panel__tabs--icon-only');
+			} else {
+				profileTabs.classList.remove('pa-profile-panel__tabs--icon-only');
+			}
+		}
+
 		// Notify parent
-		if (onSettingsChange) {
-			onSettingsChange(settings);
+		if (onsettingschange) {
+			onsettingschange(settings);
 		}
 	}
 
@@ -186,8 +239,14 @@
 		localStorage.setItem('font-family', settings.fontFamily);
 		localStorage.setItem('sidebar-hidden', settings.sidebarCollapsed.toString());
 		localStorage.setItem('sidebar-behavior', settings.sidebarBehavior);
+		localStorage.setItem('sidebar-resizable', settings.sidebarResizable.toString());
 		localStorage.setItem('compact-mode', settings.compactMode.toString());
-		localStorage.setItem('profile-no-avatar', settings.profileNoAvatar.toString());
+		localStorage.setItem('rtl-mode', settings.rtlMode.toString());
+		// Note: profileHasAvatar uses inverted logic for localStorage (true = no avatar hidden)
+		localStorage.setItem('profile-no-avatar', (!settings.profileHasAvatar).toString());
+		localStorage.setItem('profile-icon-only-tabs', settings.profileIconOnlyTabs.toString());
+		localStorage.setItem('container-width', settings.containerWidth);
+		localStorage.setItem('sidebar-mode', settings.sidebarMode);
 	}
 
 	// Toggle panel
@@ -203,16 +262,6 @@
 		}
 	}
 
-	// Handle settings that require URL reload (containerWidth, sidebarMode)
-	function handleUrlSetting(key: string, value: string) {
-		if (typeof window === 'undefined') return;
-
-		const url = new URL(window.location.href);
-		url.searchParams.set(key, value);
-		window.location.href = url.toString();
-	}
-
-
 	// Reset to defaults
 	function resetSettings() {
 		if (availableThemes.length > 0) {
@@ -223,8 +272,13 @@
 		settings.fontFamily = 'default';
 		settings.sidebarCollapsed = false;
 		settings.sidebarBehavior = 'hide';
+		settings.sidebarResizable = false;
 		settings.compactMode = false;
-		settings.profileNoAvatar = false;
+		settings.rtlMode = false;
+		settings.profileHasAvatar = true;
+		settings.profileIconOnlyTabs = false;
+		settings.containerWidth = 'fluid';
+		settings.sidebarMode = '';
 
 		if (typeof localStorage !== 'undefined') {
 			localStorage.removeItem('theme');
@@ -233,22 +287,64 @@
 			localStorage.removeItem('font-family');
 			localStorage.removeItem('sidebar-hidden');
 			localStorage.removeItem('sidebar-behavior');
+			localStorage.removeItem('sidebar-resizable');
 			localStorage.removeItem('compact-mode');
+			localStorage.removeItem('rtl-mode');
 			localStorage.removeItem('profile-no-avatar');
+			localStorage.removeItem('profile-icon-only-tabs');
+			localStorage.removeItem('container-width');
+			localStorage.removeItem('sidebar-mode');
 		}
 
 		applySettings();
-
-		// Reset URL-based settings (containerWidth, sidebarMode) by reloading with defaults
-		if (typeof window !== 'undefined') {
-			const url = new URL(window.location.href);
-			url.searchParams.set('containerWidth', 'fluid');
-			url.searchParams.set('sidebarMode', '');
-			window.location.href = url.toString();
-		}
 	}
 
 	let mounted = $state(false);
+
+	// Media query for OS theme preference (used in auto mode)
+	let mediaQuery: MediaQueryList | null = null;
+
+	// Resolve 'auto' to actual light/dark based on OS preference
+	function getResolvedThemeMode(mode: string): 'light' | 'dark' {
+		if (mode === 'auto') {
+			if (typeof window !== 'undefined') {
+				return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+			}
+			return 'light'; // Default to light on server
+		}
+		return mode as 'light' | 'dark';
+	}
+
+	// Apply resolved theme to DOM
+	function applyThemeToDOM(resolvedMode: 'light' | 'dark') {
+		if (typeof document === 'undefined') return;
+		document.body.classList.remove('pa-mode-light', 'pa-mode-dark');
+		document.body.classList.add(`pa-mode-${resolvedMode}`);
+	}
+
+	// Handle OS theme change when in auto mode
+	function handleOSThemeChange(e: MediaQueryListEvent) {
+		if (settings.themeMode === 'auto') {
+			applyThemeToDOM(e.matches ? 'dark' : 'light');
+		}
+	}
+
+	// Set up listener for OS theme changes when in auto mode
+	function setupAutoThemeListener() {
+		if (typeof window === 'undefined') return;
+
+		// Clean up previous listener
+		if (mediaQuery) {
+			mediaQuery.removeEventListener('change', handleOSThemeChange);
+			mediaQuery = null;
+		}
+
+		// Set up new listener if in auto mode
+		if (settings.themeMode === 'auto') {
+			mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+			mediaQuery.addEventListener('change', handleOSThemeChange);
+		}
+	}
 
 	// Watch for settings changes (only after mount to avoid overwriting loaded values)
 	$effect(() => {
@@ -260,8 +356,13 @@
 			settings.fontFamily;
 			settings.sidebarCollapsed;
 			settings.sidebarBehavior;
+			settings.sidebarResizable;
 			settings.compactMode;
-			settings.profileNoAvatar;
+			settings.rtlMode;
+			settings.profileHasAvatar;
+			settings.profileIconOnlyTabs;
+			settings.containerWidth;
+			settings.sidebarMode;
 
 			saveSettings();
 			applySettings();
@@ -276,13 +377,18 @@
 
 		return () => {
 			document.removeEventListener('click', handleClickOutside);
+			// Clean up media query listener
+			if (mediaQuery) {
+				mediaQuery.removeEventListener('change', handleOSThemeChange);
+				mediaQuery = null;
+			}
 		};
 	});
 </script>
 
 <!-- Floating Settings Panel -->
 <div class="pa-settings-panel" class:pa-settings-panel--open={isOpen} id="settingsPanel">
-	<button class="pa-settings-panel__toggle" onclick={togglePanel} title="Settings">⚙</button>
+	<button class="pa-settings-panel__toggle" onclick={togglePanel} title={$_('pureAdmin.a11y.settings')}>⚙</button>
 
 	<div class="pa-settings-panel__content">
 		<h3 class="pa-settings-panel__title">Settings</h3>
@@ -305,13 +411,14 @@
 			<select id="settings-themeMode" class="pa-settings-panel__select" bind:value={settings.themeMode}>
 				<option value="light">Light</option>
 				<option value="dark">Dark</option>
+				<option value="auto">Auto (System)</option>
 			</select>
 		</div>
 
 		<!-- Container Width -->
 		<div class="pa-settings-panel__section">
 			<label class="pa-settings-panel__label" for="settings-containerWidth">Layout Width</label>
-			<select id="settings-containerWidth" class="pa-settings-panel__select" bind:value={settings.containerWidth} onchange={(e) => handleUrlSetting('containerWidth', e.currentTarget.value)}>
+			<select id="settings-containerWidth" class="pa-settings-panel__select" bind:value={settings.containerWidth}>
 				<option value="fluid">Fluid (Full Width)</option>
 				<option value="sm">Small (768px)</option>
 				<option value="md">Medium (1024px)</option>
@@ -324,7 +431,7 @@
 		<!-- Sidebar Mode -->
 		<div class="pa-settings-panel__section">
 			<label class="pa-settings-panel__label" for="settings-sidebarMode">Sidebar Mode</label>
-			<select id="settings-sidebarMode" class="pa-settings-panel__select" bind:value={settings.sidebarMode} onchange={(e) => handleUrlSetting('sidebarMode', e.currentTarget.value)}>
+			<select id="settings-sidebarMode" class="pa-settings-panel__select" bind:value={settings.sidebarMode}>
 				<option value="">Scrolls with Content</option>
 				<option value="sticky">Fixed Position</option>
 			</select>
@@ -339,7 +446,7 @@
 			</select>
 		</div>
 
-		<!-- Sidebar Collapsed -->
+		<!-- Sidebar Options -->
 		<div class="pa-settings-panel__section">
 			<span class="pa-settings-panel__label">Sidebar</span>
 			<div class="pa-settings-panel__checkbox-group">
@@ -347,16 +454,24 @@
 					<input type="checkbox" bind:checked={settings.sidebarCollapsed} />
 					<span>Collapsed</span>
 				</label>
+				<label class="pa-settings-panel__checkbox">
+					<input type="checkbox" bind:checked={settings.sidebarResizable} />
+					<span>Resizable</span>
+				</label>
 			</div>
 		</div>
 
-		<!-- Compact Mode -->
+		<!-- Display Options -->
 		<div class="pa-settings-panel__section">
 			<span class="pa-settings-panel__label">Display</span>
 			<div class="pa-settings-panel__checkbox-group">
 				<label class="pa-settings-panel__checkbox">
 					<input type="checkbox" bind:checked={settings.compactMode} />
 					<span>Compact Mode</span>
+				</label>
+				<label class="pa-settings-panel__checkbox">
+					<input type="checkbox" bind:checked={settings.rtlMode} />
+					<span>RTL Mode</span>
 				</label>
 			</div>
 		</div>
@@ -366,8 +481,12 @@
 			<span class="pa-settings-panel__label">Profile Panel</span>
 			<div class="pa-settings-panel__checkbox-group">
 				<label class="pa-settings-panel__checkbox">
-					<input type="checkbox" bind:checked={settings.profileNoAvatar} />
+					<input type="checkbox" checked={!settings.profileHasAvatar} onchange={(e) => settings.profileHasAvatar = !e.currentTarget.checked} />
 					<span>Hide Avatar</span>
+				</label>
+				<label class="pa-settings-panel__checkbox">
+					<input type="checkbox" bind:checked={settings.profileIconOnlyTabs} />
+					<span>Icon-Only Tabs</span>
 				</label>
 			</div>
 		</div>
@@ -390,7 +509,6 @@
 				<option value="default">Theme Default</option>
 				<option value="serif">Serif</option>
 				<option value="mono">Monospace</option>
-				<option value="delivery">Delivery</option>
 				<option value="cuprum">Cuprum</option>
 				<option value="fira-sans-condensed">Fira Sans Condensed</option>
 				<option value="manrope">Manrope</option>

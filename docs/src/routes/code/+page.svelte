@@ -25,14 +25,14 @@
 <Paragraph>Display code snippets, JSON data, configuration files, and terminal output with syntax highlighting and copy functionality.</Paragraph>
 
 <!-- Inline Code -->
-<Card title="Inline Code">
-	<Paragraph>Use the <code>&lt;code&gt;</code> element for inline code references like <code>npm install</code> or <code>const myVariable = true</code>.</Paragraph>
+<Card titleText="Inline Code">
+	<Paragraph>Use the <code>&lt;code&gt;</code> element for isInline code references like <code>npm install</code> or <code>const myVariable = true</code>.</Paragraph>
 	<Paragraph>Configure the server using <code>config.json</code> and set <code>port: 3000</code> in the configuration file.</Paragraph>
 	<Paragraph>Import components with <code>import {`{ Button }`} from 'react'</code> syntax.</Paragraph>
 </Card>
 
 <!-- Basic Code Blocks -->
-<Card title="Basic Code Blocks">
+<Card titleText="Basic Code Blocks">
 	<Grid>
 		<Column size="100" md="1-2">
 			<Heading level={4}>JavaScript</Heading>
@@ -84,7 +84,7 @@ console.log(result);`}</Code>
 </Card>
 
 <!-- Code Blocks with Headers and Copy -->
-<Card title="Code Blocks with Headers">
+<Card titleText="Code Blocks with Headers">
 	<Grid>
 		<Column size="100" md="1-2">
 			<div class="pa-code-block">
@@ -133,7 +133,7 @@ app.listen(3000);`}</Code>
 </Card>
 
 <!-- Terminal/Bash Output -->
-<Card title="Terminal Output">
+<Card titleText="Terminal Output">
 	<Grid>
 		<Column size="100" md="1-2">
 			<Heading level={4}>Bash Commands</Heading>
@@ -157,52 +157,52 @@ ORDER BY orders.total DESC;`}</Code>
 </Card>
 
 <!-- Compact Code Blocks -->
-<Card title="Compact Variant">
+<Card titleText="Compact Variant">
 	<Paragraph>Use <code>.pa-code--compact</code> for smaller code snippets.</Paragraph>
-	<CodeBlock language="python" compact>{`def fibonacci(n):
+	<CodeBlock language="python" isCompact>{`def fibonacci(n):
     if n <= 1:
         return n
     return fibonacci(n-1) + fibonacci(n-2)`}</CodeBlock>
 </Card>
 
 <!-- All Language Variants -->
-<Card title="Language Accent Colors">
+<Card titleText="Language Accent Colors">
 	<Paragraph>Code blocks with language-specific colored left borders for visual identification.</Paragraph>
 
 	<Grid>
 		<Column size="100" md="1-3">
 			<Heading level={5}>JavaScript</Heading>
-			<CodeBlock language="javascript" compact>console.log('Hello');</CodeBlock>
+			<CodeBlock language="javascript" isCompact>console.log('Hello');</CodeBlock>
 		</Column>
 		<Column size="100" md="1-3">
 			<Heading level={5}>JSON</Heading>
-			<CodeBlock language="json" compact>{`{"key": "value"}`}</CodeBlock>
+			<CodeBlock language="json" isCompact>{`{"key": "value"}`}</CodeBlock>
 		</Column>
 		<Column size="100" md="1-3">
 			<Heading level={5}>HTML</Heading>
-			<CodeBlock language="html" compact>{`<div>Hello</div>`}</CodeBlock>
+			<CodeBlock language="html" isCompact>{`<div>Hello</div>`}</CodeBlock>
 		</Column>
 		<Column size="100" md="1-3">
 			<Heading level={5}>CSS</Heading>
-			<CodeBlock language="css" compact>.class {`{ color: red; }`}</CodeBlock>
+			<CodeBlock language="css" isCompact>.class {`{ color: red; }`}</CodeBlock>
 		</Column>
 		<Column size="100" md="1-3">
 			<Heading level={5}>Bash</Heading>
-			<CodeBlock language="bash" compact>$ npm install</CodeBlock>
+			<CodeBlock language="bash" isCompact>$ npm install</CodeBlock>
 		</Column>
 		<Column size="100" md="1-3">
 			<Heading level={5}>SQL</Heading>
-			<CodeBlock language="sql" compact>SELECT * FROM users;</CodeBlock>
+			<CodeBlock language="sql" isCompact>SELECT * FROM users;</CodeBlock>
 		</Column>
 		<Column size="100" md="1-3">
 			<Heading level={5}>Python</Heading>
-			<CodeBlock language="python" compact>print("Hello World")</CodeBlock>
+			<CodeBlock language="python" isCompact>print("Hello World")</CodeBlock>
 		</Column>
 	</Grid>
 </Card>
 
 <!-- Usage Examples -->
-<Card title="Usage Examples">
+<Card titleText="Usage Examples">
 	<Heading level={4}>Inline Code</Heading>
 	<Code language="html">{`<Paragraph>Use <code>inline code</code> for references.</Paragraph>`}</Code>
 

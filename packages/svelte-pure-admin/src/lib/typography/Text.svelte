@@ -11,7 +11,7 @@
 		/** Text color variant */
 		variant?: TextVariant;
 		/** Title attribute (tooltip on hover) */
-		title?: string;
+		titleText?: string;
 		/** Additional CSS classes */
 		class?: string;
 		/** Children content */
@@ -20,7 +20,7 @@
 
 	let {
 		variant,
-		title,
+		titleText,
 		class: className = '',
 		children
 	}: Props = $props();
@@ -34,6 +34,6 @@
 	});
 </script>
 
-<span class={classes()} {title}>
+<span class={classes()} title={titleText}>
 	{@render children?.()}
 </span>

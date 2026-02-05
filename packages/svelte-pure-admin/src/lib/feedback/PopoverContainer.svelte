@@ -8,6 +8,7 @@
 
   import { onMount } from "svelte";
   import { popoverManager } from "./popover-manager.svelte";
+  import { _ } from '../i18n';
 
   let wrapperElement = $state<HTMLDivElement | null>(null);
   let contentElement = $state<HTMLDivElement | null>(null);
@@ -169,7 +170,8 @@
           <h4>{popover.title}</h4>
           <button
             class="pa-popover__close"
-            onclick={() => popoverManager.close()}>×</button
+            onclick={() => popoverManager.close()}
+            aria-label={$_('pureAdmin.common.buttons.close')}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button
           >
         </div>
       {/if}

@@ -252,7 +252,7 @@
 			dismissValue: 'cancel',
 			buttons: [
 				{ label: 'Cancel', value: 'cancel', variant: 'secondary' },
-				{ label: 'Discard', value: 'discard', variant: 'danger', outline: true },
+				{ label: 'Discard', value: 'discard', variant: 'danger', isOutline: true },
 				{ label: 'Save', value: 'save', variant: 'success' }
 			]
 		});
@@ -282,11 +282,11 @@
 			size: 'md',
 			dismissValue: null,
 			buttons: [
-				{ label: '1 - Poor', value: 1, variant: 'danger', outline: true },
-				{ label: '2', value: 2, variant: 'warning', outline: true },
-				{ label: '3', value: 3, variant: 'secondary', outline: true },
-				{ label: '4', value: 4, variant: 'info', outline: true },
-				{ label: '5 - Excellent', value: 5, variant: 'success', outline: true }
+				{ label: '1 - Poor', value: 1, variant: 'danger', isOutline: true },
+				{ label: '2', value: 2, variant: 'warning', isOutline: true },
+				{ label: '3', value: 3, variant: 'secondary', isOutline: true },
+				{ label: '4', value: 4, variant: 'info', isOutline: true },
+				{ label: '5 - Excellent', value: 5, variant: 'success', isOutline: true }
 			]
 		});
 		showCustomResult(result);
@@ -394,7 +394,7 @@ const result = await dialogService.custom<'save' | 'discard' | 'cancel'>({
   dismissValue: 'cancel',  // Returned on Escape/backdrop click
   buttons: [
     { label: 'Cancel', value: 'cancel', variant: 'secondary' },
-    { label: 'Discard', value: 'discard', variant: 'danger', outline: true },
+    { label: 'Discard', value: 'discard', variant: 'danger', isOutline: true },
     { label: 'Save', value: 'save', variant: 'success' }
   ]
 });
@@ -413,14 +413,14 @@ switch (result) {
 </script>
 
 <!-- Basic Usage -->
-<Card title="Basic Usage" class="pa-section">
+<Card titleText="Basic Usage" class="pa-section">
 	<Paragraph>All dialog functions return Promises, so you can use <Code>async/await</Code> for clean, synchronous-looking code:</Paragraph>
 
 	<CodeBlock class="mt-4">{basicUsageCode}</CodeBlock>
 </Card>
 
 <!-- Confirm Dialogs -->
-<Card title="Confirm Dialogs" class="pa-section">
+<Card titleText="Confirm Dialogs" class="pa-section">
 	<Paragraph>Two-button dialogs that return <Code>true</Code> (confirmed) or <Code>false</Code> (cancelled).</Paragraph>
 
 	<ButtonGroup class="mt-4">
@@ -440,7 +440,7 @@ switch (result) {
 </Card>
 
 <!-- Position Options -->
-<Card title="Position Options" class="pa-section">
+<Card titleText="Position Options" class="pa-section">
 	<Paragraph>Dialogs can be positioned in the <strong>center</strong> (default) or at the <strong>top</strong> of the viewport.</Paragraph>
 
 	<ButtonGroup class="mt-4">
@@ -454,7 +454,7 @@ switch (result) {
 </Card>
 
 <!-- Alert Dialogs -->
-<Card title="Alert Dialogs" class="pa-section">
+<Card titleText="Alert Dialogs" class="pa-section">
 	<Paragraph>Single-button dialogs for notifications. Just wait for the user to acknowledge.</Paragraph>
 
 	<ButtonGroup class="mt-4">
@@ -466,7 +466,7 @@ switch (result) {
 </Card>
 
 <!-- Prompt Dialogs -->
-<Card title="Prompt Dialogs" class="pa-section">
+<Card titleText="Prompt Dialogs" class="pa-section">
 	<Paragraph>Text input dialogs that return the entered value (or <Code>null</Code> if cancelled).</Paragraph>
 
 	<ButtonGroup class="mt-4">
@@ -483,7 +483,7 @@ switch (result) {
 </Card>
 
 <!-- Sequential Dialogs -->
-<Card title="Sequential Dialogs" class="pa-section">
+<Card titleText="Sequential Dialogs" class="pa-section">
 	<Paragraph>Chain multiple dialogs together using async/await:</Paragraph>
 
 	<Button variant="primary" onclick={sequentialDialogs} class="mt-4">
@@ -494,7 +494,7 @@ switch (result) {
 </Card>
 
 <!-- Custom Dialogs -->
-<Card title="Custom Dialogs" class="pa-section">
+<Card titleText="Custom Dialogs" class="pa-section">
 	<Paragraph>Define your own buttons with typed return values using <Code>dialogService.custom()</Code>.</Paragraph>
 
 	<ButtonGroup class="mt-4">
@@ -514,11 +514,11 @@ switch (result) {
 </Card>
 
 <!-- API Reference -->
-<Card title="API Reference" class="pa-section">
+<Card titleText="API Reference" class="pa-section">
 
 	<Heading level={4} class="mt-0">dialogService.confirm(options)</Heading>
 	<Paragraph>Returns <Code>Promise&lt;boolean&gt;</Code></Paragraph>
-	<Table striped>
+	<Table isStriped>
 		<thead>
 			<tr>
 				<th>Option</th>
@@ -587,7 +587,7 @@ switch (result) {
 
 	<Heading level={4} class="mt-8">dialogService.alert(options)</Heading>
 	<Paragraph>Returns <Code>Promise&lt;void&gt;</Code></Paragraph>
-	<Table striped>
+	<Table isStriped>
 		<thead>
 			<tr>
 				<th>Option</th>
@@ -638,7 +638,7 @@ switch (result) {
 
 	<Heading level={4} class="mt-8">dialogService.prompt(options)</Heading>
 	<Paragraph>Returns <Code>Promise&lt;string | null&gt;</Code></Paragraph>
-	<Table striped>
+	<Table isStriped>
 		<thead>
 			<tr>
 				<th>Option</th>
@@ -713,7 +713,7 @@ switch (result) {
 
 	<Heading level={4} class="mt-8">dialogService.custom&lt;T&gt;(options)</Heading>
 	<Paragraph>Returns <Code>Promise&lt;T&gt;</Code> - the value of the clicked button</Paragraph>
-	<Table striped>
+	<Table isStriped>
 		<thead>
 			<tr>
 				<th>Option</th>
@@ -788,7 +788,7 @@ switch (result) {
 
 	<Heading level={4} class="mt-8">DialogButton&lt;T&gt;</Heading>
 	<Paragraph>Button definition for custom dialogs</Paragraph>
-	<Table striped>
+	<Table isStriped>
 		<thead>
 			<tr>
 				<th>Property</th>
@@ -820,7 +820,7 @@ switch (result) {
 				<td><Code>outline</Code></td>
 				<td>boolean</td>
 				<td>false</td>
-				<td>Use outline button style</td>
+				<td>Use isOutline button style</td>
 			</tr>
 			<tr>
 				<td><Code>class</Code></td>

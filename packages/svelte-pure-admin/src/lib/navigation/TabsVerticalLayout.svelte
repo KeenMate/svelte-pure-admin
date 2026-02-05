@@ -7,19 +7,19 @@
 
 	interface Props {
 		/** Card-like border around entire tabs system */
-		bordered?: boolean;
+		isBordered?: boolean;
 		/** Additional CSS classes */
 		class?: string;
 		/** Layout content (Tabs + TabsContent) */
 		children?: import('svelte').Snippet;
 	}
 
-	let { bordered = false, class: className = '', children }: Props = $props();
+	let { isBordered = false, class: className = '', children }: Props = $props();
 
 	// Build class string
 	const classes = $derived(() => {
 		const base = ['pa-tabs__vertical-layout'];
-		if (bordered) base.push('pa-tabs__vertical-layout--bordered');
+		if (isBordered) base.push('pa-tabs__vertical-layout--bordered');
 		if (className) base.push(className);
 		return base.join(' ');
 	});

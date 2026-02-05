@@ -4,6 +4,8 @@
 	 * Based on @keenmate/pure-admin-core snippets/alerts.html
 	 */
 
+	import { _ } from '../i18n';
+
 	type AlertVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark';
 	type AlertSize = 'sm' | 'lg';
 
@@ -13,11 +15,11 @@
 		/** Alert size */
 		size?: AlertSize;
 		/** Dismissible alert */
-		dismissible?: boolean;
+		isDismissible?: boolean;
 		/** Outline style */
-		outline?: boolean;
-		/** Alert heading */
-		heading?: string;
+		isOutline?: boolean;
+		/** Alert heading text */
+		headingText?: string;
 		/** Additional CSS classes */
 		class?: string;
 		/** Icon snippet (when provided, content is wrapped in pa-alert__content) */
@@ -29,21 +31,21 @@
 		/** Actions snippet for alert action buttons */
 		actions?: import('svelte').Snippet;
 		/** Callback fired when alert is dismissed */
-		onDismiss?: () => void;
+		ondismiss?: () => void;
 	}
 
 	let {
 		variant = 'primary',
 		size,
-		dismissible = false,
-		outline = false,
-		heading,
+		isDismissible = false,
+		isOutline = false,
+		headingText,
 		class: className = '',
 		icon,
 		children,
 		list,
 		actions,
-		onDismiss
+		ondismiss
 	}: Props = $props();
 
 	let visible = $state(true);
@@ -53,7 +55,7 @@
 		const base = ['pa-alert'];
 
 		// Variant
-		if (outline) {
+		if (isOutline) {
 			base.push(`pa-alert--outline-${variant}`);
 		} else {
 			base.push(`pa-alert--${variant}`);
@@ -63,7 +65,7 @@
 		if (size) base.push(`pa-alert--${size}`);
 
 		// Modifiers
-		if (dismissible) base.push('pa-alert--dismissible');
+		if (isDismissible) base.push('pa-alert--dismissible');
 
 		// Custom classes
 		if (className) base.push(className);
@@ -73,7 +75,7 @@
 
 	function dismiss() {
 		visible = false;
-		onDismiss?.();
+		ondismiss?.();
 	}
 </script>
 
@@ -85,8 +87,8 @@
 				{@render icon()}
 			</span>
 			<div class="pa-alert__content">
-				{#if heading}
-					<h4 class="pa-alert__heading">{heading}</h4>
+				{#if headingText}
+					<h4 class="pa-alert__heading">{headingText}</h4>
 				{/if}
 				{@render children?.()}
 				{#if list}
@@ -102,8 +104,8 @@
 			</div>
 		{:else}
 			<!-- Simple alert -->
-			{#if heading}
-				<h4 class="pa-alert__heading">{heading}</h4>
+			{#if headingText}
+				<h4 class="pa-alert__heading">{headingText}</h4>
 			{/if}
 			{@render children?.()}
 			{#if list}
@@ -118,9 +120,9 @@
 			{/if}
 		{/if}
 
-		{#if dismissible}
-			<button class="pa-alert__close" onclick={dismiss} aria-label="Close">
-				✕
+		{#if isDismissible}
+			<button class="pa-alert__close" onclick={dismiss} aria-label={$_('pureAdmin.common.buttons.close')}>
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
 			</button>
 		{/if}
 	</div>

@@ -14,11 +14,11 @@
 
 	interface Props {
 		/** Field label text */
-		label?: string;
+		labelText?: string;
 		/** Show required indicator (*) on label */
 		required?: boolean;
 		/** Default help text (shown when no errors and not validated) */
-		help?: string;
+		helpText?: string;
 		/** Success message (shown when touched, no errors, and field has value) */
 		successMessage?: string;
 		/** Error messages array from validation */
@@ -38,9 +38,9 @@
 	}
 
 	let {
-		label,
+		labelText,
 		required = false,
-		help,
+		helpText,
 		successMessage,
 		errors = null,
 		touched = false,
@@ -66,8 +66,8 @@
 </script>
 
 <FormGroup class={className} {horizontal}>
-	{#if label}
-		<FormLabel {required}>{label}</FormLabel>
+	{#if labelText}
+		<FormLabel {required}>{labelText}</FormLabel>
 	{/if}
 
 	{@render children({ errors: normalizedErrors, touched, state })}
@@ -76,7 +76,7 @@
 		<FormHelp variant="error">{normalizedErrors[0]}</FormHelp>
 	{:else if showSuccess}
 		<FormHelp variant="success">{successMessage}</FormHelp>
-	{:else if help}
-		<FormHelp variant={helpVariant}>{help}</FormHelp>
+	{:else if helpText}
+		<FormHelp variant={helpVariant}>{helpText}</FormHelp>
 	{/if}
 </FormGroup>

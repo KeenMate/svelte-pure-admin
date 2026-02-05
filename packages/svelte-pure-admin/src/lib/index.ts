@@ -20,15 +20,32 @@ export { defaultConfig, mergeConfig } from './config/config';
 export { usePureAdminConfig } from './config/hooks';
 
 // Internationalization (i18n)
-export { i18nStore, useI18n, useTranslate, useScopedTranslate, en, cs } from './i18n';
-export type { AppTranslations } from './i18n';
-export type {
-	TranslationKeys,
-	LanguageItem,
-	I18nConfig,
-	TranslationParams,
-	TranslationKeyPath
-} from './i18n/types';
+// Re-exports go through ./i18n to ensure auto-initialization runs first
+export {
+	// i18n service (primary API)
+	i18n,
+	// Legacy functions (backwards compatibility)
+	initI18n,
+	registerLibraryTranslations,
+	loadLocale,
+	isLocaleLoaded,
+	// Built-in locales
+	en,
+	cs,
+	// svelte-i18n re-exports
+	_,
+	locale,
+	locales,
+	isLoading,
+	addMessages,
+	register,
+	init,
+	getLocaleFromNavigator,
+	getLocaleFromQueryString,
+	getLocaleFromHash,
+	getLocaleFromPathname
+} from './i18n';
+export type { I18nInitOptions, Language, PureAdminTranslations } from './i18n';
 
 // Layout Components
 export { default as Layout } from './layout/Layout.svelte';
@@ -44,6 +61,7 @@ export { default as Column } from './layout/Column.svelte';
 export { default as Section } from './layout/Section.svelte';
 export { default as SettingsPanel } from './layout/SettingsPanel.svelte';
 export { default as Divider } from './layout/Divider.svelte';
+export { default as SlidePanel } from './layout/SlidePanel.svelte';
 export type { ThemeOption } from './layout/types';
 
 // Form Components
@@ -93,6 +111,7 @@ export { default as NotificationsPanel } from './feedback/NotificationsPanel.sve
 
 // Display Components (Cards, Badges, Tables, Stats, Lists, Code, Timeline)
 export { default as Card } from './display/Card.svelte';
+export { default as FilterCard } from './display/FilterCard.svelte';
 export { default as CardTab } from './display/CardTab.svelte';
 export { default as CardTabContent } from './display/CardTabContent.svelte';
 export { default as Badge } from './display/Badge.svelte';
@@ -108,6 +127,8 @@ export type {
 	CompositeBadgeItem
 } from './display/badge-types';
 export { default as Table } from './display/Table.svelte';
+export { default as TableCard } from './display/TableCard.svelte';
+export { default as TableContainer } from './display/TableContainer.svelte';
 export { default as TableResponsive } from './display/TableResponsive.svelte';
 export { default as Pager } from './display/Pager.svelte';
 export { default as LoadMore } from './display/LoadMore.svelte';
@@ -136,6 +157,11 @@ export type {
 } from './display/timeline-types';
 export { default as CheckboxList } from './display/CheckboxList.svelte';
 export { default as CheckboxListItem } from './display/CheckboxListItem.svelte';
+export { default as DetailView } from './display/DetailView.svelte';
+export { default as DetailPanel } from './display/DetailPanel.svelte';
+export { default as Field } from './display/Field.svelte';
+export { default as Fields } from './display/Fields.svelte';
+export { default as FieldGroup } from './display/FieldGroup.svelte';
 
 // Profile Components
 export { default as ProfilePanel } from './profile/ProfilePanel.svelte';

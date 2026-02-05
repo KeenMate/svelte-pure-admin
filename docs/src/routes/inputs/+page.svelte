@@ -5,7 +5,7 @@
 <Paragraph>Comprehensive showcase of all input types, states, sizes, and variations available in the framework.</Paragraph>
 
 <!-- Text Inputs -->
-<Card title="Text Inputs">
+<Card titleText="Text Inputs">
 	<Grid>
 		<!-- States -->
 		<Column size="100" md="1-3">
@@ -111,7 +111,7 @@
 </Card>
 
 <!-- Input Groups -->
-<Card title="Input Groups (Prepend/Append)">
+<Card titleText="Input Groups (Prepend/Append)">
 	<Grid>
 		<!-- Prepend -->
 		<Column size="100" md="50">
@@ -180,7 +180,7 @@
 </Card>
 
 <!-- Input Types -->
-<Card title="Input Types">
+<Card titleText="Input Types">
 	<Grid>
 		<Column size="100" md="1-3">
 			<FormGroup>
@@ -270,7 +270,7 @@
 </Card>
 
 <!-- Selects -->
-<Card title="Select Dropdowns">
+<Card titleText="Select Dropdowns">
 	<Grid>
 		<!-- States -->
 		<Column size="100" md="1-3">
@@ -349,7 +349,7 @@
 </Card>
 
 <!-- Textareas -->
-<Card title="Textareas">
+<Card titleText="Textareas">
 	<Grid>
 		<Column size="100" md="50">
 			<FormGroup>
@@ -399,16 +399,16 @@
 </Card>
 
 <!-- Checkboxes & Radios -->
-<Card title="Checkboxes & Radios">
+<Card titleText="Checkboxes & Radios">
 	<Grid>
 		<!-- Checkboxes -->
 		<Column size="100" md="50">
 			<FormGroup>
 				<FormLabel>Checkboxes</FormLabel>
 				<CheckboxGroup>
-					<Checkbox id="input-check1" checked label="Option 1 (checked)" />
-					<Checkbox id="input-check2" label="Option 2" />
-					<Checkbox id="input-check3" disabled label="Option 3 (disabled)" />
+					<Checkbox id="input-check1" checked labelText="Option 1 (checked)" />
+					<Checkbox id="input-check2" labelText="Option 2" />
+					<Checkbox id="input-check3" disabled labelText="Option 3 (disabled)" />
 				</CheckboxGroup>
 			</FormGroup>
 		</Column>
@@ -418,9 +418,9 @@
 			<FormGroup>
 				<FormLabel>Radio Buttons</FormLabel>
 				<RadioGroup>
-					<Radio name="radio-demo" value="a" label="Option A (selected)" />
-					<Radio name="radio-demo" value="b" label="Option B" />
-					<Radio name="radio-demo" value="c" disabled label="Option C (disabled)" />
+					<Radio name="radio-demo" value="a" labelText="Option A (selected)" />
+					<Radio name="radio-demo" value="b" labelText="Option B" />
+					<Radio name="radio-demo" value="c" disabled labelText="Option C (disabled)" />
 				</RadioGroup>
 			</FormGroup>
 		</Column>
@@ -430,11 +430,11 @@
 			<FormGroup>
 				<FormLabel>Checkbox Sizes</FormLabel>
 				<CheckboxGroup>
-					<Checkbox id="size-check-xs" size="xs" checked label="Extra Small" />
-					<Checkbox id="size-check-sm" size="sm" checked label="Small" />
-					<Checkbox id="size-check-default" checked label="Default" />
-					<Checkbox id="size-check-lg" size="lg" checked label="Large" />
-					<Checkbox id="size-check-xl" size="xl" checked label="Extra Large" />
+					<Checkbox id="size-check-xs" size="xs" checked labelText="Extra Small" />
+					<Checkbox id="size-check-sm" size="sm" checked labelText="Small" />
+					<Checkbox id="size-check-default" checked labelText="Default" />
+					<Checkbox id="size-check-lg" size="lg" checked labelText="Large" />
+					<Checkbox id="size-check-xl" size="xl" checked labelText="Extra Large" />
 				</CheckboxGroup>
 			</FormGroup>
 		</Column>
@@ -444,11 +444,11 @@
 			<FormGroup>
 				<FormLabel>Radio Sizes</FormLabel>
 				<RadioGroup>
-					<Radio name="size-demo" value="xs" size="xs" label="Extra Small" />
-					<Radio name="size-demo" value="sm" size="sm" label="Small" />
-					<Radio name="size-demo" value="default" label="Default" />
-					<Radio name="size-demo" value="lg" size="lg" label="Large" />
-					<Radio name="size-demo" value="xl" size="xl" label="Extra Large" />
+					<Radio name="size-demo" value="xs" size="xs" labelText="Extra Small" />
+					<Radio name="size-demo" value="sm" size="sm" labelText="Small" />
+					<Radio name="size-demo" value="default" labelText="Default" />
+					<Radio name="size-demo" value="lg" size="lg" labelText="Large" />
+					<Radio name="size-demo" value="xl" size="xl" labelText="Extra Large" />
 				</RadioGroup>
 			</FormGroup>
 		</Column>
@@ -456,7 +456,7 @@
 </Card>
 
 <!-- Width Variations -->
-<Card title="Width Variations">
+<Card titleText="Width Variations">
 	<FormGroup>
 		<FormLabel>Auto Width (inline)</FormLabel>
 		<div style="width: auto; display: inline-block;">
@@ -488,7 +488,7 @@
 </Card>
 
 <!-- Code Examples -->
-<Card title="Code Examples">
+<Card titleText="Code Examples">
 	<Grid>
 		<Column size="100" md="50">
 			<h4 class="mb-2">Basic Input with Sizes</h4>
@@ -583,27 +583,27 @@
 			<h4 class="mb-2">Checkboxes & Radios</h4>
 			<CodeBlock>{`<!-- Checkbox group -->
 <CheckboxGroup>
-  <Checkbox label="Option 1" checked />
-  <Checkbox label="Option 2" />
-  <Checkbox label="Disabled" disabled />
+  <Checkbox labelText="Option 1" checked />
+  <Checkbox labelText="Option 2" />
+  <Checkbox labelText="Disabled" disabled />
 </CheckboxGroup>
 
 <!-- Radio group -->
 <RadioGroup name="demo">
-  <Radio label="Option A" checked />
-  <Radio label="Option B" />
-  <Radio label="Disabled" disabled />
+  <Radio labelText="Option A" checked />
+  <Radio labelText="Option B" />
+  <Radio labelText="Disabled" disabled />
 </RadioGroup>
 
 <!-- Sizes: xs, sm, (default), lg, xl -->
-<Checkbox size="sm" label="Small" />
-<Radio size="lg" label="Large" />`}</CodeBlock>
+<Checkbox size="sm" labelText="Small" />
+<Radio size="lg" labelText="Large" />`}</CodeBlock>
 		</Column>
 	</Grid>
 </Card>
 
 <!-- CSS Classes Reference -->
-<Card title="CSS Classes Reference">
+<Card titleText="CSS Classes Reference">
 	<Heading level={4}>Text Inputs</Heading>
 	<ul class="pa-list-basic pa-list-basic--compact">
 		<li><code>pa-input</code> - Base input styling</li>

@@ -367,9 +367,9 @@ const { form, errors, touched, data } = createForm<z.infer<typeof schema>>({
 
 	const codeFelteTemplate = `<form use:form>
   <FormField
-    label="Email"
+    labelText="Email"
     required
-    help="Enter your email"
+    helpText="Enter your email"
     successMessage="Valid email"
     errors={$errors.email}
     touched={$touched.email ?? false}
@@ -416,7 +416,7 @@ password: z.string()
 </Paragraph>
 
 <!-- Setup -->
-<Card title="Felte Setup">
+<Card titleText="Felte Setup">
 	<Heading level={4}>1. Install Dependencies</Heading>
 	<HighlightedCode language="bash" code="npm install felte @felte/validator-zod zod" />
 
@@ -433,7 +433,7 @@ password: z.string()
 </Card>
 
 <!-- Zod Patterns -->
-<Card title="Common Zod Patterns">
+<Card titleText="Common Zod Patterns">
 	<HighlightedCode language="typescript" code={codeZodSchema} />
 </Card>
 
@@ -442,7 +442,7 @@ password: z.string()
 <Paragraph>Each form below uses Felte with Zod validation.</Paragraph>
 
 <!-- Test 1: Basic Email -->
-<Card title="Test 1: Basic Email Validation">
+<Card titleText="Test 1: Basic Email Validation">
 	{#if test1Saved}
 		<Alert variant="success" class="mb-4">Email saved successfully!</Alert>
 	{/if}
@@ -451,9 +451,9 @@ password: z.string()
 
 	<form use:form1>
 		<FormField
-			label="Email Address"
+			labelText="Email Address"
 			required
-			help="Enter a valid email address"
+			helpText="Enter a valid email address"
 			successMessage="Valid email address"
 			errors={$errors1.email}
 			touched={$touched1.email ?? false}
@@ -472,7 +472,7 @@ password: z.string()
 </Card>
 
 <!-- Test 2: Multiple Fields -->
-<Card title="Test 2: Multiple Fields Validation">
+<Card titleText="Test 2: Multiple Fields Validation">
 	{#if test2Saved}
 		<Alert variant="success" class="mb-4">Profile saved successfully!</Alert>
 	{/if}
@@ -483,7 +483,7 @@ password: z.string()
 		<Grid>
 			<Column size="100" md="1-3">
 				<FormField
-					label="Name"
+					labelText="Name"
 					required
 					errors={$errors2.name}
 					touched={$touched2.name ?? false}
@@ -495,7 +495,7 @@ password: z.string()
 			</Column>
 			<Column size="100" md="1-3">
 				<FormField
-					label="Age"
+					labelText="Age"
 					required
 					errors={$errors2.age}
 					touched={$touched2.age ?? false}
@@ -507,8 +507,8 @@ password: z.string()
 			</Column>
 			<Column size="100" md="1-3">
 				<FormField
-					label="Bio (optional, max 200 chars)"
-					help="{($data2.bio ?? '').length}/200 characters"
+					labelText="Bio (optional, max 200 chars)"
+					helpText="{($data2.bio ?? '').length}/200 characters"
 					errors={$errors2.bio}
 					touched={$touched2.bio ?? false}
 				>
@@ -527,7 +527,7 @@ password: z.string()
 </Card>
 
 <!-- Test 3: Touched Behavior -->
-<Card title="Test 3: Touched Behavior">
+<Card titleText="Test 3: Touched Behavior">
 	<Paragraph class="mb-4">
 		Both inputs have the same error, but only the touched one shows error styling.
 		This demonstrates how <code>touched</code> controls error visibility.
@@ -536,8 +536,8 @@ password: z.string()
 	<Grid>
 		<Column size="100" md="50">
 			<FormField
-				label="touched=false (pristine)"
-				help="Error exists but not shown"
+				labelText="touched=false (pristine)"
+				helpText="Error exists but not shown"
 				errors={test3Errors}
 				touched={false}
 			>
@@ -548,7 +548,7 @@ password: z.string()
 		</Column>
 		<Column size="100" md="50">
 			<FormField
-				label="touched=true"
+				labelText="touched=true"
 				errors={test3Errors}
 				touched={true}
 			>
@@ -565,7 +565,7 @@ password: z.string()
 </Card>
 
 <!-- Test 4: Select and Date -->
-<Card title="Test 4: Select & Date Validation">
+<Card titleText="Test 4: Select & Date Validation">
 	{#if test4Saved}
 		<Alert variant="success" class="mb-4">Location data saved!</Alert>
 	{/if}
@@ -576,7 +576,7 @@ password: z.string()
 		<Grid>
 			<Column size="100" md="50">
 				<FormField
-					label="Country"
+					labelText="Country"
 					required
 					errors={$errors4.country}
 					touched={$touched4.country ?? false}
@@ -595,7 +595,7 @@ password: z.string()
 			</Column>
 			<Column size="100" md="50">
 				<FormField
-					label="Birth Date (not in future)"
+					labelText="Birth Date (not in future)"
 					required
 					errors={$errors4.birthDate}
 					touched={$touched4.birthDate ?? false}
@@ -615,7 +615,7 @@ password: z.string()
 </Card>
 
 <!-- Test 5: Password with Real-time Validation -->
-<Card title="Test 5: Password with Cross-Field Validation">
+<Card titleText="Test 5: Password with Cross-Field Validation">
 	{#if test5Saved}
 		<Alert variant="success" class="mb-4">Password set successfully!</Alert>
 	{/if}
@@ -631,9 +631,9 @@ password: z.string()
 		<Grid>
 			<Column size="100" md="50">
 				<FormField
-					label="Password"
+					labelText="Password"
 					required
-					help="Min 8 chars, 1 uppercase, 1 number"
+					helpText="Min 8 chars, 1 uppercase, 1 number"
 					successMessage="Password meets requirements"
 					errors={$errors5.password}
 					touched={$touched5.password ?? false}
@@ -646,7 +646,7 @@ password: z.string()
 			</Column>
 			<Column size="100" md="50">
 				<FormField
-					label="Confirm Password"
+					labelText="Confirm Password"
 					required
 					successMessage="Passwords match!"
 					errors={$errors5.confirm}
@@ -668,7 +668,7 @@ password: z.string()
 </Card>
 
 <!-- Real Use Case: Create User -->
-<Card title="Real Use Case: Create User Form">
+<Card titleText="Real Use Case: Create User Form">
 	<Callout variant="info" class="mb-4">
 		This demonstrates a realistic form with async API submission, loading states, and server-side error handling.
 		Try submitting with <code>admin@example.com</code> to see a server-side validation error.
@@ -695,7 +695,7 @@ password: z.string()
 		<Grid>
 			<Column size="100" md="50">
 				<FormField
-					label="First Name"
+					labelText="First Name"
 					required
 					errors={$createUserErrors.firstName}
 					touched={$createUserTouched.firstName ?? false}
@@ -707,7 +707,7 @@ password: z.string()
 			</Column>
 			<Column size="100" md="50">
 				<FormField
-					label="Last Name"
+					labelText="Last Name"
 					required
 					errors={$createUserErrors.lastName}
 					touched={$createUserTouched.lastName ?? false}
@@ -720,9 +720,9 @@ password: z.string()
 		</Grid>
 
 		<FormField
-			label="Email"
+			labelText="Email"
 			required
-			help="Use admin@example.com to test server-side validation error"
+			helpText="Use admin@example.com to test server-side validation error"
 			errors={$createUserErrors.email}
 			touched={$createUserTouched.email ?? false}
 		>
@@ -734,7 +734,7 @@ password: z.string()
 		<Grid>
 			<Column size="100" md="50">
 				<FormField
-					label="Role"
+					labelText="Role"
 					required
 					errors={$createUserErrors.role}
 					touched={$createUserTouched.role ?? false}
@@ -752,7 +752,7 @@ password: z.string()
 			</Column>
 			<Column size="100" md="50">
 				<FormField
-					label="Department"
+					labelText="Department"
 					required
 					errors={$createUserErrors.department}
 					touched={$createUserTouched.department ?? false}
@@ -792,7 +792,7 @@ password: z.string()
 </Card>
 
 <!-- Test 6: State Override -->
-<Card title="Test 6: Manual State Override">
+<Card titleText="Test 6: Manual State Override">
 	<Paragraph class="mb-4">
 		The <code>state</code> prop takes precedence over auto-derived state from <code>errors</code>.
 		This is useful when you need manual control.
@@ -801,8 +801,8 @@ password: z.string()
 	<Grid>
 		<Column size="100" md="50">
 			<FormField
-				label="Input with errors + manual state"
-				help="state='{test6ManualState}' overrides errors"
+				labelText="Input with errors + manual state"
+				helpText="state='{test6ManualState}' overrides errors"
 				errors={['This error is ignored visually']}
 				touched={true}
 				state={test6ManualState}
@@ -813,7 +813,7 @@ password: z.string()
 			</FormField>
 		</Column>
 		<Column size="100" md="50">
-			<FormField label="Change manual state:">
+			<FormField labelText="Change manual state:">
 				{#snippet children()}
 					<Select bind:value={test6ManualState}>
 						<option value={undefined}>undefined (use errors)</option>
@@ -828,7 +828,7 @@ password: z.string()
 </Card>
 
 <!-- Aria-Invalid Check -->
-<Card title="Test 7: Accessibility (aria-invalid)">
+<Card titleText="Test 7: Accessibility (aria-invalid)">
 	<Paragraph class="mb-4">
 		Open browser DevTools and inspect these inputs to verify <code>aria-invalid</code> attribute.
 	</Paragraph>
@@ -836,7 +836,7 @@ password: z.string()
 	<Grid>
 		<Column size="100" md="50">
 			<FormField
-				label="Has errors + touched"
+				labelText="Has errors + touched"
 				errors={['Error!']}
 				touched={true}
 			>
@@ -847,8 +847,8 @@ password: z.string()
 		</Column>
 		<Column size="100" md="50">
 			<FormField
-				label="No errors"
-				help="Should NOT have aria-invalid attribute"
+				labelText="No errors"
+				helpText="Should NOT have aria-invalid attribute"
 			>
 				{#snippet children()}
 					<Input placeholder="Inspect me - no aria-invalid" />

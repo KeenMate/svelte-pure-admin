@@ -5,7 +5,7 @@
 <Paragraph>Contextual feedback messages for typical user actions with flexible alert messages.</Paragraph>
 
 <!-- Basic Alerts -->
-<Card title="Basic Alerts">
+<Card titleText="Basic Alerts">
 	<Alert variant="primary">
 		<strong>Primary!</strong> This is a primary alert — check it out!
 	</Alert>
@@ -40,7 +40,7 @@
 </Card>
 
 <!-- Alerts with Icons -->
-<Card title="Alerts with Icons">
+<Card titleText="Alerts with Icons">
 	<Alert variant="success">
 		{#snippet icon()}✓{/snippet}
 		<strong>Success!</strong> Your changes have been saved successfully.
@@ -63,29 +63,29 @@
 </Card>
 
 <!-- Dismissible Alerts -->
-<Card title="Dismissible Alerts">
-	<Alert dismissible variant="success">
+<Card titleText="Dismissible Alerts">
+	<Alert isDismissible variant="success">
 		<strong>Well done!</strong> You successfully read this important alert message.
 	</Alert>
 
-	<Alert dismissible variant="danger">
+	<Alert isDismissible variant="danger">
 		<strong>Oh snap!</strong> Change a few things and try submitting again.
 	</Alert>
 
-	<Alert dismissible variant="warning">
+	<Alert isDismissible variant="warning">
 		<strong>Warning!</strong> Better check yourself, you're not looking too good.
 	</Alert>
 
-	<Alert dismissible variant="info">
+	<Alert isDismissible variant="info">
 		<strong>Heads up!</strong> This alert needs your attention, but it's not super important.
 	</Alert>
 </Card>
 
 <!-- Alerts with Additional Content -->
-<Card title="Alerts with Additional Content">
+<Card titleText="Alerts with Additional Content">
 	<Grid>
 		<Column size="100" md="1-2">
-			<Alert variant="success" heading="Success!">
+			<Alert variant="success" headingText="Success!">
 				<Paragraph>
 					Aww yeah, you successfully read this important alert message. This example text is
 					going to run a bit longer so that you can see how spacing within an alert works with
@@ -99,7 +99,7 @@
 		</Column>
 
 		<Column size="100" md="1-2">
-			<Alert variant="info" heading="System Update">
+			<Alert variant="info" headingText="System Update">
 				<Paragraph>A new version of the application is available. This update includes:</Paragraph>
 				<BasicList class="pa-alert__list">
 					<li>Performance improvements</li>
@@ -116,30 +116,30 @@
 </Card>
 
 <!-- Outline Alerts -->
-<Card title="Outline Alerts">
-	<Alert outline variant="primary">
+<Card titleText="Outline Alerts">
+	<Alert isOutline variant="primary">
 		<strong>Primary Outline!</strong> This is a primary outline alert.
 	</Alert>
 
-	<Alert outline variant="success">
+	<Alert isOutline variant="success">
 		<strong>Success Outline!</strong> This is a success outline alert.
 	</Alert>
 
-	<Alert outline variant="danger">
+	<Alert isOutline variant="danger">
 		<strong>Danger Outline!</strong> This is a danger outline alert.
 	</Alert>
 
-	<Alert outline variant="warning">
+	<Alert isOutline variant="warning">
 		<strong>Warning Outline!</strong> This is a warning outline alert.
 	</Alert>
 
-	<Alert outline variant="info">
+	<Alert isOutline variant="info">
 		<strong>Info Outline!</strong> This is an info outline alert.
 	</Alert>
 </Card>
 
 <!-- Compact Alerts Grid -->
-<Card title="Compact Alerts in Grid">
+<Card titleText="Compact Alerts in Grid">
 	<Grid>
 		<Column size="100" md="1-3">
 			<Alert size="sm" variant="success">

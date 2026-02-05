@@ -13,7 +13,7 @@
 		/** Label size */
 		size?: LabelSize;
 		/** Outline style */
-		outline?: boolean;
+		isOutline?: boolean;
 		/** Additional CSS classes */
 		class?: string;
 		/** Children content */
@@ -23,7 +23,7 @@
 	let {
 		variant,
 		size,
-		outline = false,
+		isOutline = false,
 		class: className = '',
 		children
 	}: Props = $props();
@@ -33,7 +33,7 @@
 		const base = ['pa-label'];
 		if (variant) base.push(`pa-label--${variant}`);
 		if (size) base.push(`pa-label--${size}`);
-		if (outline) base.push('pa-label--outline');
+		if (isOutline) base.push('pa-label--outline');
 		if (className) base.push(className);
 		return base.join(' ');
 	});

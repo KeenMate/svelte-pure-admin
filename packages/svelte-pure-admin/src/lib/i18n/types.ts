@@ -1,109 +1,97 @@
 /**
  * Pure Admin i18n Types
- * TypeScript interfaces for internationalization
+ * TypeScript interfaces for library translations
  */
 
 /**
- * Translation keys structure
- * All translatable strings organized by component/feature
+ * Language definition
+ * Represents an available language in the application
  */
-export interface TranslationKeys {
-	/** Dialog service strings */
-	dialog: {
-		confirm: string;
-		cancel: string;
-		ok: string;
-		alert: string;
-		input: string;
-		areYouSure: string;
-		enterValue: string;
-		defaultTitle: string;
-		invalidInput: string;
-	};
-
-	/** Popconfirm strings */
-	popconfirm: {
-		confirm: string;
-		cancel: string;
-	};
-
-	/** Keyboard shortcuts strings */
-	shortcuts: {
-		title: string;
-		noShortcuts: string;
-		generalCategory: string;
-		showShortcuts: string;
-	};
-
-	/** Command palette strings */
-	commandPalette: {
-		placeholder: string;
-		loading: string;
-		commands: string;
-		searchIn: string;
-		search: string;
-		noMatchingCommands: string;
-		typeToSearch: string;
-		noMatchingContexts: string;
-		noResults: string;
-		idleMessage: string;
-		preview: string;
-		navigate: string;
-		select: string;
-		complete: string;
-		close: string;
-		searchFailed: string;
-		loadOptionsFailed: string;
-		openCommandPalette: string;
-	};
-
-	/** Load more component strings */
-	loadMore: {
-		loadMore: string;
-		loading: string;
-	};
-}
-
-/**
- * Language item for language selector
- */
-export interface LanguageItem {
-	/** Language code (e.g., 'en', 'cs') */
+export interface Language {
+	/** Language code (e.g., 'en', 'cs', 'de') */
 	code: string;
 	/** Display name (e.g., 'English', 'Čeština') */
-	name: string;
-	/** Optional country code for flag images (e.g., 'gb', 'cz') */
-	flag?: string;
+	name?: string;
+	/** Native name (e.g., 'English', 'Čeština', 'Deutsch') */
+	nativeName?: string;
 }
 
 /**
- * i18n configuration for PureAdminProvider
+ * i18n initialization options
+ * Configure locale detection, translations, and async loading
  */
-export interface I18nConfig {
-	/** Current locale code */
-	locale: string;
+export interface I18nInitOptions {
+	/** Initial locale (default: 'en') */
+	locale?: string;
+
 	/** Fallback locale when translation is missing (default: 'en') */
 	fallbackLocale?: string;
-	/** Available languages (for language selector) */
-	languages?: LanguageItem[];
-	/** Pre-loaded translations (can be loaded from server with index.html) */
-	translations?: Record<string, Partial<TranslationKeys>>;
-	/** Async loader for fetching translations on language switch */
-	loadTranslations?: (locale: string) => Promise<Partial<TranslationKeys>>;
+
+	/**
+	 * Available languages.
+	 * Can be simple codes (e.g., ['en', 'de']) or full Language objects.
+	 * If not provided, uses built-in locales ['en', 'cs'].
+	 */
+	languages?: (string | Language)[];
+
+	/**
+	 * Pre-loaded translations by locale.
+	 * These are added immediately via addMessages().
+	 * Built-in library translations (pureAdmin.*) are always included.
+	 *
+	 * @example
+	 * ```typescript
+	 * translations: {
+	 *   en: {
+	 *     // App translations
+	 *     'app.dashboard.title': 'Dashboard',
+	 *     // Override library translation
+	 *     'pureAdmin.dialog.confirm': 'Yes, do it!'
+	 *   },
+	 *   de: {
+	 *     'app.dashboard.title': 'Übersicht',
+	 *     'pureAdmin.dialog.confirm': 'Ja, mach es!',
+	 *     'pureAdmin.dialog.cancel': 'Abbrechen'
+	 *   }
+	 * }
+	 * ```
+	 */
+	translations?: Record<string, Record<string, string>>;
+
+	/**
+	 * Async loader for translations not yet loaded.
+	 * Called when switching to a locale via setLocale() that hasn't been loaded.
+	 *
+	 * @example
+	 * ```typescript
+	 * loadTranslations: async (locale) => {
+	 *   const res = await fetch(`/api/translations/${locale}`);
+	 *   return res.json();
+	 * }
+	 * ```
+	 */
+	loadTranslations?: (locale: string) => Promise<Record<string, string>>;
 }
 
 /**
- * Parameters for string interpolation
+ * Pure Admin translation keys
+ * All library translations use the 'pureAdmin.' prefix in flat format.
+ *
+ * Available keys:
+ * - pureAdmin.dialog.* - Dialog service strings
+ * - pureAdmin.popconfirm.* - Popconfirm strings
+ * - pureAdmin.shortcuts.* - Keyboard shortcuts
+ * - pureAdmin.commandPalette.* - Command palette
+ * - pureAdmin.loadMore.* - Load more component
+ * - pureAdmin.field.* - Field component (copy)
+ * - pureAdmin.common.buttons.* - Common button labels
+ *
+ * @example Override in your app:
+ * ```typescript
+ * {
+ *   'pureAdmin.dialog.confirm': 'Yes!',
+ *   'pureAdmin.field.copied': 'Done!'
+ * }
+ * ```
  */
-export type TranslationParams = Record<string, string | number>;
-
-/**
- * Nested key path helper type
- * Allows typing like 'dialog.confirm' or 'commandPalette.loading'
- */
-export type TranslationKeyPath =
-	| `dialog.${keyof TranslationKeys['dialog']}`
-	| `popconfirm.${keyof TranslationKeys['popconfirm']}`
-	| `shortcuts.${keyof TranslationKeys['shortcuts']}`
-	| `commandPalette.${keyof TranslationKeys['commandPalette']}`
-	| `loadMore.${keyof TranslationKeys['loadMore']}`;
+export type PureAdminTranslations = Record<string, string>;

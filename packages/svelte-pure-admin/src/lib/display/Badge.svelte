@@ -16,8 +16,8 @@
 	let {
 		variant,
 		size,
-		pill = false,
-		ellipsisLeft = false,
+		isPill = false,
+		isEllipsisStart = false,
 		class: className = '',
 		onclick,
 		icon,
@@ -29,8 +29,8 @@
 		const base = ['pa-badge'];
 		if (variant) base.push(`pa-badge--${variant}`);
 		if (size) base.push(`pa-badge--${size}`);
-		if (pill) base.push('pa-badge--pill');
-		if (ellipsisLeft) base.push('pa-badge--ellipsis-left');
+		if (isPill) base.push('pa-badge--pill');
+		if (isEllipsisStart) base.push('pa-badge--ellipsis-left');
 		if (className) base.push(className);
 		return base.join(' ');
 	});

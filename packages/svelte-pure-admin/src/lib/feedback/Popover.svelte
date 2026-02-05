@@ -15,11 +15,11 @@
 
 	type PopoverPlacement = 'top' | 'right' | 'bottom' | 'left';
 	type PopoverSize = 'sm' | 'lg';
-	type PopoverAlignment = 'center' | 'right';
+	type PopoverAlignment = 'center' | 'end';
 
 	interface Props {
-		/** Popover title */
-		title: string;
+		/** Popover title text */
+		titleText: string;
 		/** Popover placement (data-placement attribute) */
 		placement?: PopoverPlacement;
 		/** Popover size */
@@ -39,7 +39,7 @@
 	}
 
 	let {
-		title,
+		titleText,
 		placement = 'top',
 		size,
 		alignment,
@@ -72,7 +72,7 @@
 			popoverManager.open({
 				id: popoverId,
 				triggerElement,
-				title,
+				title: titleText,
 				content: children,
 				header,
 				placement,

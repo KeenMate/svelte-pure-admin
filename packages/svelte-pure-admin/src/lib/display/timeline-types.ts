@@ -14,9 +14,9 @@ export interface TimelineItemData {
 	/** Color variant */
 	variant?: TimelineItemVariant;
 	/** Filled marker instead of outline */
-	filled?: boolean;
+	isFilled?: boolean;
 	/** Is this a date header? */
-	dateHeader?: boolean;
+	isDateHeader?: boolean;
 	/** Time/date text */
 	time?: string;
 	/** Date text (alternating timeline) */

@@ -26,6 +26,7 @@ Every component MUST be based on the HTML snippets from `@keenmate/pure-admin-co
 ├── callout.html      ← Reference for Callout component (NEW in 1.1.0)
 ├── cards.html        ← Reference for Card component
 ├── comparison.html   ← Reference for Comparison tables
+├── data-display.html ← Reference for Field/Fields/FieldGroup (NEW in 1.3.0)
 ├── forms.html        ← Reference for Form components
 ├── grid.html         ← Reference for Grid system
 ├── layout.html       ← Reference for Layout/Sidebar/ProfilePanel
@@ -210,17 +211,21 @@ This library follows the KeenMate naming methodology for consistency, clarity, a
 - Examples: `idMember`, `displayValueMember`, `searchValueMember`
 - **Not commonly used in Pure Admin** (no data binding), but follow pattern if needed
 
-**`*Callback` suffix** - Function props for custom logic:
-- `sortCallback`, `getDisplayValueCallback`, `contextMenuCallback`
-- Use for functions that compute/transform values
-- Clear distinction from event handlers
+**`*Callback` suffix** - Only when the return value controls component behavior:
+- `beforeCloseCallback` - returns `false` to prevent close
+- `get*Callback` - returns data for rendering (e.g., `getDisplayValueCallback`, `getVariantCallback`)
+- `copyValueCallback` - returns string for clipboard
+- ❌ NOT for fire-and-forget notifications (use `on*` instead)
 
-#### Event Handler Naming
+#### Event Handler and Callback Naming
 
-**`on*` prefix (camelCase)** - Event handlers:
-- ✅ `onClick`, `onChange`, `onInput`, `onBlur`, `onFocus`
-- ✅ `onNodeClicked`, `onNodeDragStart`, `onNodeDrop`
-- ❌ NOT `onclick`, `onchange` (lowercase - wrong!)
+**`on*` prefix (lowercase)** - Fire-and-forget event notifications:
+- ✅ DOM event forwarders: `onclick`, `onchange`, `oninput`, `onblur`, `onfocus`
+- ✅ Custom component events: `onclose`, `onconfirm`, `ondismiss`, `onbadgeclick`, `onpagechange`
+- Use for any event where the return value is NOT used internally
+- Svelte 5 uses native DOM event syntax, so handlers are fully lowercase
+- ❌ NOT `onClick`, `onChange`, `onClose` (camelCase - don't use!)
+- ❌ NOT `closeCallback`, `confirmCallback` for fire-and-forget events
 
 #### Boolean Prop Naming
 
@@ -257,8 +262,9 @@ This library follows the KeenMate naming methodology for consistency, clarity, a
 #### Pure Admin Specific Rules
 
 - Keep `class` prop as-is (standard Svelte convention)
-- Use `onClick`, `onChange`, `onInput` (camelCase event handlers)
-- Use `is*` prefix for component state booleans: `isDisabled`, `isReadonly`
+- Use `on*` (lowercase) for all fire-and-forget events: `onclick`, `onchange`, `onclose`, `onconfirm`, `onbadgeclick`
+- Use `*Callback` suffix only when the return value is used internally (e.g., `beforeCloseCallback`, `get*Callback`, `copyValueCallback`)
+- Use `is*` prefix for component state booleans: `isDisabled`, `isReadonly`, `isCompact`
 - Keep native HTML attributes as-is: `disabled`, `readonly`, `required`, `placeholder`
 - Use `variant`, `size`, `type` for visual/structural props (standard component patterns)
 
@@ -279,7 +285,7 @@ This library follows the KeenMate naming methodology for consistency, clarity, a
     /** Additional CSS classes */
     class?: string;
     /** Click handler */
-    onClick?: (event: MouseEvent) => void;
+    onclick?: (event: MouseEvent) => void;
     /** Children content */
     children?: import('svelte').Snippet;
   }
@@ -287,7 +293,7 @@ This library follows the KeenMate naming methodology for consistency, clarity, a
   let {
     variant = 'primary',
     class: className = '',
-    onClick,
+    onclick,
     children
   }: Props = $props();
 
@@ -300,12 +306,12 @@ This library follows the KeenMate naming methodology for consistency, clarity, a
   });
 </script>
 
-<div class={classes()} onclick={onClick}>
+<div class={classes()} {onclick}>
   {@render children?.()}
 </div>
 ```
 
-**Note:** Props use camelCase (`onClick`), but HTML attributes use lowercase (`onclick={onClick}`).
+**Note:** Svelte 5 uses lowercase event handlers (`onclick`, `onchange`) matching native DOM events. Use shorthand `{onclick}` when prop name matches attribute.
 
 ## File Structure
 
@@ -414,9 +420,15 @@ Check `src/lib/index.ts` - components not yet exported need to be created.
 **Snippet:** `profile.html`
 - ✅ **ProfilePanel** - Profile panel (`pa-profile-panel`) with overlay, header (avatar, name, email, role), nav, actions, bindable show state
 
+### Data Display Components (3/3 ✅)
+**SCSS source:** `_data-display.scss` (NEW in 1.3.0)
+- ✅ **Field** - Single label-value pair (`pa-field`) with full-width modifier
+- ✅ **Fields** - Container (`pa-fields`) with cols, horizontal, table, bordered, striped, compact, relaxed, inline, row, filled, color variants
+- ✅ **FieldGroup** - Titled section (`pa-field-group`) with title element
+
 ### Summary
-- **Total Components:** 40
-- **Completed:** 40 (100%) ✅
+- **Total Components:** 43
+- **Completed:** 43 (100%) ✅
 - **Remaining:** 0
 
 **Status:** All core components have been implemented based on @pure-admin/core snippets!
@@ -432,6 +444,7 @@ All component categories are complete:
 - ✅ Table Components (2/2)
 - ✅ Modal Components (1/1)
 - ✅ Toast Components (2/2)
+- ✅ Data Display Components (3/3)
 - ✅ Loader/Spinner Components (8/8)
 - ✅ Profile Components (1/1)
 
@@ -671,7 +684,7 @@ Done! ✅
 
 ---
 
-**Last Updated:** 2026-01-18
+**Last Updated:** 2026-02-03
 **Svelte Version:** 5.x
 **SvelteKit Version:** 2.x
-**Pure Admin Core Version:** 1.1.0
+**Pure Admin Core Version:** 1.5.0 (synced)

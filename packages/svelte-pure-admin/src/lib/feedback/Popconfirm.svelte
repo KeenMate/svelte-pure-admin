@@ -10,7 +10,7 @@
 	 */
 
 	import { onMount } from 'svelte';
-	import { i18nStore } from '../i18n/store.svelte';
+	import { _ } from '../i18n';
 
 	type Position = 'top' | 'bottom' | 'left' | 'right';
 	type IconVariant = 'danger' | 'warning' | 'info';
@@ -18,14 +18,14 @@
 	interface Props {
 		/** Show/hide popconfirm */
 		show?: boolean;
-		/** Message to display */
-		message: string;
+		/** Message text to display */
+		messageText: string;
 		/** Position relative to trigger */
 		position?: Position;
 		/** Icon variant */
 		icon?: IconVariant;
 		/** Compact size */
-		compact?: boolean;
+		isCompact?: boolean;
 		/** Confirm button text */
 		confirmText?: string;
 		/** Cancel button text */
@@ -35,31 +35,31 @@
 		/** Trigger element (for positioning) */
 		trigger?: HTMLElement | null;
 		/** Confirm callback */
-		onConfirm?: () => void;
+		onconfirm?: () => void;
 		/** Cancel callback */
-		onCancel?: () => void;
+		oncancel?: () => void;
 		/** Additional CSS classes */
 		class?: string;
 	}
 
 	let {
 		show = $bindable(false),
-		message,
+		messageText,
 		position = 'bottom',
 		icon,
-		compact = false,
+		isCompact = false,
 		confirmText,
 		cancelText,
 		confirmVariant = 'primary',
 		trigger = null,
-		onConfirm,
-		onCancel,
+		onconfirm,
+		oncancel,
 		class: className = ''
 	}: Props = $props();
 
 	// Use i18n defaults if props not provided
-	const resolvedConfirmText = $derived(confirmText ?? i18nStore.t('popconfirm.confirm'));
-	const resolvedCancelText = $derived(cancelText ?? i18nStore.t('popconfirm.cancel'));
+	const resolvedConfirmText = $derived(confirmText ?? $_('pureAdmin.popconfirm.confirm'));
+	const resolvedCancelText = $derived(cancelText ?? $_('pureAdmin.popconfirm.cancel'));
 
 	let popconfirmEl: HTMLDivElement;
 	let actualPosition = $state<Position>('bottom');
@@ -73,7 +73,7 @@
 	// Build class string
 	const classes = $derived(() => {
 		const base = ['pa-popconfirm', `pa-popconfirm--${actualPosition}`];
-		if (compact) base.push('pa-popconfirm--compact');
+		if (isCompact) base.push('pa-popconfirm--compact');
 		if (show) base.push('is-open');
 		if (className) base.push(className);
 		return base.join(' ');
@@ -122,12 +122,12 @@
 	}
 
 	function handleConfirm() {
-		if (onConfirm) onConfirm();
+		if (onconfirm) onconfirm();
 		show = false;
 	}
 
 	function handleCancel() {
-		if (onCancel) onCancel();
+		if (oncancel) oncancel();
 		show = false;
 	}
 
@@ -180,7 +180,7 @@
 	<div class="pa-popconfirm__arrow"></div>
 	<div class="pa-popconfirm__content">
 		<div class={messageClasses()}>
-			<p>{message}</p>
+			<p>{messageText}</p>
 		</div>
 		<div class="pa-popconfirm__actions">
 			<button class="pa-btn pa-btn--secondary" onclick={handleCancel}>

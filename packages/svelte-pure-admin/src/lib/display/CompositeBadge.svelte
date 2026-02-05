@@ -16,15 +16,15 @@
 		/** Icon snippet */
 		icon?: import('svelte').Snippet;
 		/** Label text */
-		label: string;
+		labelText: string;
 		/** Button/count text */
 		buttonText: string | number;
 		/** Make button interactive (renders as button element) */
-		interactive?: boolean;
-		/** Button click handler */
-		onButtonClick?: (event: MouseEvent) => void;
-		/** Label click handler */
-		onLabelClick?: (event: MouseEvent) => void;
+		isInteractive?: boolean;
+		/** Button click callback */
+		onbuttonclick?: (event: MouseEvent) => void;
+		/** Label click callback */
+		onlabelclick?: (event: MouseEvent) => void;
 		/** Additional CSS classes */
 		class?: string;
 	}
@@ -34,11 +34,11 @@
 		labelVariant,
 		buttonVariant,
 		icon,
-		label,
+		labelText,
 		buttonText,
-		interactive = false,
-		onButtonClick,
-		onLabelClick,
+		isInteractive = false,
+		onbuttonclick,
+		onlabelclick,
 		class: className = ''
 	}: Props = $props();
 
@@ -58,20 +58,20 @@
 			{@render icon()}
 		</span>
 	{/if}
-	{#if onLabelClick}
+	{#if onlabelclick}
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<span
 			class="pa-composite-badge__label"
-			onclick={onLabelClick}
-			onkeydown={(e) => e.key === 'Enter' && onLabelClick?.(e as any)}
+			onclick={onlabelclick}
+			onkeydown={(e) => e.key === 'Enter' && onlabelclick?.(e as any)}
 			role="button"
 			tabindex="0"
-		>{label}</span>
+		>{labelText}</span>
 	{:else}
-		<span class="pa-composite-badge__label">{label}</span>
+		<span class="pa-composite-badge__label">{labelText}</span>
 	{/if}
-	{#if interactive}
-		<button class="pa-composite-badge__button" onclick={onButtonClick}>
+	{#if isInteractive}
+		<button class="pa-composite-badge__button" onclick={onbuttonclick}>
 			{buttonText}
 		</button>
 	{:else}

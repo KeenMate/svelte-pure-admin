@@ -6,6 +6,8 @@
 	 * Shows a visual hint for the keyboard shortcut.
 	 */
 
+	import { _ } from '../i18n';
+
 	type NavbarSearchSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 	interface Props {
@@ -14,7 +16,7 @@
 		/** Size variant (matches input sizes) */
 		size?: NavbarSearchSize;
 		/** Click handler (typically opens command palette) */
-		onClick?: () => void;
+		onclick?: () => void;
 		/** Additional CSS classes */
 		class?: string;
 	}
@@ -22,7 +24,7 @@
 	let {
 		placeholder = 'Search...',
 		size = 'lg',
-		onClick,
+		onclick,
 		class: className = ''
 	}: Props = $props();
 
@@ -34,14 +36,14 @@
 	});
 
 	function handleClick() {
-		onClick?.();
+		onclick?.();
 	}
 
 	function handleKeyDown(event: KeyboardEvent) {
 		// Allow Enter or Space to trigger
 		if (event.key === 'Enter' || event.key === ' ') {
 			event.preventDefault();
-			onClick?.();
+			onclick?.();
 		}
 	}
 </script>
@@ -53,7 +55,7 @@
 	onkeydown={handleKeyDown}
 	tabindex="0"
 	role="button"
-	aria-label="Open search (Ctrl+K)"
+	aria-label={$_('pureAdmin.a11y.openSearch')}
 >
 	<span class="pa-navbar-search__icon">🔍</span>
 	<span class="pa-navbar-search__placeholder">{placeholder}</span>

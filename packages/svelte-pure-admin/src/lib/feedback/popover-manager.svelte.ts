@@ -13,7 +13,7 @@ interface PopoverState {
 	header?: Snippet;
 	placement: 'top' | 'right' | 'bottom' | 'left';
 	size?: 'sm' | 'lg';
-	alignment?: 'center' | 'right';
+	alignment?: 'center' | 'end';
 }
 
 // Global reactive state

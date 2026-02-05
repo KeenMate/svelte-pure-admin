@@ -13,9 +13,9 @@
 		/** Checkbox ID (required for label association) */
 		id: string;
 		/** Checkbox label text */
-		label: string;
+		labelText: string;
 		/** Optional description text */
-		description?: string;
+		descriptionText?: string;
 		/** Item state */
 		state?: ItemState;
 		/** Checked state (bindable) */
@@ -24,21 +24,21 @@
 		disabled?: boolean;
 		/** Additional CSS classes */
 		class?: string;
-		/** Change event handler */
-		onChange?: (checked: boolean) => void;
+		/** Change callback */
+		onchange?: (checked: boolean) => void;
 		/** Actions snippet (buttons, etc.) */
 		actions?: import('svelte').Snippet;
 	}
 
 	let {
 		id,
-		label,
-		description,
+		labelText,
+		descriptionText,
 		state,
 		checked = $bindable(false),
 		disabled = false,
 		class: className = '',
-		onChange,
+		onchange,
 		actions
 	}: Props = $props();
 
@@ -59,7 +59,7 @@
 	// Handle checkbox change
 	function handleChange(event: Event & { currentTarget: HTMLInputElement }) {
 		checked = event.currentTarget.checked;
-		onChange?.(checked);
+		onchange?.(checked);
 	}
 
 	// Determine if checkbox should be disabled
@@ -72,12 +72,12 @@
 			{id}
 			bind:checked
 			disabled={isDisabled}
-			onChange={handleChange}
+			onchange={handleChange}
 		/>
 		<span class="pa-checkbox-list__text">
-			{label}
-			{#if description}
-				<span class="pa-checkbox-list__description">{description}</span>
+			{labelText}
+			{#if descriptionText}
+				<span class="pa-checkbox-list__description">{descriptionText}</span>
 			{/if}
 		</span>
 	</label>

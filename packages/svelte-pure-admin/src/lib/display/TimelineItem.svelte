@@ -12,11 +12,11 @@
 		/** Color variant (for simple timeline) */
 		variant?: TimelineItemVariant;
 		/** Filled marker instead of outline (for simple timeline) */
-		filled?: boolean;
+		isFilled?: boolean;
 		/** Date header (for feed timeline with date sections) */
-		dateHeader?: boolean;
+		isDateHeader?: boolean;
 		/** Time/date text (simple: right side, alternating: top, feed: left prefix) */
-		time?: string;
+		timeText?: string;
 		/** Date text (alternating timeline) */
 		date?: string;
 		/** Icon text content (alternating timeline) - string only */
@@ -39,9 +39,9 @@
 
 	let {
 		variant,
-		filled = false,
-		dateHeader = false,
-		time,
+		isFilled = false,
+		isDateHeader = false,
+		timeText,
 		date,
 		iconText,
 		iconTemplate,
@@ -61,8 +61,8 @@
 		if (variant) base.push(`pa-timeline__item--${variant}`);
 
 		// Modifiers
-		if (filled) base.push('pa-timeline__item--filled');
-		if (dateHeader) base.push('pa-timeline__item--date-header');
+		if (isFilled) base.push('pa-timeline__item--filled');
+		if (isDateHeader) base.push('pa-timeline__item--date-header');
 
 		// Custom classes
 		if (className) base.push(className);
@@ -81,7 +81,7 @@
 	tabindex={onclick ? 0 : undefined}
 	role={onclick ? 'button' : undefined}
 >
-	{#if dateHeader}
+	{#if isDateHeader}
 		<!-- Date header (for feed timeline) -->
 		{#if iconText || iconTemplate}
 			<div class="pa-timeline__date-icon">
@@ -108,8 +108,8 @@
 		</div>
 	{:else if avatarUrl}
 		<!-- Feed timeline with avatar -->
-		{#if time}
-			<div class="pa-timeline__time">{time}</div>
+		{#if timeText}
+			<div class="pa-timeline__time">{timeText}</div>
 		{/if}
 		<div class="pa-timeline__content">
 			<div class="pa-timeline__avatar">
@@ -124,8 +124,8 @@
 		</div>
 	{:else}
 		<!-- Simple timeline -->
-		{#if time}
-			<div class="pa-timeline__time">{time}</div>
+		{#if timeText}
+			<div class="pa-timeline__time">{timeText}</div>
 		{/if}
 		<div class="pa-timeline__content">
 			{@render children?.()}

@@ -5,39 +5,40 @@
 	 */
 
 	import { onMount } from 'svelte';
+	import { _ } from '../i18n';
 
 	type ToastVariant = 'primary' | 'success' | 'danger' | 'warning' | 'info';
 
 	interface Props {
 		/** Toast variant */
 		variant?: ToastVariant;
-		/** Toast title */
-		title: string;
-		/** Toast message */
-		message: string;
+		/** Toast title text */
+		titleText: string;
+		/** Toast message text */
+		messageText: string;
 		/** Show toast */
 		show?: boolean;
 		/** Auto-dismiss duration (ms), 0 for persistent */
 		duration?: number;
 		/** Show progress bar */
-		showProgress?: boolean;
+		shouldShowProgress?: boolean;
 		/** Icon snippet */
 		icon?: import('svelte').Snippet;
-		/** Close handler */
-		onClose?: () => void;
+		/** Close callback */
+		onclose?: () => void;
 		/** Additional CSS classes */
 		class?: string;
 	}
 
 	let {
 		variant = 'primary',
-		title,
-		message,
+		titleText,
+		messageText,
 		show = $bindable(true),
 		duration = 5000,
-		showProgress = false,
+		shouldShowProgress = false,
 		icon,
-		onClose,
+		onclose,
 		class: className = ''
 	}: Props = $props();
 
@@ -55,18 +56,18 @@
 	function handleClose() {
 		visible = false;
 		show = false;
-		if (onClose) onClose();
+		if (onclose) onclose();
 	}
 
 	onMount(() => {
-		if (duration > 0 && !showProgress) {
+		if (duration > 0 && !shouldShowProgress) {
 			// Auto-dismiss without progress bar
 			const timer = setTimeout(() => {
 				handleClose();
 			}, duration);
 
 			return () => clearTimeout(timer);
-		} else if (duration > 0 && showProgress) {
+		} else if (duration > 0 && shouldShowProgress) {
 			// Auto-dismiss with progress bar animation
 			progressWidth = 0;
 
@@ -91,13 +92,13 @@
 	{/if}
 
 	<div class="pa-toast__content">
-		<div class="pa-toast__title">{title}</div>
-		<div class="pa-toast__message">{message}</div>
+		<div class="pa-toast__title">{titleText}</div>
+		<div class="pa-toast__message">{messageText}</div>
 	</div>
 
-	<button class="pa-toast__close" onclick={handleClose} aria-label="Close">✕</button>
+	<button class="pa-toast__close" onclick={handleClose} aria-label={$_('pureAdmin.common.buttons.close')}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
 
-	{#if showProgress && duration > 0}
+	{#if shouldShowProgress && duration > 0}
 		<div
 			class="pa-toast__progress"
 			style="width: {progressWidth}%; transition: width {duration}ms linear;"

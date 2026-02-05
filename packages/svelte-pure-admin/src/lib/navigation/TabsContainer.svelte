@@ -7,22 +7,22 @@
 
 	interface Props {
 		/** Card-like border around entire tabs system */
-		bordered?: boolean;
+		isBordered?: boolean;
 		/** Make tabs look like a card with tabs replacing the header */
-		card?: boolean;
+		isCard?: boolean;
 		/** Additional CSS classes */
 		class?: string;
 		/** Container content (Tabs + TabsContent) */
 		children?: import('svelte').Snippet;
 	}
 
-	let { bordered = false, card = false, class: className = '', children }: Props = $props();
+	let { isBordered = false, isCard = false, class: className = '', children }: Props = $props();
 
 	// Build class string
 	const classes = $derived(() => {
 		const base = ['pa-tabs__container'];
-		if (bordered) base.push('pa-tabs__container--bordered');
-		if (card) base.push('pa-tabs__container--card');
+		if (isBordered) base.push('pa-tabs__container--bordered');
+		if (isCard) base.push('pa-tabs__container--card');
 		if (className) base.push(className);
 		return base.join(' ');
 	});

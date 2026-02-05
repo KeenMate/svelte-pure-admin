@@ -6,6 +6,7 @@
 	 */
 
 	import { onMount } from 'svelte';
+	import { _ } from '../i18n';
 
 	interface Props {
 		/** Tab style */
@@ -96,10 +97,10 @@
 
 <div class={classes()} data-tabs-scroll>
 	<button
-		class="pa-tabs__scroll-btn pa-tabs__scroll-btn--left"
+		class="pa-tabs__scroll-btn pa-tabs__scroll-btn--start"
 		class:pa-tabs__scroll-btn--visible={showLeftArrow}
 		onclick={() => scrollTabs('left')}
-		aria-label="Scroll tabs left"
+		aria-label={$_('pureAdmin.a11y.scrollTabsLeft')}
 	>
 		<i class="fa-solid fa-chevron-left"></i>
 	</button>
@@ -109,10 +110,10 @@
 	</div>
 
 	<button
-		class="pa-tabs__scroll-btn pa-tabs__scroll-btn--right"
+		class="pa-tabs__scroll-btn pa-tabs__scroll-btn--end"
 		class:pa-tabs__scroll-btn--visible={showRightArrow}
 		onclick={() => scrollTabs('right')}
-		aria-label="Scroll tabs right"
+		aria-label={$_('pureAdmin.a11y.scrollTabsRight')}
 	>
 		<i class="fa-solid fa-chevron-right"></i>
 	</button>

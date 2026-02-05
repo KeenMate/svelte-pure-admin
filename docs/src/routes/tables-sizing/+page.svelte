@@ -5,7 +5,7 @@
 <Paragraph>Table size variants synchronized with button/input sizes. Each variant provides enough space for buttons and inputs of the same size.</Paragraph>
 
 <!-- Default (Compact) Table -->
-<Card title="Default (Compact) - ~31px rows">
+<Card titleText="Default (Compact) - ~31px rows">
 	<Paragraph>Best for data-heavy tables where you need to scan hundreds of rows efficiently.</Paragraph>
 	<div class="pa-table-container">
 		<Table>
@@ -66,7 +66,7 @@
 </Card>
 
 <!-- 2x Spacing Table -->
-<Card title="2x Spacing - ~62px rows">
+<Card titleText="2x Spacing - ~62px rows">
 	<Paragraph>Balanced spacing for better readability when you have moderate amounts of data.</Paragraph>
 	<div class="pa-table-container">
 		<Table size="sm">
@@ -111,7 +111,7 @@
 </Card>
 
 <!-- 3x Spacing Table -->
-<Card title="3x Spacing - ~93px rows">
+<Card titleText="3x Spacing - ~93px rows">
 	<Paragraph>Spacious layout for presentation tables or when emphasis and clarity are priorities.</Paragraph>
 	<div class="pa-table-container">
 		<Table size="lg">
@@ -156,7 +156,7 @@
 </Card>
 
 <!-- Usage Guide -->
-<Card title="Usage Guide">
+<Card titleText="Usage Guide">
 	<Heading level={4}>Default (Compact)</Heading>
 	<pre><code>&lt;table class="pa-table"&gt;
   ...
@@ -174,7 +174,7 @@
 
 	<Heading level={4}>When to use each size:</Heading>
 	<BasicList>
-		<li><strong>Default (Compact):</strong> Data grids, logs, transaction lists, any table with 50+ rows</li>
+		<li><strong>Default (Compact):</strong> Data grids, logs, transaction lists, any isTable with 50+ rows</li>
 		<li><strong>2x Spacing:</strong> Reports, dashboards, summary tables with 10-50 rows</li>
 		<li><strong>3x Spacing:</strong> Feature comparisons, pricing tables, highlighted data with &lt;10 rows</li>
 	</BasicList>

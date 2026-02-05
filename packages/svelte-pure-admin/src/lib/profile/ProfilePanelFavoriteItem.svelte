@@ -5,19 +5,21 @@
 	 * Renders a favorite item in the profile panel favorites tab
 	 */
 
+	import { _ } from '../i18n';
+
 	interface Props {
 		/** Navigation href (uses data-href pattern for click handling) */
 		href?: string;
 		/** Icon snippet */
 		icon?: import('svelte').Snippet;
 		/** Label text */
-		label: string;
+		labelText: string;
 		/** Show remove button */
 		removable?: boolean;
 		/** Click handler */
-		onClick?: () => void;
-		/** Remove handler */
-		onRemove?: () => void;
+		onclick?: () => void;
+		/** Remove callback */
+		onremove?: () => void;
 		/** Additional CSS classes */
 		class?: string;
 	}
@@ -25,10 +27,10 @@
 	let {
 		href,
 		icon,
-		label,
+		labelText,
 		removable = true,
-		onClick,
-		onRemove,
+		onclick,
+		onremove,
 		class: className = ''
 	}: Props = $props();
 
@@ -40,8 +42,8 @@
 	});
 
 	function handleClick() {
-		if (onClick) {
-			onClick();
+		if (onclick) {
+			onclick();
 		} else if (href) {
 			window.location.href = href;
 		}
@@ -49,7 +51,7 @@
 
 	function handleRemove(e: MouseEvent) {
 		e.stopPropagation();
-		if (onRemove) onRemove();
+		if (onremove) onremove();
 	}
 </script>
 
@@ -60,11 +62,11 @@
 		{#if icon}
 			<span class="pa-profile-panel__favorite-icon">{@render icon()}</span>
 		{/if}
-		<span class="pa-profile-panel__favorite-label">{label}</span>
+		<span class="pa-profile-panel__favorite-label">{labelText}</span>
 		{#if removable}
 			<button
 				class="pa-profile-panel__favorite-remove"
-				title="Remove from favorites"
+				title={$_('pureAdmin.a11y.removeFromFavorites')}
 				onclick={handleRemove}
 			>
 				✕

@@ -3,10 +3,10 @@
 	 * Pure Admin Footer Component (Svelte 5)
 	 * Based on @keenmate/pure-admin-core snippets/layout.html
 	 *
-	 * THREE-SECTION LAYOUT (v1.0.0-rc06):
-	 * - .pa-footer__left - Copyright (stays anchored left)
+	 * THREE-SECTION LAYOUT (v1.0.0-rc06, renamed in v1.4.2):
+	 * - .pa-footer__start - Copyright (stays anchored to inline-start)
 	 * - .pa-footer__center - Optional center content (flexible, fills space)
-	 * - .pa-footer__right - Version info, links (stays anchored right)
+	 * - .pa-footer__end - Version info, links (stays anchored to inline-end)
 	 *
 	 * Auto-config: When no left snippet is provided, uses config.app.copyright
 	 */
@@ -18,24 +18,24 @@
 	interface Props {
 		/** Additional CSS classes */
 		class?: string;
-		/** Left section snippet (copyright area) */
-		left?: import('svelte').Snippet;
+		/** Start section snippet (copyright area; left in LTR, right in RTL) */
+		start?: import('svelte').Snippet;
 		/** Center section snippet (optional content) */
 		center?: import('svelte').Snippet;
-		/** Right section snippet (version info, links) */
-		right?: import('svelte').Snippet;
-		/** Make right section vertical (stacks items) */
-		rightVertical?: boolean;
+		/** End section snippet (version info, links; right in LTR, left in RTL) */
+		end?: import('svelte').Snippet;
+		/** Make end section vertical (stacks items) */
+		endVertical?: boolean;
 		/** Children content (legacy fallback - renders all content) */
 		children?: import('svelte').Snippet;
 	}
 
 	let {
 		class: className = '',
-		left,
+		start,
 		center,
-		right,
-		rightVertical = false,
+		end,
+		endVertical = false,
 		children
 	}: Props = $props();
 
@@ -46,25 +46,25 @@
 		return base.join(' ');
 	});
 
-	// Build right section classes
-	const rightClasses = $derived(() => {
-		const base = ['pa-footer__right'];
-		if (rightVertical) base.push('pa-footer__right--vertical');
+	// Build end section classes
+	const endClasses = $derived(() => {
+		const base = ['pa-footer__end'];
+		if (endVertical) base.push('pa-footer__end--vertical');
 		return base.join(' ');
 	});
 
 	// Check if using three-section layout
 	const useThreeSectionLayout = $derived(() => {
-		return left || center || right || (!children && config().app.copyright);
+		return start || center || end || (!children && config().app.copyright);
 	});
 </script>
 
 <footer class={classes()}>
 	{#if useThreeSectionLayout()}
-		<!-- Left Section (stays anchored left) -->
-		<div class="pa-footer__left">
-			{#if left}
-				{@render left()}
+		<!-- Start Section (stays anchored to inline-start) -->
+		<div class="pa-footer__start">
+			{#if start}
+				{@render start()}
 			{:else if config().app.copyright}
 				<Paragraph>{config().app.copyright}</Paragraph>
 			{/if}
@@ -77,10 +77,10 @@
 			{/if}
 		</div>
 
-		<!-- Right Section (stays anchored right) -->
-		<div class={rightClasses()}>
-			{#if right}
-				{@render right()}
+		<!-- End Section (stays anchored to inline-end) -->
+		<div class={endClasses()}>
+			{#if end}
+				{@render end()}
 			{/if}
 		</div>
 	{:else if children}

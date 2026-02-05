@@ -13,8 +13,8 @@
 		variant?: CalloutVariant;
 		/** Callout size */
 		size?: CalloutSize;
-		/** Callout heading */
-		heading?: string;
+		/** Callout heading text */
+		headingText?: string;
 		/** Additional CSS classes */
 		class?: string;
 		/** Icon snippet (when provided, content is wrapped in pa-callout__content) */
@@ -26,7 +26,7 @@
 	let {
 		variant = 'info',
 		size,
-		heading,
+		headingText,
 		class: className = '',
 		icon,
 		children
@@ -56,15 +56,15 @@
 			{@render icon()}
 		</span>
 		<div class="pa-callout__content">
-			{#if heading}
-				<div class="pa-callout__heading">{heading}</div>
+			{#if headingText}
+				<div class="pa-callout__heading">{headingText}</div>
 			{/if}
 			{@render children?.()}
 		</div>
 	{:else}
 		<!-- Simple callout -->
-		{#if heading}
-			<div class="pa-callout__heading">{heading}</div>
+		{#if headingText}
+			<div class="pa-callout__heading">{headingText}</div>
 		{/if}
 		{@render children?.()}
 	{/if}

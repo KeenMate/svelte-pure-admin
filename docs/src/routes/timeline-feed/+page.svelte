@@ -110,17 +110,17 @@
   ` + '{/snippet}' + `
 </TimelineItem>`;
 
-	const codeDateHeader = `<TimelineItem dateHeader iconText="📅">
+	const codeDateHeader = `<TimelineItem isDateHeader iconText="📅">
   January 22, 2025
 </TimelineItem>`;
 
-	const codeFeedItemWithTime = `<TimelineItem time="14:32" avatarUrl="..." avatarAlt="Sarah">
+	const codeFeedItemWithTime = `<TimelineItem timeText="14:32" avatarUrl="..." avatarAlt="Sarah">
   <span><a href="#">Sarah Chen</a> merged pull request</span>
 </TimelineItem>`;
 </script>
 
 <!-- Basic Feed Timeline -->
-<Card title="Basic Feed Timeline">
+<Card titleText="Basic Feed Timeline">
 
 	<Timeline variant="feed">
 		<TimelineItem avatarUrl="https://ui-avatars.com/api/?name=John+Doe&background=0D8ABC&color=fff" avatarAlt="John Doe">
@@ -141,7 +141,7 @@
 </Card>
 
 <!-- Feed Timeline with Comments -->
-<Card title="Feed Timeline with Comments">
+<Card titleText="Feed Timeline with Comments">
 
 	<Timeline variant="feed">
 		<TimelineItem avatarUrl="https://ui-avatars.com/api/?name=Luna+B&background=0D8ABC&color=fff" avatarAlt="Luna Bonifacio">
@@ -174,39 +174,39 @@
 </Card>
 
 <!-- Feed Timeline with Date Headers -->
-<Card title="Feed Timeline with Date Headers">
+<Card titleText="Feed Timeline with Date Headers">
 
 	<Timeline variant="feed">
 		<!-- Date header -->
-		<TimelineItem dateHeader iconText="📅">
+		<TimelineItem isDateHeader iconText="📅">
 			January 22, 2025
 		</TimelineItem>
 
-		<TimelineItem time="14:32" avatarUrl="https://ui-avatars.com/api/?name=Sarah+Chen&background=0D8ABC&color=fff" avatarAlt="Sarah Chen">
+		<TimelineItem timeText="14:32" avatarUrl="https://ui-avatars.com/api/?name=Sarah+Chen&background=0D8ABC&color=fff" avatarAlt="Sarah Chen">
 			<span><a href="#">Sarah Chen</a> merged pull request #456</span>
 		</TimelineItem>
 
-		<TimelineItem time="12:15" avatarUrl="https://ui-avatars.com/api/?name=Mike+J&background=0D8ABC&color=fff" avatarAlt="Mike Johnson">
+		<TimelineItem timeText="12:15" avatarUrl="https://ui-avatars.com/api/?name=Mike+J&background=0D8ABC&color=fff" avatarAlt="Mike Johnson">
 			<span><a href="#">Mike Johnson</a> deployed to production</span>
 		</TimelineItem>
 
 		<!-- Another date header -->
-		<TimelineItem dateHeader iconText="📅">
+		<TimelineItem isDateHeader iconText="📅">
 			January 21, 2025
 		</TimelineItem>
 
-		<TimelineItem time="18:45" avatarUrl="https://ui-avatars.com/api/?name=Emma+D&background=0D8ABC&color=fff" avatarAlt="Emma Davis">
+		<TimelineItem timeText="18:45" avatarUrl="https://ui-avatars.com/api/?name=Emma+D&background=0D8ABC&color=fff" avatarAlt="Emma Davis">
 			<span><a href="#">Emma Davis</a> updated documentation</span>
 		</TimelineItem>
 
-		<TimelineItem time="16:20" avatarUrl="https://ui-avatars.com/api/?name=Alex+R&background=0D8ABC&color=fff" avatarAlt="Alex Rodriguez">
+		<TimelineItem timeText="16:20" avatarUrl="https://ui-avatars.com/api/?name=Alex+R&background=0D8ABC&color=fff" avatarAlt="Alex Rodriguez">
 			<span><a href="#">Alex Rodriguez</a> fixed critical bug in authentication</span>
 		</TimelineItem>
 	</Timeline>
 </Card>
 
 <!-- Data-Driven Feed Timeline -->
-<Card title="Data-Driven Feed Timeline">
+<Card titleText="Data-Driven Feed Timeline">
 	{#snippet header()}
 		<Paragraph>Timeline populated from database/API data</Paragraph>
 	{/snippet}
@@ -227,19 +227,19 @@
 </Card>
 
 <!-- Data-Driven with Date Sections -->
-<Card title="Data-Driven with Date Sections">
+<Card titleText="Data-Driven with Date Sections">
 	{#snippet header()}
 		<Paragraph>Organized by date with time prefixes</Paragraph>
 	{/snippet}
 
 	<Timeline variant="feed">
 		{#each dateSections as section}
-			<TimelineItem dateHeader iconText={section.dateIcon}>
+			<TimelineItem isDateHeader iconText={section.dateIcon}>
 				{section.date}
 			</TimelineItem>
 
 			{#each section.activities as activity}
-				<TimelineItem time={activity.time} avatarUrl={activity.avatarUrl} avatarAlt={activity.user}>
+				<TimelineItem timeText={activity.time} avatarUrl={activity.avatarUrl} avatarAlt={activity.user}>
 					<span><a href="#">{activity.user}</a> {activity.action}</span>
 				</TimelineItem>
 			{/each}
@@ -248,7 +248,7 @@
 </Card>
 
 <!-- Usage Examples -->
-<Card title="Usage Examples">
+<Card titleText="Usage Examples">
 
 	<Heading level={4}>Basic Feed Item</Heading>
 	<HighlightedCode code={codeBasicFeedItem} language="svelte" class="mb-4" />

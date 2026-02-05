@@ -9,8 +9,8 @@
 </script>
 
 <div style="position: fixed; top: 10px; right: 10px; z-index: 1000; max-width: 280px;">
-	<Card title="Current Configuration">
-		<DefinitionList inline>
+	<Card titleText="Current Configuration">
+		<DefinitionList isInline>
 			<dt>App Name</dt>
 			<dd>{config().app.name}</dd>
 			<dt>Page Size</dt>

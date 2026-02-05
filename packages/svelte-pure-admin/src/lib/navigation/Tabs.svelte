@@ -20,7 +20,7 @@
 		/** Overflow handling */
 		overflow?: TabsOverflow;
 		/** Border on top instead of bottom (useful for profile panel tabs) */
-		borderTop?: boolean;
+		isBorderTop?: boolean;
 		/** Additional CSS classes */
 		class?: string;
 		/** Tab items content */
@@ -32,7 +32,7 @@
 		size,
 		align,
 		overflow,
-		borderTop = false,
+		isBorderTop = false,
 		class: className = '',
 		children
 	}: Props = $props();
@@ -56,7 +56,7 @@
 		if (overflow) base.push(`pa-tabs--${overflow}`);
 
 		// Border position
-		if (borderTop) base.push('pa-tabs--border-top');
+		if (isBorderTop) base.push('pa-tabs--border-top');
 
 		// Custom classes
 		if (className) base.push(className);

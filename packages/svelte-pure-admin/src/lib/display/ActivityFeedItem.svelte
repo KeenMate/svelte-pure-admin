@@ -6,7 +6,7 @@
 
 	interface Props {
 		/** Timestamp text */
-		time?: string;
+		timeText?: string;
 		/** Additional CSS classes */
 		class?: string;
 		/** Icon content snippet */
@@ -15,7 +15,7 @@
 		children?: import('svelte').Snippet;
 	}
 
-	let { time, class: className = '', icon, children }: Props = $props();
+	let { timeText, class: className = '', icon, children }: Props = $props();
 
 	const classes = $derived(() => {
 		const base = ['pa-activity-feed__item'];
@@ -36,8 +36,8 @@
 				{@render children()}
 			</div>
 		{/if}
-		{#if time}
-			<div class="pa-activity-feed__time">{time}</div>
+		{#if timeText}
+			<div class="pa-activity-feed__time">{timeText}</div>
 		{/if}
 	</div>
 </div>

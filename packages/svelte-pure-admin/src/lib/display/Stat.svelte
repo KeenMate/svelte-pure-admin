@@ -18,13 +18,13 @@
 		/** Number/value to display */
 		number?: string | number;
 		/** Label text */
-		label?: string;
+		labelText?: string;
 		/** Change text (e.g., "+12.5%") - for hero variant */
-		change?: string;
+		changeText?: string;
 		/** Change direction - determines color (positive=green, negative=red, neutral=gray) */
 		changeDirection?: ChangeDirection;
-		/** Symbol (for square variant) */
-		symbol?: string;
+		/** Symbol text (for square variant) */
+		symbolText?: string;
 		/** Additional CSS classes */
 		class?: string;
 		/** Icon snippet (for default variant) */
@@ -38,10 +38,10 @@
 		color,
 		iconVariant = 'primary',
 		number,
-		label,
-		change,
+		labelText,
+		changeText,
 		changeDirection,
-		symbol,
+		symbolText,
 		class: className = '',
 		icon,
 		children
@@ -63,19 +63,19 @@
 	</div>
 {:else if variant === 'hero'}
 	<div class={classes()}>
-		<div class="pa-stat__label">{label}</div>
+		<div class="pa-stat__label">{labelText}</div>
 		<div class="pa-stat__value">{number}</div>
-		{#if change}
-			<div class="pa-stat__change pa-stat__change--{changeDirection}">{change}</div>
+		{#if changeText}
+			<div class="pa-stat__change pa-stat__change--{changeDirection}">{changeText}</div>
 		{/if}
 	</div>
 {:else if variant === 'square'}
 	<div class={classes()}>
 		<div class="pa-stat__number">{number}</div>
-		{#if symbol}
-			<div class="pa-stat__symbol">{symbol}</div>
+		{#if symbolText}
+			<div class="pa-stat__symbol">{symbolText}</div>
 		{/if}
-		<div class="pa-stat__label">{label}</div>
+		<div class="pa-stat__label">{labelText}</div>
 	</div>
 {:else}
 	<div class={classes()}>
@@ -85,13 +85,13 @@
 			</div>
 			<div class="pa-stat__content">
 				<div class="pa-stat__number">{number}</div>
-				<div class="pa-stat__label">{label}</div>
+				<div class="pa-stat__label">{labelText}</div>
 			</div>
 		{:else}
 			<div class="pa-stat__number">{number}</div>
-			<div class="pa-stat__label">{label}</div>
-			{#if change}
-				<div class="pa-stat__change pa-stat__change--{changeDirection}">{change}</div>
+			<div class="pa-stat__label">{labelText}</div>
+			{#if changeText}
+				<div class="pa-stat__change pa-stat__change--{changeDirection}">{changeText}</div>
 			{/if}
 		{/if}
 	</div>

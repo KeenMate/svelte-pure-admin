@@ -33,23 +33,23 @@
 <Paragraph>Flexible content containers for organizing and displaying information.</Paragraph>
 
 <!-- Same Height Cards -->
-<Section title="Same Height Cards">
-	<Paragraph class="mb-2">Use <code>sameHeight</code> on Grid to make all cards in a row match the height of the tallest card.</Paragraph>
+<Section titleText="Same Height Cards">
+	<Paragraph class="mb-2">Use <code>sameHeight</code> on Grid to make all cards in a isRow match the height of the tallest card.</Paragraph>
 	<Grid sameHeight>
 		<Column size="100" md="1-3">
-			<Card title="Short Card">
+			<Card titleText="Short Card">
 				<Paragraph>This card has minimal content.</Paragraph>
 			</Card>
 		</Column>
 		<Column size="100" md="1-3">
-			<Card title="Tall Card">
+			<Card titleText="Tall Card">
 				<Paragraph>This card has much more content than the others, making it naturally taller.</Paragraph>
 				<Paragraph>All sibling cards will stretch to match this height thanks to the <code>sameHeight</code> prop on Grid.</Paragraph>
 				<Paragraph>This is useful for dashboard layouts where visual consistency matters.</Paragraph>
 			</Card>
 		</Column>
 		<Column size="100" md="1-3">
-			<Card title="Medium Card">
+			<Card titleText="Medium Card">
 				<Paragraph>This card also stretches to match the tallest card in the row.</Paragraph>
 			</Card>
 		</Column>
@@ -57,7 +57,7 @@
 </Section>
 
 <!-- Basic Cards -->
-<Section title="Basic Cards">
+<Section titleText="Basic Cards">
 	<Grid>
 		<!-- Simple Card -->
 		<Column size="100" md="1-2">
@@ -90,7 +90,7 @@
 
 		<!-- Full Card -->
 		<Column size="100" md="1-2">
-			<Card title="Complete Card">
+			<Card titleText="Complete Card">
 				{#snippet tools()}
 					<Button variant="secondary" size="xs">⚙</Button>
 				{/snippet}
@@ -106,7 +106,7 @@
 </Section>
 
 <!-- Colored Cards -->
-<Section title="Colored Cards">
+<Section titleText="Colored Cards">
 	<Grid>
 		<!-- Primary Card -->
 		<Column size="100" md="1-2">
@@ -161,7 +161,7 @@
 </Section>
 
 <!-- Theme Color Cards -->
-<Section title="Theme Color Cards">
+<Section titleText="Theme Color Cards">
 	<Paragraph class="mb-2">Cards can use theme color slots (color-1 through color-9) for custom color schemes defined by your theme.</Paragraph>
 	<Grid>
 		{#each colorVariants as variant, i}
@@ -178,26 +178,26 @@
 </Section>
 
 <!-- Bordered Cards -->
-<Section title="Bordered Cards">
+<Section titleText="Bordered Cards">
 	<Paragraph class="mb-2">Cards can have visible borders using the <code>pa-card--bordered</code> class.</Paragraph>
 	<Grid>
 		<Column size="100" md="1-2">
-			<Card class="pa-card--bordered" title="Bordered Card">
+			<Card class="pa-card--bordered" titleText="Bordered Card">
 				<Paragraph>Card with visible border styling.</Paragraph>
 			</Card>
 		</Column>
 		<Column size="100" md="1-2">
-			<Card class="pa-card--bordered" variant="primary" title="Bordered Primary">
+			<Card class="pa-card--bordered" variant="primary" titleText="Bordered Primary">
 				<Paragraph>Bordered card with color variant.</Paragraph>
 			</Card>
 		</Column>
 		<Column size="100" md="1-2">
-			<Card class="pa-card--bordered" variant="success" title="Bordered Success">
+			<Card class="pa-card--bordered" variant="success" titleText="Bordered Success">
 				<Paragraph>Bordered card with success variant.</Paragraph>
 			</Card>
 		</Column>
 		<Column size="100" md="1-2">
-			<Card class="pa-card--bordered" variant="danger" title="Bordered Danger">
+			<Card class="pa-card--bordered" variant="danger" titleText="Bordered Danger">
 				<Paragraph>Bordered card with danger variant.</Paragraph>
 			</Card>
 		</Column>
@@ -205,12 +205,12 @@
 </Section>
 
 <!-- Stats Cards -->
-<Section title="Statistics Cards">
+<Section titleText="Statistics Cards">
 	<Grid>
 		<!-- Stat Card 1 -->
 		<Column size="100" sm="1-2" lg="1-4">
-			<Card stat>
-				<Stat number="1,234" label="Total Users" iconVariant="primary">
+			<Card isStat>
+				<Stat number="1,234" labelText="Total Users" iconVariant="primary">
 					{#snippet icon()}👥{/snippet}
 				</Stat>
 			</Card>
@@ -218,8 +218,8 @@
 
 		<!-- Stat Card 2 -->
 		<Column size="100" sm="1-2" lg="1-4">
-			<Card stat>
-				<Stat number="$45,678" label="Revenue" iconVariant="success">
+			<Card isStat>
+				<Stat number="$45,678" labelText="Revenue" iconVariant="success">
 					{#snippet icon()}📊{/snippet}
 				</Stat>
 			</Card>
@@ -227,8 +227,8 @@
 
 		<!-- Stat Card 3 -->
 		<Column size="100" sm="1-2" lg="1-4">
-			<Card stat>
-				<Stat number="567" label="Orders" iconVariant="warning">
+			<Card isStat>
+				<Stat number="567" labelText="Orders" iconVariant="warning">
 					{#snippet icon()}📦{/snippet}
 				</Stat>
 			</Card>
@@ -236,8 +236,8 @@
 
 		<!-- Stat Card 4 -->
 		<Column size="100" sm="1-2" lg="1-4">
-			<Card stat>
-				<Stat number="+12%" label="Growth" iconVariant="info">
+			<Card isStat>
+				<Stat number="+12%" labelText="Growth" iconVariant="info">
 					{#snippet icon()}📈{/snippet}
 				</Stat>
 			</Card>
@@ -246,33 +246,33 @@
 </Section>
 
 <!-- Statistics with Trends -->
-<Section title="Statistics with Trends">
+<Section titleText="Statistics with Trends">
 	<Paragraph class="mb-2">Stats can display change indicators showing positive, negative, or neutral trends. Note: Change indicators only display when NOT using the icon layout.</Paragraph>
 	<Grid>
 		<Column size="100" sm="1-2" lg="1-3">
-			<Card stat>
-				<Stat number="1,234" label="Total Users" change="+12.5%" changeDirection="positive" />
+			<Card isStat>
+				<Stat number="1,234" labelText="Total Users" changeText="+12.5%" changeDirection="positive" />
 			</Card>
 		</Column>
 		<Column size="100" sm="1-2" lg="1-3">
-			<Card stat>
-				<Stat number="567" label="Orders" change="-5.2%" changeDirection="negative" />
+			<Card isStat>
+				<Stat number="567" labelText="Orders" changeText="-5.2%" changeDirection="negative" />
 			</Card>
 		</Column>
 		<Column size="100" sm="1-2" lg="1-3">
-			<Card stat>
-				<Stat number="$89.50" label="Avg Order" change="0%" changeDirection="neutral" />
+			<Card isStat>
+				<Stat number="$89.50" labelText="Avg Order" changeText="0%" changeDirection="neutral" />
 			</Card>
 		</Column>
 	</Grid>
 </Section>
 
 <!-- Interactive Cards -->
-<Section title="Interactive Cards">
+<Section titleText="Interactive Cards">
 	<Grid>
 		<!-- Collapsible Card -->
 		<Column size="100" md="1-2">
-			<Card title="Collapsible Card">
+			<Card titleText="Collapsible Card">
 				{#snippet tools()}
 					<Button variant="secondary" size="xs" onclick={toggleCard}>−</Button>
 				{/snippet}
@@ -309,16 +309,16 @@
 </Section>
 
 <!-- Advanced Cards -->
-<Section title="Advanced Card Features">
+<Section titleText="Advanced Card Features">
 	<Grid>
 		<!-- Card with Icon and Tools -->
 		<Column size="100" md="1-2">
-			<Card title="Analytics Dashboard Overview">
+			<Card titleText="Analytics Dashboard Overview">
 				{#snippet titleIcon()}📊{/snippet}
 				{#snippet tools()}
-					<Button variant="secondary" size="xs" title="Refresh">↻</Button>
-					<Button variant="secondary" size="xs" title="Settings">⚙</Button>
-					<Button variant="secondary" size="xs" title="More options">⋯</Button>
+					<Button variant="secondary" size="xs" titleText="Refresh">↻</Button>
+					<Button variant="secondary" size="xs" titleText="Settings">⚙</Button>
+					<Button variant="secondary" size="xs" titleText="More options">⋯</Button>
 				{/snippet}
 				<Paragraph>
 					This card demonstrates icon in title with tool buttons. The title will truncate with
@@ -330,14 +330,14 @@
 		<!-- Card with Very Long Title -->
 		<Column size="100" md="1-2">
 			<Card
-				title="This is a Very Long Card Title That Should Be Truncated With Ellipsis When It Exceeds Available Space"
+				titleText="This is a Very Long Card Title That Should Be Truncated With Ellipsis When It Exceeds Available Space"
 			>
 				{#snippet titleIcon()}🔒{/snippet}
 				{#snippet tools()}
-					<Button variant="secondary" size="xs" title="Edit">✏️</Button>
-					<Button variant="secondary" size="xs" title="Delete">🗑️</Button>
-					<Button variant="secondary" size="xs" title="Export">⬇️</Button>
-					<Button variant="secondary" size="xs" title="Share">📤</Button>
+					<Button variant="secondary" size="xs" titleText="Edit">✏️</Button>
+					<Button variant="secondary" size="xs" titleText="Delete">🗑️</Button>
+					<Button variant="secondary" size="xs" titleText="Export">⬇️</Button>
+					<Button variant="secondary" size="xs" titleText="Share">📤</Button>
 				{/snippet}
 				<Paragraph>
 					Notice how the title truncates with ellipsis (...) when there's not enough space due to
@@ -348,11 +348,11 @@
 
 		<!-- Card with Different Icon Styles -->
 		<Column size="100" md="1-2">
-			<Card title="Project Management">
+			<Card titleText="Project Management">
 				{#snippet titleIcon()}💼{/snippet}
 				{#snippet tools()}
 					<Button variant="primary" size="xs">+ Add</Button>
-					<Button variant="secondary" size="xs" title="Filter">🔍</Button>
+					<Button variant="secondary" size="xs" titleText="Filter">🔍</Button>
 				{/snippet}
 				<Paragraph>Different combinations of icons and tool button styles work well together.</Paragraph>
 			</Card>
@@ -360,10 +360,10 @@
 
 		<!-- Card with Minimal Tools -->
 		<Column size="100" md="1-2">
-			<Card title="Revenue Metrics and KPI Tracking System">
+			<Card titleText="Revenue Metrics and KPI Tracking System">
 				{#snippet titleIcon()}📈{/snippet}
 				{#snippet tools()}
-					<Button variant="secondary" size="xs" title="Maximize">⛶</Button>
+					<Button variant="secondary" size="xs" titleText="Maximize">⛶</Button>
 				{/snippet}
 				<Paragraph>Even with fewer tools, the title still truncates appropriately to maintain layout.</Paragraph>
 			</Card>
@@ -372,11 +372,11 @@
 </Section>
 
 <!-- Data Cards -->
-<Section title="Data Display Cards">
+<Section titleText="Data Display Cards">
 	<Grid>
 		<!-- Table Card -->
 		<Column size="100" lg="1-2">
-			<Card title="Recent Orders" noPadding>
+			<Card titleText="Recent Orders" hasPadding={false}>
 				{#snippet tools()}
 					<Button variant="secondary" size="sm">View All</Button>
 				{/snippet}
@@ -415,23 +415,23 @@
 
 		<!-- List Card -->
 		<Column size="100" lg="1-2">
-			<Card title="Activity Feed" noPadding>
+			<Card titleText="Activity Feed" hasPadding={false}>
 				<List>
 					<ListItem
-						title="User Registration"
-						subtitle="New user John Doe registered"
-						meta="2 minutes ago"
+						titleText="User Registration"
+						subtitleText="New user John Doe registered"
+						metaText="2 minutes ago"
 					>
 						{#snippet avatar()}👤{/snippet}
 					</ListItem>
 					<ListItem
-						title="Payment Received"
-						subtitle="$299.99 from Order #1234"
-						meta="5 minutes ago"
+						titleText="Payment Received"
+						subtitleText="$299.99 from Order #1234"
+						metaText="5 minutes ago"
 					>
 						{#snippet avatar()}💰{/snippet}
 					</ListItem>
-					<ListItem title="Order Shipped" subtitle="Order #1233 has been shipped" meta="10 minutes ago">
+					<ListItem titleText="Order Shipped" subtitleText="Order #1233 has been shipped" metaText="10 minutes ago">
 						{#snippet avatar()}📦{/snippet}
 					</ListItem>
 				</List>

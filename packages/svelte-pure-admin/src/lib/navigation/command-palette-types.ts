@@ -187,7 +187,7 @@ export interface CommandPaletteProps {
 	/**
 	 * Called when a global search result is selected
 	 */
-	onGlobalSelect?: (result: SearchResult) => void;
+	onglobalselect?: (result: SearchResult) => void;
 
 	/** Placeholder text for the input */
 	placeholder?: string;

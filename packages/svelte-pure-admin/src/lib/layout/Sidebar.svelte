@@ -13,6 +13,7 @@
 	 */
 
 	import { onMount } from 'svelte';
+	import { _ } from '../i18n';
 
 	type SidebarMode = 'sticky' | 'icon-collapse';
 
@@ -204,7 +205,7 @@
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div
 			class="pa-sidebar-resize"
-			title="Drag to resize sidebar"
+			title={$_('pureAdmin.a11y.dragToResizeSidebar')}
 			bind:this={resizeHandleElement}
 			onmousedown={startResize}
 			ontouchstart={startResize}

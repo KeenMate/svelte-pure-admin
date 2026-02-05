@@ -10,8 +10,8 @@
 	type Language = 'javascript' | 'json' | 'html' | 'css' | 'bash' | 'sql' | 'python';
 
 	interface Props {
-		/** Title (e.g., filename) */
-		title: string;
+		/** Title text (e.g., filename) */
+		titleText: string;
 		/** Programming language for styling */
 		language?: Language;
 		/** Show copy button */
@@ -23,7 +23,7 @@
 	}
 
 	let {
-		title,
+		titleText,
 		language,
 		showCopy = true,
 		class: className = '',
@@ -64,7 +64,7 @@
 
 <div class={classes()}>
 	<div class="pa-code-block__header">
-		<span class="pa-code-block__title">{title}</span>
+		<span class="pa-code-block__title">{titleText}</span>
 		{#if showCopy}
 			<Button variant={copied ? 'success' : 'secondary'} size="xs" onclick={handleCopy}>
 				{#snippet icon()}

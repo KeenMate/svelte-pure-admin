@@ -10,7 +10,8 @@
  *   const value = await dialogService.prompt({ title: 'Enter name:', message: '...' });
  */
 
-import { i18nStore } from '../i18n/store.svelte';
+import { get } from 'svelte/store';
+import { _ } from '../i18n';
 
 // Types
 export type DialogVariant = 'primary' | 'success' | 'warning' | 'danger' | 'info';
@@ -37,7 +38,7 @@ export interface DialogButton<T = unknown> {
 	/** Button variant (defaults to 'secondary') */
 	variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark';
 	/** Whether this is an outline button */
-	outline?: boolean;
+	isOutline?: boolean;
 	/** Additional CSS class for the button */
 	class?: string;
 	/** Whether this button should be disabled */
@@ -76,6 +77,13 @@ export interface DialogState {
 	type: DialogType;
 	options: ConfirmDialogOptions | AlertDialogOptions | PromptDialogOptions | CustomDialogOptions;
 	resolve: (value: unknown) => void;
+}
+
+/**
+ * Helper to get translation value
+ */
+function t(key: string): string {
+	return get(_)(key);
 }
 
 // Create a reactive store class
@@ -118,10 +126,10 @@ export const dialogService = {
 	 */
 	confirm(options: ConfirmDialogOptions = {}): Promise<boolean> {
 		const defaultOptions: ConfirmDialogOptions = {
-			title: i18nStore.t('dialog.confirm'),
-			message: i18nStore.t('dialog.areYouSure'),
-			confirmText: i18nStore.t('dialog.ok'),
-			cancelText: i18nStore.t('dialog.cancel'),
+			title: t('dialog.confirm'),
+			message: t('dialog.areYouSure'),
+			confirmText: t('dialog.ok'),
+			cancelText: t('dialog.cancel'),
 			variant: 'primary',
 			size: 'sm',
 			position: 'center',
@@ -137,9 +145,9 @@ export const dialogService = {
 	 */
 	alert(options: AlertDialogOptions = {}): Promise<void> {
 		const defaultOptions: AlertDialogOptions = {
-			title: i18nStore.t('dialog.alert'),
+			title: t('dialog.alert'),
 			message: '',
-			okText: i18nStore.t('dialog.ok'),
+			okText: t('dialog.ok'),
 			variant: 'primary',
 			size: 'sm',
 			position: 'center',
@@ -155,12 +163,12 @@ export const dialogService = {
 	 */
 	prompt(options: PromptDialogOptions = {}): Promise<string | null> {
 		const defaultOptions: PromptDialogOptions = {
-			title: i18nStore.t('dialog.input'),
-			message: i18nStore.t('dialog.enterValue'),
+			title: t('dialog.input'),
+			message: t('dialog.enterValue'),
 			defaultValue: '',
 			placeholder: '',
-			confirmText: i18nStore.t('dialog.ok'),
-			cancelText: i18nStore.t('dialog.cancel'),
+			confirmText: t('dialog.ok'),
+			cancelText: t('dialog.cancel'),
 			variant: 'primary',
 			size: 'sm',
 			position: 'center',
@@ -176,7 +184,7 @@ export const dialogService = {
 	 */
 	custom<T>(options: CustomDialogOptions<T>): Promise<T> {
 		const defaultOptions: CustomDialogOptions<T> = {
-			title: i18nStore.t('dialog.defaultTitle'),
+			title: t('dialog.defaultTitle'),
 			message: '',
 			variant: 'primary',
 			size: 'sm',

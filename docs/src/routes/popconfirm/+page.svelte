@@ -114,7 +114,7 @@
 </script>
 
 <!-- Popconfirm Component -->
-<Card title="Popconfirm Component" subtitle="Small confirmation dialogs anchored to trigger buttons - perfect for delete confirmations and quick decisions">
+<Card titleText="Popconfirm Component" subtitleText="Small confirmation dialogs anchored to trigger buttons - perfect for delete confirmations and quick decisions">
 
 	<Grid>
 		<Column size="100" md="50">
@@ -172,7 +172,7 @@
 					<Button
 						size="xs"
 						variant="danger"
-						outline
+						isOutline
 						onclick={(e: MouseEvent) => {
 							compact2Trigger = e.currentTarget as HTMLElement;
 							showCompact2Popconfirm = !showCompact2Popconfirm;
@@ -188,58 +188,58 @@
 	<Popconfirm
 		bind:show={showDeletePopconfirm}
 		trigger={deleteTrigger}
-		message="Are you sure you want to delete this item? This action cannot be undone."
+		messageText="Are you sure you want to delete this item? This action cannot be undone."
 		icon="danger"
 		confirmText="Delete"
 		confirmVariant="danger"
-		onConfirm={handleDelete}
+		onconfirm={handleDelete}
 	/>
 
 	<Popconfirm
 		bind:show={showArchivePopconfirm}
 		trigger={archiveTrigger}
-		message="Archive this item? It will be moved to the archive folder."
+		messageText="Archive this item? It will be moved to the archive folder."
 		icon="warning"
 		confirmText="Archive"
 		confirmVariant="warning"
-		onConfirm={handleArchive}
+		onconfirm={handleArchive}
 	/>
 
 	<Popconfirm
 		bind:show={showResetPopconfirm}
 		trigger={resetTrigger}
-		message="Reset all settings to default values?"
+		messageText="Reset all settings to default values?"
 		icon="info"
 		confirmText="Reset"
 		confirmVariant="primary"
-		onConfirm={handleReset}
+		onconfirm={handleReset}
 	/>
 
 	<Popconfirm
 		bind:show={showCompactPopconfirm}
 		trigger={compactTrigger}
-		message="Delete this item?"
-		compact
+		messageText="Delete this item?"
+		isCompact
 		confirmText="Yes"
 		cancelText="No"
 		confirmVariant="danger"
-		onConfirm={handleRemove}
+		onconfirm={handleRemove}
 	/>
 
 	<Popconfirm
 		bind:show={showCompact2Popconfirm}
 		trigger={compact2Trigger}
-		message="Remove this item?"
-		compact
+		messageText="Remove this item?"
+		isCompact
 		confirmText="Yes"
 		cancelText="No"
 		confirmVariant="danger"
-		onConfirm={handleRemove}
+		onconfirm={handleRemove}
 	/>
 </Card>
 
 <!-- Position Variants (Svelte-specific) -->
-<Card title="Position Variants" subtitle="Popconfirms automatically adjust position based on available space using Floating UI">
+<Card titleText="Position Variants" subtitleText="Popconfirms automatically adjust position based on available space using Floating UI">
 
 	<ButtonGroup>
 		<Button
@@ -287,7 +287,7 @@
 		bind:show={showTopPopconfirm}
 		trigger={topTrigger}
 		position="top"
-		message="Confirm this action?"
+		messageText="Confirm this action?"
 		confirmText="Yes"
 		cancelText="No"
 	/>
@@ -296,7 +296,7 @@
 		bind:show={showBottomPopconfirm}
 		trigger={bottomTrigger}
 		position="bottom"
-		message="Confirm this action?"
+		messageText="Confirm this action?"
 		confirmText="Yes"
 		cancelText="No"
 	/>
@@ -305,7 +305,7 @@
 		bind:show={showLeftPopconfirm}
 		trigger={leftTrigger}
 		position="left"
-		message="Confirm this action?"
+		messageText="Confirm this action?"
 		confirmText="Yes"
 		cancelText="No"
 	/>
@@ -314,14 +314,14 @@
 		bind:show={showRightPopconfirm}
 		trigger={rightTrigger}
 		position="right"
-		message="Confirm this action?"
+		messageText="Confirm this action?"
 		confirmText="Yes"
 		cancelText="No"
 	/>
 </Card>
 
 <!-- Icon Variants (Svelte-specific) -->
-<Card title="Icon Variants" subtitle="Different icon styles to indicate the severity of the action">
+<Card titleText="Icon Variants" subtitleText="Different icon styles to indicate the severity of the action">
 
 	<ButtonGroup>
 		<Button
@@ -358,7 +358,7 @@
 	<Popconfirm
 		bind:show={showDangerPopconfirm}
 		trigger={dangerTrigger}
-		message="This action is destructive and cannot be undone."
+		messageText="This action is destructive and cannot be undone."
 		icon="danger"
 		confirmText="Continue"
 		confirmVariant="danger"
@@ -367,7 +367,7 @@
 	<Popconfirm
 		bind:show={showWarningPopconfirm}
 		trigger={warningTrigger}
-		message="Please review this action carefully before proceeding."
+		messageText="Please review this action carefully before proceeding."
 		icon="warning"
 		confirmText="Proceed"
 		confirmVariant="warning"
@@ -376,7 +376,7 @@
 	<Popconfirm
 		bind:show={showInfoPopconfirm}
 		trigger={infoTrigger}
-		message="This will update your preferences. Continue?"
+		messageText="This will update your preferences. Continue?"
 		icon="info"
 		confirmText="Update"
 		confirmVariant="primary"
@@ -384,9 +384,9 @@
 </Card>
 
 <!-- Table with Popconfirms -->
-<Card title="Table with Popconfirms" subtitle="Common use case: delete confirmations in data tables" noPadding>
+<Card titleText="Table with Popconfirms" subtitleText="Common use case: delete confirmations in data tables" hasPadding={false}>
 
-	<Table striped>
+	<Table isStriped>
 		<thead>
 			<tr>
 				<th>ID</th>
@@ -418,22 +418,22 @@
 		</tbody>
 	</Table>
 
-	<!-- Popconfirms outside table to avoid invalid HTML -->
+	<!-- Popconfirms outside isTable to avoid invalid HTML -->
 	{#each tableData as row (row.id)}
 		<Popconfirm
 			bind:show={row.showPopconfirm}
 			trigger={row.trigger}
-			message={`Delete ${row.name}?`}
-			compact
+			messageText={`Delete ${row.name}?`}
+			isCompact
 			confirmText="Yes"
 			cancelText="No"
 			confirmVariant="danger"
-			onConfirm={() => handleTableDelete(row.id)}
+			onconfirm={() => handleTableDelete(row.id)}
 		/>
 	{/each}
 </Card>
 
 <!-- Toast notifications -->
 <ToastContainer position="top-right">
-	<Toast bind:show={showToast} variant="success" title="Success" message={toastMessage} />
+	<Toast bind:show={showToast} variant="success" titleText="Success" messageText={toastMessage} />
 </ToastContainer>

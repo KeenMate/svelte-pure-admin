@@ -20,7 +20,7 @@
 </Callout>`;
 
 	const codeWithHeadingIcon = `<!-- With heading -->
-<Callout variant="info" heading="Note">
+<Callout variant="info" headingText="Note">
   <p>Content with a heading above.</p>
 </Callout>
 
@@ -32,7 +32,7 @@
 
 <!-- With size -->
 <Callout variant="info" size="sm">
-  Compact callout for inline tips.
+  Compact callout for isInline tips.
 </Callout>
 
 <Callout variant="info" size="lg">
@@ -52,7 +52,7 @@
 <Paragraph>Documentation-style callouts with left border accent for tips, notes, warnings in content areas.</Paragraph>
 
 <!-- Basic Callouts -->
-<Card title="Basic Callouts">
+<Card titleText="Basic Callouts">
 	<Callout variant="primary">
 		<strong>Primary Callout</strong> - Use this for highlighting important information related to the main topic.
 	</Callout>
@@ -79,26 +79,26 @@
 </Card>
 
 <!-- Callouts with Headings -->
-<Card title="Callouts with Headings">
-	<Callout variant="info" heading="Note">
+<Card titleText="Callouts with Headings">
+	<Callout variant="info" headingText="Note">
 		<p>This is an informational callout with a heading. Use headings to make important callouts more scannable.</p>
 	</Callout>
 
-	<Callout variant="warning" heading="Deprecation Warning">
+	<Callout variant="warning" headingText="Deprecation Warning">
 		<p>This API endpoint will be removed in version 3.0. Please migrate to the new endpoint.</p>
 	</Callout>
 
-	<Callout variant="danger" heading="Breaking Change">
+	<Callout variant="danger" headingText="Breaking Change">
 		<p>The response format has changed. See the migration guide for details on updating your integration.</p>
 	</Callout>
 
-	<Callout variant="success" heading="Best Practice">
+	<Callout variant="success" headingText="Best Practice">
 		<p>Always validate user input before processing. This prevents security vulnerabilities and improves reliability.</p>
 	</Callout>
 </Card>
 
 <!-- Callouts with Icons -->
-<Card title="Callouts with Icons">
+<Card titleText="Callouts with Icons">
 	<Callout variant="info">
 		{#snippet icon()}i{/snippet}
 		<strong>Pro Tip:</strong> You can use keyboard shortcuts to speed up your workflow. Press <Code>Ctrl+K</Code> to open the command palette.
@@ -121,10 +121,10 @@
 </Card>
 
 <!-- Callouts with Lists -->
-<Card title="Callouts with Lists">
+<Card titleText="Callouts with Lists">
 	<Grid>
 		<Column size="100" md="50">
-			<Callout variant="info" heading="Prerequisites">
+			<Callout variant="info" headingText="Prerequisites">
 				<p>Before you begin, make sure you have:</p>
 				<ul>
 					<li>Node.js 18 or higher installed</li>
@@ -135,7 +135,7 @@
 			</Callout>
 		</Column>
 		<Column size="100" md="50">
-			<Callout variant="warning" heading="Known Limitations">
+			<Callout variant="warning" headingText="Known Limitations">
 				<p>Please be aware of these current limitations:</p>
 				<ol>
 					<li>Maximum file size is 10MB</li>
@@ -149,9 +149,9 @@
 </Card>
 
 <!-- Callout Sizes -->
-<Card title="Callout Sizes">
+<Card titleText="Callout Sizes">
 	<Callout variant="info" size="sm">
-		<strong>Small Callout</strong> - Compact size for inline tips or short notes.
+		<strong>Small Callout</strong> - Compact size for isInline tips or short notes.
 	</Callout>
 
 	<Callout variant="info">
@@ -164,22 +164,22 @@
 </Card>
 
 <!-- Callouts with Code -->
-<Card title="Callouts with Code">
-	<Callout variant="info" heading="Quick Start">
+<Card titleText="Callouts with Code">
+	<Callout variant="info" headingText="Quick Start">
 		<p>Install the package using npm:</p>
 		<p><Code>npm install @keenmate/pure-admin-core</Code></p>
 		<p>Then import the styles in your SCSS:</p>
 		<p><Code>@import '@keenmate/pure-admin-core/src/scss/main';</Code></p>
 	</Callout>
 
-	<Callout variant="warning" heading="Migration Note">
+	<Callout variant="warning" headingText="Migration Note">
 		<p>If upgrading from v0.x, replace <Code>pa-alert--callout</Code> with the new <Code>pa-callout</Code> class. The old class is deprecated and will be removed in v2.0.</p>
 	</Callout>
 </Card>
 
 <!-- Callouts with Links -->
-<Card title="Callouts with Links">
-	<Callout variant="info" heading="Learn More">
+<Card titleText="Callouts with Links">
+	<Callout variant="info" headingText="Learn More">
 		<p>For detailed documentation on all available components, visit the <a href="/components">Components Overview</a> page. You can also check out the <a href="/buttons">Buttons</a> and <a href="/cards">Cards</a> documentation.</p>
 	</Callout>
 
@@ -189,7 +189,7 @@
 </Card>
 
 <!-- Callouts in Grid -->
-<Card title="Callouts in Grid Layout">
+<Card titleText="Callouts in Grid Layout">
 	<Grid>
 		<Column size="100" md="1-3">
 			<Callout variant="success" size="sm">
@@ -210,7 +210,7 @@
 </Card>
 
 <!-- Callout vs Alert Comparison -->
-<Card title="Callouts vs Alerts">
+<Card titleText="Callouts vs Alerts">
 	<Grid>
 		<Column size="100" md="50">
 			<h4>Callout</h4>
@@ -230,7 +230,7 @@
 </Card>
 
 <!-- Code Examples -->
-<Card title="Code Examples">
+<Card titleText="Code Examples">
 	<Grid>
 		<Column size="100" md="50">
 			<h4 class="mb-2">Basic Usage</h4>

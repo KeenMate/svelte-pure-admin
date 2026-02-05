@@ -5,13 +5,21 @@
  * Components register their shortcuts here instead of managing their own listeners.
  */
 
+import { get } from 'svelte/store';
+import { _ } from '../i18n';
 import type {
 	Shortcut,
 	ShortcutRegistration,
 	ShortcutRegistry,
 	ShortcutModifiers
 } from './shortcut-registry-types';
-import { i18nStore } from '../i18n/store.svelte';
+
+/**
+ * Helper to get translation value
+ */
+function t(key: string): string {
+	return get(_)(key);
+}
 
 /**
  * Create a shortcut registry instance
@@ -133,7 +141,7 @@ function createShortcutRegistry(): ShortcutRegistry {
 		const grouped = new Map<string, Shortcut[]>();
 
 		for (const shortcut of shortcuts.values()) {
-			const category = shortcut.category ?? i18nStore.t('shortcuts.generalCategory');
+			const category = shortcut.category ?? t('shortcuts.generalCategory');
 			const list = grouped.get(category) ?? [];
 			list.push(shortcut);
 			grouped.set(category, list);
@@ -212,7 +220,7 @@ function createShortcutRegistry(): ShortcutRegistry {
 			const grouped = new Map<string, Shortcut[]>();
 
 			for (const shortcut of shortcuts.values()) {
-				const category = shortcut.category ?? i18nStore.t('shortcuts.generalCategory');
+				const category = shortcut.category ?? t('shortcuts.generalCategory');
 				const list = grouped.get(category) ?? [];
 				list.push(shortcut);
 				grouped.set(category, list);

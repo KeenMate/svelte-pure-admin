@@ -299,11 +299,11 @@
 				{#snippet search()}
 					<NavbarSearch
 						placeholder="Search or type / for commands..."
-						onClick={() => (showPalette = true)}
+						onclick={() => (showPalette = true)}
 					/>
 				{/snippet}
 
-				{#snippet navRight()}
+				{#snippet navEnd()}
 					<li><a href="#notifications">🔔</a></li>
 					<li><a href="#profile">👤</a></li>
 				{/snippet}
@@ -337,7 +337,7 @@
 				{/snippet}
 
 				<div class="mb-4">
-					<Button variant="primary" size="lg" block onclick={() => (showPalette = true)}>
+					<Button variant="primary" size="lg" isBlock onclick={() => (showPalette = true)}>
 						{#snippet icon()}
 							🔍
 						{/snippet}
@@ -526,5 +526,5 @@
 	{commands}
 	{contexts}
 	{globalSearch}
-	onGlobalSelect={handleGlobalSelect}
+	onglobalselect={handleGlobalSelect}
 />

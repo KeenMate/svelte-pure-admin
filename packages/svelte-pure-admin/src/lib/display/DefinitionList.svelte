@@ -7,21 +7,21 @@
 
 	interface Props {
 		/** Inline layout (horizontal key-value pairs) */
-		inline?: boolean;
+		isInline?: boolean;
 		/** Additional CSS classes */
 		class?: string;
 		/** Definition items (dt/dd elements) */
 		children?: import('svelte').Snippet;
 	}
 
-	let { inline = false, class: className = '', children }: Props = $props();
+	let { isInline = false, class: className = '', children }: Props = $props();
 
 	// Build class string
 	const classes = $derived(() => {
 		const base = ['pa-list-definition'];
 
 		// Inline modifier
-		if (inline) base.push('pa-list-definition--inline');
+		if (isInline) base.push('pa-list-definition--inline');
 
 		// Custom classes
 		if (className) base.push(className);

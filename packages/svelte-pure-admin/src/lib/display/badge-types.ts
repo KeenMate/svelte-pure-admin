@@ -28,9 +28,9 @@ export interface BaseBadgeProps {
 	/** Badge size */
 	size?: BadgeSize;
 	/** Pill style */
-	pill?: boolean;
-	/** Ellipsis on left side instead of right */
-	ellipsisLeft?: boolean;
+	isPill?: boolean;
+	/** Ellipsis at start (left in LTR, right in RTL) */
+	isEllipsisStart?: boolean;
 	/** Additional CSS classes */
 	class?: string;
 	/** Click handler */
@@ -46,7 +46,7 @@ export interface BadgeItem {
 	/** Badge text/label */
 	label: string;
 	/** Is badge pill shaped? */
-	pill?: boolean;
+	isPill?: boolean;
 	/** Badge size */
 	size?: BadgeSize;
 	/** Optional icon snippet */
@@ -72,9 +72,9 @@ export interface CompositeBadgeItem {
 	/** Icon snippet */
 	icon?: import('svelte').Snippet;
 	/** Label text */
-	label: string;
+	labelText: string;
 	/** Button/count text */
 	buttonText: string | number;
 	/** Make button interactive (renders as button element) */
-	interactive?: boolean;
+	isInteractive?: boolean;
 }
