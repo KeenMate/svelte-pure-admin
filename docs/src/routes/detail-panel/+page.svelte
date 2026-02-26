@@ -12,6 +12,7 @@
 		DetailPanel,
 		SlidePanel,
 		Spinner,
+		LoaderCenter,
 		Tabs,
 		TabItem
 	} from '@keenmate/svelte-pure-admin';
@@ -186,7 +187,7 @@
 		</div>
 	</div>
 
-	<table class="pa-table pa-table--borderless pa-table--sm" style="width: 100%;">
+	<Table isBorderless size="sm">
 		<tbody>
 			<tr><td style="font-weight: 500; width: 7rem; color: var(--pa-text-muted, #6b7280);">Role</td><td>{user.role}</td></tr>
 			<tr><td style="font-weight: 500; color: var(--pa-text-muted, #6b7280);">Department</td><td>{user.department}</td></tr>
@@ -195,13 +196,13 @@
 			<tr><td style="font-weight: 500; color: var(--pa-text-muted, #6b7280);">Joined</td><td>{user.joined}</td></tr>
 			<tr><td style="font-weight: 500; color: var(--pa-text-muted, #6b7280);">Status</td><td><Badge variant={statusVariant(user.status)}>{user.status}</Badge></td></tr>
 		</tbody>
-	</table>
+	</Table>
 {/snippet}
 
 {#snippet loadingSpinner()}
-	<div class="pa-loader-center">
+	<LoaderCenter>
 		<Spinner />
-	</div>
+	</LoaderCenter>
 {/snippet}
 
 <!-- ================================

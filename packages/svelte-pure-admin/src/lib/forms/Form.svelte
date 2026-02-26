@@ -16,8 +16,14 @@
 		class: className,
 		...restProps
 	}: Props = $props();
+
+	const classes = $derived(() => {
+		const base = ['pa-form'];
+		if (className) base.push(className as string);
+		return base.join(' ');
+	});
 </script>
 
-<form class={className} {...restProps}>
+<form class={classes()} {...restProps}>
 	{@render children?.()}
 </form>

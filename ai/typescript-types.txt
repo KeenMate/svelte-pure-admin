@@ -1,0 +1,779 @@
+TYPESCRIPT TYPES
+================
+
+CRITICAL: All components use TypeScript interfaces for props.
+All types are exported from '@keenmate/svelte-pure-admin'.
+This file contains every exported type definition so AI assistants know exact valid values.
+
+
+CORE TYPES (types.ts)
+---------------------
+Source: packages/svelte-pure-admin/src/lib/types.ts
+
+Color variants used across most components:
+
+  type ColorVariant =
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'danger'
+    | 'warning'
+    | 'info'
+    | 'light'
+    | 'dark';
+
+Standard size variants:
+
+  type Size = 'xs' | 'sm' | 'lg' | 'xl';
+
+Extended size (includes 2xl for layouts):
+
+  type ExtendedSize = 'xs' | 'sm' | 'lg' | 'xl' | '2xl';
+
+Horizontal alignment (logical, RTL-aware since v1.5.0):
+
+  type HorizontalAlignment = 'start' | 'center' | 'end';
+
+Vertical alignment:
+
+  type VerticalAlignment = 'start' | 'center' | 'end' | 'stretch' | 'baseline';
+
+Text mode:
+
+  type TextMode = 'default' | 'muted';
+
+Form validation state:
+
+  type ValidationState = 'default' | 'success' | 'warning' | 'error';
+
+Data visualization color variants (subset of ColorVariant):
+
+  type DataVizVariant = 'success' | 'warning' | 'danger' | 'info';
+
+Theme colors (numbered 1-9 for color palettes):
+
+  type ThemeColor = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+
+Import example:
+
+  import type {
+    ColorVariant,
+    Size,
+    ExtendedSize,
+    HorizontalAlignment,
+    VerticalAlignment,
+    TextMode,
+    ValidationState,
+    DataVizVariant,
+    ThemeColor
+  } from '@keenmate/svelte-pure-admin';
+
+
+BADGE TYPES (badge-types.ts)
+-----------------------------
+Source: packages/svelte-pure-admin/src/lib/display/badge-types.ts
+
+  type BadgeVariant =
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'danger'
+    | 'warning'
+    | 'info'
+    | 'light'
+    | 'dark';
+
+  type BadgeSize = 'xs' | 'sm' | 'lg' | 'xl';
+
+  interface BaseBadgeProps {
+    variant?: BadgeVariant;
+    size?: BadgeSize;
+    isPill?: boolean;
+    isEllipsisStart?: boolean;
+    class?: string;
+    onclick?: (event: MouseEvent) => void;
+  }
+
+  interface BadgeItem {
+    variant?: BadgeVariant;
+    label: string;
+    isPill?: boolean;
+    size?: BadgeSize;
+    icon?: import('svelte').Snippet;
+  }
+
+  type BadgeDataItem<T = any> = T;
+
+  interface CompositeBadgeItem {
+    variant?: BadgeVariant;
+    labelVariant?: BadgeVariant;
+    buttonVariant?: BadgeVariant;
+    icon?: import('svelte').Snippet;
+    labelText: string;
+    buttonText: string | number;
+    isInteractive?: boolean;
+  }
+
+Import example:
+
+  import type {
+    BadgeVariant,
+    BadgeSize,
+    BaseBadgeProps,
+    BadgeItem,
+    CompositeBadgeItem
+  } from '@keenmate/svelte-pure-admin';
+
+
+TIMELINE TYPES (timeline-types.ts)
+------------------------------------
+Source: packages/svelte-pure-admin/src/lib/display/timeline-types.ts
+
+  type TimelineVariant = 'simple' | 'alternating' | 'feed';
+
+  type TimelineItemVariant =
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'danger'
+    | 'warning'
+    | 'info';
+
+  interface TimelineItemData {
+    variant?: TimelineItemVariant;
+    isFilled?: boolean;
+    isDateHeader?: boolean;
+    time?: string;
+    date?: string;
+    iconText?: string;
+    avatarUrl?: string;
+    avatarAlt?: string;
+    content?: string;
+    comment?: string;
+  }
+
+Import example:
+
+  import type {
+    TimelineVariant,
+    TimelineItemVariant,
+    TimelineItemData
+  } from '@keenmate/svelte-pure-admin';
+
+
+COMMAND PALETTE TYPES (command-palette-types.ts)
+-------------------------------------------------
+Source: packages/svelte-pure-admin/src/lib/navigation/command-palette-types.ts
+
+Step option (shown in command step dropdown):
+
+  interface StepOption {
+    id: string;
+    label: string;
+    description?: string;
+    icon?: string;
+    value: any;
+  }
+
+User's selection for a command step:
+
+  interface StepSelection {
+    stepId: string;
+    option?: StepOption;
+    freeText?: string;
+  }
+
+A step in a multi-step command wizard:
+
+  interface CommandStep {
+    id: string;
+    prompt?: string;
+    placeholder?: string;
+    getOptions: (
+      query: string,
+      prevSelections: StepSelection[]
+    ) => Promise<StepOption[]> | StepOption[];
+    freeText?: boolean;
+    shouldShow?: (prevSelections: StepSelection[]) => boolean;
+  }
+
+A command definition (triggered by /shortcut):
+
+  interface Command {
+    shortcut: string;
+    aliases?: string[];
+    name: string;
+    description: string;
+    icon?: string;
+    steps: CommandStep[];
+    onComplete: (selections: StepSelection[]) => void;
+    getPreview?: (selections: StepSelection[]) => string;
+  }
+
+A search result item:
+
+  interface SearchResult {
+    id: string;
+    title: string;
+    subtitle?: string;
+    icon?: string;
+    badge?: string;
+    data?: any;
+  }
+
+A search context definition (triggered by :shortcut):
+
+  interface SearchContext {
+    shortcut: string;
+    aliases?: string[];
+    name: string;
+    description: string;
+    icon?: string;
+    onSearch: (query: string) => Promise<SearchResult[]> | SearchResult[];
+    onSelect: (result: SearchResult) => void;
+  }
+
+Current mode of the command palette:
+
+  type PaletteMode =
+    | 'idle'
+    | 'command-list'
+    | 'command-step'
+    | 'context-list'
+    | 'context-search'
+    | 'global-search';
+
+Import example:
+
+  import type {
+    Command,
+    CommandStep,
+    StepOption,
+    StepSelection,
+    SearchContext,
+    SearchResult,
+    PaletteMode
+  } from '@keenmate/svelte-pure-admin';
+
+
+DIALOG SERVICE TYPES (dialog-service.svelte.ts)
+-------------------------------------------------
+Source: packages/svelte-pure-admin/src/lib/feedback/dialog-service.svelte.ts
+
+  type DialogVariant = 'primary' | 'success' | 'warning' | 'danger' | 'info';
+
+  type DialogSize = 'sm' | 'md' | 'lg' | 'xl';
+
+  type DialogPosition = 'center' | 'top';
+
+  interface BaseDialogOptions {
+    title?: string;
+    message?: string;
+    variant?: DialogVariant;
+    size?: DialogSize;
+    position?: DialogPosition;
+    closeOnBackdrop?: boolean;
+    class?: string;
+    bodyClass?: string;
+    footerClass?: string;
+  }
+
+  interface DialogButton<T = unknown> {
+    label: string;
+    value: T;
+    variant?: 'primary' | 'secondary' | 'success' | 'danger'
+             | 'warning' | 'info' | 'light' | 'dark';
+    isOutline?: boolean;
+    class?: string;
+    disabled?: boolean;
+  }
+
+  interface ConfirmDialogOptions extends BaseDialogOptions {
+    confirmText?: string;
+    cancelText?: string;
+    confirmVariant?: DialogVariant;
+  }
+
+  interface AlertDialogOptions extends BaseDialogOptions {
+    okText?: string;
+  }
+
+  interface PromptDialogOptions extends BaseDialogOptions {
+    defaultValue?: string;
+    placeholder?: string;
+    confirmText?: string;
+    cancelText?: string;
+    validator?: (value: string) => true | string;
+  }
+
+  interface CustomDialogOptions<T = unknown> extends BaseDialogOptions {
+    buttons: DialogButton<T>[];
+    dismissValue?: T;
+  }
+
+Dialog service methods:
+
+  dialogService.confirm(options: ConfirmDialogOptions): Promise<boolean>;
+  dialogService.alert(options: AlertDialogOptions): Promise<void>;
+  dialogService.prompt(options: PromptDialogOptions): Promise<string | null>;
+  dialogService.custom<T>(options: CustomDialogOptions<T>): Promise<T>;
+
+Import example:
+
+  import {
+    dialogService,
+    dialogStore
+  } from '@keenmate/svelte-pure-admin';
+
+  import type {
+    DialogVariant,
+    DialogSize,
+    DialogPosition,
+    ConfirmDialogOptions,
+    AlertDialogOptions,
+    PromptDialogOptions,
+    CustomDialogOptions,
+    DialogButton
+  } from '@keenmate/svelte-pure-admin';
+
+
+FORM ERROR TYPES (FormErrorSummary.svelte)
+-------------------------------------------
+Source: packages/svelte-pure-admin/src/lib/forms/FormErrorSummary.svelte
+
+  interface FormErrorItem {
+    field: string;    // Display name of the field
+    id: string;       // HTML id for anchor link scrolling
+    message: string;  // Error message text
+  }
+
+Import example:
+
+  import type { FormErrorItem } from '@keenmate/svelte-pure-admin';
+
+
+THEME OPTION TYPE (layout/types.ts)
+-------------------------------------
+Source: packages/svelte-pure-admin/src/lib/layout/types.ts
+
+  interface ThemeOption {
+    id: string;       // e.g., 'audi', 'express'
+    name: string;     // e.g., 'Audi', 'Express'
+    cssPath: string;  // e.g., '/themes/audi.css'
+  }
+
+Import example:
+
+  import type { ThemeOption } from '@keenmate/svelte-pure-admin';
+
+
+SHORTCUT REGISTRY TYPES (shortcut-registry-types.ts)
+------------------------------------------------------
+Source: packages/svelte-pure-admin/src/lib/services/shortcut-registry-types.ts
+
+  interface ShortcutModifiers {
+    ctrl?: boolean;
+    shift?: boolean;
+    alt?: boolean;
+    meta?: boolean;
+  }
+
+  interface Shortcut {
+    id: string;
+    key: string;
+    modifiers?: ShortcutModifiers;
+    description: string;
+    category?: string;
+    action: () => void;
+    enabled?: boolean;
+    scope?: ShortcutScope;
+    priority?: number;
+  }
+
+  type ShortcutScope =
+    | 'global'    // Always active (except in inputs)
+    | 'modal'     // Only active when a modal is open
+    | 'input'     // Only active when focused in an input
+    | string;     // Custom scope
+
+  type ShortcutRegistration = Omit<Shortcut, 'enabled'> & {
+    enabled?: boolean;
+  };
+
+  interface ShortcutRegistry {
+    register(shortcut: ShortcutRegistration): () => void;  // Returns unregister fn
+    unregister(id: string): void;
+    enable(id: string): void;
+    disable(id: string): void;
+    getAll(): Shortcut[];
+    getByCategory(): Map<string, Shortcut[]>;
+    handleKeyDown(event: KeyboardEvent): void;
+    has(id: string): boolean;
+    readonly all: Shortcut[];                    // Reactive getter
+    readonly byCategory: Map<string, Shortcut[]>; // Reactive getter
+    readonly count: number;                       // Reactive getter
+  }
+
+Import example:
+
+  import { shortcutRegistry, formatShortcut } from '@keenmate/svelte-pure-admin';
+
+  import type {
+    Shortcut,
+    ShortcutModifiers,
+    ShortcutScope,
+    ShortcutRegistration,
+    ShortcutRegistry
+  } from '@keenmate/svelte-pure-admin';
+
+
+BATCH RPC TYPES
+-----------------
+Source: packages/svelte-pure-admin/src/lib/rpc/types.ts
+Source: packages/svelte-pure-admin/src/lib/rpc/batch.ts
+Source: packages/svelte-pure-admin/src/lib/rpc/transport/types.ts
+
+Core types:
+
+  interface BatchCall {
+    id: string;
+    method: string;
+    params?: unknown;
+  }
+
+  interface BatchRequest {
+    batch: BatchCall[];
+    meta?: Record<string, unknown>;
+  }
+
+  interface RpcError {
+    code: string;
+    message: string;
+    details?: unknown;
+  }
+
+  interface BatchResult {
+    id: string;
+    result?: unknown;
+    error?: RpcError;
+  }
+
+  interface BatchResponse {
+    batch: BatchResult[];
+  }
+
+Batch service:
+
+  interface Batch {
+    add<T = unknown>(method: string, params?: unknown): Promise<T>;
+    execute(): Promise<void>;
+    readonly size: number;
+    readonly executed: boolean;
+  }
+
+  function createBatch(transport: RpcTransport): Batch;
+
+Transport configuration:
+
+  interface RpcTransportConfig {
+    parseResponse: (raw: unknown) => BatchResponse;
+    parseCallResult?: (raw: unknown) => unknown;
+    isError?: (result: BatchResult) => boolean;
+    parseError?: (result: BatchResult) => RpcError;
+  }
+
+  interface RpcTransport {
+    sendBatch(request: BatchRequest): Promise<BatchResponse>;
+    config: RpcTransportConfig;
+  }
+
+  // Preset for ASP.NET CommonResponse wrapper
+  const commonResponseConfig: RpcTransportConfig;
+
+  // Preset for direct data (Phoenix, clean REST)
+  const pureDataConfig: RpcTransportConfig;
+
+SignalR transport:
+
+  interface SignalRConnection {
+    invoke<T = unknown>(methodName: string, ...args: unknown[]): Promise<T>;
+  }
+
+  interface SignalRTransportOptions {
+    methodName?: string;             // default: "BatchInvoke"
+    getRequestMetadata?: () => Record<string, unknown> | Promise<Record<string, unknown>>;
+  }
+
+  function createSignalRTransport(
+    connection: SignalRConnection,
+    config: RpcTransportConfig,
+    options?: SignalRTransportOptions
+  ): RpcTransport;
+
+Phoenix transport:
+
+  interface PhoenixChannel {
+    push(event: string, payload: object): {
+      receive(status: 'ok', callback: (response: unknown) => void): PhoenixPush;
+      receive(status: 'error', callback: (response: unknown) => void): PhoenixPush;
+      receive(status: 'timeout', callback: () => void): PhoenixPush;
+    };
+  }
+
+  interface PhoenixPush {
+    receive(status: 'ok', callback: (response: unknown) => void): PhoenixPush;
+    receive(status: 'error', callback: (response: unknown) => void): PhoenixPush;
+    receive(status: 'timeout', callback: () => void): PhoenixPush;
+  }
+
+  interface PhoenixTransportOptions {
+    eventName?: string;              // default: "batch_invoke"
+    timeout?: number;                // default: 30000
+    getRequestMetadata?: () => Record<string, unknown> | Promise<Record<string, unknown>>;
+  }
+
+  function createPhoenixTransport(
+    channel: PhoenixChannel,
+    config: RpcTransportConfig,
+    options?: PhoenixTransportOptions
+  ): RpcTransport;
+
+HTTP transport:
+
+  interface HttpTransportOptions {
+    headers?: Record<string, string>;
+    getHeaders?: () => Record<string, string> | Promise<Record<string, string>>;
+    getRequestMetadata?: () => Record<string, unknown> | Promise<Record<string, unknown>>;
+    onBeforeRequest?: (request: BatchRequest, init: RequestInit) => void | Promise<void>;
+    onAfterResponse?: (response: Response) => void | Promise<void>;
+    fetchOptions?: RequestInit;
+    fetchFn?: typeof fetch;
+    timeout?: number;                // default: 30000
+  }
+
+  function createHttpTransport(
+    baseUrl: string,
+    config: RpcTransportConfig,
+    options?: HttpTransportOptions
+  ): RpcTransport;
+
+Import example:
+
+  import {
+    createBatch,
+    createSignalRTransport,
+    createPhoenixTransport,
+    createHttpTransport,
+    commonResponseConfig,
+    pureDataConfig
+  } from '@keenmate/svelte-pure-admin';
+
+  import type {
+    Batch,
+    BatchCall,
+    BatchRequest,
+    BatchResult,
+    BatchResponse,
+    RpcError,
+    RpcTransport,
+    RpcTransportConfig,
+    SignalRConnection,
+    SignalRTransportOptions,
+    PhoenixChannel,
+    PhoenixPush,
+    PhoenixTransportOptions,
+    HttpTransportOptions
+  } from '@keenmate/svelte-pure-admin';
+
+
+I18N TYPES
+-----------
+Source: packages/svelte-pure-admin/src/lib/i18n/types.ts
+
+  interface Language {
+    code: string;
+    name?: string;
+    nativeName?: string;
+  }
+
+  interface I18nInitOptions {
+    locale?: string;
+    fallbackLocale?: string;
+    languages?: (string | Language)[];
+    translations?: Record<string, Record<string, string>>;
+    loadTranslations?: (locale: string) => Promise<Record<string, string>>;
+  }
+
+  type PureAdminTranslations = Record<string, string>;
+
+Import example:
+
+  import type {
+    Language,
+    I18nInitOptions,
+    PureAdminTranslations
+  } from '@keenmate/svelte-pure-admin';
+
+
+LOADER TYPES (Loader.svelte)
+------------------------------
+Source: packages/svelte-pure-admin/src/lib/feedback/Loader.svelte
+
+  type LoaderType = 'dots' | 'bars' | 'pulse' | 'ring' | 'wave';
+  type LoaderSize = 'sm' | 'lg';
+  type LoaderColor = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light';
+
+Import example:
+
+  import type { LoaderType, LoaderSize, LoaderColor } from '@keenmate/svelte-pure-admin';
+
+
+COMPONENT-SPECIFIC TYPES (NOT EXPORTED, FOR REFERENCE)
+-------------------------------------------------------
+These types are defined locally within component files.
+They are NOT exported but documented here for reference when using components.
+
+Button:
+  type ButtonVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark';
+  type ButtonSize = 'xs' | 'sm' | 'lg' | 'xl';
+  type ButtonAlign = 'start' | 'end' | 'center' | 'justify';
+
+Modal:
+  type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'fw';
+  type ModalVariant = 'primary' | 'success' | 'warning' | 'danger' | 'info';
+  type ModalPosition = 'center' | 'top';
+
+Toast:
+  type ToastVariant = 'primary' | 'success' | 'danger' | 'warning' | 'info';
+
+ToastContainer:
+  type ToastPosition = 'top-end' | 'top-center' | 'top-start'
+                     | 'bottom-end' | 'bottom-center' | 'bottom-start';
+
+Card:
+  type CardVariant = 'primary' | 'success' | 'warning' | 'danger' | 'info'
+    | 'color-1' | 'color-2' | 'color-3' | 'color-4' | 'color-5'
+    | 'color-6' | 'color-7' | 'color-8' | 'color-9';
+
+Stat:
+  type StatVariant = 'hero' | 'hero-compact' | 'square';
+  type StatColor = 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger';
+  type ChangeDirection = 'positive' | 'negative' | 'neutral';
+
+Table:
+  type TableSize = 'xs' | 'sm' | 'lg' | 'xl';
+
+Input:
+  type InputSize = 'xs' | 'sm' | 'lg' | 'xl';
+  type InputState = 'success' | 'warning' | 'error';
+  type InputType = 'text' | 'email' | 'password' | 'tel' | 'url' | 'search';
+
+FormGroup:
+  type ValidationState = 'success' | 'warning' | 'error';
+
+Grid:
+  type HorizontalAlign = 'center' | 'end' | 'between' | 'around';
+  type VerticalAlign = 'top' | 'middle' | 'bottom';
+  type GapSize = '0' | 'xs' | 'sm' | 'md' | 'base' | 'lg' | 'xl' | '2xl';
+
+TableCard:
+  type SemanticVariant = 'primary' | 'success' | 'warning' | 'danger';
+
+Progress:
+  size: 'xs' | 'sm' | 'lg';
+  variant: DataVizVariant (success | warning | danger | info)
+
+Field:
+  copyMode: 'btn' | 'click' | 'hover';
+  valueVariant: 'success' | 'warning' | 'danger';
+
+Fields:
+  cols: 2 | 3 | 4;
+  color: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+
+
+COMPLETE IMPORT MAP
+--------------------
+All exported types organized by category:
+
+// Core types
+import type {
+  ColorVariant, Size, ExtendedSize, HorizontalAlignment,
+  VerticalAlignment, TextMode, ValidationState, DataVizVariant, ThemeColor
+} from '@keenmate/svelte-pure-admin';
+
+// Badge types
+import type {
+  BadgeVariant, BadgeSize, BaseBadgeProps, BadgeItem, CompositeBadgeItem
+} from '@keenmate/svelte-pure-admin';
+
+// Timeline types
+import type {
+  TimelineVariant, TimelineItemVariant, TimelineItemData
+} from '@keenmate/svelte-pure-admin';
+
+// Command palette types
+import type {
+  Command, CommandStep, StepOption, StepSelection,
+  SearchContext, SearchResult, PaletteMode
+} from '@keenmate/svelte-pure-admin';
+
+// Dialog types
+import type {
+  DialogVariant, DialogSize, DialogPosition,
+  ConfirmDialogOptions, AlertDialogOptions,
+  PromptDialogOptions, CustomDialogOptions, DialogButton
+} from '@keenmate/svelte-pure-admin';
+
+// Form types
+import type { FormErrorItem } from '@keenmate/svelte-pure-admin';
+
+// Layout types
+import type { ThemeOption } from '@keenmate/svelte-pure-admin';
+
+// Shortcut types
+import type {
+  Shortcut, ShortcutModifiers, ShortcutScope,
+  ShortcutRegistration, ShortcutRegistry
+} from '@keenmate/svelte-pure-admin';
+
+// Loader types
+import type { LoaderType, LoaderSize, LoaderColor } from '@keenmate/svelte-pure-admin';
+
+// RPC types
+import type {
+  Batch, BatchCall, BatchRequest, BatchResult, BatchResponse, RpcError,
+  RpcTransport, RpcTransportConfig,
+  SignalRConnection, SignalRTransportOptions,
+  PhoenixChannel, PhoenixPush, PhoenixTransportOptions,
+  HttpTransportOptions
+} from '@keenmate/svelte-pure-admin';
+
+// i18n types
+import type {
+  Language, I18nInitOptions, PureAdminTranslations
+} from '@keenmate/svelte-pure-admin';
+
+// Config types
+import type { PureAdminConfig } from '@keenmate/svelte-pure-admin';
+
+
+CRITICAL REMINDERS
+-------------------
+- All types are exported from the main '@keenmate/svelte-pure-admin' package
+- Use 'import type' for type-only imports (TypeScript best practice)
+- ColorVariant has 8 values: primary, secondary, success, danger, warning, info, light, dark
+- Size has 4 values: xs, sm, lg, xl (no 'md' -- that is the default)
+- ThemeColor is a number 1-9, not a string
+- HorizontalAlignment uses logical start/end (not left/right) for RTL support
+- ToastPosition uses logical start/end (top-end, not top-right) for RTL support
+- DialogButton value is generic <T> -- can be any type
+- Command palette supports both sync and async getOptions/onSearch (Promise | direct)
+- Batch.add<T>() is generic -- specify the expected return type for type safety
+- Snippet type is: import('svelte').Snippet (from svelte module)
+
+NEXT STEPS
+----------
+- i18n and translations --> i18n.txt
+- Naming conventions --> naming-conventions.txt
+- Common component patterns --> common-patterns.txt

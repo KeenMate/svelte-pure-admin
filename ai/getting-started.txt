@@ -1,0 +1,424 @@
+GETTING STARTED
+===============
+
+CRITICAL: This is a Svelte 5 component library (NOT a Web Component)
+- Requires Svelte 5 with runes API ($props, $state, $derived)
+- Wraps @keenmate/pure-admin-core CSS framework into typed Svelte components
+- Uses Snippets (not slots) for content composition
+- All components output BEM-style pa-* classes internally
+- Consumers never need to write CSS class names manually
+- Works with SvelteKit 2.x out of the box
+
+INSTALLATION
+------------
+npm install @keenmate/svelte-pure-admin @keenmate/pure-admin-core
+
+# Or yarn
+yarn add @keenmate/svelte-pure-admin @keenmate/pure-admin-core
+
+# Or pnpm
+pnpm add @keenmate/svelte-pure-admin @keenmate/pure-admin-core
+
+Both packages are required:
+- @keenmate/svelte-pure-admin — Svelte 5 component library (80+ components)
+- @keenmate/pure-admin-core — CSS framework (the actual styles)
+
+Peer dependencies (must already be in your project):
+- svelte ^5.0.0
+
+CSS IMPORT
+----------
+You MUST import the Pure Admin CSS somewhere in your app.
+The most common place is your root +layout.svelte:
+
+<script>
+  import '@keenmate/pure-admin-core/css';
+</script>
+
+Or in a global CSS file:
+
+@import '@keenmate/pure-admin-core/css';
+
+Without this import, components will render with no styles.
+This is the single most common setup mistake.
+
+THEME PACKAGES
+--------------
+Optional theme packages change the visual appearance:
+
+npm install @keenmate/pure-admin-theme-audi
+npm install @keenmate/pure-admin-theme-dark
+npm install @keenmate/pure-admin-theme-corporate
+npm install @keenmate/pure-admin-theme-express
+npm install @keenmate/pure-admin-theme-minimal
+
+Import a theme AFTER the core CSS:
+
+<script>
+  import '@keenmate/pure-admin-core/css';
+  import '@keenmate/pure-admin-theme-audi/css';  // Optional theme overlay
+</script>
+
+Only one theme at a time. Theme overrides core CSS variables.
+See theming.txt for color customization and dark mode.
+
+PROVIDER SETUP
+--------------
+Wrap your app in PureAdminProvider for configuration context.
+Place it in your root +layout.svelte:
+
+<script>
+  import '@keenmate/pure-admin-core/css';
+  import { PureAdminProvider } from '@keenmate/svelte-pure-admin';
+
+  let { children } = $props();
+</script>
+
+<PureAdminProvider>
+  {@render children()}
+</PureAdminProvider>
+
+With custom configuration:
+
+<script>
+  import '@keenmate/pure-admin-core/css';
+  import { PureAdminProvider } from '@keenmate/svelte-pure-admin';
+
+  let { children } = $props();
+
+  const config = {
+    app: {
+      name: 'My Admin App',
+      copyright: '2026 My Company',
+      logo: '/logo.svg'
+    },
+    defaults: {
+      pageSize: 25,
+      locale: 'en-US',
+      dateFormat: 'YYYY-MM-DD'
+    },
+    ui: {
+      theme: 'light',
+      sidebarCollapsed: false,
+      animations: true
+    }
+  };
+</script>
+
+<PureAdminProvider {config}>
+  {@render children()}
+</PureAdminProvider>
+
+PureAdminProvider:
+- Merges your config with sensible defaults (mergeConfig)
+- Provides config to all child components via Svelte context
+- Sets up global keyboard shortcut listener (Shift+? for help)
+- Initializes i18n if i18n config is present
+- Components read config via usePureAdminConfig() hook
+
+LAYOUT SETUP
+-------------
+Full admin layout with sidebar, navbar, and content area:
+
+<script>
+  import '@keenmate/pure-admin-core/css';
+  import {
+    PureAdminProvider,
+    Layout,
+    LayoutInner,
+    LayoutContent,
+    Navbar,
+    Sidebar,
+    SidebarItem,
+    Main,
+    Footer
+  } from '@keenmate/svelte-pure-admin';
+
+  let { children } = $props();
+  let sidebarOpen = $state(true);
+</script>
+
+<PureAdminProvider config={{ app: { name: 'My App' } }}>
+  <Layout>
+    <Navbar
+      showBurger={true}
+      burgerActive={sidebarOpen}
+      onburgerclick={() => sidebarOpen = !sidebarOpen}
+    />
+    <LayoutInner>
+      <Sidebar>
+        <SidebarItem labelText="Dashboard" href="/" icon="fa-home" />
+        <SidebarItem labelText="Users" href="/users" icon="fa-users" />
+        <SidebarItem labelText="Settings" href="/settings" icon="fa-cog" />
+      </Sidebar>
+      <LayoutContent>
+        <Main>
+          {@render children()}
+        </Main>
+        <Footer />
+      </LayoutContent>
+    </LayoutInner>
+  </Layout>
+</PureAdminProvider>
+
+Key layout components:
+- Layout — Outermost wrapper (pa-layout)
+- LayoutInner — Inner flex container
+- LayoutContent — Content area beside sidebar
+- Navbar — Top navigation bar with burger, brand, nav sections
+- Sidebar — Side navigation with collapsible items
+- SidebarItem — Navigation link with icon, label, optional submenu
+- Main — Main content area
+- Footer — Page footer with copyright from config
+
+FIRST PAGE
+----------
+Create a page using components (e.g., src/routes/+page.svelte):
+
+<script>
+  import { Card, Button, Grid, Column, Alert } from '@keenmate/svelte-pure-admin';
+</script>
+
+<Grid>
+  <Column md="1-2">
+    <Card titleText="Welcome">
+      <p>Dashboard content here.</p>
+      {#snippet footer()}
+        <Button variant="primary">Get Started</Button>
+      {/snippet}
+    </Card>
+  </Column>
+  <Column md="1-2">
+    <Alert variant="info">Check out the documentation!</Alert>
+  </Column>
+</Grid>
+
+Using more components on a page:
+
+<script>
+  import {
+    Card, Button, Table, Grid, Column,
+    Alert, Badge, Stat, Section
+  } from '@keenmate/svelte-pure-admin';
+</script>
+
+<Section titleText="Dashboard">
+  <Grid gap="md">
+    <Column md="1-4">
+      <Stat number="1,234" labelText="Total Users" />
+    </Column>
+    <Column md="1-4">
+      <Stat number="567" labelText="Active Today" />
+    </Column>
+    <Column md="1-4">
+      <Stat number="89%" labelText="Uptime" />
+    </Column>
+    <Column md="1-4">
+      <Stat number="42" labelText="Open Tickets" />
+    </Column>
+  </Grid>
+</Section>
+
+<Section titleText="Recent Activity">
+  <Card>
+    <Table isStriped isHover>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>John Doe</td>
+          <td><Badge variant="success">Active</Badge></td>
+          <td>2026-02-22</td>
+        </tr>
+        <tr>
+          <td>Jane Smith</td>
+          <td><Badge variant="warning">Pending</Badge></td>
+          <td>2026-02-21</td>
+        </tr>
+      </tbody>
+    </Table>
+  </Card>
+</Section>
+
+COMPONENT PATTERN
+-----------------
+Every component in this library follows the same pattern:
+
+1. Props via $props() with TypeScript interface:
+
+   <script lang="ts">
+     interface Props {
+       variant?: 'primary' | 'success' | 'danger';
+       titleText?: string;
+       isDisabled?: boolean;
+       onclick?: (event: MouseEvent) => void;
+       children?: import('svelte').Snippet;
+       header?: import('svelte').Snippet;
+     }
+
+     let { variant = 'primary', titleText, isDisabled = false, onclick, children, header }: Props = $props();
+   </script>
+
+2. Class building via $derived():
+
+   const classes = $derived(() => {
+     const base = ['pa-component'];
+     if (variant) base.push(`pa-component--${variant}`);
+     if (isDisabled) base.push('pa-component--disabled');
+     return base.join(' ');
+   });
+
+3. Content via Snippets (not slots):
+
+   <div class={classes()}>
+     {#if header}
+       <div class="pa-component__header">
+         {@render header()}
+       </div>
+     {/if}
+     {@render children?.()}
+   </div>
+
+4. Usage with Snippets:
+
+   <Card>
+     {#snippet header()}
+       <h3>My Title</h3>
+     {/snippet}
+
+     <p>Body content goes here as children.</p>
+
+     {#snippet footer()}
+       <Button variant="primary">Save</Button>
+     {/snippet}
+   </Card>
+
+Text vs Snippet props:
+- Use *Text props for simple strings: titleText="Welcome"
+- Use Snippet props for rich content: {#snippet header()} ... {/snippet}
+- Text props are simpler; Snippets allow full markup
+
+SVELTE 5 REQUIREMENTS
+---------------------
+This library requires Svelte 5. It uses runes exclusively.
+
+Required syntax:
+- $props() for component props (NOT export let)
+- $state() for reactive state (NOT let with $:)
+- $derived() for computed values (NOT $: reactive statements)
+- {#snippet} for named content slots (NOT <slot>)
+- {@render} to render snippets (NOT <slot>)
+- Lowercase event handlers: onclick, onchange, onclose (NOT on:click)
+
+If you see errors about $props, $state, or $derived not being recognized,
+ensure your project is using Svelte 5 (check package.json).
+
+COMMON SETUP PATTERNS
+---------------------
+Minimal (just CSS and a card):
+<script>
+  import '@keenmate/pure-admin-core/css';
+  import { Card } from '@keenmate/svelte-pure-admin';
+</script>
+
+<Card titleText="Hello">Content here.</Card>
+
+Full admin dashboard:
+<script>
+  import '@keenmate/pure-admin-core/css';
+  import {
+    PureAdminProvider, Layout, LayoutInner, LayoutContent,
+    Navbar, Sidebar, SidebarItem, Main, Footer,
+    DialogContainer, ToastContainer
+  } from '@keenmate/svelte-pure-admin';
+  let { children } = $props();
+</script>
+
+<PureAdminProvider>
+  <Layout>
+    <Navbar showBurger={true} />
+    <LayoutInner>
+      <Sidebar>
+        <SidebarItem labelText="Home" href="/" />
+      </Sidebar>
+      <LayoutContent>
+        <Main>
+          {@render children()}
+        </Main>
+        <Footer />
+      </LayoutContent>
+    </LayoutInner>
+  </Layout>
+  <DialogContainer />
+  <ToastContainer position="top-end" />
+</PureAdminProvider>
+
+With i18n:
+<script>
+  import '@keenmate/pure-admin-core/css';
+  import { PureAdminProvider } from '@keenmate/svelte-pure-admin';
+  let { children } = $props();
+
+  const config = {
+    app: { name: 'My App' },
+    i18n: {
+      locale: 'en',
+      fallbackLocale: 'en'
+    }
+  };
+</script>
+
+<PureAdminProvider {config}>
+  {@render children()}
+</PureAdminProvider>
+
+With theme:
+<script>
+  import '@keenmate/pure-admin-core/css';
+  import '@keenmate/pure-admin-theme-dark/css';
+  import { PureAdminProvider } from '@keenmate/svelte-pure-admin';
+  let { children } = $props();
+</script>
+
+<PureAdminProvider config={{ ui: { theme: 'dark' } }}>
+  {@render children()}
+</PureAdminProvider>
+
+NEXT STEPS
+----------
+- Build your layout -> layout.txt
+- Create forms -> forms.txt
+- Display data in cards, tables, badges -> display.txt
+- Show structured data (Field/Fields) -> data-display.txt
+- Add charts and gauges -> data-visualization.txt
+- Handle feedback (alerts, modals, toasts) -> feedback.txt
+- Add tabs and command palette -> navigation.txt
+- Customize theme -> theming.txt
+- Add internationalization -> i18n.txt
+- Understand TypeScript types -> typescript-types.txt
+- Learn naming conventions -> naming-conventions.txt
+- Master component patterns -> common-patterns.txt
+
+CRITICAL REMINDERS
+------------------
+DO: Import @keenmate/pure-admin-core/css in your root layout
+DO: Use Svelte 5 runes ($props, $state, $derived) exclusively
+DO: Wrap your app in PureAdminProvider for config context
+DO: Use Snippets ({#snippet}, {@render}) for named content areas
+DO: Use lowercase event handlers (onclick, onclose, onchange)
+DO: Use *Text props for simple strings (titleText, labelText)
+DO: Use is*/has*/should* prefix for boolean props
+DO: Use the class prop to add custom CSS classes to any component
+DO: Import individual components (tree-shakeable)
+
+DO NOT: Use legacy Svelte syntax (export let, <slot>, on:click, $:)
+DO NOT: Forget the CSS import (components render unstyled without it)
+DO NOT: Write pa-* class names manually (components handle BEM internally)
+DO NOT: Use camelCase event handlers (onClick, onChange - wrong)
+DO NOT: Skip PureAdminProvider (some components depend on config context)
+DO NOT: Import the entire library as a single default export

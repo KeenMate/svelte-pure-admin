@@ -147,26 +147,26 @@
 			{#if dialog.type === 'confirm'}
 				{@const confirmOptions = options as ConfirmDialogOptions}
 				<Button variant="secondary" onclick={() => handleCancel(dialog)}>
-					{confirmOptions.cancelText || $_('pureAdmin.dialog.cancel')}
+					{confirmOptions.cancelText || $_('pureAdmin.buttons.cancel')}
 				</Button>
 				<Button
 					variant={confirmOptions.confirmVariant || confirmOptions.variant || 'primary'}
 					onclick={() => handleConfirm(dialog)}
 				>
-					{confirmOptions.confirmText || $_('pureAdmin.dialog.ok')}
+					{confirmOptions.confirmText || $_('pureAdmin.buttons.ok')}
 				</Button>
 			{:else if dialog.type === 'alert'}
 				{@const alertOptions = options as AlertDialogOptions}
 				<Button variant={alertOptions.variant || 'primary'} onclick={() => handleOk(dialog)}>
-					{alertOptions.okText || $_('pureAdmin.dialog.ok')}
+					{alertOptions.okText || $_('pureAdmin.buttons.ok')}
 				</Button>
 			{:else if dialog.type === 'prompt'}
 				{@const promptOptions = options as PromptDialogOptions}
 				<Button variant="secondary" onclick={() => handlePromptCancel(dialog)}>
-					{promptOptions.cancelText || $_('pureAdmin.dialog.cancel')}
+					{promptOptions.cancelText || $_('pureAdmin.buttons.cancel')}
 				</Button>
 				<Button variant={promptOptions.variant || 'primary'} onclick={() => handlePromptSubmit(dialog)}>
-					{promptOptions.confirmText || $_('pureAdmin.dialog.ok')}
+					{promptOptions.confirmText || $_('pureAdmin.buttons.ok')}
 				</Button>
 			{:else if dialog.type === 'custom'}
 				{@const customOptions = options as CustomDialogOptions}

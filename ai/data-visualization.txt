@@ -1,0 +1,893 @@
+DATA VISUALIZATION COMPONENTS
+==============================
+
+CRITICAL: This is a Svelte 5 component library (@keenmate/svelte-pure-admin).
+- All components use Svelte 5 runes ($props, $state, $derived)
+- Content slots use Snippets ({@render children?.()}), NOT <slot />
+- Internal BEM classes: pa-progress, pa-gauge, pa-sparkline, etc.
+- CSS is provided by @keenmate/pure-admin-core (must be imported separately)
+- All values (progress, bar fills) use CSS custom property --value
+
+INSTALLATION
+------------
+npm install @keenmate/svelte-pure-admin
+
+Import CSS in your layout:
+<script>
+  import '@keenmate/pure-admin-core/css';
+</script>
+
+IMPORTS
+-------
+import {
+  Progress,
+  ProgressGroup,
+  ProgressRing,
+  Gauge,
+  DataBar,
+  StackedBar,
+  StackedBarSegment,
+  StackedBarLegend,
+  StackedBarLegendItem,
+  Sparkline,
+  SparklineBar,
+  Heatmap,
+  HeatmapCell,
+  HeatmapLegend,
+  BarList,
+  BarListItem
+} from '@keenmate/svelte-pure-admin';
+
+SHARED TYPES
+------------
+DataVizVariant = 'success' | 'warning' | 'danger' | 'info'
+
+Used by: Progress, ProgressRing, Gauge, DataBar, Sparkline, BarList
+These four values map to BEM modifiers: pa-progress--success, pa-gauge--danger, etc.
+
+
+=====================================================================
+PROGRESS BAR
+=====================================================================
+
+Linear progress bar with optional label row.
+
+PROPS:
+  value?: number              -- Progress value 0-100 (default: 0)
+  labelText?: string          -- Label text (renders pa-progress-group wrapper)
+  valueText?: string          -- Value text on the right side of label
+  size?: 'xs' | 'sm' | 'lg'  -- Size variant
+  variant?: DataVizVariant    -- Color: success, warning, danger, info
+  isRounded?: boolean         -- Pill shape (default: false)
+  isStriped?: boolean         -- Striped pattern (default: false)
+  isAnimated?: boolean        -- Animated moving stripes (default: false)
+  class?: string              -- Additional CSS classes
+  children?: Snippet          -- Content rendered inside the fill bar
+
+BASIC USAGE:
+
+<Progress value={65} />
+
+WITH LABEL:
+
+<Progress value={65} labelText="Storage" valueText="65%" />
+
+When labelText or valueText is provided, the component automatically wraps
+itself in a pa-progress-group div with a pa-progress__label row above the bar.
+
+SIZE VARIANTS:
+
+<Progress value={40} size="xs" />
+<Progress value={50} size="sm" />
+<Progress value={60} />
+<Progress value={80} size="lg" />
+
+COLOR VARIANTS:
+
+<Progress value={75} variant="success" />
+<Progress value={50} variant="warning" />
+<Progress value={25} variant="danger" />
+<Progress value={90} variant="info" />
+
+STYLED BARS:
+
+<Progress value={70} isRounded />
+<Progress value={70} isStriped />
+<Progress value={70} isStriped isAnimated />
+
+FULL EXAMPLE WITH LABEL AND STYLING:
+
+<Progress
+  value={82}
+  labelText="Disk Usage"
+  valueText="82%"
+  variant="warning"
+  isRounded
+  isStriped
+  isAnimated
+/>
+
+
+=====================================================================
+PROGRESS GROUP
+=====================================================================
+
+Standalone label wrapper for any bar child (Progress, StackedBar, etc.).
+Use this when you want a label row above a bar that does not have built-in
+label support, or when composing custom bar layouts.
+
+PROPS:
+  labelText?: string    -- Label text
+  valueText?: string    -- Value text (displayed on the right side)
+  class?: string        -- Additional CSS classes
+  children?: Snippet    -- Bar component(s) to render below the label
+
+USAGE:
+
+<ProgressGroup labelText="Revenue" valueText="$12,400">
+  <StackedBar>
+    <StackedBarSegment value={60} variant="success" />
+    <StackedBarSegment value={25} variant="warning" />
+    <StackedBarSegment value={15} variant="danger" />
+  </StackedBar>
+</ProgressGroup>
+
+NOTE: Progress has built-in labelText/valueText props that render the same
+pa-progress-group wrapper. ProgressGroup is for when you need the label row
+with a different bar type (StackedBar, custom bars, etc.).
+
+
+=====================================================================
+PROGRESS RING
+=====================================================================
+
+Circular progress indicator using conic-gradient.
+
+PROPS:
+  value?: number            -- Progress value 0-100 (default: 0)
+  valueText?: string        -- Text displayed inside the ring (e.g. "75%")
+  labelText?: string        -- Label text displayed below the value
+  size?: 'sm' | 'lg'       -- Size variant
+  variant?: DataVizVariant  -- Color: success, warning, danger, info
+  class?: string            -- Additional CSS classes
+  children?: Snippet        -- Custom content inside the ring (replaces valueText/labelText)
+
+IMPORTANT: Pass value as a plain number (0-100), NOT as a percentage string.
+The SCSS calculates conic-gradient degrees internally.
+
+BASIC USAGE:
+
+<ProgressRing value={75} valueText="75%" />
+
+WITH LABEL:
+
+<ProgressRing value={75} valueText="75%" labelText="CPU" />
+
+SIZE VARIANTS:
+
+<ProgressRing value={60} valueText="60%" size="sm" />
+<ProgressRing value={80} valueText="80%" size="lg" />
+
+COLOR VARIANTS:
+
+<ProgressRing value={90} valueText="90%" variant="success" />
+<ProgressRing value={45} valueText="45%" variant="warning" />
+<ProgressRing value={20} valueText="20%" variant="danger" />
+
+CUSTOM CONTENT INSIDE RING:
+
+<ProgressRing value={68}>
+  <strong>68</strong>
+  <small>points</small>
+</ProgressRing>
+
+When children snippet is provided, it replaces the default valueText/labelText
+rendering inside the ring.
+
+
+=====================================================================
+GAUGE
+=====================================================================
+
+Semicircle gauge meter using conic-gradient.
+
+PROPS:
+  value?: number            -- Gauge value 0-100 (default: 0)
+  valueText?: string        -- Text displayed inside the gauge
+  labelText?: string        -- Label text displayed below the value
+  minText?: string          -- Min label at left endpoint
+  maxText?: string          -- Max label at right endpoint
+  variant?: DataVizVariant  -- Color: success, warning, danger, info
+  isZones?: boolean         -- Multi-zone gauge with green/yellow/red bands (default: false)
+  class?: string            -- Additional CSS classes
+  children?: Snippet        -- Custom content inside the gauge (replaces valueText/labelText)
+
+IMPORTANT: isZones overrides variant. When isZones is true, the gauge shows
+three color zones (green/yellow/red) regardless of the variant prop.
+
+BASIC USAGE:
+
+<Gauge value={72} valueText="72%" />
+
+WITH LABELS:
+
+<Gauge
+  value={72}
+  valueText="72%"
+  labelText="Performance"
+  minText="0"
+  maxText="100"
+/>
+
+COLOR VARIANTS:
+
+<Gauge value={85} valueText="85" variant="success" labelText="Good" />
+<Gauge value={50} valueText="50" variant="warning" labelText="Medium" />
+<Gauge value={20} valueText="20" variant="danger" labelText="Poor" />
+
+MULTI-ZONE GAUGE:
+
+<Gauge
+  value={65}
+  valueText="65 mph"
+  labelText="Speed"
+  minText="0"
+  maxText="120"
+  isZones
+/>
+
+The zones gauge renders green/yellow/red bands automatically based on position.
+
+CUSTOM CONTENT:
+
+<Gauge value={88}>
+  <span style="font-size: 2rem; font-weight: bold;">A+</span>
+  <span>Grade</span>
+</Gauge>
+
+
+=====================================================================
+DATA BAR
+=====================================================================
+
+Inline horizontal bar for embedding in table cells.
+
+PROPS:
+  value?: number            -- Bar value 0-100 (default: 0)
+  valueText?: string        -- Text displayed above the bar
+  variant?: DataVizVariant  -- Color: success, warning, danger, info
+  isNegative?: boolean      -- Red bar, right-aligned (default: false)
+  class?: string            -- Additional CSS classes
+  children?: Snippet        -- Additional content
+
+BASIC USAGE:
+
+<DataBar value={75} />
+
+WITH VALUE TEXT:
+
+<DataBar value={75} valueText="75%" />
+
+COLOR VARIANTS:
+
+<DataBar value={90} valueText="90%" variant="success" />
+<DataBar value={50} valueText="50%" variant="warning" />
+<DataBar value={20} valueText="20%" variant="danger" />
+
+NEGATIVE BAR:
+
+<DataBar value={35} valueText="-35%" isNegative />
+
+The isNegative modifier makes the bar red and right-aligned, useful for
+showing negative values, losses, or decreases in table cells.
+
+TABLE CELL EXAMPLE:
+
+<table class="pa-table">
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Value</th>
+      <th>Bar</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Revenue</td>
+      <td>$42,000</td>
+      <td><DataBar value={84} variant="success" /></td>
+    </tr>
+    <tr>
+      <td>Expenses</td>
+      <td>$28,000</td>
+      <td><DataBar value={56} variant="danger" isNegative /></td>
+    </tr>
+  </tbody>
+</table>
+
+
+=====================================================================
+STACKED BAR + SEGMENTS + LEGEND
+=====================================================================
+
+Multi-segment horizontal bar chart with optional legend.
+
+STACKED BAR PROPS:
+  size?: 'sm' | 'lg'    -- Size variant
+  isRounded?: boolean    -- Pill shape (default: false)
+  class?: string         -- Additional CSS classes
+  children?: Snippet     -- StackedBarSegment children
+
+STACKED BAR SEGMENT PROPS:
+  value?: number                                                    -- Width percentage 0-100 (default: 0)
+  variant?: 'success' | 'warning' | 'danger' | 'info' | 'secondary' -- Color variant
+  class?: string                                                     -- Additional CSS classes
+
+STACKED BAR LEGEND PROPS:
+  class?: string         -- Additional CSS classes
+  children?: Snippet     -- StackedBarLegendItem children
+
+STACKED BAR LEGEND ITEM PROPS:
+  variant?: 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'secondary' -- Swatch color (default: 'primary')
+  class?: string         -- Additional CSS classes
+  children?: Snippet     -- Label content
+
+IMPORTANT: Segment values should add up to 100 (or less). Each segment's
+value controls its width via the --value CSS custom property.
+
+BASIC USAGE:
+
+<StackedBar>
+  <StackedBarSegment value={60} variant="success" />
+  <StackedBarSegment value={25} variant="warning" />
+  <StackedBarSegment value={15} variant="danger" />
+</StackedBar>
+
+WITH LEGEND:
+
+<StackedBar>
+  <StackedBarSegment value={60} variant="success" />
+  <StackedBarSegment value={25} variant="warning" />
+  <StackedBarSegment value={15} variant="danger" />
+</StackedBar>
+<StackedBarLegend>
+  <StackedBarLegendItem variant="success">Completed (60%)</StackedBarLegendItem>
+  <StackedBarLegendItem variant="warning">In Progress (25%)</StackedBarLegendItem>
+  <StackedBarLegendItem variant="danger">Failed (15%)</StackedBarLegendItem>
+</StackedBarLegend>
+
+SIZE VARIANTS:
+
+<StackedBar size="sm">
+  <StackedBarSegment value={70} variant="success" />
+  <StackedBarSegment value={30} variant="danger" />
+</StackedBar>
+
+<StackedBar size="lg" isRounded>
+  <StackedBarSegment value={45} variant="info" />
+  <StackedBarSegment value={35} variant="warning" />
+  <StackedBarSegment value={20} variant="secondary" />
+</StackedBar>
+
+WITH PROGRESS GROUP LABEL:
+
+<ProgressGroup labelText="Task Status" valueText="150 total">
+  <StackedBar isRounded>
+    <StackedBarSegment value={60} variant="success" />
+    <StackedBarSegment value={25} variant="warning" />
+    <StackedBarSegment value={15} variant="danger" />
+  </StackedBar>
+</ProgressGroup>
+
+
+=====================================================================
+SPARKLINE + SPARKLINE BAR
+=====================================================================
+
+Mini bar chart for inline data visualization (e.g., in table cells or stat cards).
+
+SPARKLINE PROPS:
+  size?: 'sm' | 'lg'       -- Size variant
+  variant?: DataVizVariant  -- Color: success, warning, danger, info
+  class?: string            -- Additional CSS classes
+  children?: Snippet        -- SparklineBar children
+
+SPARKLINE BAR PROPS:
+  value?: number   -- Bar height as percentage 0-100 (default: 0)
+  class?: string   -- Additional CSS classes
+
+BASIC USAGE:
+
+<Sparkline>
+  <SparklineBar value={30} />
+  <SparklineBar value={70} />
+  <SparklineBar value={45} />
+  <SparklineBar value={90} />
+  <SparklineBar value={60} />
+  <SparklineBar value={35} />
+  <SparklineBar value={80} />
+</Sparkline>
+
+COLOR VARIANTS:
+
+<Sparkline variant="success">
+  <SparklineBar value={20} />
+  <SparklineBar value={50} />
+  <SparklineBar value={80} />
+  <SparklineBar value={40} />
+  <SparklineBar value={65} />
+</Sparkline>
+
+SIZE VARIANTS:
+
+<Sparkline size="sm" variant="info">
+  <SparklineBar value={40} />
+  <SparklineBar value={60} />
+  <SparklineBar value={30} />
+  <SparklineBar value={90} />
+</Sparkline>
+
+<Sparkline size="lg" variant="danger">
+  <SparklineBar value={80} />
+  <SparklineBar value={20} />
+  <SparklineBar value={55} />
+  <SparklineBar value={70} />
+</Sparkline>
+
+DYNAMIC DATA:
+
+<script lang="ts">
+  import { Sparkline, SparklineBar } from '@keenmate/svelte-pure-admin';
+
+  const weeklyData = [30, 45, 80, 55, 70, 40, 90];
+</script>
+
+<Sparkline variant="success">
+  {#each weeklyData as val}
+    <SparklineBar value={val} />
+  {/each}
+</Sparkline>
+
+
+=====================================================================
+HEATMAP + HEATMAP CELL + HEATMAP LEGEND
+=====================================================================
+
+Grid-based heatmap with intensity levels (GitHub contribution graph style).
+
+HEATMAP PROPS:
+  variant?: 'success' | 'danger'   -- Color palette (default: green/success)
+  isCompact?: boolean               -- Smaller cells, tighter gap (default: false)
+  cols?: number                     -- Grid columns (default: 53 for weekly calendar)
+  class?: string                    -- Additional CSS classes
+  children?: Snippet                -- HeatmapCell children
+
+HEATMAP CELL PROPS:
+  level?: 0 | 1 | 2 | 3 | 4   -- Intensity level (default: 0)
+  class?: string                -- Additional CSS classes
+
+  Level mapping:
+    0 = empty/none (lightest)
+    1 = low
+    2 = medium
+    3 = high
+    4 = highest (darkest)
+
+HEATMAP LEGEND PROPS:
+  lessText?: string   -- Text before legend cells (default: "Less")
+  moreText?: string   -- Text after legend cells (default: "More")
+  class?: string      -- Additional CSS classes
+
+IMPORTANT: Only two variants are supported: 'success' (green) and 'danger' (red).
+The cols prop defaults to 53 (standard year in weeks). Override for custom grids.
+
+BASIC USAGE:
+
+<Heatmap>
+  <HeatmapCell level={0} />
+  <HeatmapCell level={1} />
+  <HeatmapCell level={2} />
+  <HeatmapCell level={3} />
+  <HeatmapCell level={4} />
+  <HeatmapCell level={2} />
+  <HeatmapCell level={0} />
+</Heatmap>
+<HeatmapLegend />
+
+CUSTOM GRID (12 COLUMNS):
+
+<Heatmap cols={12} variant="danger">
+  {#each Array(48) as _, i}
+    <HeatmapCell level={Math.floor(Math.random() * 5)} />
+  {/each}
+</Heatmap>
+<HeatmapLegend lessText="Low" moreText="High" />
+
+COMPACT MODE:
+
+<Heatmap isCompact cols={30}>
+  {#each Array(210) as _, i}
+    <HeatmapCell level={Math.floor(Math.random() * 5)} />
+  {/each}
+</Heatmap>
+
+SUCCESS VARIANT (GREEN):
+
+<Heatmap variant="success" cols={7}>
+  {#each contributions as level}
+    <HeatmapCell {level} />
+  {/each}
+</Heatmap>
+<HeatmapLegend />
+
+DANGER VARIANT (RED):
+
+<Heatmap variant="danger" cols={7}>
+  {#each errorCounts as level}
+    <HeatmapCell {level} />
+  {/each}
+</Heatmap>
+<HeatmapLegend lessText="Few errors" moreText="Many errors" />
+
+
+=====================================================================
+BAR LIST + BAR LIST ITEM
+=====================================================================
+
+Labeled horizontal bar chart with text labels and values.
+
+BAR LIST PROPS:
+  variant?: DataVizVariant  -- Color: success, warning, danger, info
+  isCompact?: boolean       -- Tighter spacing, smaller fonts (default: false)
+  class?: string            -- Additional CSS classes
+  children?: Snippet        -- BarListItem children
+
+BAR LIST ITEM PROPS:
+  labelText?: string   -- Label text
+  valueText?: string   -- Value text
+  value?: number       -- Bar fill percentage 0-100 (default: 0)
+  class?: string       -- Additional CSS classes
+  children?: Snippet   -- Custom header content (replaces labelText/valueText)
+
+BASIC USAGE:
+
+<BarList>
+  <BarListItem labelText="Google" valueText="1,234" value={80} />
+  <BarListItem labelText="Twitter" valueText="876" value={55} />
+  <BarListItem labelText="GitHub" valueText="543" value={35} />
+  <BarListItem labelText="Reddit" valueText="321" value={20} />
+</BarList>
+
+COLOR VARIANTS:
+
+<BarList variant="success">
+  <BarListItem labelText="Completed" valueText="85%" value={85} />
+  <BarListItem labelText="In Progress" valueText="45%" value={45} />
+  <BarListItem labelText="Pending" valueText="15%" value={15} />
+</BarList>
+
+COMPACT MODE:
+
+<BarList variant="info" isCompact>
+  <BarListItem labelText="USA" valueText="42%" value={42} />
+  <BarListItem labelText="UK" valueText="28%" value={28} />
+  <BarListItem labelText="Germany" valueText="18%" value={18} />
+  <BarListItem labelText="France" valueText="12%" value={12} />
+</BarList>
+
+CUSTOM HEADER CONTENT:
+
+<BarList>
+  <BarListItem value={75}>
+    <span><strong>Premium Plan</strong> - $99/mo</span>
+    <span>75 users</span>
+  </BarListItem>
+  <BarListItem value={45}>
+    <span><strong>Basic Plan</strong> - $29/mo</span>
+    <span>45 users</span>
+  </BarListItem>
+</BarList>
+
+When children snippet is provided, it replaces the default labelText/valueText
+rendering in the header area.
+
+
+=====================================================================
+WHEN TO USE WHICH COMPONENT
+=====================================================================
+
+PROGRESS BAR
+  Use for: Single metric completion (file upload, form progress, disk usage)
+  Best when: You have one value 0-100 with optional label
+  Example: "Storage: 82% used"
+
+PROGRESS RING
+  Use for: Compact circular KPI display (CPU, memory, scores)
+  Best when: Space is limited, need visual impact, dashboard cards
+  Example: "CPU 72%" in a stat card
+
+GAUGE
+  Use for: Performance meters, speed indicators, health scores
+  Best when: Value has meaningful min/max range, "good/bad" zones
+  Example: "Server Health: 85/100" with min=0, max=100
+
+DATA BAR
+  Use for: Inline bars inside table cells
+  Best when: Comparing values across table rows
+  Example: Revenue column with proportional bars
+
+STACKED BAR
+  Use for: Part-to-whole composition (status breakdown, budget allocation)
+  Best when: Multiple categories that sum to 100%
+  Example: "Tasks: 60% done, 25% in progress, 15% failed"
+
+SPARKLINE
+  Use for: Trend visualization in tight spaces (table cells, stat cards)
+  Best when: Showing time-series data inline
+  Example: Weekly revenue trend in a dashboard card
+
+HEATMAP
+  Use for: Activity patterns, contribution calendars, intensity grids
+  Best when: Large dataset with categorical intensity levels
+  Example: GitHub-style contribution graph
+
+BAR LIST
+  Use for: Ranked/sorted horizontal bar chart with labels
+  Best when: Comparing named items with proportional bars
+  Example: "Top referrers: Google 80%, Twitter 55%, GitHub 35%"
+
+
+=====================================================================
+COMPLETE DASHBOARD KPI EXAMPLES
+=====================================================================
+
+EXAMPLE 1: SERVER MONITORING DASHBOARD
+
+<script lang="ts">
+  import {
+    Card, Grid,
+    Progress, ProgressRing, Gauge, Sparkline, SparklineBar
+  } from '@keenmate/svelte-pure-admin';
+
+  const cpuHistory = [45, 52, 48, 65, 72, 68, 75, 80, 72, 65, 58, 62];
+  const memoryHistory = [60, 62, 65, 68, 70, 72, 75, 78, 80, 82, 78, 75];
+</script>
+
+<Grid cols={4}>
+  <Card>
+    {#snippet header()}
+      <h4>CPU Usage</h4>
+    {/snippet}
+    <div style="display: flex; justify-content: center;">
+      <ProgressRing value={72} valueText="72%" labelText="CPU" variant="warning" />
+    </div>
+    <Sparkline variant="warning" size="sm">
+      {#each cpuHistory as val}
+        <SparklineBar value={val} />
+      {/each}
+    </Sparkline>
+  </Card>
+
+  <Card>
+    {#snippet header()}
+      <h4>Memory</h4>
+    {/snippet}
+    <Progress value={78} labelText="RAM" valueText="78% (12.5 GB)" variant="warning" isRounded />
+    <Progress value={45} labelText="Swap" valueText="45% (3.6 GB)" variant="info" isRounded />
+  </Card>
+
+  <Card>
+    {#snippet header()}
+      <h4>Disk I/O</h4>
+    {/snippet}
+    <Gauge value={65} valueText="65 MB/s" labelText="Read" minText="0" maxText="200" variant="info" />
+  </Card>
+
+  <Card>
+    {#snippet header()}
+      <h4>Network Health</h4>
+    {/snippet}
+    <Gauge value={92} valueText="92%" labelText="Uptime" minText="0%" maxText="100%" isZones />
+  </Card>
+</Grid>
+
+
+EXAMPLE 2: SALES ANALYTICS DASHBOARD
+
+<script lang="ts">
+  import {
+    Card, Grid,
+    StackedBar, StackedBarSegment, StackedBarLegend, StackedBarLegendItem,
+    BarList, BarListItem, ProgressGroup, DataBar
+  } from '@keenmate/svelte-pure-admin';
+
+  const channels = [
+    { name: 'Direct', value: '$42,000', pct: 84 },
+    { name: 'Organic Search', value: '$28,500', pct: 57 },
+    { name: 'Paid Ads', value: '$18,200', pct: 36 },
+    { name: 'Social Media', value: '$12,800', pct: 26 },
+    { name: 'Email', value: '$8,400', pct: 17 }
+  ];
+</script>
+
+<Grid cols={2}>
+  <Card>
+    {#snippet header()}
+      <h4>Revenue by Channel</h4>
+    {/snippet}
+    <BarList variant="info">
+      {#each channels as ch}
+        <BarListItem labelText={ch.name} valueText={ch.value} value={ch.pct} />
+      {/each}
+    </BarList>
+  </Card>
+
+  <Card>
+    {#snippet header()}
+      <h4>Deal Pipeline</h4>
+    {/snippet}
+    <ProgressGroup labelText="Q4 Pipeline" valueText="$120,000">
+      <StackedBar isRounded>
+        <StackedBarSegment value={40} variant="success" />
+        <StackedBarSegment value={30} variant="warning" />
+        <StackedBarSegment value={20} variant="info" />
+        <StackedBarSegment value={10} variant="danger" />
+      </StackedBar>
+    </ProgressGroup>
+    <StackedBarLegend>
+      <StackedBarLegendItem variant="success">Won ($48K)</StackedBarLegendItem>
+      <StackedBarLegendItem variant="warning">Negotiating ($36K)</StackedBarLegendItem>
+      <StackedBarLegendItem variant="info">Proposal ($24K)</StackedBarLegendItem>
+      <StackedBarLegendItem variant="danger">Lost ($12K)</StackedBarLegendItem>
+    </StackedBarLegend>
+  </Card>
+</Grid>
+
+
+EXAMPLE 3: PROJECT STATUS WITH HEATMAP
+
+<script lang="ts">
+  import {
+    Card, Grid,
+    Heatmap, HeatmapCell, HeatmapLegend,
+    Progress, ProgressRing
+  } from '@keenmate/svelte-pure-admin';
+
+  // 4 weeks x 7 days of activity data
+  const activityData = [
+    0,1,2,1,3,0,0,
+    1,2,3,4,2,1,0,
+    0,1,1,2,3,4,1,
+    2,3,4,3,2,1,0
+  ];
+</script>
+
+<Grid cols={3}>
+  <Card>
+    {#snippet header()}
+      <h4>Sprint Progress</h4>
+    {/snippet}
+    <div style="display: flex; gap: 2rem; justify-content: center;">
+      <ProgressRing value={85} valueText="85%" labelText="Done" variant="success" />
+      <ProgressRing value={12} valueText="12%" labelText="Review" variant="warning" size="sm" />
+      <ProgressRing value={3} valueText="3%" labelText="Blocked" variant="danger" size="sm" />
+    </div>
+  </Card>
+
+  <Card>
+    {#snippet header()}
+      <h4>Team Activity (4 weeks)</h4>
+    {/snippet}
+    <Heatmap variant="success" cols={7}>
+      {#each activityData as level}
+        <HeatmapCell {level} />
+      {/each}
+    </Heatmap>
+    <HeatmapLegend lessText="Idle" moreText="Active" />
+  </Card>
+
+  <Card>
+    {#snippet header()}
+      <h4>Test Coverage</h4>
+    {/snippet}
+    <Progress value={92} labelText="Unit Tests" valueText="92%" variant="success" isRounded />
+    <Progress value={78} labelText="Integration" valueText="78%" variant="info" isRounded />
+    <Progress value={45} labelText="E2E Tests" valueText="45%" variant="warning" isRounded />
+  </Card>
+</Grid>
+
+
+EXAMPLE 4: COMPARATIVE TABLE WITH DATA BARS
+
+<script lang="ts">
+  import { DataBar } from '@keenmate/svelte-pure-admin';
+
+  const products = [
+    { name: 'Widget A', revenue: 95000, growth: 24, satisfaction: 92 },
+    { name: 'Widget B', revenue: 72000, growth: -8, satisfaction: 78 },
+    { name: 'Widget C', revenue: 58000, growth: 15, satisfaction: 85 },
+    { name: 'Widget D', revenue: 34000, growth: -15, satisfaction: 62 }
+  ];
+</script>
+
+<table class="pa-table pa-table--striped pa-table--hover">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Revenue</th>
+      <th>Growth</th>
+      <th>Satisfaction</th>
+    </tr>
+  </thead>
+  <tbody>
+    {#each products as p}
+      <tr>
+        <td>{p.name}</td>
+        <td>${p.revenue.toLocaleString()}</td>
+        <td>
+          {#if p.growth >= 0}
+            <DataBar value={p.growth} valueText="+{p.growth}%" variant="success" />
+          {:else}
+            <DataBar value={Math.abs(p.growth)} valueText="{p.growth}%" isNegative />
+          {/if}
+        </td>
+        <td>
+          <DataBar
+            value={p.satisfaction}
+            valueText="{p.satisfaction}%"
+            variant={p.satisfaction >= 80 ? 'success' : p.satisfaction >= 60 ? 'warning' : 'danger'}
+          />
+        </td>
+      </tr>
+    {/each}
+  </tbody>
+</table>
+
+
+=====================================================================
+CSS CUSTOM PROPERTIES
+=====================================================================
+
+All fill-based components use the --value CSS custom property:
+
+  Progress fill:        style="--value: {value}%"
+  ProgressRing:         style="--value: {value}"       (no % suffix!)
+  Gauge:                style="--value: {value}"       (no % suffix!)
+  DataBar fill:         style="--value: {value}%"
+  StackedBarSegment:    style="--value: {value}%"
+  SparklineBar:         style="--value: {value}%"
+  BarListItem bar:      style="--value: {value}%"
+  Heatmap cols:         grid-template-columns: repeat({cols}, 1.2rem)
+  HeatmapCell:          data-level={level}             (attribute, not CSS var)
+
+NOTE: ProgressRing and Gauge use --value WITHOUT the % suffix because
+the SCSS internally converts the value to conic-gradient degrees.
+All other components use --value WITH the % suffix for direct width/height.
+
+
+=====================================================================
+CRITICAL REMINDERS
+=====================================================================
+
+DO:
+  - Import CSS from @keenmate/pure-admin-core separately
+  - Pass value as a number 0-100 (component handles CSS var)
+  - Use ProgressGroup when you need labels above StackedBar
+  - Use {#each} to render dynamic SparklineBar/HeatmapCell arrays
+  - Combine StackedBar + StackedBarLegend as siblings (not nested)
+  - Use variant prop for colors (success, warning, danger, info)
+
+DO NOT:
+  - Pass value as a string or with % suffix (component adds % where needed)
+  - Nest StackedBarLegend inside StackedBar (they are siblings)
+  - Use Heatmap variants other than 'success' or 'danger'
+  - Forget that ProgressRing/Gauge --value has no % suffix
+  - Use <slot> syntax (Svelte 5 uses Snippets: {@render children?.()})
+  - Use export let (Svelte 5 uses $props())
+
+NEXT STEPS
+----------
+- Display components (Field, DescTable, PropCard) -> data-display.txt
+- Feedback components (Alert, Modal, Toast) -> feedback.txt
+- Layout components (Card, Grid) -> layout.txt
+- Form components (Input, Select, Checkbox) -> forms.txt

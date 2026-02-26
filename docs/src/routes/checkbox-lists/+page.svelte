@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Heading, Paragraph, Card, Checkbox, CheckboxList, CheckboxListItem, Button, ButtonGroup, Table, Badge, Alert, Grid, Column, BasicList } from '@keenmate/svelte-pure-admin';
+	import { Heading, Paragraph, Card, Checkbox, CheckboxBox, CheckboxList, CheckboxListItem, Button, ButtonGroup, Table, Badge, Alert, Grid, Column, BasicList } from '@keenmate/svelte-pure-admin';
 													
 	// ===== Card 1: Custom Tri-State Checkbox =====
 	let uncheckedDemo = $state(false);
@@ -422,7 +422,7 @@
 		<thead>
 			<tr>
 				<th class="pa-table__checkbox-col">
-					<span class="pa-checkbox"><input type="checkbox" id="select-all" /><span class="pa-checkbox__box"></span></span>
+					<CheckboxBox id="select-all" />
 				</th>
 				<th>Name</th>
 				<th>Email</th>
@@ -434,7 +434,7 @@
 			{#each staticTableData as row (row.id)}
 				<tr class:pa-table__row--selected={row.checked}>
 					<td class="pa-table__checkbox-col">
-						<span class="pa-checkbox"><input type="checkbox" class="row-checkbox" checked={row.checked} /><span class="pa-checkbox__box"></span></span>
+						<CheckboxBox checked={row.checked} />
 					</td>
 					<td>{row.name}</td>
 					<td>{row.email}</td>
@@ -459,10 +459,7 @@
 		<thead>
 			<tr>
 				<th class="pa-table__checkbox-col">
-					<span class="pa-checkbox">
-						<input type="checkbox" id="select-all-demo" checked={interactiveSelectAll} onchange={handleInteractiveSelectAll} />
-						<span class="pa-checkbox__box"></span>
-					</span>
+					<CheckboxBox id="select-all-demo" checked={interactiveSelectAll} onchange={handleInteractiveSelectAll} />
 				</th>
 				<th>Product</th>
 				<th>SKU</th>
@@ -474,10 +471,7 @@
 			{#each interactiveTableData as row (row.id)}
 				<tr class:pa-table__row--selected={row.checked}>
 					<td class="pa-table__checkbox-col">
-						<span class="pa-checkbox">
-							<input type="checkbox" class="row-checkbox-demo" bind:checked={row.checked} />
-							<span class="pa-checkbox__box"></span>
-						</span>
+						<CheckboxBox bind:checked={row.checked} />
 					</td>
 					<td>{row.product}</td>
 					<td>{row.sku}</td>

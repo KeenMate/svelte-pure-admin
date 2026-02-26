@@ -1,0 +1,537 @@
+THEMING AND CUSTOMIZATION
+=========================
+
+CRITICAL: This is a Svelte 5 component library (@keenmate/svelte-pure-admin).
+Theming works through CSS custom properties (--pa-*) defined by
+@keenmate/pure-admin-core. Themes override these variables. Color slots 1-9
+provide theme-defined accent colors available through utility classes and
+component props.
+
+CSS IMPORT
+----------
+Every app MUST import the core CSS. Without it, no components render correctly.
+
+In your root layout or app entry:
+
+<script>
+  import '@keenmate/pure-admin-core/css';
+</script>
+
+Or in a global CSS file:
+
+@import '@keenmate/pure-admin-core/css';
+
+This provides all base styles, BEM classes (pa-*), and default CSS variable values.
+
+
+THEME PACKAGES
+--------------
+Pure Admin ships five theme packages. Each is a separate CSS file that overrides
+the --pa-* custom properties:
+
+  @keenmate/pure-admin-theme-audi         - Audi-inspired dark theme
+  @keenmate/pure-admin-theme-dark         - General dark theme
+  @keenmate/pure-admin-theme-corporate    - Professional corporate theme
+  @keenmate/pure-admin-theme-express      - Bold, colorful Express theme
+  @keenmate/pure-admin-theme-minimal      - Clean, minimal theme
+
+Static theme import (load one theme at build time):
+
+<script>
+  import '@keenmate/pure-admin-core/css';
+  import '@keenmate/pure-admin-theme-audi/css';
+</script>
+
+Or in CSS:
+
+@import '@keenmate/pure-admin-core/css';
+@import '@keenmate/pure-admin-theme-audi/css';
+
+
+THEME SWITCHING AT RUNTIME
+---------------------------
+For dynamic theme switching, load themes as CSS files (not JS imports) and swap
+them at runtime via a <link> element.
+
+Manual theme switching approach:
+
+<script lang="ts">
+  function setTheme(cssPath: string) {
+    let themeLink = document.getElementById('pa-theme-css') as HTMLLinkElement;
+    if (!themeLink) {
+      themeLink = document.createElement('link');
+      themeLink.id = 'pa-theme-css';
+      themeLink.rel = 'stylesheet';
+      document.head.appendChild(themeLink);
+    }
+    themeLink.href = cssPath;
+  }
+
+  // Switch to Audi theme
+  setTheme('/themes/audi.css');
+
+  // Switch to Corporate theme
+  setTheme('/themes/corporate.css');
+</script>
+
+Copy theme CSS files to your static/public folder so they are available as URLs.
+
+
+SETTINGS PANEL COMPONENT
+-------------------------
+SettingsPanel provides a floating gear-icon panel that handles theme switching,
+dark mode, layout width, sidebar options, font settings, and more.
+
+import { SettingsPanel } from '@keenmate/svelte-pure-admin';
+import type { ThemeOption } from '@keenmate/svelte-pure-admin';
+
+Props:
+  availableThemes?: ThemeOption[]    (if not provided, theme selector is hidden)
+  defaultTheme?: string             (defaults to first theme id)
+  onsettingschange?: (settings: SettingsPanelState) => void
+
+ThemeOption interface:
+
+interface ThemeOption {
+  id: string;       // e.g., 'audi', 'express'
+  name: string;     // e.g., 'Audi', 'Express'
+  cssPath: string;  // e.g., '/themes/audi.css'
+}
+
+Complete SettingsPanel setup:
+
+<script lang="ts">
+  import { SettingsPanel } from '@keenmate/svelte-pure-admin';
+  import type { ThemeOption } from '@keenmate/svelte-pure-admin';
+
+  const themes: ThemeOption[] = [
+    { id: 'default', name: 'Default', cssPath: '' },
+    { id: 'audi', name: 'Audi', cssPath: '/themes/audi.css' },
+    { id: 'dark', name: 'Dark', cssPath: '/themes/dark.css' },
+    { id: 'corporate', name: 'Corporate', cssPath: '/themes/corporate.css' },
+    { id: 'express', name: 'Express', cssPath: '/themes/express.css' },
+    { id: 'minimal', name: 'Minimal', cssPath: '/themes/minimal.css' }
+  ];
+
+  function handleSettingsChange(settings: any) {
+    console.log('Settings changed:', settings);
+  }
+</script>
+
+<SettingsPanel
+  availableThemes={themes}
+  defaultTheme="default"
+  onsettingschange={handleSettingsChange}
+/>
+
+SettingsPanel manages these settings with localStorage persistence:
+
+  theme            - Selected theme ID (localStorage key: 'theme')
+  themeMode        - 'light' | 'dark' | 'auto' (key: 'theme-mode')
+  containerWidth   - 'fluid' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' (key: 'container-width')
+  sidebarBehavior  - 'hide' | 'icon-collapse' (key: 'sidebar-behavior')
+  sidebarCollapsed - boolean (key: 'sidebar-hidden')
+  sidebarResizable - boolean (key: 'sidebar-resizable')
+  sidebarMode      - '' | 'sticky' (key: 'sidebar-mode')
+  compactMode      - boolean (key: 'compact-mode')
+  rtlMode          - boolean (key: 'rtl-mode')
+  fontSize         - 'small' | 'default' | 'large' | 'xlarge' (key: 'font-size')
+  fontFamily       - 'default' | 'serif' | 'mono' | 'cuprum' | etc. (key: 'font-family')
+  profileHasAvatar - boolean (key: 'profile-no-avatar', inverted)
+  profileIconOnlyTabs - boolean (key: 'profile-icon-only-tabs')
+
+
+LIGHT / DARK / AUTO MODE
+-------------------------
+SettingsPanel provides three theme modes:
+
+  light  - Forces light mode: body gets class pa-mode-light
+  dark   - Forces dark mode: body gets class pa-mode-dark
+  auto   - Follows OS preference via prefers-color-scheme media query
+
+How auto mode works internally:
+
+  1. Checks window.matchMedia('(prefers-color-scheme: dark)').matches
+  2. Applies pa-mode-light or pa-mode-dark accordingly
+  3. Listens for OS theme changes via mediaQuery.addEventListener('change', ...)
+  4. Updates DOM class automatically when OS preference changes
+
+Manual dark mode (without SettingsPanel):
+
+<script lang="ts">
+  function setThemeMode(mode: 'light' | 'dark' | 'auto') {
+    let resolvedMode = mode;
+
+    if (mode === 'auto') {
+      resolvedMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+    }
+
+    document.body.classList.remove('pa-mode-light', 'pa-mode-dark');
+    document.body.classList.add(`pa-mode-${resolvedMode}`);
+  }
+
+  // Apply dark mode
+  setThemeMode('dark');
+
+  // Follow OS preference
+  setThemeMode('auto');
+</script>
+
+
+COLOR SLOTS (1-9)
+------------------
+Pure Admin defines 9 theme-specific accent colors (color slots). Each theme
+assigns different colors to these slots. They are used via utility classes and
+the themeColor prop on supported components.
+
+ThemeColor type:
+
+type ThemeColor = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+
+CSS custom properties for color slots:
+
+  --pa-color-1 through --pa-color-9
+
+Utility classes for color slots:
+
+  Background:  pa-bg-color-1   pa-bg-color-2   ... pa-bg-color-9
+  Text:        pa-text-color-1  pa-text-color-2  ... pa-text-color-9
+  Border:      pa-border-color-1 pa-border-color-2 ... pa-border-color-9
+
+Using color slots in HTML:
+
+<div class="pa-bg-color-3">Background color slot 3</div>
+<span class="pa-text-color-5">Text in color slot 5</span>
+<div class="pa-border-color-1" style="border: 2px solid;">Border color slot 1</div>
+
+Components that accept themeColor prop:
+
+  Input         - themeColor={3} adds class pa-input--color-3
+  Select        - themeColor={3} adds class pa-select--color-3
+  Textarea      - themeColor={3} adds class pa-textarea--color-3
+  NumberInput   - themeColor={3} adds class pa-input--color-3
+  DateInput     - themeColor={3} adds class pa-input--color-3
+  FileInput     - themeColor={3} adds class pa-input--color-3
+  RangeInput    - themeColor={3} adds class pa-input--color-3
+  Badge         - themeColor={3} adds class pa-bg-color-3
+  Alert         - themeColor={3} adds class pa-bg-color-3
+  FormHelp      - themeColor={3} adds class pa-form-help--color-3
+
+Example - Badge with theme color:
+
+<script lang="ts">
+  import { Badge, type ThemeColor } from '@keenmate/svelte-pure-admin';
+</script>
+
+<Badge themeColor={1}>Color 1</Badge>
+<Badge themeColor={2}>Color 2</Badge>
+<Badge themeColor={3}>Color 3</Badge>
+<Badge themeColor={4}>Color 4</Badge>
+<Badge themeColor={5}>Color 5</Badge>
+
+Example - Input with theme color:
+
+<Input themeColor={3} placeholder="Themed input" />
+
+Example - Alert with theme color:
+
+<Alert themeColor={7}>This alert uses color slot 7.</Alert>
+
+Example - Using color slots on Card headerClass:
+
+<Card headerClass="pa-bg-color-2">
+  {#snippet header()}
+    <h3>Card with themed header</h3>
+  {/snippet}
+  Card body content.
+</Card>
+
+Each theme defines its own color palette for slots 1-9. For example:
+  - Default theme: standard blue/green/purple/orange palette
+  - Audi theme: grays, reds, and Audi brand colors
+  - Corporate theme: professional blues and greens
+  - Express theme: bold, vivid colors
+  - Minimal theme: muted, desaturated tones
+
+
+CSS CUSTOM PROPERTIES
+---------------------
+Pure Admin uses CSS custom properties (--pa-*) extensively. Themes override
+these to change the entire look. You can also override them yourself.
+
+Key CSS custom properties:
+
+  Layout:
+    --pa-border-radius          - Global border radius
+    --pa-border-color           - Default border color
+    --pa-shadow                 - Default box shadow
+
+  Colors:
+    --pa-primary-bg             - Primary background
+    --pa-secondary-bg           - Secondary background
+    --pa-success-bg             - Success background
+    --pa-warning-bg             - Warning background
+    --pa-danger-bg              - Danger background
+    --pa-info-bg                - Info background
+    --pa-accent                 - Accent color
+
+  Text:
+    --pa-text-primary           - Primary text color
+    --pa-text-color-2           - Secondary text color
+    --pa-text-muted             - Muted text color
+
+  Components:
+    --pa-card-bg                - Card background
+    --pa-primary-rgb            - Primary color as RGB triplet (for alpha use)
+    --pa-danger                 - Danger color (solid)
+
+  Color slots:
+    --pa-color-1 through --pa-color-9
+
+Override custom properties in your CSS:
+
+:root {
+  --pa-border-radius: 0.5rem;
+  --pa-accent: #e91e63;
+  --pa-color-1: #1976d2;
+  --pa-color-2: #388e3c;
+  --pa-color-3: #f57c00;
+}
+
+Or scope overrides to a specific section:
+
+.my-custom-section {
+  --pa-card-bg: #f5f5f5;
+  --pa-border-color: #ddd;
+}
+
+
+CONTAINER WIDTHS
+----------------
+The Layout component accepts a size prop that constrains the content width.
+SettingsPanel also controls this via the containerWidth setting.
+
+Layout size prop:
+
+  'sm'   - 768px max-width
+  'md'   - 1024px max-width
+  'lg'   - 1280px max-width
+  'xl'   - 1600px max-width
+  '2xl'  - 1920px max-width
+  (none) - Fluid, full width
+
+<script lang="ts">
+  import { Layout, Header, Content } from '@keenmate/svelte-pure-admin';
+</script>
+
+<Layout size="lg">
+  <Header />
+  <Content>Constrained to 1280px max width.</Content>
+</Layout>
+
+Container width classes applied to body by SettingsPanel:
+
+  pa-container-sm   - 768px
+  pa-container-md   - 1024px
+  pa-container-lg   - 1280px
+  pa-container-xl   - 1600px
+  pa-container-2xl  - 1920px
+
+Manual container width (without SettingsPanel):
+
+document.body.classList.add('pa-container-lg');
+
+
+FONT OPTIONS
+------------
+SettingsPanel provides font size and font family switching.
+
+Font sizes (applied as class on <html>):
+
+  font-size-small   - 14px base
+  font-size-default - 16px base (no class needed)
+  font-size-large   - 18px base
+  font-size-xlarge  - 20px base
+
+Font families (applied as class on <body>):
+
+  font-family-serif
+  font-family-mono
+  font-family-cuprum
+  font-family-fira-sans-condensed
+  font-family-manrope
+  font-family-martel
+  font-family-maven-pro
+  font-family-monda
+  font-family-play
+  font-family-signika
+  font-family-yanone-kaffeesatz
+
+Manual font switching (without SettingsPanel):
+
+// Set large font
+document.documentElement.classList.add('font-size-large');
+
+// Set monospace font
+document.body.classList.add('font-family-mono');
+
+
+SIDEBAR MODES
+-------------
+SettingsPanel controls several sidebar behaviors:
+
+Sidebar behavior (how sidebar collapses):
+  'hide'            - Hides sidebar completely when collapsed
+  'icon-collapse'   - Shows icon-only mini sidebar when collapsed
+
+  Class applied: pa-layout__sidebar--icon-collapse
+
+Sidebar collapsed state:
+  When sidebarCollapsed=true, body gets class: sidebar-hidden
+
+Sidebar resizable:
+  When sidebarResizable=true, sidebar gets class: pa-layout__sidebar--resizable
+
+Sidebar mode (scroll behavior):
+  ''        - Sidebar scrolls with content (default)
+  'sticky'  - Sidebar stays fixed on scroll
+
+  Class applied: pa-layout--sticky (on body)
+
+Manual sidebar control (without SettingsPanel):
+
+// Collapse sidebar
+document.body.classList.add('sidebar-hidden');
+
+// Icon-only collapse
+document.querySelector('.pa-layout__sidebar')?.classList.add('pa-layout__sidebar--icon-collapse');
+
+// Make sidebar resizable
+document.querySelector('.pa-layout__sidebar')?.classList.add('pa-layout__sidebar--resizable');
+
+// Sticky sidebar
+document.body.classList.add('pa-layout--sticky');
+
+
+RTL MODE
+--------
+SettingsPanel supports right-to-left mode.
+
+When rtlMode=true:
+  document.documentElement.setAttribute('dir', 'rtl');
+
+When rtlMode=false:
+  document.documentElement.setAttribute('dir', 'ltr');
+
+All Pure Admin components use logical properties (start/end instead of left/right)
+for full RTL support since v1.5.0. Exceptions: Tooltip and Popconfirm keep physical
+left/right for arrow positioning.
+
+
+COMPACT MODE
+------------
+When compactMode=true, body gets class: compact-mode
+
+This reduces padding, margins, and font sizes globally across all components.
+
+Manual:
+document.body.classList.add('compact-mode');
+
+
+SEMANTIC COLOR VARIABLES
+------------------------
+Beyond color slots, themes define semantic colors for feedback/status:
+
+  --pa-success-bg    - Success green background
+  --pa-warning-bg    - Warning yellow/orange background
+  --pa-danger-bg     - Danger red background
+  --pa-info-bg       - Info blue background
+  --pa-accent        - Theme accent color
+  --pa-primary-bg    - Primary background
+  --pa-secondary-bg  - Secondary background
+
+These are used by Alert, Badge, Button, Toast, and other feedback components
+via their variant prop ('success', 'warning', 'danger', 'info', 'primary').
+
+
+COMPLETE THEMING SETUP EXAMPLE
+-------------------------------
+
+<script lang="ts">
+  import '@keenmate/pure-admin-core/css';
+  import {
+    Layout,
+    Header,
+    Sidebar,
+    SidebarItem,
+    Content,
+    SettingsPanel,
+    Badge,
+    Alert,
+    Input,
+    Card
+  } from '@keenmate/svelte-pure-admin';
+  import type { ThemeOption } from '@keenmate/svelte-pure-admin';
+
+  const themes: ThemeOption[] = [
+    { id: 'default', name: 'Default', cssPath: '' },
+    { id: 'audi', name: 'Audi', cssPath: '/themes/audi.css' },
+    { id: 'dark', name: 'Dark', cssPath: '/themes/dark.css' },
+    { id: 'corporate', name: 'Corporate', cssPath: '/themes/corporate.css' },
+    { id: 'express', name: 'Express', cssPath: '/themes/express.css' },
+    { id: 'minimal', name: 'Minimal', cssPath: '/themes/minimal.css' }
+  ];
+</script>
+
+<Layout size="xl">
+  <Header>
+    {#snippet brand()}
+      <span>My App</span>
+    {/snippet}
+  </Header>
+
+  <Sidebar>
+    <SidebarItem label="Dashboard" href="/" icon="fa-solid fa-home" />
+    <SidebarItem label="Settings" href="/settings" icon="fa-solid fa-cog" />
+  </Sidebar>
+
+  <Content>
+    <!-- Color slot badges -->
+    <Badge themeColor={1}>Slot 1</Badge>
+    <Badge themeColor={2}>Slot 2</Badge>
+    <Badge themeColor={3}>Slot 3</Badge>
+
+    <!-- Themed input -->
+    <Input themeColor={5} placeholder="Color slot 5 input" />
+
+    <!-- Themed alert -->
+    <Alert themeColor={4}>This uses color slot 4.</Alert>
+
+    <!-- Card with themed header -->
+    <Card headerClass="pa-bg-color-1">
+      {#snippet header()}
+        <h3>Themed Card</h3>
+      {/snippet}
+      Content here.
+    </Card>
+  </Content>
+</Layout>
+
+<!-- Settings panel (floating gear icon) -->
+<SettingsPanel availableThemes={themes} defaultTheme="default" />
+
+
+IMPORTANT NOTES
+---------------
+- Always import @keenmate/pure-admin-core/css FIRST, before any theme CSS.
+- Theme CSS files override --pa-* variables. Order matters: theme CSS must load after core.
+- Color slots 1-9 change meaning per theme. Do not assume slot 3 = orange everywhere.
+- SettingsPanel persists all settings to localStorage automatically.
+- SettingsPanel applies settings to DOM on mount (loads from localStorage).
+- The 'auto' theme mode uses prefers-color-scheme and listens for OS changes.
+- pa-mode-light / pa-mode-dark classes on body control light/dark mode.
+- Container width classes (pa-container-sm/md/lg/xl/2xl) go on body.
+- Font size classes go on <html>. Font family classes go on <body>.
+- Sidebar classes go on the .pa-layout__sidebar element or on body.

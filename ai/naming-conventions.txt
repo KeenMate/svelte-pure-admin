@@ -1,0 +1,372 @@
+NAMING CONVENTIONS (KEENMATE STANDARD)
+=======================================
+
+CRITICAL: This library follows the KeenMate naming methodology across ALL components.
+Every prop name is designed to be self-documenting -- the suffix/prefix tells you the type and purpose.
+These rules apply to @keenmate/svelte-pure-admin and all KeenMate packages.
+
+
+BOOLEAN PROPS: is* PREFIX
+--------------------------
+State flags -- what something IS right now.
+Used for component state, visual modifiers, and behavior toggles.
+
+  isGhost          -- Card has no background/border/shadow
+  isStat           -- Card uses stat styling
+  isStriped        -- Table/Fields has alternating row backgrounds
+  isHover          -- Table has hover effect on rows
+  isBordered       -- Table/Fields has bottom border separators
+  isBorderless     -- Table has no cell borders
+  isCompact        -- Tighter spacing (Table, Fields, BarList, Heatmap)
+  isRelaxed        -- Larger gaps between fields
+  isHorizontal     -- Label left, value right (FormGroup, Fields)
+  isTable          -- Consistent label widths like key-value table
+  isInline         -- Fields flow on one line
+  isRow            -- Equal-width auto columns
+  isLinear         -- Ultra-clean side-by-side layout
+  isChips          -- Notion-style inline flowing pairs with pill values
+  isFilled         -- Subtle background panel (Fields)
+  isScrollable     -- Scrollable body content (Modal, TableCard)
+  isStatic         -- Prevents closing via ESC/backdrop (Modal)
+  isOutline        -- Outline style (Button)
+  isBlock          -- Full width (Button)
+  isIconOnly       -- No text, icon only (Button)
+  isLoading        -- Loading state (Button, i18n service)
+  isRipple         -- Ripple effect on click (Button)
+  isPill           -- Pill shape (Badge, Progress)
+  isRounded        -- Rounded corners (Progress, StackedBar)
+  isAnimated       -- Animated stripes (Progress)
+  isNegative       -- Red, right-aligned (DataBar)
+  isZones          -- Multi-zone green/yellow/red (Gauge)
+  isPlain          -- Removes card styling (TableCard)
+  isResponsive     -- Responsive table with horizontal scrolling
+  isResponsiveGrid -- Collapses to cards on mobile
+  isError          -- Has validation error (FormGroup, legacy)
+  isSuccess        -- Has validation success (FormGroup, legacy)
+  isRequired       -- Mark as required (FormGroup)
+  isEllipsisStart  -- Ellipsis at start of text (Badge)
+  isInteractive    -- Renders as button element (CompositeBadge)
+  isFilled         -- Filled marker instead of outline (TimelineItem)
+  isDateHeader     -- Is this a date header (TimelineItem)
+  isTotal          -- Bold total row (DotLeadersItem)
+  isBold           -- Bold value (PropCardRow)
+
+Examples in component code:
+
+  <Table isStriped isHover isCompact>...</Table>
+  <Card isGhost isStat>...</Card>
+  <Button isOutline isBlock isLoading>...</Button>
+  <Modal isScrollable isStatic>...</Modal>
+  <Fields isHorizontal isBordered isStriped>...</Fields>
+  <Progress isRounded isStriped isAnimated value={75} />
+
+
+BOOLEAN PROPS: has* PREFIX
+---------------------------
+Feature flags -- whether something HAS a feature enabled.
+
+  hasPadding         -- Body has padding (Card, set false to remove)
+  hasBorder          -- Show left border (Fields, set false to remove)
+  hasInlineTabs      -- Pill-style buttons inside card header
+  hasContainerQuery  -- Wrap in container for CSS container query
+  hasAvatar          -- Item shows an avatar image
+
+Examples:
+
+  <Card hasPadding={false}>...</Card>
+  <Fields hasBorder={false} hasContainerQuery>...</Fields>
+
+
+BOOLEAN PROPS: should* PREFIX
+-------------------------------
+Behavior flags -- what the component SHOULD do.
+Controls behavior, not appearance.
+
+  shouldShowClose      -- Show close button in header (Modal)
+  shouldCloseOnEscape  -- Close on Escape key (Modal)
+  shouldShowProgress   -- Show progress bar (Toast)
+
+Examples:
+
+  <Modal shouldShowClose={false} shouldCloseOnEscape={false}>...</Modal>
+  <Toast shouldShowProgress duration={5000} titleText="Saved" messageText="Done" />
+
+
+TEXT CONTENT PROPS: *Text SUFFIX
+---------------------------------
+String props that provide text content to display.
+The suffix tells you this is a displayable string, not a behavior flag.
+
+  titleText        -- Card title, Modal title, Toast title
+  subtitleText     -- Subtitle/description (Card, below title)
+  descriptionText  -- Description (Card, inline with title)
+  labelText        -- Field label, Stat label, Progress label
+  valueText        -- Field value, Progress value display
+  messageText      -- Toast message, Alert message
+  headingText      -- Heading content
+  symbolText       -- Symbol display (Stat square variant)
+  changeText       -- Change text like "+12.5%" (Stat)
+  timeText         -- Time/date text
+  minText          -- Minimum label (Gauge)
+  maxText          -- Maximum label (Gauge)
+  copyHintText     -- Hint for copy mode (Field)
+  copiedText       -- Feedback text after copy (Field)
+  confirmText      -- Confirm button text (Dialog)
+  cancelText       -- Cancel button text (Dialog)
+  okText           -- OK button text (Dialog)
+  buttonText       -- Button/count text (CompositeBadge)
+
+Examples:
+
+  <Card titleText="User Profile" descriptionText="Manage your account">...</Card>
+  <Stat labelText="Revenue" number="$45K" changeText="+8.3%" />
+  <Toast titleText="Success" messageText="Changes saved successfully" variant="success" />
+  <Field labelText="Email" valueText="john@example.com" />
+  <Progress labelText="Upload" valueText="75%" value={75} />
+
+
+EVENT HANDLERS: on* PREFIX (LOWERCASE)
+---------------------------------------
+Fire-and-forget event notifications. The return value is NOT used by the component.
+Svelte 5 uses native DOM event syntax: all lowercase, no camelCase.
+
+DOM event forwarders (standard HTML events):
+  onclick       -- Click handler
+  onchange      -- Value change handler
+  oninput       -- Input handler (fires on every keystroke)
+  onblur        -- Focus lost handler
+  onfocus       -- Focus gained handler
+  onkeydown     -- Key press handler
+
+Custom component events (fire-and-forget):
+  onclose       -- Called when Modal/Toast/Panel closes
+  onconfirm     -- Called when user confirms (Dialog, Popconfirm)
+  oncancel      -- Called when user cancels
+  ondismiss     -- Called when notification is dismissed
+  oncopy        -- Called after successful clipboard copy (Field)
+  onpagechange  -- Called when page changes (Pager)
+  onburgerclick -- Called when burger menu is clicked (Navbar)
+  onglobalselect -- Called when global search result selected (CommandPalette)
+
+WRONG (do NOT use camelCase for handlers):
+  onClick       -- WRONG
+  onChange      -- WRONG
+  onClose       -- WRONG
+
+Examples:
+
+  <Button onclick={() => console.log('clicked')}>Click Me</Button>
+  <Modal bind:show={isOpen} onclose={() => console.log('closed')}>...</Modal>
+  <Input bind:value={email} oninput={(e) => validate(e)} onblur={handleBlur} />
+  <Field labelText="ID" valueText="abc-123" copyMode="btn" oncopy={(v) => log(v)} />
+
+
+CALLBACKS WITH RETURN VALUE: *Callback SUFFIX
+-----------------------------------------------
+Only used when the return value controls component behavior.
+The component READS the return value to decide what to do.
+
+  beforeCloseCallback  -- Return false to PREVENT closing (Modal)
+  copyValueCallback    -- Returns string for clipboard (Field)
+  get*Callback         -- Returns data for rendering
+
+WRONG:
+  closeCallback        -- Don't use for fire-and-forget (use onclose)
+  confirmCallback      -- Don't use for fire-and-forget (use onconfirm)
+
+Examples:
+
+  <Modal
+    bind:show={isOpen}
+    beforeCloseCallback={() => {
+      if (hasUnsavedChanges) {
+        return false; // Prevent close!
+      }
+      // Allow close (return void/true)
+    }}
+    onclose={() => console.log('closed')} // Fire-and-forget notification
+  >
+    ...
+  </Modal>
+
+  <Field
+    labelText="Token"
+    valueText="***masked***"
+    copyMode="btn"
+    copyValueCallback={() => getActualToken()} // Returns the real value to copy
+    oncopy={(v) => audit.log('token copied')}   // Fire-and-forget notification
+  />
+
+
+CSS CLASS PROPS: class AND *Class SUFFIX
+------------------------------------------
+String props for passing CSS class names.
+
+  class          -- Standard additional CSS classes (every component has this)
+  headerClass    -- Extra classes for header element (Card, Modal)
+  bodyClass      -- Extra classes for body element (Modal)
+  footerClass    -- Extra classes for footer element (Modal)
+  labelClass     -- Extra classes for label element
+
+The standard 'class' prop is aliased internally:
+  let { class: className = '' }: Props = $props();
+
+Examples:
+
+  <Card class="mb-4" headerClass="bg-primary text-white">...</Card>
+  <Modal bodyClass="p-0" footerClass="justify-end">...</Modal>
+  <Button class="wr-5 minwr-5">Fixed Width</Button>
+
+
+NATIVE HTML ATTRIBUTES: KEEP AS-IS
+------------------------------------
+Standard HTML attributes are NOT renamed. Keep them exactly as in HTML.
+
+  disabled       -- Not isDisabled (Button, Input, Select)
+  readonly       -- Not isReadonly (Input, Textarea)
+  required       -- Not isRequired (Input, but FormGroup uses isRequired)
+  placeholder    -- Not placeholderText (Input, Textarea, Select)
+  id             -- Element ID
+  name           -- Form field name
+  type           -- Button type, Input type
+  href           -- Link URL (Button as anchor)
+  target         -- Link target (Button as anchor)
+
+Examples:
+
+  <Button disabled>Can't Click</Button>
+  <Input placeholder="Enter email" required disabled={!canEdit} />
+  <Select name="country" id="country-select">...</Select>
+
+
+VISUAL/STRUCTURAL PROPS: variant, size, type
+----------------------------------------------
+Standard pattern props for visual appearance:
+
+  variant        -- Color/style variant (primary, success, danger, warning, info, etc.)
+  size           -- Size variant (xs, sm, lg, xl)
+  type           -- Structural type (button type, input type)
+  color          -- Theme color (1-9) for numbered color schemes
+  position       -- Placement (top-end, bottom-start, center, etc.)
+
+Examples:
+
+  <Button variant="primary" size="lg">Big Button</Button>
+  <Badge variant="success" size="sm" isPill>Active</Badge>
+  <Toast variant="danger" titleText="Error" messageText="Failed" />
+  <Fields color={3} cols={2}>...</Fields>
+  <ToastContainer position="top-end">...</ToastContainer>
+
+
+SNIPPET PROPS (NAMED SLOTS)
+-----------------------------
+Svelte 5 Snippet type for complex content sections:
+
+  children       -- Main body content (default slot replacement)
+  header         -- Header section content
+  footer         -- Footer section content
+  icon           -- Icon content
+  title          -- Rich title content (alternative to titleText)
+  description    -- Rich description content (alternative to descriptionText)
+  tools          -- Header toolbar area
+  actions        -- Footer actions area
+  tabs           -- Tab content area
+  titleIcon      -- Icon rendered before title
+  labelSnippet   -- Complex label content (Field)
+  valueSnippet   -- Complex value content (Field)
+
+Type declaration in component:
+  header?: import('svelte').Snippet;
+  children?: import('svelte').Snippet;
+
+
+MEMBER PROPS: *Member SUFFIX
+------------------------------
+Property mappings for data binding. Indicates which field in a data object to use.
+Not commonly used in Pure Admin (no complex data binding), but follows KeenMate pattern.
+
+  idMember              -- Which field contains the ID
+  displayValueMember    -- Which field to display as text
+  searchValueMember     -- Which field to search against
+
+Example (from web-multiselect, same methodology):
+  <web-multiselect value-member="id" display-value-member="name" />
+
+
+TIMEOUT PROPS: *Timeout SUFFIX
+-------------------------------
+Time duration values, always in milliseconds.
+
+  duration             -- Auto-dismiss duration (Toast)
+  timeout              -- Request timeout (RPC transports)
+
+
+QUICK REFERENCE TABLE: COMMON RENAMES
+---------------------------------------
+If you see old patterns, here is the correct naming:
+
+  OLD NAME            -->  CORRECT NAME           REASON
+  ---------------------------------------------------------------------------
+  onClick                  onclick                Svelte 5 lowercase events
+  onChange                  onchange               Svelte 5 lowercase events
+  onClose                  onclose                Svelte 5 lowercase events
+  closeCallback            onclose                Fire-and-forget, not callback
+  confirmCallback          onconfirm              Fire-and-forget, not callback
+  isDisabled               disabled               Native HTML attribute
+  isReadonly               readonly               Native HTML attribute
+  showClose                shouldShowClose        should* for behavior flags
+  closeOnEscape            shouldCloseOnEscape    should* for behavior flags
+  showProgress             shouldShowProgress     should* for behavior flags
+  title (string)           titleText              *Text suffix for strings
+  subtitle (string)        subtitleText           *Text suffix for strings
+  message (string)         messageText            *Text suffix for strings
+  label (string)           labelText              *Text suffix for strings
+  value (display)          valueText              *Text suffix for display strings
+  striped                  isStriped              is* for state booleans
+  hover                    isHover                is* for state booleans
+  compact                  isCompact              is* for state booleans
+  bordered                 isBordered             is* for state booleans
+  ghost                    isGhost                is* for state booleans
+  outline                  isOutline              is* for state booleans
+  block                    isBlock                is* for state booleans
+  pill                     isPill                 is* for state booleans
+  loading                  isLoading              is* for state booleans
+  scrollable               isScrollable           is* for state booleans
+  static                   isStatic               is* for state booleans
+  padding                  hasPadding             has* for feature presence
+  border                   hasBorder              has* for feature presence
+  left/right               start/end              Logical directions (RTL)
+  top-right                top-end                Logical positions (RTL)
+  top-left                 top-start              Logical positions (RTL)
+  bottom-right             bottom-end             Logical positions (RTL)
+  bottom-left              bottom-start           Logical positions (RTL)
+  bodyClassName            bodyClass              *Class suffix
+  headerClassName          headerClass            *Class suffix
+
+
+BENEFITS OF THIS METHODOLOGY
+------------------------------
+1. Self-documenting code -- Prop name tells you the type and purpose
+2. No ambiguity -- is* = boolean, *Text = string, on* = event, *Callback = returns value
+3. Better IntelliSense -- Related props group together alphabetically
+4. Consistency -- Same patterns across all KeenMate packages
+5. Easier maintenance -- New developers understand prop purpose immediately
+
+
+CRITICAL REMINDERS
+-------------------
+- is* for state booleans: isStriped, isCompact, isGhost, isLoading
+- has* for feature presence: hasPadding, hasBorder, hasContainerQuery
+- should* for behavior flags: shouldShowClose, shouldCloseOnEscape
+- *Text for display strings: titleText, labelText, messageText
+- on* (lowercase!) for events: onclick, onclose, onconfirm
+- *Callback only when return value matters: beforeCloseCallback, copyValueCallback
+- Keep native HTML attrs as-is: disabled, readonly, required, placeholder
+- Use start/end not left/right (RTL support, since v1.4.0/v1.5.0)
+- Exception: Tooltip/Popconfirm keep physical left/right for arrow positioning
+
+NEXT STEPS
+----------
+- i18n and translations --> i18n.txt
+- Common component patterns --> common-patterns.txt
+- TypeScript types --> typescript-types.txt

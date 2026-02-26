@@ -1,0 +1,1089 @@
+FORM COMPONENTS
+===============
+
+CRITICAL: This is a Svelte 5 component library (@keenmate/svelte-pure-admin).
+- All components use Svelte 5 runes ($props, $state, $derived)
+- Content sections use Snippets ({#snippet}), NOT slots (<slot>)
+- BEM class names internally (pa-*) - you never write CSS classes manually
+- Import from '@keenmate/svelte-pure-admin'
+- Values are bindable via bind:value, bind:checked, bind:group
+
+INSTALLATION
+------------
+npm install @keenmate/svelte-pure-admin
+
+CSS must be imported once in your app (e.g., +layout.svelte):
+
+<script>
+  import '@keenmate/pure-admin-core/css';
+</script>
+
+
+FORM
+----
+Standard HTML form wrapper. Renders <form class="pa-form">.
+Extends HTMLFormAttributes so all native form attributes work (action, method, etc.).
+
+Props:
+  class?: string           Additional CSS classes
+  children?: Snippet       Form content
+  ...HTMLFormAttributes    All native form attributes (action, method, onsubmit, etc.)
+
+<Form onsubmit={handleSubmit}>
+  <FormGroup>
+    <FormLabel>Name</FormLabel>
+    <Input bind:value={name} />
+  </FormGroup>
+  <Button type="submit">Save</Button>
+</Form>
+
+With SvelteKit form action:
+
+<Form method="POST" action="?/save">
+  <FormGroup>
+    <FormLabel>Email</FormLabel>
+    <Input type="email" name="email" bind:value={email} />
+  </FormGroup>
+  <Button type="submit">Submit</Button>
+</Form>
+
+
+FORM GROUP
+----------
+Form group wrapper for label + input + help text. Renders <div class="pa-form-group">.
+Handles validation state styling and horizontal layout.
+
+Props:
+  state?: 'success' | 'warning' | 'error'    Validation state (adds pa-form-group--{state})
+  isError?: boolean          Legacy error flag (prefer state prop)
+  isSuccess?: boolean        Legacy success flag (prefer state prop)
+  isRequired?: boolean       Mark as required (adds pa-form-group--required)
+  isHorizontal?: boolean     Horizontal layout, label left, input right (default: false)
+  horizontal?: boolean       Alias for isHorizontal
+  class?: string             Additional CSS classes
+  children?: Snippet         Label + input + help content
+
+Basic form group:
+
+<FormGroup>
+  <FormLabel>Username</FormLabel>
+  <Input bind:value={username} />
+</FormGroup>
+
+Required field:
+
+<FormGroup isRequired={true}>
+  <FormLabel>Email</FormLabel>
+  <Input type="email" bind:value={email} required />
+</FormGroup>
+
+With validation state:
+
+<FormGroup state="error">
+  <FormLabel>Password</FormLabel>
+  <Input type="password" bind:value={password} state="error" />
+  <FormHelp variant="error">Password is required</FormHelp>
+</FormGroup>
+
+<FormGroup state="success">
+  <FormLabel>Username</FormLabel>
+  <Input bind:value={username} state="success" />
+  <FormHelp variant="success">Username is available</FormHelp>
+</FormGroup>
+
+Horizontal layout:
+
+<FormGroup horizontal>
+  <FormLabel>Company</FormLabel>
+  <Input bind:value={company} />
+</FormGroup>
+
+
+FORM FIELD
+----------
+High-level wrapper that combines FormGroup + FormLabel + FormHelp with automatic
+error/success state handling. Reduces boilerplate when using form validation.
+
+The children snippet receives context: { errors: string[], touched: boolean, state?: InputState }
+
+Props:
+  labelText?: string            Field label text
+  required?: boolean            Show required indicator (*) on label (default: false)
+  helpText?: string             Default help text (shown when no errors)
+  successMessage?: string       Success message (shown when touched, no errors, has value)
+  errors?: string[] | null      Error messages from validation
+  touched?: boolean             Whether field has been interacted with (default: false)
+  hasValue?: boolean            Field has a value (for success state) (default: false)
+  state?: 'success' | 'warning' | 'error'     Manual state override
+  class?: string                Additional class for FormGroup
+  horizontal?: boolean          Horizontal layout (default: false)
+  children: Snippet<[{ errors, touched, state }]>    The input control (REQUIRED)
+
+Basic usage:
+
+<FormField labelText="Email" required>
+  {#snippet children()}
+    <Input type="email" bind:value={email} />
+  {/snippet}
+</FormField>
+
+With validation:
+
+<FormField
+  labelText="Username"
+  required
+  errors={usernameErrors}
+  touched={usernameTouched}
+  hasValue={username.length > 0}
+  successMessage="Username is available"
+  helpText="Choose a unique username"
+>
+  {#snippet children({ errors, touched })}
+    <Input bind:value={username} {errors} {touched} />
+  {/snippet}
+</FormField>
+
+With manual state:
+
+<FormField labelText="API Key" state="warning" helpText="This key expires in 3 days">
+  {#snippet children()}
+    <Input bind:value={apiKey} state="warning" />
+  {/snippet}
+</FormField>
+
+
+FORM LABEL
+----------
+Form label element. Renders <label class="pa-form-label">.
+
+Props:
+  for?: string             HTML for attribute (input ID)
+  required?: boolean       Show asterisk indicator (default: false)
+  class?: string           Additional CSS classes
+  children?: Snippet       Label text content
+
+<FormLabel>Username</FormLabel>
+
+With required indicator:
+
+<FormLabel required>Email Address</FormLabel>
+
+With for attribute:
+
+<FormLabel for="email-input" required>Email</FormLabel>
+
+
+FORM HELP
+---------
+Help text and validation messages. Renders <span class="pa-form-help">.
+
+Props:
+  variant?: 'error' | 'success' | 'warning' | 'info'    Help text variant
+  themeColor?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9      Theme color (adds pa-form-help--color-N)
+  class?: string           Additional CSS classes
+  children?: Snippet       Help text content
+
+<FormHelp>Enter your email address</FormHelp>
+
+Error message:
+
+<FormHelp variant="error">This field is required</FormHelp>
+
+Success message:
+
+<FormHelp variant="success">Looks good!</FormHelp>
+
+Warning:
+
+<FormHelp variant="warning">Password is weak</FormHelp>
+
+With theme color:
+
+<FormHelp themeColor={3}>Custom colored help text</FormHelp>
+
+
+INPUT
+-----
+Text-like input component. Renders <input class="pa-input">.
+For text, email, password, tel, url, search types only.
+For numbers use NumberInput. For dates use DateInput.
+
+Props:
+  type?: 'text' | 'email' | 'password' | 'tel' | 'url' | 'search'
+                                    Input type (default: 'text')
+  value?: string (bindable)         Input value (default: '')
+  size?: 'xs' | 'sm' | 'lg' | 'xl'    Input size
+  state?: 'success' | 'warning' | 'error'
+                                    Validation state (auto-derived from errors if not set)
+  errors?: string | string[]        Error messages (auto-sets state to 'error' when touched)
+  touched?: boolean                 Field has been interacted with (default: true)
+  themeColor?: 1-9                  Theme color variant
+  disabled?: boolean                Disabled state (default: false)
+  readonly?: boolean                Readonly state (default: false)
+  required?: boolean                Required field (default: false)
+  placeholder?: string             Placeholder text
+  id?: string                      Input ID
+  name?: string                    Input name
+  minlength?: number               Minimum length
+  maxlength?: number               Maximum length
+  pattern?: string                 Validation pattern
+  autocomplete?: string            Browser autocomplete hint
+  class?: string                   Additional CSS classes
+  oninput?: handler                Input event handler
+  onchange?: handler               Change event handler
+  onblur?: handler                 Blur event handler
+  onfocus?: handler                Focus event handler
+  onkeydown?: handler              Keydown event handler
+
+Basic input:
+
+<Input bind:value={name} placeholder="Enter name" />
+
+Different types:
+
+<Input type="email" bind:value={email} placeholder="user@example.com" />
+<Input type="password" bind:value={password} autocomplete="current-password" />
+<Input type="search" bind:value={query} placeholder="Search..." />
+<Input type="tel" bind:value={phone} />
+<Input type="url" bind:value={website} />
+
+Sizes:
+
+<Input size="xs" bind:value={v1} placeholder="Extra small" />
+<Input size="sm" bind:value={v2} placeholder="Small" />
+<Input bind:value={v3} placeholder="Default size" />
+<Input size="lg" bind:value={v4} placeholder="Large" />
+<Input size="xl" bind:value={v5} placeholder="Extra large" />
+
+Validation states (manual):
+
+<Input bind:value={name} state="success" />
+<Input bind:value={name} state="warning" />
+<Input bind:value={name} state="error" />
+
+Validation states (auto-derived from errors):
+
+<Input bind:value={email} errors={emailErrors} touched={emailTouched} />
+
+When touched=true and errors has items, state automatically becomes 'error'.
+When touched=false, errors are not shown (no error styling).
+
+Disabled and readonly:
+
+<Input bind:value={locked} disabled />
+<Input bind:value={display} readonly />
+
+With theme color:
+
+<Input bind:value={themed} themeColor={3} />
+
+With constraints:
+
+<Input bind:value={code} minlength={3} maxlength={10} pattern="[A-Z]{3,10}" />
+
+
+NUMBER INPUT
+------------
+Specialized input for numeric values. Renders <input type="number" class="pa-input">.
+
+Props:
+  value?: number | null (bindable)    Numeric value (default: null)
+  size?: 'xs' | 'sm' | 'lg' | 'xl'   Input size
+  state?: 'success' | 'warning' | 'error'
+  errors?: string | string[]          Error messages
+  touched?: boolean                   (default: true)
+  themeColor?: 1-9                    Theme color variant
+  disabled?: boolean                  (default: false)
+  readonly?: boolean                  (default: false)
+  required?: boolean                  (default: false)
+  placeholder?: string
+  id?: string
+  name?: string
+  min?: number                        Minimum value
+  max?: number                        Maximum value
+  step?: number | 'any'              Step increment
+  class?: string
+  oninput?, onchange?, onblur?, onfocus?, onkeydown?    Event handlers
+
+<NumberInput bind:value={quantity} min={0} max={100} step={1} />
+
+<NumberInput bind:value={price} min={0} step={0.01} placeholder="0.00" />
+
+<NumberInput bind:value={age} min={0} max={150} required />
+
+With validation:
+
+<NumberInput bind:value={amount} errors={amountErrors} touched={amountTouched} />
+
+
+DATE INPUT
+----------
+Specialized input for date/time values. Renders <input type="date|time|..." class="pa-input">.
+
+Props:
+  type?: 'date' | 'time' | 'datetime-local' | 'month' | 'week'
+                                      Date input type (default: 'date')
+  value?: string (bindable)           Date/time value as string (default: '')
+  size?: 'xs' | 'sm' | 'lg' | 'xl'
+  state?: 'success' | 'warning' | 'error'
+  errors?: string | string[]
+  touched?: boolean                   (default: true)
+  themeColor?: 1-9
+  disabled?: boolean                  (default: false)
+  readonly?: boolean                  (default: false)
+  required?: boolean                  (default: false)
+  id?: string
+  name?: string
+  min?: string                        Minimum date/time
+  max?: string                        Maximum date/time
+  step?: number | string              Step value
+  class?: string
+  oninput?, onchange?, onblur?, onfocus?    Event handlers
+
+Date picker:
+
+<DateInput bind:value={birthDate} />
+
+Date range:
+
+<DateInput bind:value={startDate} min="2024-01-01" max="2026-12-31" />
+
+Time input:
+
+<DateInput type="time" bind:value={meetingTime} />
+
+Datetime-local:
+
+<DateInput type="datetime-local" bind:value={eventDateTime} />
+
+Month picker:
+
+<DateInput type="month" bind:value={selectedMonth} />
+
+
+TEXTAREA
+--------
+Multiline text input. Renders <textarea class="pa-textarea">.
+
+Props:
+  value?: string (bindable)           Textarea value (default: '')
+  rows?: number                       Number of rows (default: 4)
+  size?: 'xs' | 'sm' | 'lg' | 'xl'
+  state?: 'success' | 'warning' | 'error'
+  errors?: string | string[]
+  touched?: boolean                   (default: true)
+  themeColor?: 1-9
+  disabled?: boolean                  (default: false)
+  readonly?: boolean                  (default: false)
+  required?: boolean                  (default: false)
+  placeholder?: string
+  id?: string
+  name?: string
+  class?: string
+  oninput?, onchange?, onblur?, onfocus?    Event handlers
+
+<Textarea bind:value={description} placeholder="Enter description..." />
+
+<Textarea bind:value={notes} rows={8} />
+
+<Textarea bind:value={bio} size="lg" maxlength={500} />
+
+With validation:
+
+<Textarea bind:value={comment} errors={commentErrors} touched={commentTouched} />
+
+
+SELECT
+------
+Select dropdown. Renders <select class="pa-select">.
+Options are provided as children (Snippet).
+
+Props:
+  value?: string (bindable)           Selected value (default: '')
+  size?: 'xs' | 'sm' | 'lg' | 'xl'
+  state?: 'success' | 'warning' | 'error'
+  errors?: string | string[]
+  touched?: boolean                   (default: true)
+  themeColor?: 1-9
+  disabled?: boolean                  (default: false)
+  required?: boolean                  (default: false)
+  id?: string
+  name?: string
+  class?: string
+  onchange?: handler                  Change event handler
+  children?: Snippet                  Option elements
+
+<Select bind:value={country}>
+  <option value="">Select a country...</option>
+  <option value="us">United States</option>
+  <option value="uk">United Kingdom</option>
+  <option value="de">Germany</option>
+</Select>
+
+With optgroups:
+
+<Select bind:value={language}>
+  <option value="">Choose language...</option>
+  <optgroup label="Popular">
+    <option value="en">English</option>
+    <option value="es">Spanish</option>
+  </optgroup>
+  <optgroup label="Other">
+    <option value="fr">French</option>
+    <option value="de">German</option>
+  </optgroup>
+</Select>
+
+With size:
+
+<Select bind:value={role} size="lg">
+  <option value="user">User</option>
+  <option value="admin">Admin</option>
+</Select>
+
+With validation:
+
+<Select bind:value={category} errors={categoryErrors} touched={categoryTouched}>
+  <option value="">Select...</option>
+  <option value="a">Category A</option>
+</Select>
+
+
+CHECKBOX
+--------
+Labeled checkbox with custom tri-state support. Renders <label class="pa-checkbox">.
+Wraps the checkbox input + visual box + label text.
+
+Props:
+  checked?: boolean (bindable)        Checked state (default: false)
+  isIndeterminate?: boolean           Indeterminate state (default: false)
+  disabled?: boolean                  Disabled state (default: false)
+  isXMark?: boolean                   Show X instead of checkmark (default: false)
+  size?: 'xs' | 'sm' | 'lg' | 'xl'   Checkbox size
+  id: string                          Checkbox ID (REQUIRED)
+  name?: string
+  value?: string
+  labelText?: string                  Label text
+  class?: string
+  labelSnippet?: Snippet              Custom label content (alternative to labelText)
+  onchange?: handler                  Change event handler
+
+Basic checkbox:
+
+<Checkbox id="agree" labelText="I agree to terms" bind:checked={agreed} />
+
+Indeterminate state:
+
+<Checkbox id="selectAll" labelText="Select All" bind:checked={allSelected} isIndeterminate={someSelected} />
+
+X-mark variant:
+
+<Checkbox id="exclude" labelText="Exclude from results" bind:checked={excluded} isXMark={true} />
+
+Sizes:
+
+<Checkbox id="cb-xs" labelText="Extra small" size="xs" bind:checked={v1} />
+<Checkbox id="cb-sm" labelText="Small" size="sm" bind:checked={v2} />
+<Checkbox id="cb-default" labelText="Default" bind:checked={v3} />
+<Checkbox id="cb-lg" labelText="Large" size="lg" bind:checked={v4} />
+<Checkbox id="cb-xl" labelText="Extra large" size="xl" bind:checked={v5} />
+
+With custom label snippet:
+
+<Checkbox id="custom" bind:checked={accepted}>
+  {#snippet labelSnippet()}
+    I accept the <a href="/terms">Terms of Service</a>
+  {/snippet}
+</Checkbox>
+
+Disabled:
+
+<Checkbox id="locked" labelText="Locked option" disabled checked={true} />
+
+
+CHECKBOX BOX
+------------
+Low-level checkbox (input + visual box only, no label wrapper).
+Renders <span class="pa-checkbox"> for use inside composite components.
+
+Props:
+  checked?: boolean (bindable)        Checked state (default: false)
+  isIndeterminate?: boolean           Indeterminate state (default: false)
+  disabled?: boolean                  (default: false)
+  isXMark?: boolean                   (default: false)
+  size?: 'xs' | 'sm' | 'lg' | 'xl'
+  id?: string
+  name?: string
+  value?: string
+  class?: string
+  onchange?: handler
+
+<CheckboxBox bind:checked={selected} id="raw-cb" />
+
+Used in table rows:
+
+<td>
+  <CheckboxBox bind:checked={row.selected} id="row-{row.id}" />
+</td>
+
+
+RADIO
+-----
+Radio button with label. Renders <label class="pa-radio">.
+Uses bind:group for radio group binding.
+
+Props:
+  group?: string | number (bindable)   Radio group value
+  value: string | number               This radio's value (REQUIRED)
+  disabled?: boolean                   (default: false)
+  name: string                         Radio group name (REQUIRED)
+  size?: 'xs' | 'sm' | 'lg' | 'xl'
+  labelText?: string                   Label text
+  class?: string
+  labelSnippet?: Snippet               Custom label content
+  onchange?: handler
+
+Basic radio group:
+
+<script lang="ts">
+  let color = $state('red');
+</script>
+
+<Radio name="color" value="red" labelText="Red" bind:group={color} />
+<Radio name="color" value="green" labelText="Green" bind:group={color} />
+<Radio name="color" value="blue" labelText="Blue" bind:group={color} />
+
+With sizes:
+
+<Radio name="size" value="sm" labelText="Small" size="sm" bind:group={selectedSize} />
+<Radio name="size" value="md" labelText="Medium" bind:group={selectedSize} />
+<Radio name="size" value="lg" labelText="Large" size="lg" bind:group={selectedSize} />
+
+Disabled option:
+
+<Radio name="plan" value="free" labelText="Free" bind:group={plan} />
+<Radio name="plan" value="pro" labelText="Pro" bind:group={plan} />
+<Radio name="plan" value="enterprise" labelText="Enterprise (coming soon)" bind:group={plan} disabled />
+
+With custom label:
+
+<Radio name="theme" value="dark" bind:group={theme}>
+  {#snippet labelSnippet()}
+    <strong>Dark Mode</strong> - easier on the eyes
+  {/snippet}
+</Radio>
+
+
+RADIO GROUP
+-----------
+Wrapper for grouping radio buttons. Renders <div class="pa-radio-group">.
+
+Props:
+  class?: string           Additional CSS classes
+  children?: Snippet       Radio components
+
+<RadioGroup>
+  <Radio name="priority" value="low" labelText="Low" bind:group={priority} />
+  <Radio name="priority" value="medium" labelText="Medium" bind:group={priority} />
+  <Radio name="priority" value="high" labelText="High" bind:group={priority} />
+</RadioGroup>
+
+
+INPUT GROUP
+-----------
+Input group for combining inputs with addons, buttons, or icons.
+Renders <div class="pa-input-group">.
+Place addon elements and inputs as direct children.
+
+Props:
+  size?: 'xs' | 'sm' | 'lg' | 'xl'    Size (should match input size)
+  style?: string                        Inline style
+  class?: string                        Additional CSS classes
+  children?: Snippet                    Input + addon elements
+
+Input with text addon:
+
+<InputGroup>
+  <span class="pa-input-group__addon">@</span>
+  <Input bind:value={username} placeholder="Username" />
+</InputGroup>
+
+Input with button:
+
+<InputGroup>
+  <Input bind:value={search} placeholder="Search..." />
+  <Button variant="primary">Search</Button>
+</InputGroup>
+
+Input with addons on both sides:
+
+<InputGroup>
+  <span class="pa-input-group__addon">$</span>
+  <Input bind:value={amount} placeholder="0.00" />
+  <span class="pa-input-group__addon">.00</span>
+</InputGroup>
+
+With size:
+
+<InputGroup size="lg">
+  <span class="pa-input-group__addon">https://</span>
+  <Input size="lg" bind:value={domain} placeholder="example.com" />
+</InputGroup>
+
+
+FORM ERROR SUMMARY
+------------------
+Displays a summary of form validation errors with clickable anchor links.
+Renders an Alert (danger variant) with a list of errors.
+
+Props:
+  errors: FormErrorItem[]    Array of error objects (REQUIRED)
+  show?: boolean             Whether to show the summary (default: true)
+  class?: string             Additional CSS class
+
+FormErrorItem: { field: string; id: string; message: string }
+
+The id field is used to create anchor links (#id) that scroll to the error field.
+
+<script lang="ts">
+  import type { FormErrorItem } from '@keenmate/svelte-pure-admin';
+
+  let formErrors = $state<FormErrorItem[]>([]);
+  let submitted = $state(false);
+
+  function validate() {
+    const errors: FormErrorItem[] = [];
+    if (!name) errors.push({ field: 'Name', id: 'name-input', message: 'Name is required' });
+    if (!email) errors.push({ field: 'Email', id: 'email-input', message: 'Enter a valid email' });
+    formErrors = errors;
+    submitted = true;
+    return errors.length === 0;
+  }
+</script>
+
+<FormErrorSummary errors={formErrors} show={submitted && formErrors.length > 0} />
+
+<FormGroup>
+  <FormLabel>Name</FormLabel>
+  <Input id="name-input" bind:value={name} />
+</FormGroup>
+
+<FormGroup>
+  <FormLabel>Email</FormLabel>
+  <Input id="email-input" type="email" bind:value={email} />
+</FormGroup>
+
+
+VALIDATION PATTERN: ERRORS + TOUCHED
+--------------------------------------
+All input components (Input, NumberInput, DateInput, Textarea, Select) support
+the errors + touched pattern for automatic validation styling.
+
+HOW IT WORKS:
+1. Pass errors (string or string[]) and touched (boolean) to the input
+2. When touched=true AND errors has items, state auto-becomes 'error'
+3. When touched=false, no error styling is shown (even if errors exist)
+4. Manual state prop always takes precedence over auto-derived state
+
+<script lang="ts">
+  let email = $state('');
+  let emailTouched = $state(false);
+
+  // Derive errors from value
+  const emailErrors = $derived(() => {
+    if (!email) return ['Email is required'];
+    if (!email.includes('@')) return ['Invalid email format'];
+    return [];
+  });
+</script>
+
+<FormGroup state={emailTouched && emailErrors().length > 0 ? 'error' : undefined}>
+  <FormLabel required>Email</FormLabel>
+  <Input
+    type="email"
+    bind:value={email}
+    errors={emailErrors()}
+    touched={emailTouched}
+    onblur={() => emailTouched = true}
+    placeholder="user@example.com"
+  />
+  {#if emailTouched && emailErrors().length > 0}
+    <FormHelp variant="error">{emailErrors()[0]}</FormHelp>
+  {/if}
+</FormGroup>
+
+SIMPLIFIED WITH FORM FIELD:
+
+<FormField
+  labelText="Email"
+  required
+  errors={emailErrors()}
+  touched={emailTouched}
+  hasValue={email.length > 0}
+  successMessage="Valid email"
+  helpText="We'll never share your email"
+>
+  {#snippet children({ errors, touched })}
+    <Input
+      type="email"
+      bind:value={email}
+      {errors}
+      {touched}
+      onblur={() => emailTouched = true}
+    />
+  {/snippet}
+</FormField>
+
+
+COMPLETE FORM EXAMPLE
+----------------------
+
+<script lang="ts">
+  import {
+    Form, FormField, FormGroup, FormLabel, FormHelp, FormErrorSummary,
+    Input, NumberInput, DateInput, Textarea, Select,
+    Checkbox, Radio, RadioGroup, InputGroup,
+    Button, Grid, Column
+  } from '@keenmate/svelte-pure-admin';
+  import type { FormErrorItem } from '@keenmate/svelte-pure-admin';
+
+  // Form data
+  let firstName = $state('');
+  let lastName = $state('');
+  let email = $state('');
+  let age = $state<number | null>(null);
+  let birthDate = $state('');
+  let bio = $state('');
+  let role = $state('');
+  let newsletter = $state(false);
+  let contactMethod = $state('email');
+  let website = $state('');
+
+  // Touched state
+  let firstNameTouched = $state(false);
+  let lastNameTouched = $state(false);
+  let emailTouched = $state(false);
+  let ageTouched = $state(false);
+  let roleTouched = $state(false);
+
+  let submitted = $state(false);
+  let formErrors = $state<FormErrorItem[]>([]);
+
+  // Validation functions
+  function getFirstNameErrors(): string[] {
+    if (!firstName.trim()) return ['First name is required'];
+    if (firstName.length < 2) return ['Must be at least 2 characters'];
+    return [];
+  }
+
+  function getLastNameErrors(): string[] {
+    if (!lastName.trim()) return ['Last name is required'];
+    return [];
+  }
+
+  function getEmailErrors(): string[] {
+    if (!email) return ['Email is required'];
+    if (!email.includes('@')) return ['Invalid email format'];
+    return [];
+  }
+
+  function getAgeErrors(): string[] {
+    if (age === null) return ['Age is required'];
+    if (age < 18) return ['Must be 18 or older'];
+    if (age > 150) return ['Please enter a valid age'];
+    return [];
+  }
+
+  function getRoleErrors(): string[] {
+    if (!role) return ['Please select a role'];
+    return [];
+  }
+
+  function handleSubmit(e: Event) {
+    e.preventDefault();
+    submitted = true;
+
+    // Mark all as touched
+    firstNameTouched = true;
+    lastNameTouched = true;
+    emailTouched = true;
+    ageTouched = true;
+    roleTouched = true;
+
+    // Collect all errors
+    const errors: FormErrorItem[] = [];
+    const fnErrors = getFirstNameErrors();
+    if (fnErrors.length) errors.push({ field: 'First Name', id: 'firstName', message: fnErrors[0] });
+    const lnErrors = getLastNameErrors();
+    if (lnErrors.length) errors.push({ field: 'Last Name', id: 'lastName', message: lnErrors[0] });
+    const emErrors = getEmailErrors();
+    if (emErrors.length) errors.push({ field: 'Email', id: 'email', message: emErrors[0] });
+    const ageErrors = getAgeErrors();
+    if (ageErrors.length) errors.push({ field: 'Age', id: 'age', message: ageErrors[0] });
+    const roleErrors = getRoleErrors();
+    if (roleErrors.length) errors.push({ field: 'Role', id: 'role', message: roleErrors[0] });
+
+    formErrors = errors;
+
+    if (errors.length === 0) {
+      console.log('Form submitted!', { firstName, lastName, email, age, birthDate, bio, role, newsletter, contactMethod, website });
+    }
+  }
+</script>
+
+<Form onsubmit={handleSubmit}>
+  <FormErrorSummary errors={formErrors} show={submitted && formErrors.length > 0} />
+
+  <Grid gap="md">
+    <Column size="100" md="50">
+      <FormField
+        labelText="First Name"
+        required
+        errors={getFirstNameErrors()}
+        touched={firstNameTouched}
+        hasValue={firstName.length > 0}
+        successMessage="Looks good"
+      >
+        {#snippet children({ errors, touched })}
+          <Input
+            id="firstName"
+            bind:value={firstName}
+            {errors}
+            {touched}
+            onblur={() => firstNameTouched = true}
+            placeholder="John"
+          />
+        {/snippet}
+      </FormField>
+    </Column>
+
+    <Column size="100" md="50">
+      <FormField
+        labelText="Last Name"
+        required
+        errors={getLastNameErrors()}
+        touched={lastNameTouched}
+        hasValue={lastName.length > 0}
+      >
+        {#snippet children({ errors, touched })}
+          <Input
+            id="lastName"
+            bind:value={lastName}
+            {errors}
+            {touched}
+            onblur={() => lastNameTouched = true}
+            placeholder="Doe"
+          />
+        {/snippet}
+      </FormField>
+    </Column>
+  </Grid>
+
+  <FormField
+    labelText="Email Address"
+    required
+    errors={getEmailErrors()}
+    touched={emailTouched}
+    hasValue={email.length > 0}
+    helpText="We'll never share your email"
+  >
+    {#snippet children({ errors, touched })}
+      <Input
+        id="email"
+        type="email"
+        bind:value={email}
+        {errors}
+        {touched}
+        onblur={() => emailTouched = true}
+        placeholder="john@example.com"
+      />
+    {/snippet}
+  </FormField>
+
+  <Grid gap="md">
+    <Column size="100" md="50">
+      <FormField
+        labelText="Age"
+        required
+        errors={getAgeErrors()}
+        touched={ageTouched}
+        hasValue={age !== null}
+      >
+        {#snippet children({ errors, touched })}
+          <NumberInput
+            id="age"
+            bind:value={age}
+            min={0}
+            max={150}
+            {errors}
+            {touched}
+            onblur={() => ageTouched = true}
+          />
+        {/snippet}
+      </FormField>
+    </Column>
+
+    <Column size="100" md="50">
+      <FormGroup>
+        <FormLabel>Date of Birth</FormLabel>
+        <DateInput bind:value={birthDate} />
+      </FormGroup>
+    </Column>
+  </Grid>
+
+  <FormField
+    labelText="Role"
+    required
+    errors={getRoleErrors()}
+    touched={roleTouched}
+    hasValue={role.length > 0}
+  >
+    {#snippet children({ errors, touched })}
+      <Select
+        id="role"
+        bind:value={role}
+        {errors}
+        {touched}
+        onchange={() => roleTouched = true}
+      >
+        <option value="">Select a role...</option>
+        <option value="user">User</option>
+        <option value="editor">Editor</option>
+        <option value="admin">Administrator</option>
+      </Select>
+    {/snippet}
+  </FormField>
+
+  <FormGroup>
+    <FormLabel>Website</FormLabel>
+    <InputGroup>
+      <span class="pa-input-group__addon">https://</span>
+      <Input bind:value={website} placeholder="example.com" />
+    </InputGroup>
+  </FormGroup>
+
+  <FormGroup>
+    <FormLabel>Bio</FormLabel>
+    <Textarea bind:value={bio} rows={4} placeholder="Tell us about yourself..." />
+  </FormGroup>
+
+  <FormGroup>
+    <FormLabel>Preferred Contact</FormLabel>
+    <RadioGroup>
+      <Radio name="contact" value="email" labelText="Email" bind:group={contactMethod} />
+      <Radio name="contact" value="phone" labelText="Phone" bind:group={contactMethod} />
+      <Radio name="contact" value="mail" labelText="Mail" bind:group={contactMethod} />
+    </RadioGroup>
+  </FormGroup>
+
+  <Checkbox id="newsletter" labelText="Subscribe to newsletter" bind:checked={newsletter} />
+
+  <div class="mt-4">
+    <Button type="submit" variant="primary">Submit</Button>
+    <Button type="reset" variant="secondary" class="ml-2">Reset</Button>
+  </div>
+</Form>
+
+
+HORIZONTAL FORM LAYOUT
+------------------------
+Use horizontal prop on FormGroup or FormField for label-left layout.
+
+<Form>
+  <FormGroup horizontal isRequired>
+    <FormLabel>Username</FormLabel>
+    <Input bind:value={username} />
+  </FormGroup>
+
+  <FormGroup horizontal>
+    <FormLabel>Email</FormLabel>
+    <Input type="email" bind:value={email} />
+  </FormGroup>
+
+  <FormGroup horizontal>
+    <FormLabel>Role</FormLabel>
+    <Select bind:value={role}>
+      <option value="user">User</option>
+      <option value="admin">Admin</option>
+    </Select>
+  </FormGroup>
+</Form>
+
+Or with FormField:
+
+<FormField labelText="Username" required horizontal>
+  {#snippet children()}
+    <Input bind:value={username} />
+  {/snippet}
+</FormField>
+
+
+INPUT SIZE COMPARISON
+---------------------
+All input components (Input, NumberInput, DateInput, Textarea, Select) support the same sizes.
+InputGroup size should match the size of its children.
+
+<FormGroup>
+  <FormLabel>Extra Small (xs)</FormLabel>
+  <Input size="xs" bind:value={v1} />
+</FormGroup>
+
+<FormGroup>
+  <FormLabel>Small (sm)</FormLabel>
+  <Input size="sm" bind:value={v2} />
+</FormGroup>
+
+<FormGroup>
+  <FormLabel>Default</FormLabel>
+  <Input bind:value={v3} />
+</FormGroup>
+
+<FormGroup>
+  <FormLabel>Large (lg)</FormLabel>
+  <Input size="lg" bind:value={v4} />
+</FormGroup>
+
+<FormGroup>
+  <FormLabel>Extra Large (xl)</FormLabel>
+  <Input size="xl" bind:value={v5} />
+</FormGroup>
+
+
+THEME COLORS
+------------
+Input, Textarea, Select, and FormHelp support themeColor prop (1-9).
+This applies the pa-input--color-N / pa-textarea--color-N CSS class.
+
+<Input bind:value={v1} themeColor={1} />
+<Input bind:value={v2} themeColor={5} />
+<Textarea bind:value={v3} themeColor={3} />
+<Select bind:value={v4} themeColor={7}>
+  <option>Option</option>
+</Select>
+<FormHelp themeColor={2}>Themed help text</FormHelp>
+
+
+CRITICAL REMINDERS
+------------------
+- Use bind:value for Input, NumberInput, DateInput, Textarea, Select
+- Use bind:checked for Checkbox, CheckboxBox
+- Use bind:group for Radio
+- Checkbox requires id prop (it is mandatory)
+- Radio requires name and value props (they are mandatory)
+- SidebarItem requires labelText prop (it is mandatory)
+- errors + touched pattern: errors shown only when touched=true
+- touched defaults to true on Input/NumberInput/DateInput/Textarea/Select
+  (so errors show immediately unless you set touched={false} initially)
+- Manual state prop always overrides auto-derived state from errors
+- FormField children snippet receives context: { errors, touched, state }
+- FormErrorSummary uses anchor links (#id) to jump to errored fields
+- InputGroup addons use class="pa-input-group__addon" directly (no component)
+- All form components accept class prop for custom CSS classes
+- Snippets use {#snippet name()} ... {/snippet} syntax, NOT <slot>
+
+NEXT STEPS
+----------
+- Layout components -> layout.txt
+- Display components (Card, Badge, Table, etc.) -> check library exports
+- Feedback components (Alert, Toast, Modal) -> check library exports
+- Data visualization (Progress, Gauge, Heatmap, etc.) -> check library exports

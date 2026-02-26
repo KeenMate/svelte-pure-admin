@@ -20,25 +20,42 @@ Every component MUST be based on the HTML snippets from `@keenmate/pure-admin-co
 
 ```
 ../pure-admin/packages/core/snippets/
-├── alerts.html       ← Reference for Alert component
-├── badges.html       ← Reference for Badge component
-├── buttons.html      ← Reference for Button component
-├── callout.html      ← Reference for Callout component (NEW in 1.1.0)
-├── cards.html        ← Reference for Card component
-├── comparison.html   ← Reference for Comparison tables
-├── data-display.html ← Reference for Field/Fields/FieldGroup (NEW in 1.3.0)
-├── forms.html        ← Reference for Form components
-├── grid.html         ← Reference for Grid system
-├── layout.html       ← Reference for Layout/Sidebar/ProfilePanel
-├── lists.html        ← Reference for Lists component
-├── loaders.html      ← Reference for Loader/Spinner
-├── modals.html       ← Reference for Modal component
-├── profile.html      ← Reference for ProfilePanel
-├── tables.html       ← Reference for Table component
-├── toasts.html       ← Reference for Toast component
-├── tooltips.html     ← Reference for Tooltips/Popovers
-└── utilities.html    ← Reference for Utility classes
+├── alerts.html            ← Reference for Alert component
+├── badges.html            ← Reference for Badge component
+├── buttons.html           ← Reference for Button component
+├── callouts.html          ← Reference for Callout component
+├── cards.html             ← Reference for Card component (ghost mode in 1.5+)
+├── checkbox-lists.html    ← Reference for CheckboxList component
+├── code.html              ← Reference for Code/CodeBlock components
+├── command-palette.html   ← Reference for CommandPalette component
+├── comparison.html        ← Reference for Comparison tables
+├── customization.html     ← Reference for theme customization
+├── detail-panel.html      ← Reference for DetailPanel/DetailView (NEW in 1.2.0)
+├── forms.html             ← Reference for Form components
+├── grid.html              ← Reference for Grid system
+├── layout.html            ← Reference for Layout/Sidebar/ProfilePanel
+├── lists.html             ← Reference for Lists component
+├── loaders.html           ← Reference for Loader/Spinner
+├── modal-dialogs.html     ← Reference for Dialog service
+├── modals.html            ← Reference for Modal component
+├── popconfirm.html        ← Reference for Popconfirm component
+├── profile.html           ← Reference for ProfilePanel
+├── tables.html            ← Reference for Table/TableCard components
+├── tabs.html              ← Reference for Tabs components
+├── timeline.html          ← Reference for Timeline component
+├── toasts.html            ← Reference for Toast component
+├── tooltips.html          ← Reference for Tooltips/Popovers
+├── typography.html        ← Reference for Typography components
+├── utilities.html         ← Reference for Utility classes
+└── virtual-scroll.html    ← Reference for virtual scrolling
 ```
+
+**SCSS sources for Data Display components** (no dedicated snippet file):
+- `../pure-admin/packages/core/src/scss/core-components/_data-display.scss` — Field/Fields/FieldGroup + DescTable, DotLeaders, PropCard, Banded, AccentGrid
+- `../pure-admin/demo/views/data-display-2.mustache` — Demo page for v2 data display patterns
+
+**SCSS sources for Data Visualization components** (no dedicated snippet file):
+- `../pure-admin/packages/core/src/scss/core-components/_data-viz.scss` — Progress, StackedBar, ProgressRing, Gauge, DataBar, Heatmap, Sparkline, BarList
 
 **Process for creating a new component:**
 1. Read the corresponding `.html` snippet file
@@ -383,7 +400,7 @@ Check `src/lib/index.ts` - components not yet exported need to be created.
 
 ### Card Components (1/1 ✅)
 **Snippet:** `cards.html`
-- ✅ **Card** - Card component (`pa-card`) with header, body, footer snippets
+- ✅ **Card** - Card component (`pa-card`) with header, body, footer snippets, ghost mode (`isGhost`), three-part header layout with `--wrap` modifier
 
 ### Badge Components (3/3 ✅)
 **Snippet:** `badges.html`
@@ -403,7 +420,7 @@ Check `src/lib/index.ts` - components not yet exported need to be created.
 ### Toast Components (2/2 ✅)
 **Snippet:** `toasts.html`
 - ✅ **Toast** - Toast notification (`pa-toast`) with variants, icon, title, message, close, progress bar, auto-dismiss, bindable show state
-- ✅ **ToastContainer** - Toast container (`pa-toast-container`) with positions (top/bottom, left/center/right)
+- ✅ **ToastContainer** - Toast container (`pa-toast-container`) with logical positions (top-end/top-start/top-center/bottom-end/bottom-start/bottom-center) — RTL-aware
 
 ### Loader/Spinner Components (8/8 ✅)
 **Snippet:** `loaders.html`
@@ -420,15 +437,43 @@ Check `src/lib/index.ts` - components not yet exported need to be created.
 **Snippet:** `profile.html`
 - ✅ **ProfilePanel** - Profile panel (`pa-profile-panel`) with overlay, header (avatar, name, email, role), nav, actions, bindable show state
 
-### Data Display Components (3/3 ✅)
-**SCSS source:** `_data-display.scss` (NEW in 1.3.0)
-- ✅ **Field** - Single label-value pair (`pa-field`) with full-width modifier
-- ✅ **Fields** - Container (`pa-fields`) with cols, horizontal, table, bordered, striped, compact, relaxed, inline, row, filled, color variants
+### Data Display Components (13/13 ✅)
+**SCSS source:** `_data-display.scss`
+- ✅ **Field** - Single label-value pair (`pa-field`) with full-width modifier, copyable variants, `valueVariant` for chips color (success/warning/danger)
+- ✅ **Fields** - Container (`pa-fields`) with cols, horizontal, table, bordered, striped, compact, relaxed, inline, row, filled, color variants, `isLinear` (ultra-clean side-by-side), `isChips` (Notion-style inline pills)
 - ✅ **FieldGroup** - Titled section (`pa-field-group`) with title element
+- ✅ **DescTable** - Ant Design style descriptions table (`pa-desc-table`) with tinted label cells, `cols` (2 or 3)
+- ✅ **DescTableItem** - Single label-value pair in DescTable, `full` prop for full-width value
+- ✅ **DotLeaders** - Dotted leader lines container (`pa-dot-leaders`) for invoice/menu style
+- ✅ **DotLeadersItem** - Single row with label, dots, value; `isTotal` for bold total row
+- ✅ **PropCard** - Bordered property card (`pa-prop-card`) with header + row dividers (Stripe-style)
+- ✅ **PropCardRow** - Single row in PropCard with label + value; `isBold` for bold value
+- ✅ **Banded** - Banded rows container (`pa-banded`) with fixed-width tinted label column
+- ✅ **BandedRow** - Single row with tinted label + value
+- ✅ **AccentGrid** - Responsive grid (`pa-accent-grid`) with color-coded left borders
+- ✅ **AccentGridItem** - Grid cell with `variant` (success/warning/danger/info) for border color
+
+### Data Visualization Components (15/15 ✅)
+**SCSS source:** `_data-viz.scss`
+- ✅ **Progress** - Progress bar (`pa-progress`) with sizes (xs/sm/lg), color variants, rounded, striped, animated, label group
+- ✅ **ProgressRing** - Circular progress ring (`pa-progress-ring`) via conic-gradient, sizes (sm/lg), color variants
+- ✅ **Gauge** - Semicircle gauge (`pa-gauge`) via conic-gradient, color variants, `isZones` (multi-zone green/yellow/red), min/max labels
+- ✅ **DataBar** - Inline bar for table cells (`pa-data-bar`) with color variants, `isNegative` (red, right-aligned)
+- ✅ **StackedBar** - Multi-segment stacked bar (`pa-stacked-bar`) with sizes (sm/lg), `isRounded`
+- ✅ **StackedBarSegment** - Individual segment with variant (success/warning/danger/info/secondary)
+- ✅ **StackedBarLegend** - Legend container (sibling of StackedBar)
+- ✅ **StackedBarLegendItem** - Legend item with color swatch (primary/success/warning/danger/info/secondary)
+- ✅ **Sparkline** - Mini bar chart container (`pa-sparkline`) with sizes (sm/lg), color variants
+- ✅ **SparklineBar** - Individual sparkline bar, height via `--value`
+- ✅ **Heatmap** - Grid container (`pa-heatmap`) with variant (success/danger), `isCompact`, custom `cols`
+- ✅ **HeatmapCell** - Cell with `level` (0-4) mapped to `data-level` attribute
+- ✅ **HeatmapLegend** - Self-contained legend with 5 fixed cells (levels 0-4)
+- ✅ **BarList** - Labeled horizontal bar chart (`pa-bar-list`) with color variants, `isCompact`
+- ✅ **BarListItem** - Item with label, value, bar fill via `--value` CSS var
 
 ### Summary
-- **Total Components:** 43
-- **Completed:** 43 (100%) ✅
+- **Total Components:** 68
+- **Completed:** 68 (100%) ✅
 - **Remaining:** 0
 
 **Status:** All core components have been implemented based on @pure-admin/core snippets!
@@ -444,7 +489,8 @@ All component categories are complete:
 - ✅ Table Components (2/2)
 - ✅ Modal Components (1/1)
 - ✅ Toast Components (2/2)
-- ✅ Data Display Components (3/3)
+- ✅ Data Display Components (13/13)
+- ✅ Data Visualization Components (15/15)
 - ✅ Loader/Spinner Components (8/8)
 - ✅ Profile Components (1/1)
 
@@ -533,6 +579,18 @@ type Size = 'xs' | 'sm' | 'lg' | 'xl';
 type AlertVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
 ```
 
+**Horizontal alignment (logical, RTL-aware — v1.5.0 breaking change):**
+```typescript
+type HorizontalAlignment = 'start' | 'center' | 'end';
+// Was 'left' | 'center' | 'right' before v1.5.0
+```
+
+**Toast positions (logical, RTL-aware — v1.4.0 breaking change):**
+```typescript
+type ToastPosition = 'top-end' | 'top-center' | 'top-start' | 'bottom-end' | 'bottom-center' | 'bottom-start';
+// Physical positions (top-right, top-left, etc.) removed in v1.4.0
+```
+
 **Snippet type:**
 ```typescript
 children?: import('svelte').Snippet;
@@ -594,6 +652,7 @@ npm publish --access public
 6. **Reactive with runes** - Use `$props()`, `$state()`, `$derived()`
 7. **Class prop pattern** - Always accept `class?: string` for custom classes
 8. **Test against original** - Compare with pure-admin-visual visually
+9. **Use logical directions** - Always use `start`/`end` instead of `left`/`right` for RTL support (since v1.4.0/v1.5.0). Exception: Tooltip and Popconfirm keep physical `left`/`right` for arrow positioning
 
 ## Snippet Reference Quick Links
 
@@ -682,9 +741,30 @@ export { default as Badge } from './Badge.svelte';
 
 Done! ✅
 
+## Breaking Changes Applied
+
+### v1.5.0: Left/right → start/end (RTL support)
+- `HorizontalAlignment` type: `'left'` → `'start'`, `'right'` → `'end'`
+- All directional CSS classes renamed to logical equivalents
+- Components already using `start`/`end`: Button, Navbar, Footer, Pager, LoadMore, TabsScrollable
+- Components updated: Heading, Paragraph (via HorizontalAlignment type change)
+- Kept physical: Tooltip (`pa-tooltip--left/--right`), Popconfirm (`pa-popconfirm--left/--right`)
+
+### v1.4.0: Toast positions
+- Removed deprecated physical positions (`top-right`, `top-left`, `bottom-right`, `bottom-left`)
+- Only logical positions remain: `top-end`, `top-start`, `bottom-end`, `bottom-start`, `top-center`, `bottom-center`
+
+### v1.5.0: Card ghost mode
+- Added `isGhost` prop to Card component (`pa-card--ghost`)
+
+### v1.5.0+: Data Display v2 components
+- Added `isLinear` and `isChips` modifiers to Fields
+- Added `valueVariant` to Field (for chips color variants)
+- New components: DescTable, DotLeaders, PropCard, Banded, AccentGrid (+ sub-components)
+
 ---
 
-**Last Updated:** 2026-02-03
+**Last Updated:** 2026-02-14
 **Svelte Version:** 5.x
 **SvelteKit Version:** 2.x
-**Pure Admin Core Version:** 1.5.0 (synced)
+**Pure Admin Core Version:** 1.5.0+ (synced with unreleased)

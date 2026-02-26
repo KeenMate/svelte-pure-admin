@@ -28,9 +28,12 @@
 		InputGroupAppend,
 		Badge,
 		Toast,
+		ToastContainer,
 		BasicList,
 		Code
 	} from '@keenmate/svelte-pure-admin';
+
+	let showToast = $state(false);
 </script>
 
 <Paragraph>Different UI patterns for displaying form validation errors. Choose the pattern that best fits your UX requirements.</Paragraph>
@@ -302,7 +305,7 @@
 				</FormGroup>
 			</Column>
 			<Column size="100">
-				<Button variant="primary">Submit (Shows Toast)</Button>
+				<Button variant="primary" onclick={() => showToast = true}>Submit (Shows Toast)</Button>
 			</Column>
 		</Grid>
 	</Form>
@@ -489,3 +492,7 @@
 		<li><Code>text-muted</Code> - Muted/gray text color</li>
 	</BasicList>
 </Card>
+
+<ToastContainer position="top-end">
+	<Toast variant="danger" titleText="Validation Failed" messageText="Invalid credentials. Please check your email and password." bind:show={showToast} duration={4000} />
+</ToastContainer>

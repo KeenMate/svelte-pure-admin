@@ -36,7 +36,7 @@
 
 <!-- Tabs as Card Header (Same Height) -->
 <Heading level={3} class="mt-4 mb-4">Tabs as Card Header (Same Height)</Heading>
-<Grid sameHeight>
+<Grid sameHeight class="mb-4">
 	<Column size="100" md="1-2">
 		<Card titleText="Normal Card">
 			<Paragraph>This is a regular card with a header. The header has a min-height of 40px.</Paragraph>

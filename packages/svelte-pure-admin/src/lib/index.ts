@@ -10,6 +10,7 @@ export type {
 	VerticalAlignment,
 	TextMode,
 	ValidationState,
+	DataVizVariant,
 	ThemeColor
 } from './types';
 
@@ -103,6 +104,8 @@ export { default as ToastContainer } from './feedback/ToastContainer.svelte';
 export { default as Spinner } from './feedback/Spinner.svelte';
 export { default as Loader } from './feedback/Loader.svelte';
 export type { LoaderType, LoaderSize, LoaderColor } from './feedback/Loader.svelte';
+export { default as LoaderCenter } from './feedback/LoaderCenter.svelte';
+export { default as LoaderOverlay } from './feedback/LoaderOverlay.svelte';
 export { default as Tooltip } from './feedback/Tooltip.svelte';
 export { default as Popover } from './feedback/Popover.svelte';
 export { default as PopoverContainer } from './feedback/PopoverContainer.svelte';
@@ -162,6 +165,34 @@ export { default as DetailPanel } from './display/DetailPanel.svelte';
 export { default as Field } from './display/Field.svelte';
 export { default as Fields } from './display/Fields.svelte';
 export { default as FieldGroup } from './display/FieldGroup.svelte';
+export { default as DescTable } from './display/DescTable.svelte';
+export { default as DescTableItem } from './display/DescTableItem.svelte';
+export { default as DotLeaders } from './display/DotLeaders.svelte';
+export { default as DotLeadersItem } from './display/DotLeadersItem.svelte';
+export { default as PropCard } from './display/PropCard.svelte';
+export { default as PropCardRow } from './display/PropCardRow.svelte';
+export { default as Banded } from './display/Banded.svelte';
+export { default as BandedRow } from './display/BandedRow.svelte';
+export { default as AccentGrid } from './display/AccentGrid.svelte';
+export { default as AccentGridItem } from './display/AccentGridItem.svelte';
+
+// Data Visualization Components
+export { default as Progress } from './display/Progress.svelte';
+export { default as ProgressRing } from './display/ProgressRing.svelte';
+export { default as Gauge } from './display/Gauge.svelte';
+export { default as DataBar } from './display/DataBar.svelte';
+export { default as StackedBar } from './display/StackedBar.svelte';
+export { default as StackedBarSegment } from './display/StackedBarSegment.svelte';
+export { default as StackedBarLegend } from './display/StackedBarLegend.svelte';
+export { default as StackedBarLegendItem } from './display/StackedBarLegendItem.svelte';
+export { default as Sparkline } from './display/Sparkline.svelte';
+export { default as SparklineBar } from './display/SparklineBar.svelte';
+export { default as Heatmap } from './display/Heatmap.svelte';
+export { default as HeatmapCell } from './display/HeatmapCell.svelte';
+export { default as HeatmapLegend } from './display/HeatmapLegend.svelte';
+export { default as BarList } from './display/BarList.svelte';
+export { default as BarListItem } from './display/BarListItem.svelte';
+export { default as ProgressGroup } from './display/ProgressGroup.svelte';
 
 // Profile Components
 export { default as ProfilePanel } from './profile/ProfilePanel.svelte';

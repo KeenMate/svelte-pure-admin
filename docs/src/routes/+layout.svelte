@@ -23,7 +23,10 @@
 		NavDropdown,
 		NavbarSearch,
 		CommandPalette,
-		Button
+		Button,
+		Tabs,
+		TabItem,
+		TabPanel
 	} from '@keenmate/svelte-pure-admin';
 	import type { PureAdminConfig, Command, SearchContext, SearchResult, ThemeOption } from '@keenmate/svelte-pure-admin';
 	import { onMount } from 'svelte';
@@ -196,6 +199,8 @@
 		{ id: 'comparison', title: 'Comparison', path: '/comparison', icon: '⚖️' },
 		{ id: 'detail-panel', title: 'Detail Panel', path: '/detail-panel', icon: '📋' },
 		{ id: 'data-display', title: 'Data Display', path: '/data-display', icon: '📄' },
+		{ id: 'data-display-2', title: 'Data Display v2', path: '/data-display-2', icon: '📄' },
+		{ id: 'data-visualization', title: 'Data Visualization', path: '/data-visualization', icon: '📈' },
 		{ id: 'timeline-simple', title: 'Timeline Simple', path: '/timeline-simple', icon: '⏱️' },
 		{ id: 'timeline-block', title: 'Timeline Block', path: '/timeline-block', icon: '📦' },
 		{ id: 'timeline-feed', title: 'Timeline Feed', path: '/timeline-feed', icon: '📰' },
@@ -204,7 +209,11 @@
 		{ id: 'validations', title: 'Validation Patterns', path: '/validations', icon: '✓' },
 		{ id: 'batch-rpc', title: 'Batch RPC', path: '/batch-rpc', icon: '📡' },
 		{ id: 'i18n', title: 'Internationalization (i18n)', path: '/i18n', icon: '🌐' },
-		{ id: 'auto-theme', title: 'Auto Theme', path: '/auto-theme', icon: '🌓' }
+		{ id: 'auto-theme', title: 'Auto Theme', path: '/auto-theme', icon: '🌓' },
+		{ id: 'kpi-dashboard', title: 'KPI Dashboard', path: '/kpi-dashboard', icon: '📊' },
+		{ id: 'movies', title: 'Movies', path: '/movies', icon: '🎬' },
+		{ id: 'movie-detail', title: 'Movie Detail', path: '/movies/detail?id=1', icon: '🎬' },
+		{ id: 'movies-panel', title: 'Movies + Panel', path: '/movies-panel', icon: '🎬' }
 	];
 
 	// Commands for the command palette
@@ -387,26 +396,24 @@
 		hasIconOnlyTabs={profileIconOnlyTabs}
 	>
 		{#snippet tabs()}
-			<div class="pa-tabs pa-tabs--full">
-				<button
-					class="pa-tabs__item"
-					class:pa-tabs__item--active={activeProfileTab === 'profile'}
+			<Tabs align="full">
+				<TabItem
+					active={activeProfileTab === 'profile'}
 					onclick={() => activeProfileTab = 'profile'}
 				>
 					<span>👤</span> Profile
-				</button>
-				<button
-					class="pa-tabs__item"
-					class:pa-tabs__item--active={activeProfileTab === 'favorites'}
+				</TabItem>
+				<TabItem
+					active={activeProfileTab === 'favorites'}
 					onclick={() => activeProfileTab = 'favorites'}
 				>
 					<span>⭐</span> Favorites
-				</button>
-			</div>
+				</TabItem>
+			</Tabs>
 		{/snippet}
 
 		<!-- Profile Tab -->
-		<div class="pa-tabs__panel" class:pa-tabs__panel--active={activeProfileTab === 'profile'}>
+		<TabPanel active={activeProfileTab === 'profile'}>
 			<nav class="pa-profile-panel__nav">
 				<ul>
 					<li><a href="/profile" class="pa-profile-panel__nav-item">
@@ -431,10 +438,10 @@
 					</a></li>
 				</ul>
 			</nav>
-		</div>
+		</TabPanel>
 
 		<!-- Favorites Tab -->
-		<div class="pa-tabs__panel" class:pa-tabs__panel--active={activeProfileTab === 'favorites'}>
+		<TabPanel active={activeProfileTab === 'favorites'}>
 			<ProfilePanelFavorites>
 				{#each favorites as fav (fav.id)}
 					<ProfilePanelFavoriteItem
@@ -451,7 +458,7 @@
 					</Button>
 				{/snippet}
 			</ProfilePanelFavorites>
-		</div>
+		</TabPanel>
 
 		{#snippet footer()}
 			<Button variant="secondary" isBlock>Switch Account</Button>
@@ -538,28 +545,28 @@
 	<Layout>
 		<LayoutInner>
 			<Sidebar isResizable>
-				<!-- Getting Started -->
-				<SidebarItem href="/getting-started" labelText="Getting Started">
+				<!-- Getting Started (Svelte-specific) -->
+				<SidebarItem href="/getting-started" labelText="Getting Started" active={$page.url.pathname === '/getting-started'}>
 					{#snippet icon()}🚀{/snippet}
 				</SidebarItem>
 
 				<!-- Dashboard -->
-				<SidebarItem href="/" labelText="Dashboard">
+				<SidebarItem href="/" labelText="Dashboard" active={$page.url.pathname === '/'}>
 					{#snippet icon()}📊{/snippet}
 				</SidebarItem>
 
 				<!-- Theme Variables -->
-				<SidebarItem href="/theme-variables" labelText="Theme Variables">
+				<SidebarItem href="/theme-variables" labelText="Theme Variables" active={$page.url.pathname === '/theme-variables'}>
 					{#snippet icon()}🎨{/snippet}
 				</SidebarItem>
 
 				<!-- Colors -->
-				<SidebarItem href="/colors" labelText="Colors">
-					{#snippet icon()}🎨{/snippet}
+				<SidebarItem href="/colors" labelText="Colors" active={$page.url.pathname === '/colors'}>
+					{#snippet icon()}🌈{/snippet}
 				</SidebarItem>
 
 				<!-- Forms -->
-				<SidebarItem href="/forms" labelText="Forms">
+				<SidebarItem href="/forms" labelText="Forms" active={$page.url.pathname === '/forms'}>
 					{#snippet icon()}📝{/snippet}
 				</SidebarItem>
 
@@ -567,140 +574,165 @@
 				<SidebarItem labelText="Svelte" hasSubmenu={true}>
 					{#snippet icon()}🔥{/snippet}
 					{#snippet submenu()}
-						<SidebarItem href="/validation" labelText="Validation">
+						<SidebarItem href="/validation" labelText="Validation" active={$page.url.pathname === '/validation'}>
 							{#snippet icon()}✓{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/batch-rpc" labelText="Batch RPC">
+						<SidebarItem href="/batch-rpc" labelText="Batch RPC" active={$page.url.pathname === '/batch-rpc'}>
 							{#snippet icon()}📡{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/i18n" labelText="i18n">
+						<SidebarItem href="/i18n" labelText="i18n" active={$page.url.pathname === '/i18n'}>
 							{#snippet icon()}🌐{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/auto-theme" labelText="Auto Theme">
+						<SidebarItem href="/auto-theme" labelText="Auto Theme" active={$page.url.pathname === '/auto-theme'}>
 							{#snippet icon()}🌓{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/events-callbacks" labelText="Events & Callbacks">
+						<SidebarItem href="/events-callbacks" labelText="Events & Callbacks" active={$page.url.pathname === '/events-callbacks'}>
 							{#snippet icon()}🎯{/snippet}
 						</SidebarItem>
 					{/snippet}
 				</SidebarItem>
 
-				<!-- Components with submenu -->
+				<!-- Components (matches pure-admin order) -->
 				<SidebarItem labelText="Components" hasSubmenu={true}>
 					{#snippet icon()}🧩{/snippet}
 					{#snippet submenu()}
-						<SidebarItem href="/components" labelText="Overview">
+						<SidebarItem href="/components" labelText="Overview" active={$page.url.pathname === '/components'}>
 							{#snippet icon()}🧩{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/buttons" labelText="Buttons">
+						<SidebarItem href="/buttons" labelText="Buttons" active={$page.url.pathname === '/buttons'}>
 							{#snippet icon()}🔘{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/inputs" labelText="Inputs">
+						<SidebarItem href="/inputs" labelText="Inputs" active={$page.url.pathname === '/inputs'}>
 							{#snippet icon()}✏️{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/validations" labelText="Validations">
+						<SidebarItem href="/validations" labelText="Validations" active={$page.url.pathname === '/validations'}>
 							{#snippet icon()}✓{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/cards" labelText="Cards">
+						<SidebarItem href="/cards" labelText="Cards" active={$page.url.pathname === '/cards'}>
 							{#snippet icon()}🃏{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/grid" labelText="Grid System">
+						<SidebarItem href="/grid" labelText="Grid System" active={$page.url.pathname === '/grid'}>
 							{#snippet icon()}⊞{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/tabs" labelText="Tabs">
+						<SidebarItem href="/tabs" labelText="Tabs" active={$page.url.pathname === '/tabs'}>
 							{#snippet icon()}📑{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/badges" labelText="Badges">
+						<SidebarItem href="/badges" labelText="Badges" active={$page.url.pathname === '/badges'}>
 							{#snippet icon()}🏷️{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/lists" labelText="Lists">
+						<SidebarItem href="/lists" labelText="Lists" active={$page.url.pathname === '/lists'}>
 							{#snippet icon()}📃{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/checkbox-lists" labelText="Checkbox Lists">
+						<SidebarItem href="/checkbox-lists" labelText="Checkbox Lists" active={$page.url.pathname === '/checkbox-lists'}>
 							{#snippet icon()}☑️{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/code" labelText="Code">
+						<SidebarItem href="/code" labelText="Code" active={$page.url.pathname === '/code'}>
 							{#snippet icon()}💻{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/alerts" labelText="Alerts">
+						<SidebarItem href="/alerts" labelText="Alerts" active={$page.url.pathname === '/alerts'}>
 							{#snippet icon()}⚠️{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/callouts" labelText="Callouts">
+						<SidebarItem href="/callouts" labelText="Callouts" active={$page.url.pathname === '/callouts'}>
 							{#snippet icon()}📌{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/toasts" labelText="Toasts">
+						<SidebarItem href="/toasts" labelText="Toasts" active={$page.url.pathname === '/toasts'}>
 							{#snippet icon()}🔔{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/loaders" labelText="Loaders">
+						<SidebarItem href="/loaders" labelText="Loaders" active={$page.url.pathname === '/loaders'}>
 							{#snippet icon()}⏳{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/tooltips" labelText="Tooltips">
+						<SidebarItem href="/tooltips" labelText="Tooltips" active={$page.url.pathname === '/tooltips'}>
 							{#snippet icon()}💬{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/modals" labelText="Modals">
+						<SidebarItem href="/modals" labelText="Modals" active={$page.url.pathname === '/modals'}>
 							{#snippet icon()}🔳{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/modal-dialogs" labelText="Modal Dialogs">
+						<SidebarItem href="/modal-dialogs" labelText="Modal Dialogs" active={$page.url.pathname === '/modal-dialogs'}>
 							{#snippet icon()}💬{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/popconfirm" labelText="Popconfirm">
+						<SidebarItem href="/popconfirm" labelText="Popconfirm" active={$page.url.pathname === '/popconfirm'}>
 							{#snippet icon()}💬{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/command-palette" labelText="Command Palette">
+						<SidebarItem href="/command-palette" labelText="Command Palette" active={$page.url.pathname === '/command-palette'}>
 							{#snippet icon()}🔍{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/detail-panel" labelText="Detail Panel">
+						<SidebarItem href="/detail-panel" labelText="Detail Panel" active={$page.url.pathname === '/detail-panel'}>
 							{#snippet icon()}📋{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/data-display" labelText="Data Display">
-							{#snippet icon()}📄{/snippet}
+						<SidebarItem href="/data-display" labelText="Data Display" active={$page.url.pathname === '/data-display'}>
+							{#snippet icon()}👁️{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/data-display-2" labelText="Data Display v2" active={$page.url.pathname === '/data-display-2'}>
+							{#snippet icon()}👁️{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/data-visualization" labelText="Data Visualization" active={$page.url.pathname === '/data-visualization'}>
+							{#snippet icon()}📈{/snippet}
 						</SidebarItem>
 					{/snippet}
 				</SidebarItem>
 
-				<!-- Tables with submenu -->
+				<!-- Tables (matches pure-admin order) -->
 				<SidebarItem labelText="Tables" hasSubmenu={true}>
 					{#snippet icon()}📋{/snippet}
 					{#snippet submenu()}
-						<SidebarItem href="/tables" labelText="Standard Tables">
+						<SidebarItem href="/tables" labelText="Standard Tables" active={$page.url.pathname === '/tables'}>
 							{#snippet icon()}📊{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/tables-sizing" labelText="Table Sizing">
+						<SidebarItem href="/tables-sizing" labelText="Table Sizing" active={$page.url.pathname === '/tables-sizing'}>
 							{#snippet icon()}📏{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/tables-responsive" labelText="Responsive">
+						<SidebarItem href="/tables-responsive" labelText="Responsive" active={$page.url.pathname === '/tables-responsive'}>
 							{#snippet icon()}📱{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/table-filters" labelText="Filters">
+						<SidebarItem href="/table-filters" labelText="Filters" active={$page.url.pathname === '/table-filters'}>
 							{#snippet icon()}🔍{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/comparison" labelText="Comparison">
+						<SidebarItem href="/comparison" labelText="Comparison" active={$page.url.pathname === '/comparison'}>
 							{#snippet icon()}⚖️{/snippet}
 						</SidebarItem>
 					{/snippet}
 				</SidebarItem>
 
-				<!-- Timeline with submenu -->
+				<!-- Timeline (matches pure-admin order) -->
 				<SidebarItem labelText="Timeline" hasSubmenu={true}>
 					{#snippet icon()}⏱️{/snippet}
 					{#snippet submenu()}
-						<SidebarItem href="/timeline-simple" labelText="Simple">
+						<SidebarItem href="/timeline-simple" labelText="Simple" active={$page.url.pathname === '/timeline-simple'}>
 							{#snippet icon()}•{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/timeline-block" labelText="Block">
+						<SidebarItem href="/timeline-block" labelText="Block" active={$page.url.pathname === '/timeline-block'}>
 							{#snippet icon()}•{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/timeline-feed" labelText="Feed">
+						<SidebarItem href="/timeline-feed" labelText="Feed" active={$page.url.pathname === '/timeline-feed'}>
 							{#snippet icon()}•{/snippet}
 						</SidebarItem>
 					{/snippet}
 				</SidebarItem>
 
-				<!-- Layout with submenu -->
+				<!-- Layout -->
 				<SidebarItem labelText="Layout" hasSubmenu={true}>
 					{#snippet icon()}📐{/snippet}
 					{#snippet submenu()}
-						<SidebarItem href="/layouts" labelText="Page Layouts">
+						<SidebarItem href="/layouts" labelText="Page Layouts" active={$page.url.pathname === '/layouts'}>
+							{#snippet icon()}•{/snippet}
+						</SidebarItem>
+					{/snippet}
+				</SidebarItem>
+
+				<!-- Practical Examples (matches pure-admin order) -->
+				<SidebarItem labelText="Practical Examples" hasSubmenu={true}>
+					{#snippet icon()}🎬{/snippet}
+					{#snippet submenu()}
+						<SidebarItem href="/kpi-dashboard" labelText="KPI Dashboard" active={$page.url.pathname === '/kpi-dashboard'}>
+							{#snippet icon()}•{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/movies" labelText="Movies" active={$page.url.pathname === '/movies'}>
+							{#snippet icon()}•{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/movies/detail?id=1" labelText="Movie Detail" active={$page.url.pathname === '/movies/detail'}>
+							{#snippet icon()}•{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/movies-panel" labelText="Movies + Panel" active={$page.url.pathname === '/movies-panel'}>
 							{#snippet icon()}•{/snippet}
 						</SidebarItem>
 					{/snippet}

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Heading, Paragraph, Card, CardTab, CardTabContent, Button, Badge, Grid, Column, Section, Table, Stat, List, ListItem } from '@keenmate/svelte-pure-admin';
+	import { Heading, Paragraph, Card, CardTab, CardTabContent, Button, ButtonGroup, Badge, Grid, Column, Section, Table, Stat, List, ListItem, BasicList } from '@keenmate/svelte-pure-admin';
 
 	// Local type matching Card component's variant prop
 	type CardVariant = 'primary' | 'success' | 'warning' | 'danger' | 'info'
@@ -95,11 +95,148 @@
 					<Button variant="secondary" size="xs">⚙</Button>
 				{/snippet}
 				<Paragraph>A complete card with header, body, and footer sections.</Paragraph>
-				<Paragraph class="text-muted text-sm">Updated 2 hours ago</Paragraph>
-				{#snippet actions()}
-					<Button variant="secondary" size="sm">Cancel</Button>
-					<Button variant="primary" size="sm">Save</Button>
+				{#snippet footer()}
+					<span class="pa-card__meta">Updated 2 hours ago</span>
+					<div class="pa-card__actions">
+						<Button variant="secondary" size="sm">Cancel</Button>
+						<Button variant="primary" size="sm">Save</Button>
+					</div>
 				{/snippet}
+			</Card>
+		</Column>
+	</Grid>
+</Section>
+
+<!-- Card Header Three-Part Layout -->
+<Section titleText="Card Header Three-Part Layout">
+	<Paragraph class="mb-2">Card headers support a flexible three-part layout: <strong>Title</strong> (fixed), <strong>Description</strong> (flexible, truncates), and <strong>Actions</strong> (fixed). Elements are separated by automatic gaps.</Paragraph>
+
+	<Grid>
+		<!-- Full three-part layout -->
+		<Column size="100" lg="1-2">
+			<Card titleText="User Management" descriptionText="Manage user accounts, permissions, and access controls for your organization">
+				{#snippet tools()}
+					<Button variant="primary" size="sm">Add User</Button>
+				{/snippet}
+				<Paragraph>Full three-part layout: title stays fixed, description fills available space and truncates with ellipsis, action button stays fixed on the right.</Paragraph>
+			</Card>
+		</Column>
+
+		<!-- Multiple action buttons -->
+		<Column size="100" lg="1-2">
+			<Card titleText="Reports" descriptionText="Generate and download analytics reports for your dashboard metrics">
+				{#snippet tools()}
+					<ButtonGroup>
+						<Button variant="secondary" size="sm">Export</Button>
+						<Button variant="primary" size="sm">Generate</Button>
+					</ButtonGroup>
+				{/snippet}
+				<Paragraph>Multiple buttons can be grouped with <code>ButtonGroup</code>. The group stays fixed and won't shrink.</Paragraph>
+			</Card>
+		</Column>
+
+		<!-- Title + Description only -->
+		<Column size="100" lg="1-2">
+			<Card titleText="Settings" descriptionText="Configure application preferences and system settings">
+				<Paragraph>Title + description without actions. The description expands to fill the remaining space.</Paragraph>
+			</Card>
+		</Column>
+
+		<!-- Title + Actions only -->
+		<Column size="100" lg="1-2">
+			<Card titleText="Notifications">
+				{#snippet tools()}
+					<ButtonGroup>
+						<Button variant="secondary" size="sm">Mark All Read</Button>
+						<Button variant="outline-danger" size="sm">Clear</Button>
+					</ButtonGroup>
+				{/snippet}
+				<Paragraph>Title + actions without description. The gap keeps them separated, and <code>justify-content: space-between</code> pushes actions to the right.</Paragraph>
+			</Card>
+		</Column>
+	</Grid>
+
+	<Heading level={4} class="mt-4">Long Description Truncation</Heading>
+	<Paragraph class="mb-2">When descriptions are too long, they automatically truncate with ellipsis (...) to maintain a single-line header.</Paragraph>
+
+	<Grid>
+		<Column size="100" lg="1-2">
+			<Card titleText="Analytics" descriptionText="This is a very long description that explains the analytics dashboard features including real-time metrics, historical data analysis, custom reports, and export functionality for enterprise users">
+				{#snippet tools()}
+					<Button variant="primary" size="sm">View</Button>
+				{/snippet}
+				<Paragraph>The description truncates with ellipsis when it exceeds the available space. Hover or resize to see the effect.</Paragraph>
+			</Card>
+		</Column>
+
+		<Column size="100" lg="1-2">
+			<Card titleText="Inventory" descriptionText="Track stock levels, manage suppliers, process purchase orders, and monitor warehouse capacity across multiple locations">
+				{#snippet tools()}
+					<ButtonGroup>
+						<Button variant="secondary" size="sm">Import</Button>
+						<Button variant="secondary" size="sm">Export</Button>
+						<Button variant="primary" size="sm">Add Item</Button>
+					</ButtonGroup>
+				{/snippet}
+				<Paragraph>Even with multiple action buttons, the description gracefully truncates to prevent overflow.</Paragraph>
+			</Card>
+		</Column>
+	</Grid>
+
+	<Heading level={4} class="mt-4">With Tooltip for Full Description</Heading>
+	<Paragraph class="mb-2">Add <code>pa-tooltip pa-tooltip--multiline</code> to the description paragraph to show the full text on hover.</Paragraph>
+
+	<Grid>
+		<Column size="100" lg="1-2">
+			<Card>
+				{#snippet header()}
+					<h4>Dashboard</h4>
+					<p class="pa-tooltip pa-tooltip--multiline pa-tooltip--bottom"
+						data-tooltip="View real-time metrics, KPIs, and performance indicators for your organization. Includes customizable widgets, drill-down reports, and automated alerts.">View real-time metrics, KPIs, and performance indicators for your organization. Includes customizable widgets, drill-down reports, and automated alerts.</p>
+					<Button variant="primary" size="sm">Open</Button>
+				{/snippet}
+				<Paragraph>Hover over the truncated description to see the full text in a multiline tooltip.</Paragraph>
+			</Card>
+		</Column>
+
+		<Column size="100" lg="1-2">
+			<Card>
+				{#snippet header()}
+					<h4>Audit Log</h4>
+					<p class="pa-tooltip pa-tooltip--multiline pa-tooltip--bottom"
+						data-tooltip="Complete history of system changes, user actions, and security events. Filter by date, user, action type, or resource. Export to CSV for compliance reporting.">Complete history of system changes, user actions, and security events. Filter by date, user, action type, or resource. Export to CSV for compliance reporting.</p>
+					<ButtonGroup>
+						<Button variant="secondary" size="sm">Export</Button>
+						<Button variant="primary" size="sm">View</Button>
+					</ButtonGroup>
+				{/snippet}
+				<Paragraph>The tooltip provides full context while keeping the header compact and consistent.</Paragraph>
+			</Card>
+		</Column>
+	</Grid>
+
+	<Heading level={4} class="mt-4">Wrap Modifier</Heading>
+	<Paragraph class="mb-2">Use <code>headerWrap</code> when you need the description to wrap onto its own line (useful for mobile or when full description visibility is important).</Paragraph>
+
+	<Grid>
+		<Column size="100" lg="1-2">
+			<Card headerWrap titleText="Project Overview" descriptionText="This card uses the wrap modifier so the description appears on its own line below the title and actions. This is useful when the full description text needs to be visible.">
+				{#snippet tools()}
+					<ButtonGroup>
+						<Button variant="secondary" size="sm">Edit</Button>
+						<Button variant="primary" size="sm">View</Button>
+					</ButtonGroup>
+				{/snippet}
+				<Paragraph>With <code>headerWrap</code>, the description moves to a new line (via <code>flex-basis: 100%</code> and <code>order: 1</code>) and can display multiple lines.</Paragraph>
+			</Card>
+		</Column>
+
+		<Column size="100" lg="1-2">
+			<Card headerWrap titleText="Documentation" descriptionText="Complete API reference and integration guides for developers. Includes code samples, authentication flows, and best practices for building with our platform.">
+				{#snippet tools()}
+					<Button variant="primary" size="sm">Open Docs</Button>
+				{/snippet}
+				<Paragraph>The wrap modifier is ideal for mobile layouts or when description content is essential to display in full.</Paragraph>
 			</Card>
 		</Column>
 	</Grid>
@@ -199,6 +336,80 @@
 		<Column size="100" md="1-2">
 			<Card class="pa-card--bordered" variant="danger" titleText="Bordered Danger">
 				<Paragraph>Bordered card with danger variant.</Paragraph>
+			</Card>
+		</Column>
+	</Grid>
+</Section>
+
+<!-- Ghost Card -->
+<Section titleText="Ghost Card">
+	<Paragraph class="mb-4">Invisible container with no background, border, or shadow. Useful as a layout wrapper that maintains card spacing without visual chrome.</Paragraph>
+	<Grid>
+		<Column size="1-3">
+			<Card isGhost titleText="Ghost Card">
+				<Paragraph>No background, no border, no shadow. Just layout structure.</Paragraph>
+				{#snippet footer()}
+					<span class="pa-card__meta">Footer is also transparent</span>
+				{/snippet}
+			</Card>
+		</Column>
+		<Column size="1-3">
+			<Card titleText="Normal Card">
+				<Paragraph>Standard card for comparison.</Paragraph>
+			</Card>
+		</Column>
+		<Column size="1-3">
+			<Card isGhost>
+				<Paragraph>Ghost card with body only — no header or footer needed.</Paragraph>
+			</Card>
+		</Column>
+	</Grid>
+</Section>
+
+<!-- Underlined Headers -->
+<Section titleText="Underlined Headers">
+	<Paragraph class="mb-4">Add <code>isHeaderUnderlined</code> for an accent border under the heading. Combine with <code>headerUnderlineColor</code> for semantic colors or <code>headerUnderlineThemeColor</code> for theme color slots.</Paragraph>
+	<Grid>
+		<Column size="100" sm="50" lg="1-4">
+			<Card isHeaderUnderlined titleText="Default Accent">
+				<Paragraph>Uses the theme's accent color.</Paragraph>
+			</Card>
+		</Column>
+		<Column size="100" sm="50" lg="1-4">
+			<Card isHeaderUnderlined headerUnderlineColor="success" titleText="Success">
+				<Paragraph>Green underline for positive context.</Paragraph>
+			</Card>
+		</Column>
+		<Column size="100" sm="50" lg="1-4">
+			<Card isHeaderUnderlined headerUnderlineColor="warning" titleText="Warning">
+				<Paragraph>Yellow underline for caution.</Paragraph>
+			</Card>
+		</Column>
+		<Column size="100" sm="50" lg="1-4">
+			<Card isHeaderUnderlined headerUnderlineColor="danger" titleText="Danger">
+				<Paragraph>Red underline for critical items.</Paragraph>
+			</Card>
+		</Column>
+	</Grid>
+	<Grid>
+		<Column size="100" sm="50" lg="1-4">
+			<Card isHeaderUnderlined headerUnderlineColor="info" titleText="Info">
+				<Paragraph>Blue underline for informational.</Paragraph>
+			</Card>
+		</Column>
+		<Column size="100" sm="50" lg="1-4">
+			<Card isHeaderUnderlined headerUnderlineThemeColor={1} titleText="Color 1">
+				<Paragraph>Theme color slot 1.</Paragraph>
+			</Card>
+		</Column>
+		<Column size="100" sm="50" lg="1-4">
+			<Card isHeaderUnderlined headerUnderlineThemeColor={3} titleText="Color 3">
+				<Paragraph>Theme color slot 3.</Paragraph>
+			</Card>
+		</Column>
+		<Column size="100" sm="50" lg="1-4">
+			<Card isGhost isHeaderUnderlined titleText="Ghost + Underlined">
+				<Paragraph>Works with ghost cards too.</Paragraph>
 			</Card>
 		</Column>
 	</Grid>
@@ -439,3 +650,62 @@
 		</Column>
 	</Grid>
 </Section>
+
+<!-- CSS Classes Reference -->
+<Card titleText="CSS Classes Reference">
+	<Heading level={4}>Card Base & Sections</Heading>
+	<BasicList spacing="compact">
+		<li><code>pa-card</code> - Base card container</li>
+		<li><code>pa-card__header</code> - Card header with title/tools</li>
+		<li><code>pa-card__body</code> - Card body content area</li>
+		<li><code>pa-card__body--no-padding</code> - Remove body padding (for tables)</li>
+		<li><code>pa-card__footer</code> - Card footer with actions/meta</li>
+	</BasicList>
+
+	<Heading level={4} class="mt-4">Header Elements</Heading>
+	<BasicList spacing="compact">
+		<li><code>pa-card__header</code> - Flexbox header with gap between children</li>
+		<li><code>pa-card__header--wrap</code> - Allow description to wrap to new line</li>
+		<li><code>h1-h6</code> (direct child) - Title, fixed width, won't shrink</li>
+		<li><code>p</code> (direct child) - Description, flexible, truncates with ellipsis</li>
+		<li><code>pa-card__title</code> - Title container with icon support</li>
+		<li><code>pa-card__title-icon</code> - Icon before title</li>
+		<li><code>pa-card__title-text</code> - Title text (auto-truncates)</li>
+		<li><code>pa-card__tools</code> - Tool buttons container (right side)</li>
+		<li><code>pa-card__actions</code> - Actions container, fixed width</li>
+		<li><code>pa-btn-group</code> - Button group in header, fixed width</li>
+	</BasicList>
+
+	<Heading level={4} class="mt-4">Footer Elements</Heading>
+	<BasicList spacing="compact">
+		<li><code>pa-card__actions</code> - Action buttons container</li>
+		<li><code>pa-card__meta</code> - Meta text (timestamps, etc.)</li>
+	</BasicList>
+
+	<Heading level={4} class="mt-4">Color Variants</Heading>
+	<BasicList spacing="compact">
+		<li><code>pa-card--primary</code> - Primary color header</li>
+		<li><code>pa-card--success</code> - Success color header</li>
+		<li><code>pa-card--warning</code> - Warning color header</li>
+		<li><code>pa-card--danger</code> - Danger color header</li>
+		<li><code>pa-card--color-1</code> through <code>pa-card--color-9</code> - Theme color slots with automatic contrast text</li>
+		<li><code>pa-card--stat</code> - Compact padding for stat cards</li>
+		<li><code>pa-card--ghost</code> - Invisible container (no background, border, or shadow)</li>
+	</BasicList>
+
+	<Heading level={4} class="mt-4">Card Tabs</Heading>
+	<BasicList spacing="compact">
+		<li><code>pa-card__tabs</code> - Tab navigation container</li>
+		<li><code>pa-card__tabs--inline</code> - Inline tabs in header (same height as regular header)</li>
+		<li><code>pa-card__tab</code> - Individual tab button</li>
+		<li><code>pa-card__tab--active</code> - Active tab state</li>
+		<li><code>pa-card__tab-content</code> - Tab content panel</li>
+		<li><code>pa-card__tab-content--active</code> - Active content panel</li>
+	</BasicList>
+
+	<Heading level={4} class="mt-4">Section Helpers</Heading>
+	<BasicList spacing="compact">
+		<li><code>pa-section</code> - Page section with margin</li>
+		<li><code>pa-section-title</code> - Standalone section title with accent border</li>
+	</BasicList>
+</Card>

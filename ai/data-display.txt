@@ -1,0 +1,756 @@
+DATA DISPLAY COMPONENTS
+=======================
+
+CRITICAL: This is a Svelte 5 component library (@keenmate/svelte-pure-admin)
+- All components use Svelte 5 runes ($props, $state, $derived)
+- Content slots use Snippets ({#snippet}), NOT legacy <slot>
+- All CSS classes use BEM naming: pa-[block]__[element]--[modifier]
+- Import components from '@keenmate/svelte-pure-admin'
+
+These are the "v2" data display patterns for showing read-only label-value data.
+Choose the right pattern based on visual needs:
+  - Field/Fields: Default for most label-value displays
+  - DescTable: Ant Design style flat grid with tinted labels
+  - DotLeaders: Invoice/menu style with dotted lines
+  - PropCard: Stripe-style bordered card with divider rows
+  - Banded: Full-width rows with tinted label column
+  - AccentGrid: Dashboard grid with color-coded left borders
+
+
+FIELD
+-----
+Single label-value pair. The fundamental building block for all data display.
+Supports copyable variants with clipboard functionality.
+
+Props:
+  labelText?       string - Label text
+  valueText?       string | number - Value text
+  full?            boolean (false) - Full width (spans entire row in grid)
+  copyMode?        'btn' | 'click' | 'hover' - Copy to clipboard mode
+                     btn: always-visible copy button
+                     click: click entire value to copy (shows hint on hover)
+                     hover: copy button appears on hover
+  copyValue?       string - Override what gets copied (defaults to valueText)
+  copyValueCallback? () => string - Dynamic copy value
+  copyHintText?    string - Hint text for click mode (default: i18n)
+  copiedText?      string - Feedback text after copy (default: i18n)
+  oncopy?          (value: string) => void - Callback after successful copy
+  valueVariant?    'success' | 'warning' | 'danger' - Value color (for chips mode)
+  class?           string
+
+Snippets:
+  labelSnippet?    Complex label content
+  valueSnippet?    Complex value content
+  children?        Alias for valueSnippet
+
+Basic field:
+
+<Field labelText="Name" valueText="John Doe" />
+<Field labelText="Email" valueText="john@example.com" />
+<Field labelText="Status" valueText="Active" valueVariant="success" />
+
+Copyable field (always-visible button):
+
+<Field labelText="API Key" valueText="sk-abc123..." copyMode="btn" />
+
+Copyable field (click to copy):
+
+<Field labelText="Order ID" valueText="ORD-2024-001" copyMode="click" />
+
+Copyable field (button on hover):
+
+<Field labelText="Email" valueText="john@example.com" copyMode="hover" />
+
+Full width field (spans entire row in grid):
+
+<Field labelText="Description" valueText="A longer description text" full />
+
+Field with custom value snippet:
+
+<Field labelText="Status">
+  <Badge variant="success">Active</Badge>
+</Field>
+
+Field with custom label snippet:
+
+<Field valueText="john@example.com">
+  {#snippet labelSnippet()}
+    <strong>Email</strong> <Badge variant="info" size="xs">Primary</Badge>
+  {/snippet}
+</Field>
+
+Field with dynamic copy value:
+
+<Field
+  labelText="Token"
+  valueText="****-****-1234"
+  copyMode="btn"
+  copyValueCallback={() => fullToken}
+/>
+
+
+FIELDS
+------
+Container for multiple Field components with extensive layout modifiers.
+
+Props:
+  cols?              2 | 3 | 4 - Grid columns
+  isHorizontal?      boolean (false) - Label left, value right (side-by-side)
+  isTable?           boolean (false) - Consistent label widths (key-value table)
+  isBordered?        boolean (false) - Bottom border separator between fields
+  isStriped?         boolean (false) - Alternating background rows
+  isCompact?         boolean (false) - Tighter spacing
+  isRelaxed?         boolean (false) - Larger gaps
+  isInline?          boolean (false) - Fields flow on one line
+  isRow?             boolean (false) - Equal-width auto columns
+  isLinear?          boolean (false) - Ultra-clean side-by-side, weight+color only
+  isChips?           boolean (false) - Notion-style inline pills
+  isFilled?          boolean (false) - Subtle background panel
+  color?             1-9 - Theme color for left border
+  hasBorder?         boolean (true) - Show left border (false to remove)
+  hasContainerQuery? boolean (false) - Wrap for CSS container query responsiveness
+  class?             string
+  children?          Snippet
+
+Default vertical layout (2 columns):
+
+<Fields cols={2}>
+  <Field labelText="First Name" valueText="John" />
+  <Field labelText="Last Name" valueText="Doe" />
+  <Field labelText="Email" valueText="john@example.com" />
+  <Field labelText="Phone" valueText="+1 555-0123" />
+</Fields>
+
+Horizontal layout (label left, value right):
+
+<Fields isHorizontal>
+  <Field labelText="Name" valueText="John Doe" />
+  <Field labelText="Email" valueText="john@example.com" />
+  <Field labelText="Role" valueText="Administrator" />
+</Fields>
+
+Table layout (consistent label widths):
+
+<Fields isTable isBordered>
+  <Field labelText="Order ID" valueText="ORD-2024-001" copyMode="hover" />
+  <Field labelText="Date" valueText="2024-01-15" />
+  <Field labelText="Status" valueText="Shipped" valueVariant="success" />
+  <Field labelText="Total" valueText="$142.50" />
+</Fields>
+
+Three-column grid with borders and stripes:
+
+<Fields cols={3} isBordered isStriped>
+  <Field labelText="CPU" valueText="Intel i9" />
+  <Field labelText="RAM" valueText="64 GB" />
+  <Field labelText="Storage" valueText="2 TB SSD" />
+  <Field labelText="GPU" valueText="RTX 4090" />
+  <Field labelText="OS" valueText="Ubuntu 24.04" />
+  <Field labelText="Uptime" valueText="99.99%" />
+</Fields>
+
+Compact layout (less spacing):
+
+<Fields isHorizontal isCompact>
+  <Field labelText="IP" valueText="192.168.1.1" />
+  <Field labelText="Port" valueText="8080" />
+  <Field labelText="Protocol" valueText="HTTPS" />
+</Fields>
+
+Linear layout (ultra-clean side-by-side):
+
+<Fields isLinear>
+  <Field labelText="Name" valueText="John Doe" />
+  <Field labelText="Status" valueText="Active" />
+</Fields>
+
+Chips layout (Notion-style inline pills):
+
+<Fields isChips>
+  <Field labelText="Tags" valueText="Frontend" valueVariant="success" />
+  <Field labelText="Priority" valueText="High" valueVariant="danger" />
+  <Field labelText="Sprint" valueText="Sprint 12" />
+</Fields>
+
+Filled background panel with color accent:
+
+<Fields isFilled color={3}>
+  <Field labelText="Plan" valueText="Enterprise" />
+  <Field labelText="Users" valueText="Unlimited" />
+  <Field labelText="Support" valueText="24/7 Priority" />
+</Fields>
+
+Inline layout (single line):
+
+<Fields isInline>
+  <Field labelText="Version" valueText="1.5.0" />
+  <Field labelText="Build" valueText="2024-01-15" />
+  <Field labelText="Env" valueText="Production" />
+</Fields>
+
+Row layout (equal-width auto columns):
+
+<Fields isRow>
+  <Field labelText="Q1" valueText="$12,500" />
+  <Field labelText="Q2" valueText="$15,200" />
+  <Field labelText="Q3" valueText="$18,700" />
+  <Field labelText="Q4" valueText="$22,100" />
+</Fields>
+
+No left border:
+
+<Fields isHorizontal hasBorder={false}>
+  <Field labelText="Name" valueText="John Doe" />
+</Fields>
+
+
+FIELDGROUP
+----------
+Titled section containing Fields. Used to group related fields visually.
+
+Props:
+  titleText?       string - Group title
+  titleSnippet?    Snippet - Complex title content
+  class?           string
+  children?        Snippet
+
+<FieldGroup titleText="Customer Information">
+  <Fields cols={2} isHorizontal>
+    <Field labelText="Name" valueText="John Doe" />
+    <Field labelText="Email" valueText="john@example.com" />
+    <Field labelText="Phone" valueText="+1 555-0123" />
+    <Field labelText="Company" valueText="Acme Corp" />
+  </Fields>
+</FieldGroup>
+
+<FieldGroup titleText="Shipping Address">
+  <Fields isHorizontal isBordered>
+    <Field labelText="Street" valueText="123 Main St" />
+    <Field labelText="City" valueText="Springfield" />
+    <Field labelText="State" valueText="IL" />
+    <Field labelText="ZIP" valueText="62701" />
+  </Fields>
+</FieldGroup>
+
+With custom title:
+
+<FieldGroup>
+  {#snippet titleSnippet()}
+    <span>Server Details</span>
+    <Badge variant="success" size="xs">Online</Badge>
+  {/snippet}
+
+  <Fields isTable>
+    <Field labelText="Hostname" valueText="srv-prod-01" />
+    <Field labelText="IP" valueText="10.0.1.50" copyMode="click" />
+  </Fields>
+</FieldGroup>
+
+
+DESCTABLE / DESCTABLEITEM
+--------------------------
+Ant Design style flat grid with label/value cells. Label cells get a tinted
+background for visual grouping. Best for structured detail pages.
+
+DescTable Props:
+  cols?              2 | 3 (default: 3) - Number of label-value columns
+  isFixed?           boolean (false) - Fixed-width label columns (default 14rem)
+  labelWidth?        string - Custom label width CSS (e.g. '20rem'), requires isFixed
+  isMiddle?          boolean (false) - Vertically center labels and values
+  isLabelEnd?        boolean (false) - Right-align labels
+  isLabelCenter?     boolean (false) - Center-align labels
+  isTruncate?        boolean (false) - Single-line ellipsis on labels and values
+  hasContainerQuery? boolean (false) - Wrap for CSS container query responsiveness
+  class?             string
+  children?          Snippet
+
+DescTableItem Props:
+  labelText          string (required) - Label text
+  valueText?         string | number - Value text
+  full?              boolean (false) - Value spans remaining columns in row
+  copyMode?          'btn' | 'click' | 'hover'
+  copyValue?         string - Override copy value
+  oncopy?            (value: string) => void
+  class?             string
+  children?          Snippet - Complex value content
+
+Three-column descriptions table (default):
+
+<DescTable>
+  <DescTableItem labelText="Name" valueText="John Doe" />
+  <DescTableItem labelText="Email" valueText="john@example.com" />
+  <DescTableItem labelText="Phone" valueText="+1 555-0123" />
+  <DescTableItem labelText="Company" valueText="Acme Corp" />
+  <DescTableItem labelText="Role" valueText="Administrator" />
+  <DescTableItem labelText="Status" valueText="Active" />
+</DescTable>
+
+Two-column layout (wider values):
+
+<DescTable cols={2}>
+  <DescTableItem labelText="Description" valueText="A detailed product description that needs more space" />
+  <DescTableItem labelText="Notes" valueText="Additional notes for this record" />
+</DescTable>
+
+Full-width value row:
+
+<DescTable>
+  <DescTableItem labelText="Name" valueText="John Doe" />
+  <DescTableItem labelText="Email" valueText="john@example.com" />
+  <DescTableItem labelText="Phone" valueText="+1 555-0123" />
+  <DescTableItem labelText="Bio" full>
+    A software engineer with 10+ years of experience in full-stack development,
+    specializing in Svelte, TypeScript, and distributed systems.
+  </DescTableItem>
+</DescTable>
+
+Fixed-width labels:
+
+<DescTable isFixed labelWidth="18rem">
+  <DescTableItem labelText="Configuration Key" valueText="api.timeout" />
+  <DescTableItem labelText="Default Value" valueText="5000" />
+  <DescTableItem labelText="Current Value" valueText="10000" />
+</DescTable>
+
+Copyable values:
+
+<DescTable cols={2}>
+  <DescTableItem labelText="API Key" valueText="sk-abc123def456" copyMode="btn" />
+  <DescTableItem labelText="Secret" valueText="****-****-7890" copyMode="hover" />
+  <DescTableItem labelText="Endpoint" valueText="https://api.example.com" copyMode="click" />
+</DescTable>
+
+Truncated (long values get ellipsis):
+
+<DescTable isTruncate>
+  <DescTableItem labelText="URL" valueText="https://very-long-domain-name.example.com/api/v2/extremely/long/path" />
+</DescTable>
+
+With custom value content:
+
+<DescTable>
+  <DescTableItem labelText="Status">
+    <Badge variant="success">Active</Badge>
+  </DescTableItem>
+  <DescTableItem labelText="Tags">
+    <BadgeGroup>
+      <Badge variant="info" size="xs">Frontend</Badge>
+      <Badge variant="info" size="xs">Svelte</Badge>
+    </BadgeGroup>
+  </DescTableItem>
+</DescTable>
+
+
+DOTLEADERS / DOTLEADERSITEM
+----------------------------
+Restaurant menu / invoice style with dotted lines connecting label to value.
+Best for pricing, invoices, totals, and menu-style layouts.
+
+DotLeaders Props:
+  class?           string
+  children?        Snippet
+
+DotLeadersItem Props:
+  labelText          string (required) - Label text
+  valueText?         string - Value text
+  isTotal?           boolean (false) - Total row (bold, top border)
+  class?             string
+  children?          Snippet - Complex value content
+
+Invoice layout:
+
+<DotLeaders>
+  <DotLeadersItem labelText="Widget A (x3)" valueText="$29.97" />
+  <DotLeadersItem labelText="Widget B (x1)" valueText="$14.99" />
+  <DotLeadersItem labelText="Shipping" valueText="$5.00" />
+  <DotLeadersItem labelText="Tax" valueText="$4.50" />
+  <DotLeadersItem labelText="Total" valueText="$54.46" isTotal />
+</DotLeaders>
+
+Menu style:
+
+<DotLeaders>
+  <DotLeadersItem labelText="Margherita Pizza" valueText="$12.99" />
+  <DotLeadersItem labelText="Caesar Salad" valueText="$8.50" />
+  <DotLeadersItem labelText="Garlic Bread" valueText="$4.99" />
+  <DotLeadersItem labelText="Tiramisu" valueText="$7.50" />
+</DotLeaders>
+
+With custom value content:
+
+<DotLeaders>
+  <DotLeadersItem labelText="Plan">
+    <Badge variant="primary">Enterprise</Badge>
+  </DotLeadersItem>
+  <DotLeadersItem labelText="Monthly Cost" valueText="$499/mo" />
+  <DotLeadersItem labelText="Annual Savings" valueText="$1,188" isTotal />
+</DotLeaders>
+
+
+PROPCARD / PROPCARDROW
+-----------------------
+Bordered card with optional header and thin-divider rows. Stripe-style grouped
+properties. Best for settings panels, payment details, subscription info.
+
+PropCard Props:
+  headerText?      string - Header title text
+  class?           string
+  children?        Snippet
+
+PropCardRow Props:
+  labelText          string (required) - Label text
+  valueText?         string | number - Value text
+  isBold?            boolean (false) - Bold value styling
+  copyMode?          'btn' | 'click' | 'hover'
+  copyValue?         string - Override copy value
+  oncopy?            (value: string) => void
+  class?             string
+  children?          Snippet - Complex value content
+
+Basic property card:
+
+<PropCard headerText="Subscription Details">
+  <PropCardRow labelText="Plan" valueText="Enterprise" isBold />
+  <PropCardRow labelText="Status" valueText="Active" />
+  <PropCardRow labelText="Billing Cycle" valueText="Annual" />
+  <PropCardRow labelText="Next Payment" valueText="Feb 15, 2025" />
+  <PropCardRow labelText="Amount" valueText="$4,999.00" isBold />
+</PropCard>
+
+Without header:
+
+<PropCard>
+  <PropCardRow labelText="Card Number" valueText="**** **** **** 4242" copyMode="hover" />
+  <PropCardRow labelText="Expiry" valueText="12/2026" />
+  <PropCardRow labelText="Cardholder" valueText="John Doe" />
+</PropCard>
+
+With custom value content:
+
+<PropCard headerText="Payment Method">
+  <PropCardRow labelText="Type">
+    <Badge variant="info">Visa</Badge>
+  </PropCardRow>
+  <PropCardRow labelText="Last 4" valueText="4242" copyMode="btn" />
+  <PropCardRow labelText="Status">
+    <Badge variant="success">Verified</Badge>
+  </PropCardRow>
+</PropCard>
+
+Copyable rows:
+
+<PropCard headerText="API Credentials">
+  <PropCardRow labelText="Client ID" valueText="cid_abc123" copyMode="hover" />
+  <PropCardRow labelText="Client Secret" valueText="****" copyMode="btn" copyValue="full-secret-here" />
+  <PropCardRow labelText="Redirect URI" valueText="https://app.example.com/callback" copyMode="click" />
+</PropCard>
+
+
+BANDED / BANDEDROW
+------------------
+Full-width rows with a fixed-width tinted label column. Clear visual anchor for
+label-value data. Best for detail views, system info, configuration displays.
+
+Banded Props:
+  width?             'narrow' | 'wide' - Label column width
+  isMiddle?          boolean (false) - Vertically center labels and values
+  isLabelEnd?        boolean (false) - Right-align labels
+  isLabelCenter?     boolean (false) - Center-align labels
+  isTruncate?        boolean (false) - Single-line ellipsis
+  hasContainerQuery? boolean (false) - CSS container query wrapper
+  class?             string
+  children?          Snippet
+
+BandedRow Props:
+  labelText          string (required)
+  valueText?         string | number
+  labelClass?        string - Additional CSS on label element
+  copyMode?          'btn' | 'click' | 'hover'
+  copyValue?         string - Override copy value
+  oncopy?            (value: string) => void
+  class?             string
+  children?          Snippet - Complex value content
+
+Basic banded layout:
+
+<Banded>
+  <BandedRow labelText="Hostname" valueText="srv-prod-01" />
+  <BandedRow labelText="IP Address" valueText="10.0.1.50" copyMode="click" />
+  <BandedRow labelText="Operating System" valueText="Ubuntu 24.04 LTS" />
+  <BandedRow labelText="CPU" valueText="Intel Xeon E5-2680 v4 (28 cores)" />
+  <BandedRow labelText="Memory" valueText="128 GB DDR4" />
+  <BandedRow labelText="Storage" valueText="4x 2TB NVMe SSD (RAID 10)" />
+</Banded>
+
+Narrow label column:
+
+<Banded width="narrow">
+  <BandedRow labelText="Key" valueText="Value" />
+  <BandedRow labelText="Port" valueText="8080" />
+</Banded>
+
+Wide label column:
+
+<Banded width="wide">
+  <BandedRow labelText="Configuration Parameter" valueText="max_connections" />
+  <BandedRow labelText="Default Value" valueText="100" />
+  <BandedRow labelText="Current Value" valueText="500" />
+</Banded>
+
+With truncation:
+
+<Banded isTruncate>
+  <BandedRow labelText="Full URL" valueText="https://very-long-domain.example.com/api/v2/resource/id" />
+  <BandedRow labelText="Description" valueText="A very long description that should be truncated with ellipsis" />
+</Banded>
+
+With custom label styling:
+
+<Banded>
+  <BandedRow labelText="Critical" valueText="Database connection pool exhausted" labelClass="pa-text--danger" />
+  <BandedRow labelText="Warning" valueText="Memory usage above 80%" labelClass="pa-text--warning" />
+  <BandedRow labelText="Info" valueText="Backup completed successfully" labelClass="pa-text--info" />
+</Banded>
+
+Copyable values:
+
+<Banded>
+  <BandedRow labelText="Connection String" valueText="mongodb://..." copyMode="btn" />
+  <BandedRow labelText="JWT Token" valueText="eyJhbGciOiJ..." copyMode="hover" />
+</Banded>
+
+With custom value content:
+
+<Banded>
+  <BandedRow labelText="Status">
+    <Badge variant="success">Running</Badge>
+  </BandedRow>
+  <BandedRow labelText="Health">
+    <Progress value={95} variant="success" size="sm" />
+  </BandedRow>
+</Banded>
+
+
+ACCENTGRID / ACCENTGRIDITEM
+-----------------------------
+Responsive grid of items with color-coded left borders. Good for status-heavy
+panels, dashboards, and KPI displays.
+
+AccentGrid Props:
+  class?           string
+  children?        Snippet
+
+AccentGridItem Props:
+  labelText          string (required)
+  valueText?         string | number
+  variant?           'success' | 'warning' | 'danger' | 'info' - Border color
+  copyMode?          'btn' | 'click' | 'hover'
+  copyValue?         string
+  oncopy?            (value: string) => void
+  class?             string
+  children?          Snippet - Complex value content
+
+Dashboard status grid:
+
+<AccentGrid>
+  <AccentGridItem variant="success" labelText="Active Users" valueText="1,234" />
+  <AccentGridItem variant="info" labelText="New Signups" valueText="56" />
+  <AccentGridItem variant="warning" labelText="Pending Reviews" valueText="12" />
+  <AccentGridItem variant="danger" labelText="Failed Payments" valueText="3" />
+</AccentGrid>
+
+Server status panel:
+
+<AccentGrid>
+  <AccentGridItem variant="success" labelText="API Gateway" valueText="Healthy" />
+  <AccentGridItem variant="success" labelText="Database" valueText="Connected" />
+  <AccentGridItem variant="warning" labelText="Cache" valueText="High Load" />
+  <AccentGridItem variant="danger" labelText="Email Service" valueText="Down" />
+  <AccentGridItem variant="info" labelText="CDN" valueText="Operational" />
+  <AccentGridItem variant="success" labelText="Storage" valueText="85% Free" />
+</AccentGrid>
+
+With custom value content:
+
+<AccentGrid>
+  <AccentGridItem variant="success" labelText="Uptime">
+    <strong>99.99%</strong>
+    <Badge variant="success" size="xs">SLA Met</Badge>
+  </AccentGridItem>
+  <AccentGridItem variant="warning" labelText="Response Time">
+    <strong>245ms</strong>
+    <Badge variant="warning" size="xs">Above Target</Badge>
+  </AccentGridItem>
+</AccentGrid>
+
+Copyable grid items:
+
+<AccentGrid>
+  <AccentGridItem variant="info" labelText="Instance ID" valueText="i-0abc123def" copyMode="click" />
+  <AccentGridItem variant="info" labelText="Public IP" valueText="54.123.45.67" copyMode="hover" />
+</AccentGrid>
+
+
+WHEN TO USE WHICH PATTERN
+--------------------------
+
+Field/Fields (default choice):
+  Use when: Most label-value displays, detail pages, forms, settings
+  Best for: Flexible layouts, 2-4 column grids, horizontal/vertical orientation
+  Unique: isLinear, isChips, color variants, container query support
+
+DescTable:
+  Use when: Structured detail pages with many properties
+  Best for: Ant Design style, tinted label cells, 2-3 column grids
+  Unique: Fixed-width labels, tinted backgrounds, grid-based layout
+
+DotLeaders:
+  Use when: Invoices, pricing pages, restaurant menus, receipt summaries
+  Best for: Label ... value with dotted connecting line
+  Unique: isTotal for bold summary rows, dotted leader lines
+
+PropCard:
+  Use when: Settings panels, payment details, subscription info
+  Best for: Stripe-style bordered card with divider rows
+  Unique: headerText for card title, isBold for emphasis
+
+Banded:
+  Use when: System info, configuration details, server status
+  Best for: Full-width rows with tinted label column
+  Unique: Width variants (narrow/wide), label alignment options
+
+AccentGrid:
+  Use when: Dashboards, KPI panels, status overviews
+  Best for: Color-coded status indicators, responsive grid
+  Unique: variant for border color (success/warning/danger/info)
+
+
+COMPLETE DETAIL PAGE EXAMPLE
+-----------------------------
+
+<script>
+  import {
+    Card, Fields, Field, FieldGroup, DescTable, DescTableItem,
+    DotLeaders, DotLeadersItem, PropCard, PropCardRow,
+    Banded, BandedRow, AccentGrid, AccentGridItem,
+    Badge, Grid
+  } from '@keenmate/svelte-pure-admin';
+</script>
+
+<!-- Order detail page combining multiple patterns -->
+
+<Card titleText="Order #ORD-2024-001">
+  <!-- Status overview with AccentGrid -->
+  <AccentGrid>
+    <AccentGridItem variant="success" labelText="Status" valueText="Confirmed" />
+    <AccentGridItem variant="info" labelText="Payment" valueText="Paid" />
+    <AccentGridItem variant="warning" labelText="Shipping" valueText="Processing" />
+    <AccentGridItem variant="info" labelText="Estimated Delivery" valueText="Jan 20" />
+  </AccentGrid>
+</Card>
+
+<Grid cols={2}>
+  <!-- Customer info with Fields -->
+  <Card titleText="Customer">
+    <FieldGroup titleText="Contact">
+      <Fields isHorizontal isBordered>
+        <Field labelText="Name" valueText="John Doe" />
+        <Field labelText="Email" valueText="john@example.com" copyMode="hover" />
+        <Field labelText="Phone" valueText="+1 555-0123" />
+      </Fields>
+    </FieldGroup>
+
+    <FieldGroup titleText="Address">
+      <Fields isHorizontal>
+        <Field labelText="Street" valueText="123 Main St" />
+        <Field labelText="City" valueText="Springfield, IL 62701" />
+      </Fields>
+    </FieldGroup>
+  </Card>
+
+  <!-- Payment info with PropCard -->
+  <PropCard headerText="Payment Details">
+    <PropCardRow labelText="Method">
+      <Badge variant="info">Visa</Badge> ending in 4242
+    </PropCardRow>
+    <PropCardRow labelText="Transaction ID" valueText="txn_abc123" copyMode="hover" />
+    <PropCardRow labelText="Amount" valueText="$54.46" isBold />
+  </PropCard>
+</Grid>
+
+<!-- Order items with DotLeaders -->
+<Card titleText="Order Summary">
+  <DotLeaders>
+    <DotLeadersItem labelText="Widget A (x3)" valueText="$29.97" />
+    <DotLeadersItem labelText="Widget B (x1)" valueText="$14.99" />
+    <DotLeadersItem labelText="Shipping" valueText="$5.00" />
+    <DotLeadersItem labelText="Tax" valueText="$4.50" />
+    <DotLeadersItem labelText="Total" valueText="$54.46" isTotal />
+  </DotLeaders>
+</Card>
+
+<!-- Technical details with DescTable -->
+<Card titleText="Order Metadata">
+  <DescTable cols={2}>
+    <DescTableItem labelText="Order ID" valueText="ORD-2024-001" copyMode="click" />
+    <DescTableItem labelText="Created" valueText="2024-01-15 10:30:00 UTC" />
+    <DescTableItem labelText="Last Updated" valueText="2024-01-15 14:22:00 UTC" />
+    <DescTableItem labelText="Source" valueText="Web Store" />
+    <DescTableItem labelText="Notes" full>
+      Customer requested gift wrapping. Leave package at front door.
+    </DescTableItem>
+  </DescTable>
+</Card>
+
+<!-- Server info with Banded -->
+<Card titleText="Fulfillment System">
+  <Banded>
+    <BandedRow labelText="Warehouse" valueText="US-East-1 (Virginia)" />
+    <BandedRow labelText="Tracking #" valueText="1Z999AA10123456784" copyMode="btn" />
+    <BandedRow labelText="Carrier" valueText="UPS Ground" />
+    <BandedRow labelText="Weight" valueText="2.4 lbs" />
+  </Banded>
+</Card>
+
+
+COPY MODE COMPARISON
+---------------------
+All data display components (Field, DescTableItem, PropCardRow, BandedRow,
+AccentGridItem) support the same three copy modes:
+
+  copyMode="btn"     Always-visible copy button next to the value
+                     Best for: Values that are frequently copied (IDs, tokens)
+
+  copyMode="click"   Click the entire value text to copy, hint appears on hover
+                     Best for: Clean UI, values occasionally copied
+
+  copyMode="hover"   Copy button appears only on hover
+                     Best for: Dense layouts, copy available but not prominent
+
+
+CRITICAL REMINDERS
+------------------
+- Always import CSS: import '@keenmate/pure-admin-core/css'
+- Use Svelte 5 runes: $props(), $state(), $derived()
+- Content uses Snippets ({#snippet name()}...{/snippet}), NOT <slot>
+- Event handlers are lowercase: onclick, oncopy (NOT onClick)
+- Boolean props use is* prefix: isHorizontal, isBordered, isTotal, isBold
+- Fields is the container, Field is the individual item
+- DescTable is the container, DescTableItem is the individual item
+- DotLeaders is the container, DotLeadersItem is the individual item
+- PropCard is the container, PropCardRow is the individual item
+- Banded is the container, BandedRow is the individual item
+- AccentGrid is the container, AccentGridItem is the individual item
+- Field "full" prop spans the entire row in a grid layout
+- DescTableItem "full" prop spans remaining columns in the row
+- Fields "color" prop (1-9) adds themed left border
+- AccentGridItem "variant" controls the left border color
+- Field "valueVariant" colors the value text (for chips mode)
+- DotLeadersItem "isTotal" makes the row bold with a top border
+
+NEXT STEPS
+----------
+- General display components (Card, Table, Badge, etc.) -> display.txt
+- Data visualization (Progress, Gauge, Heatmap, etc.) -> data-viz.txt
+- Form components (Input, Select, Checkbox, etc.) -> forms.txt
+- Layout components (Layout, Sidebar, Header) -> layout.txt

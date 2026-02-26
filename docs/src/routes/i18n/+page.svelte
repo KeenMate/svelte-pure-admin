@@ -13,6 +13,7 @@
 		BasicList,
 		Code,
 		Strong,
+		Input,
 		Select,
 		Spinner,
 		i18n,
@@ -332,8 +333,7 @@ import type {
 		<Column size="100" md="50">
 			<Heading level={5}>Language Switcher</Heading>
 			<div class="d-flex align-items-center gap-2 mt-2">
-				<select
-					class="pa-select"
+				<Select
 					value={demoLocale}
 					onchange={(e) => handleLocaleChange(e.currentTarget.value)}
 					disabled={demoLoading}
@@ -341,7 +341,7 @@ import type {
 					{#each demoLanguages as lang}
 						<option value={lang.code}>{lang.name || lang.code}</option>
 					{/each}
-				</select>
+				</Select>
 				{#if demoLoading || i18n.isLoading}
 					<Spinner size="sm" />
 				{/if}
@@ -382,20 +382,20 @@ import type {
 			<div class="mt-3">
 				<Strong>Add Language:</Strong>
 				<div class="d-flex gap-2 mt-2">
-					<input
-						type="text"
-						class="pa-input pa-input--sm"
-						placeholder="Code (e.g., de)"
-						bind:value={customLanguageCode}
-						style="width: 100px;"
-					/>
-					<input
-						type="text"
-						class="pa-input pa-input--sm"
-						placeholder="Name (e.g., Deutsch)"
-						bind:value={customLanguageName}
-						style="flex: 1;"
-					/>
+					<div style="width: 100px;">
+						<Input
+							size="sm"
+							placeholder="Code (e.g., de)"
+							bind:value={customLanguageCode}
+						/>
+					</div>
+					<div style="flex: 1;">
+						<Input
+							size="sm"
+							placeholder="Name (e.g., Deutsch)"
+							bind:value={customLanguageName}
+						/>
+					</div>
 					<Button
 						variant="primary"
 						size="sm"

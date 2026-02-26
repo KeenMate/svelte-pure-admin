@@ -6,6 +6,8 @@
 
 	import { _ } from '../i18n';
 
+	import type { ThemeColor } from '../types';
+
 	type AlertVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark';
 	type AlertSize = 'sm' | 'lg';
 
@@ -14,6 +16,8 @@
 		variant?: AlertVariant;
 		/** Alert size */
 		size?: AlertSize;
+		/** Theme color variant (1-9) — applies pa-bg-color-N */
+		themeColor?: ThemeColor;
 		/** Dismissible alert */
 		isDismissible?: boolean;
 		/** Outline style */
@@ -37,6 +41,7 @@
 	let {
 		variant = 'primary',
 		size,
+		themeColor,
 		isDismissible = false,
 		isOutline = false,
 		headingText,
@@ -66,6 +71,9 @@
 
 		// Modifiers
 		if (isDismissible) base.push('pa-alert--dismissible');
+
+		// Theme color
+		if (themeColor) base.push(`pa-bg-color-${themeColor}`);
 
 		// Custom classes
 		if (className) base.push(className);

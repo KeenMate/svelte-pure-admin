@@ -1,5 +1,5 @@
 <script lang="ts">
-			import { Heading, Paragraph, Card, Table, BasicList } from '@keenmate/svelte-pure-admin';
+			import { Heading, Paragraph, Card, Table, BasicList, TableContainer } from '@keenmate/svelte-pure-admin';
 </script>
 
 <Paragraph>Table size variants synchronized with button/input sizes. Each variant provides enough space for buttons and inputs of the same size.</Paragraph>
@@ -7,7 +7,7 @@
 <!-- Default (Compact) Table -->
 <Card titleText="Default (Compact) - ~31px rows">
 	<Paragraph>Best for data-heavy tables where you need to scan hundreds of rows efficiently.</Paragraph>
-	<div class="pa-table-container">
+	<TableContainer>
 		<Table>
 			<thead>
 				<tr>
@@ -62,13 +62,13 @@
 				</tr>
 			</tbody>
 		</Table>
-	</div>
+	</TableContainer>
 </Card>
 
 <!-- 2x Spacing Table -->
 <Card titleText="2x Spacing - ~62px rows">
 	<Paragraph>Balanced spacing for better readability when you have moderate amounts of data.</Paragraph>
-	<div class="pa-table-container">
+	<TableContainer>
 		<Table size="sm">
 			<thead>
 				<tr>
@@ -107,13 +107,13 @@
 				</tr>
 			</tbody>
 		</Table>
-	</div>
+	</TableContainer>
 </Card>
 
 <!-- 3x Spacing Table -->
 <Card titleText="3x Spacing - ~93px rows">
 	<Paragraph>Spacious layout for presentation tables or when emphasis and clarity are priorities.</Paragraph>
-	<div class="pa-table-container">
+	<TableContainer>
 		<Table size="lg">
 			<thead>
 				<tr>
@@ -152,7 +152,7 @@
 				</tr>
 			</tbody>
 		</Table>
-	</div>
+	</TableContainer>
 </Card>
 
 <!-- Usage Guide -->

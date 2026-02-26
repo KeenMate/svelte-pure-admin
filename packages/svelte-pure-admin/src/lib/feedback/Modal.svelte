@@ -169,7 +169,7 @@
 				{:else if titleText}
 					<h3 class="pa-modal__title">{titleText}</h3>
 				{/if}
-				{#if shouldShowClose}<button class="pa-btn pa-btn--primary pa-btn--icon-only pa-btn--sm" onclick={handleClose} aria-label={$_('pureAdmin.common.buttons.close')}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>{/if}
+				{#if shouldShowClose}<button class="pa-btn pa-btn--primary pa-btn--icon-only pa-btn--sm" onclick={handleClose} aria-label={$_('pureAdmin.buttons.close')}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>{/if}
 			</div>
 		{/if}
 

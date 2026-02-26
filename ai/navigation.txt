@@ -1,0 +1,695 @@
+NAVIGATION COMPONENTS
+=====================
+
+CRITICAL: This is a Svelte 5 component library (@keenmate/svelte-pure-admin).
+All components use Svelte 5 runes ($props, $state, $derived), Snippets (not slots),
+and BEM classes (pa-*) internally. Import from '@keenmate/svelte-pure-admin'.
+
+COMPONENT OVERVIEW
+------------------
+Navigation components handle tab navigation and command palette functionality:
+
+- Tabs             - Tab strip container (underline/pills/boxed, alignment, border-top)
+- TabItem          - Individual tab button (active state, icon, width/height, onclick)
+- TabsContent      - Wrapper for tab panels
+- TabPanel         - Individual content panel (active state, id)
+- TabsContainer    - Horizontal wrapper for Tabs + TabsContent (bordered, card)
+- TabsVerticalLayout - Vertical wrapper for Tabs + TabsContent (bordered)
+- TabsScrollable   - Scrollable tab strip with left/right arrows
+- TabsOverflow     - Tab strip with dropdown for overflow items
+- CommandPalette   - Ctrl+K command palette with multi-step commands, search contexts
+- NavbarSearch     - Search trigger button for the header/navbar area
+
+
+TABS (BASIC)
+------------
+The core tab component. Renders a pa-tabs div around tab items.
+
+import { Tabs, TabItem, TabsContent, TabPanel } from '@keenmate/svelte-pure-admin';
+
+Props:
+  style?: 'underline' | 'pills' | 'boxed' | 'vertical'   (default: 'underline')
+  size?: 'sm' | 'lg'
+  align?: 'centered' | 'full'
+  overflow?: 'nowrap' | 'scrollable' | 'collapse'
+  isBorderTop?: boolean     (border on top instead of bottom, default: false)
+  class?: string
+
+Basic usage with manual active state:
+
+<script lang="ts">
+  import { Tabs, TabItem, TabsContent, TabPanel } from '@keenmate/svelte-pure-admin';
+
+  let activeTab = $state('overview');
+</script>
+
+<Tabs>
+  <TabItem active={activeTab === 'overview'} onclick={() => activeTab = 'overview'}>
+    Overview
+  </TabItem>
+  <TabItem active={activeTab === 'details'} onclick={() => activeTab = 'details'}>
+    Details
+  </TabItem>
+  <TabItem active={activeTab === 'settings'} onclick={() => activeTab = 'settings'}>
+    Settings
+  </TabItem>
+</Tabs>
+
+<TabsContent>
+  <TabPanel active={activeTab === 'overview'}>
+    <p>Overview content here.</p>
+  </TabPanel>
+  <TabPanel active={activeTab === 'details'}>
+    <p>Details content here.</p>
+  </TabPanel>
+  <TabPanel active={activeTab === 'settings'}>
+    <p>Settings content here.</p>
+  </TabPanel>
+</TabsContent>
+
+
+TABITEM
+-------
+Individual tab button. Renders a <button> with pa-tabs__item class.
+
+Props:
+  active?: boolean           (highlights the tab, default: false)
+  width?: '1x' | '2x' | ... | '10x'    (fixed width)
+  height?: '1x' | '2x' | ... | '10x'   (fixed height)
+  class?: string
+  icon?: Snippet             (icon rendered before children text)
+  children?: Snippet
+  onclick?: (event: MouseEvent) => void
+  ...restProps               (extends HTMLButtonAttributes)
+
+TabItem with icon:
+
+<TabItem active={activeTab === 'users'} onclick={() => activeTab = 'users'}>
+  {#snippet icon()}
+    <i class="fa-solid fa-users"></i>
+  {/snippet}
+  Users
+</TabItem>
+
+TabItem with fixed width:
+
+<TabItem width="3x" active={true}>Dashboard</TabItem>
+
+
+TABS CONTENT AND TAB PANEL
+---------------------------
+TabsContent wraps TabPanel children. TabPanel shows/hides based on active prop.
+
+TabsContent props:
+  class?: string
+  children?: Snippet
+
+TabPanel props:
+  active?: boolean    (default: false)
+  id?: string         (for accessibility)
+  class?: string
+  children?: Snippet
+
+
+TAB STYLE VARIANTS
+------------------
+Pills style:
+
+<Tabs style="pills">
+  <TabItem active={true}>Tab 1</TabItem>
+  <TabItem>Tab 2</TabItem>
+</Tabs>
+
+Boxed style:
+
+<Tabs style="boxed">
+  <TabItem active={true}>Tab 1</TabItem>
+  <TabItem>Tab 2</TabItem>
+</Tabs>
+
+Centered alignment:
+
+<Tabs align="centered">
+  <TabItem active={true}>Tab 1</TabItem>
+  <TabItem>Tab 2</TabItem>
+</Tabs>
+
+Full width (tabs fill container):
+
+<Tabs align="full">
+  <TabItem active={true}>Tab 1</TabItem>
+  <TabItem>Tab 2</TabItem>
+</Tabs>
+
+Small and large sizes:
+
+<Tabs size="sm">
+  <TabItem active={true}>Small Tab</TabItem>
+</Tabs>
+
+<Tabs size="lg">
+  <TabItem active={true}>Large Tab</TabItem>
+</Tabs>
+
+Border on top (for profile panel usage):
+
+<Tabs isBorderTop={true}>
+  <TabItem active={true}>Tab 1</TabItem>
+  <TabItem>Tab 2</TabItem>
+</Tabs>
+
+
+TABS CONTAINER
+--------------
+Wraps Tabs + TabsContent together with optional border or card styling.
+
+Props:
+  isBordered?: boolean   (card-like border around entire tabs system, default: false)
+  isCard?: boolean       (tabs replace card header visually, default: false)
+  class?: string
+  children?: Snippet
+
+Bordered tabs:
+
+<TabsContainer isBordered={true}>
+  <Tabs>
+    <TabItem active={activeTab === 'one'} onclick={() => activeTab = 'one'}>Tab 1</TabItem>
+    <TabItem active={activeTab === 'two'} onclick={() => activeTab = 'two'}>Tab 2</TabItem>
+  </Tabs>
+  <TabsContent>
+    <TabPanel active={activeTab === 'one'}>Content 1</TabPanel>
+    <TabPanel active={activeTab === 'two'}>Content 2</TabPanel>
+  </TabsContent>
+</TabsContainer>
+
+Card-style tabs (tabs act as the card header):
+
+<TabsContainer isCard={true}>
+  <Tabs>
+    <TabItem active={true}>Overview</TabItem>
+    <TabItem>Stats</TabItem>
+  </Tabs>
+  <TabsContent>
+    <TabPanel active={true}>
+      <p>Card-style content with padding.</p>
+    </TabPanel>
+  </TabsContent>
+</TabsContainer>
+
+
+TABS VERTICAL LAYOUT
+--------------------
+Flexbox layout for vertical tab arrangement. Uses Tabs with style="vertical".
+
+Props:
+  isBordered?: boolean   (default: false)
+  class?: string
+  children?: Snippet
+
+Complete vertical tabs example:
+
+<script lang="ts">
+  import {
+    TabsVerticalLayout, Tabs, TabItem, TabsContent, TabPanel
+  } from '@keenmate/svelte-pure-admin';
+
+  let activeTab = $state('general');
+</script>
+
+<TabsVerticalLayout isBordered={true}>
+  <Tabs style="vertical">
+    <TabItem active={activeTab === 'general'} onclick={() => activeTab = 'general'}>
+      General
+    </TabItem>
+    <TabItem active={activeTab === 'security'} onclick={() => activeTab = 'security'}>
+      Security
+    </TabItem>
+    <TabItem active={activeTab === 'billing'} onclick={() => activeTab = 'billing'}>
+      Billing
+    </TabItem>
+  </Tabs>
+  <TabsContent>
+    <TabPanel active={activeTab === 'general'}>General settings here.</TabPanel>
+    <TabPanel active={activeTab === 'security'}>Security settings here.</TabPanel>
+    <TabPanel active={activeTab === 'billing'}>Billing settings here.</TabPanel>
+  </TabsContent>
+</TabsVerticalLayout>
+
+
+TABS SCROLLABLE
+---------------
+Scrollable tab strip with auto-showing left/right arrow buttons. Arrows appear
+when tabs overflow the container and disappear at scroll edges. Scrolls 200px
+per click. Listens to scroll and resize events.
+
+Props:
+  style?: 'pills' | 'boxed'
+  size?: 'sm' | 'lg'
+  class?: string
+  children?: Snippet         (TabItem components)
+
+Scrollable tabs example:
+
+<script lang="ts">
+  import { TabsScrollable, TabItem } from '@keenmate/svelte-pure-admin';
+
+  let activeTab = $state('tab-1');
+  const tabs = Array.from({ length: 20 }, (_, i) => `tab-${i + 1}`);
+</script>
+
+<TabsScrollable>
+  {#each tabs as tab}
+    <TabItem active={activeTab === tab} onclick={() => activeTab = tab}>
+      {tab}
+    </TabItem>
+  {/each}
+</TabsScrollable>
+
+Scrollable pills:
+
+<TabsScrollable style="pills">
+  <TabItem active={true}>Dashboard</TabItem>
+  <TabItem>Analytics</TabItem>
+  <TabItem>Reports</TabItem>
+  <TabItem>Users</TabItem>
+  <TabItem>Billing</TabItem>
+  <TabItem>Settings</TabItem>
+  <TabItem>Integrations</TabItem>
+  <TabItem>API Keys</TabItem>
+</TabsScrollable>
+
+Internal structure:
+  - Left arrow button: pa-tabs__scroll-btn pa-tabs__scroll-btn--start
+  - Scroll container: pa-tabs__scroll-container
+  - Right arrow button: pa-tabs__scroll-btn pa-tabs__scroll-btn--end
+  - Arrow icons: fa-solid fa-chevron-left / fa-chevron-right
+
+
+TABS OVERFLOW
+-------------
+Provides a dropdown toggle for tabs that do not fit in the container.
+Useful when you have many tabs and want a "more" dropdown.
+
+Props:
+  hasActive?: boolean    (highlight toggle when active tab is in overflow, default: false)
+  show?: boolean         (bindable, controls dropdown visibility, default: false)
+  class?: string
+  toggle?: Snippet       (custom toggle button content, defaults to ellipsis icon)
+  children?: Snippet     (overflow tab items)
+
+Tabs with overflow dropdown:
+
+<script lang="ts">
+  import { Tabs, TabItem, TabsOverflow } from '@keenmate/svelte-pure-admin';
+
+  let activeTab = $state('tab-1');
+  const visibleTabs = ['tab-1', 'tab-2', 'tab-3'];
+  const overflowTabs = ['tab-4', 'tab-5', 'tab-6'];
+</script>
+
+<Tabs>
+  {#each visibleTabs as tab}
+    <TabItem active={activeTab === tab} onclick={() => activeTab = tab}>
+      {tab}
+    </TabItem>
+  {/each}
+
+  <TabsOverflow hasActive={overflowTabs.includes(activeTab)}>
+    {#each overflowTabs as tab}
+      <TabItem active={activeTab === tab} onclick={() => activeTab = tab}>
+        {tab}
+      </TabItem>
+    {/each}
+  </TabsOverflow>
+</Tabs>
+
+Custom toggle icon:
+
+<TabsOverflow>
+  {#snippet toggle()}
+    <i class="fa-solid fa-chevron-down"></i>
+  {/snippet}
+  <TabItem>Hidden Tab 1</TabItem>
+  <TabItem>Hidden Tab 2</TabItem>
+</TabsOverflow>
+
+Internal structure:
+  - Wrapper: pa-tabs__overflow
+  - Toggle button: pa-tabs__overflow-toggle (--has-active modifier)
+  - Menu: pa-tabs__overflow-menu (--open modifier)
+  - Closes on click outside via document listener
+
+
+COMMAND PALETTE
+---------------
+macOS Spotlight-style command palette. Opens with Ctrl+K (registered automatically
+via shortcut registry). Supports three input modes:
+
+  /commands   - Multi-step action wizards (type "/" to see available commands)
+  :contexts   - Scoped entity search (type ":" to see available contexts)
+  plain text  - Global search (no prefix)
+
+Props:
+  show?: boolean          (bindable, controls visibility)
+  commands?: Command[]    (available commands, triggered by /)
+  contexts?: SearchContext[]   (available search contexts, triggered by :)
+  globalSearch?: (query: string) => Promise<SearchResult[]> | SearchResult[]
+  onglobalselect?: (result: SearchResult) => void
+  placeholder?: string
+  class?: string
+  errorSnippet?: Snippet<[string]>
+
+Types (import from '@keenmate/svelte-pure-admin'):
+
+  interface Command {
+    shortcut: string;           // e.g., "/r", "/settings"
+    aliases?: string[];         // e.g., ["/report", "/reports"]
+    name: string;
+    description: string;
+    icon?: string;
+    steps: CommandStep[];       // empty array for instant commands
+    onComplete: (selections: StepSelection[]) => void;
+    getPreview?: (selections: StepSelection[]) => string;
+  }
+
+  interface CommandStep {
+    id: string;
+    prompt?: string;            // text inserted before step, e.g., " in "
+    placeholder?: string;
+    getOptions: (query: string, prevSelections: StepSelection[]) => Promise<StepOption[]> | StepOption[];
+    freeText?: boolean;
+    shouldShow?: (prevSelections: StepSelection[]) => boolean;
+  }
+
+  interface StepOption {
+    id: string;
+    label: string;
+    description?: string;
+    icon?: string;
+    value: any;
+  }
+
+  interface StepSelection {
+    stepId: string;
+    option?: StepOption;
+    freeText?: string;
+  }
+
+  interface SearchContext {
+    shortcut: string;           // e.g., ":p", ":products"
+    aliases?: string[];
+    name: string;
+    description: string;
+    icon?: string;
+    onSearch: (query: string) => Promise<SearchResult[]> | SearchResult[];
+    onSelect: (result: SearchResult) => void;
+  }
+
+  interface SearchResult {
+    id: string;
+    title: string;
+    subtitle?: string;
+    icon?: string;
+    badge?: string;
+    data?: any;
+  }
+
+Complete command palette setup:
+
+<script lang="ts">
+  import {
+    CommandPalette,
+    type Command,
+    type SearchContext,
+    type SearchResult
+  } from '@keenmate/svelte-pure-admin';
+
+  let showPalette = $state(false);
+
+  // Define commands (triggered by /)
+  const commands: Command[] = [
+    {
+      shortcut: '/r',
+      aliases: ['/report'],
+      name: 'Generate Report',
+      description: 'Create a report for a date range',
+      icon: '📊',
+      steps: [
+        {
+          id: 'type',
+          prompt: ' ',
+          placeholder: 'Select report type...',
+          getOptions: async (query) => [
+            { id: 'sales', label: 'Sales Report', value: 'sales' },
+            { id: 'inventory', label: 'Inventory Report', value: 'inventory' },
+            { id: 'users', label: 'User Activity Report', value: 'users' }
+          ]
+        },
+        {
+          id: 'period',
+          prompt: ' for ',
+          placeholder: 'Select time period...',
+          getOptions: async (query) => [
+            { id: 'today', label: 'Today', value: 'today' },
+            { id: 'week', label: 'This Week', value: 'week' },
+            { id: 'month', label: 'This Month', value: 'month' },
+            { id: 'custom', label: 'Custom Range', value: 'custom' }
+          ]
+        }
+      ],
+      onComplete: (selections) => {
+        const type = selections[0].option?.value;
+        const period = selections[1].option?.value;
+        console.log('Generate report:', type, period);
+      },
+      getPreview: (selections) => {
+        const type = selections[0]?.option?.label || '...';
+        const period = selections[1]?.option?.label || '...';
+        return `${type} for ${period}`;
+      }
+    },
+    {
+      shortcut: '/settings',
+      name: 'Open Settings',
+      description: 'Go to application settings',
+      icon: '⚙',
+      steps: [],
+      onComplete: () => {
+        window.location.href = '/settings';
+      }
+    }
+  ];
+
+  // Define search contexts (triggered by :)
+  const contexts: SearchContext[] = [
+    {
+      shortcut: ':p',
+      aliases: [':products'],
+      name: 'Products',
+      description: 'Search products by name or SKU',
+      icon: '📦',
+      onSearch: async (query) => {
+        // Call your API here
+        const response = await fetch(`/api/products?q=${query}`);
+        const items = await response.json();
+        return items.map((item: any) => ({
+          id: item.id,
+          title: item.name,
+          subtitle: `$${item.price}`,
+          icon: '📦',
+          badge: item.category,
+          data: item
+        }));
+      },
+      onSelect: (result) => {
+        window.location.href = `/products/${result.id}`;
+      }
+    },
+    {
+      shortcut: ':u',
+      aliases: [':users'],
+      name: 'Users',
+      description: 'Search users by name or email',
+      icon: '👤',
+      onSearch: async (query) => {
+        return [
+          { id: '1', title: 'John Doe', subtitle: 'john@example.com', icon: '👤' },
+          { id: '2', title: 'Jane Smith', subtitle: 'jane@example.com', icon: '👤' }
+        ].filter(u => u.title.toLowerCase().includes(query.toLowerCase()));
+      },
+      onSelect: (result) => {
+        window.location.href = `/users/${result.id}`;
+      }
+    }
+  ];
+
+  // Global search (no prefix)
+  async function globalSearch(query: string): Promise<SearchResult[]> {
+    // Search across all entities
+    return [
+      { id: 'page-dashboard', title: 'Dashboard', subtitle: 'Main dashboard page', icon: '📊' },
+      { id: 'page-settings', title: 'Settings', subtitle: 'Application settings', icon: '⚙' }
+    ].filter(r => r.title.toLowerCase().includes(query.toLowerCase()));
+  }
+
+  function handleGlobalSelect(result: SearchResult) {
+    console.log('Selected:', result);
+  }
+</script>
+
+<CommandPalette
+  bind:show={showPalette}
+  {commands}
+  {contexts}
+  {globalSearch}
+  onglobalselect={handleGlobalSelect}
+  placeholder="Type a command or search..."
+/>
+
+Keyboard shortcuts in the palette:
+  Up/Down arrows  - Navigate results
+  Enter           - Select highlighted item
+  Tab             - Complete/select (same as Enter)
+  Escape          - Close palette
+  Ctrl+K          - Toggle palette open/close (global)
+
+Palette modes (internal):
+  'idle'            - Just opened, nothing typed
+  'command-list'    - Showing available commands (typed /)
+  'command-step'    - In a command wizard step
+  'context-list'    - Showing available contexts (typed :)
+  'context-search'  - Searching in a context
+  'global-search'   - Global search (no prefix)
+
+Internal BEM classes:
+  pa-command-palette                 - Root (--active modifier when shown)
+  pa-command-palette__backdrop       - Click-to-close overlay
+  pa-command-palette__container      - Main dialog container
+  pa-command-palette__search         - Input wrapper
+  pa-command-palette__input          - Text input
+  pa-command-palette__context        - Mode label badge (--visible modifier)
+  pa-command-palette__results        - Results list (--loading modifier)
+  pa-command-palette__item           - Single result row (--active modifier)
+  pa-command-palette__item-icon      - Result icon
+  pa-command-palette__item-content   - Result text container
+  pa-command-palette__item-title     - Result primary text
+  pa-command-palette__item-meta      - Result secondary text
+  pa-command-palette__item-badge     - Result badge (shortcut hint)
+  pa-command-palette__footer         - Keyboard hint bar
+  pa-command-palette__key            - Single keyboard hint key
+  pa-command-palette__loader         - Loading spinner state
+  pa-command-palette__empty          - Empty results message
+  pa-command-palette__error          - Error message display
+  pa-command-palette__preview        - Command preview (shown during wizard steps)
+
+Custom error display:
+
+<CommandPalette bind:show={showPalette} {commands}>
+  {#snippet errorSnippet(message)}
+    <div class="my-custom-error">
+      <strong>Error:</strong> {message}
+    </div>
+  {/snippet}
+</CommandPalette>
+
+
+NAVBAR SEARCH
+-------------
+A search trigger button for the header/navbar. Displays a search icon, placeholder
+text, and Ctrl+K keyboard shortcut hint. Clicking opens the command palette.
+
+Props:
+  placeholder?: string          (default: 'Search...')
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'   (default: 'lg')
+  onclick?: () => void
+  class?: string
+
+Usage with CommandPalette:
+
+<script lang="ts">
+  import { NavbarSearch, CommandPalette } from '@keenmate/svelte-pure-admin';
+
+  let showPalette = $state(false);
+</script>
+
+<NavbarSearch
+  placeholder="Search everything..."
+  onclick={() => showPalette = true}
+/>
+
+<CommandPalette bind:show={showPalette} />
+
+NavbarSearch inside a Header:
+
+<Header>
+  {#snippet nav()}
+    <NavbarSearch onclick={() => showPalette = true} />
+  {/snippet}
+</Header>
+
+Internal BEM classes:
+  pa-navbar-search               - Root (role="button", tabindex="0")
+  pa-navbar-search--xs/sm/md/lg/xl  - Size modifiers
+  pa-navbar-search__icon         - Search icon (magnifying glass)
+  pa-navbar-search__placeholder  - Placeholder text
+  pa-navbar-search__shortcut     - Keyboard shortcut hint (Ctrl K)
+
+
+COMPLETE EXAMPLE: TABS WITH CONTENT SWITCHING
+----------------------------------------------
+
+<script lang="ts">
+  import {
+    Tabs, TabItem, TabsContent, TabPanel, TabsContainer,
+    Card
+  } from '@keenmate/svelte-pure-admin';
+
+  let activeTab = $state('users');
+</script>
+
+<Card>
+  {#snippet header()}
+    <h3>User Management</h3>
+  {/snippet}
+
+  <TabsContainer isBordered={true}>
+    <Tabs>
+      <TabItem active={activeTab === 'users'} onclick={() => activeTab = 'users'}>
+        {#snippet icon()}<i class="fa-solid fa-users"></i>{/snippet}
+        Users
+      </TabItem>
+      <TabItem active={activeTab === 'roles'} onclick={() => activeTab = 'roles'}>
+        {#snippet icon()}<i class="fa-solid fa-shield"></i>{/snippet}
+        Roles
+      </TabItem>
+      <TabItem active={activeTab === 'permissions'} onclick={() => activeTab = 'permissions'}>
+        {#snippet icon()}<i class="fa-solid fa-key"></i>{/snippet}
+        Permissions
+      </TabItem>
+    </Tabs>
+    <TabsContent>
+      <TabPanel active={activeTab === 'users'}>
+        <p>User list goes here.</p>
+      </TabPanel>
+      <TabPanel active={activeTab === 'roles'}>
+        <p>Roles management goes here.</p>
+      </TabPanel>
+      <TabPanel active={activeTab === 'permissions'}>
+        <p>Permissions matrix goes here.</p>
+      </TabPanel>
+    </TabsContent>
+  </TabsContainer>
+</Card>
+
+
+IMPORTANT NOTES
+---------------
+- Active tab state is managed by YOU. Components do not manage it internally.
+- Always pair TabItem onclick with active={} to control which tab is highlighted.
+- TabPanel active={true} shows the panel, active={false} hides it.
+- TabsScrollable auto-detects overflow and shows/hides arrow buttons.
+- TabsOverflow closes its dropdown when clicking outside.
+- CommandPalette auto-registers Ctrl+K via the shortcut registry on mount.
+- CommandPalette debounces global search and context search by 150ms.
+- All event handlers use Svelte 5 lowercase convention: onclick, onglobalselect.
+- The show prop on CommandPalette and TabsOverflow is bindable ($bindable).

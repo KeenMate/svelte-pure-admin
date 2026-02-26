@@ -4,27 +4,47 @@
 	 * Based on @keenmate/pure-admin-core snippets/cards.html
 	 */
 
+	import type { ThemeColor } from '../types';
+
 	type CardVariant = 'primary' | 'success' | 'warning' | 'danger' | 'info'
 		| 'color-1' | 'color-2' | 'color-3' | 'color-4' | 'color-5'
 		| 'color-6' | 'color-7' | 'color-8' | 'color-9';
 
+	type HeaderUnderlineColor = 'success' | 'warning' | 'danger' | 'info';
+
 	interface Props {
 		/** Card variant (applies to whole card) */
 		variant?: CardVariant;
+		/** Live-data state — persistent tinted background reflecting latest change */
+		liveState?: 'up' | 'down' | 'neutral';
+		/** Ghost mode - invisible container, same spacing/sizing behavior (no bg, border, shadow) */
+		isGhost?: boolean;
 		/** Body has padding (set false to remove) */
 		hasPadding?: boolean;
 		/** Stat card style */
 		isStat?: boolean;
 		/** Simple title text (alternative to header snippet) */
 		titleText?: string;
+		/** Title snippet (for rich content titles with markup - alternative to titleText) */
+		title?: import('svelte').Snippet;
 		/** Description text shown inline with title, truncates with ellipsis (v1.4.1 three-part header) */
 		descriptionText?: string;
+		/** Description snippet (for rich content descriptions with markup - alternative to descriptionText) */
+		description?: import('svelte').Snippet;
 		/** Subtitle/description text (shown below title) - deprecated, use descriptionText for inline layout */
 		subtitleText?: string;
 		/** Allow header description to wrap to its own line (v1.4.1 --wrap modifier) */
 		headerWrap?: boolean;
+		/** Accent border under heading in card header */
+		isHeaderUnderlined?: boolean;
+		/** Underline color variant (requires isHeaderUnderlined) */
+		headerUnderlineColor?: HeaderUnderlineColor;
+		/** Underline theme color slot 1-9 (requires isHeaderUnderlined) */
+		headerUnderlineThemeColor?: ThemeColor;
 		/** Inline tabs style (pill-style buttons inside card header row) */
 		hasInlineTabs?: boolean;
+		/** Additional CSS classes for the header element */
+		headerClass?: string;
 		/** Additional CSS classes */
 		class?: string;
 		/** Header snippet (for complex headers) */
@@ -45,13 +65,21 @@
 
 	let {
 		variant,
+		liveState,
+		isGhost = false,
 		hasPadding = true,
 		isStat = false,
 		titleText,
+		title,
 		descriptionText,
+		description,
 		subtitleText,
 		headerWrap = false,
+		isHeaderUnderlined = false,
+		headerUnderlineColor,
+		headerUnderlineThemeColor,
 		hasInlineTabs = false,
+		headerClass,
 		class: className = '',
 		header,
 		titleIcon,
@@ -66,6 +94,8 @@
 	const classes = $derived(() => {
 		const base = ['pa-card'];
 		if (variant) base.push(`pa-card--${variant}`);
+		if (liveState) base.push(`pa-card--live-${liveState}`);
+		if (isGhost) base.push('pa-card--ghost');
 		if (isStat) base.push('pa-card--stat');
 		if (className) base.push(className);
 		return base.join(' ');
@@ -89,11 +119,17 @@
 	const headerClasses = $derived(() => {
 		const base = ['pa-card__header'];
 		if (headerWrap) base.push('pa-card__header--wrap');
+		if (isHeaderUnderlined) {
+			base.push('pa-card__header--underlined');
+			if (headerUnderlineColor) base.push(`pa-card__header--underline-${headerUnderlineColor}`);
+			if (headerUnderlineThemeColor) base.push(`pa-card__header--underline-color-${headerUnderlineThemeColor}`);
+		}
+		if (headerClass) base.push(headerClass);
 		return base.join(' ');
 	});
 
 	// Determine if we should show header
-	const hasHeader = $derived(header || titleText || titleIcon || descriptionText || subtitleText || tools || tabs);
+	const hasHeader = $derived(header || titleText || title || titleIcon || descriptionText || description || subtitleText || tools || tabs);
 	// Determine if we should show footer
 	const hasFooter = $derived(footer || actions);
 </script>
@@ -109,17 +145,23 @@
 				{@render header()}
 			{:else}
 				<!-- Three-part header layout (v1.4.1): Title - Description - Tools/Actions -->
-				{#if titleIcon && titleText}
+				{#if titleIcon && (titleText || title)}
 					<div class="pa-card__title">
 						<span class="pa-card__title-icon">
 							{@render titleIcon()}
 						</span>
-						<h4 class="pa-card__title-text">{titleText}</h4>
+						<h3 class="pa-card__title-text">
+							{#if title}{@render title()}{:else}{titleText}{/if}
+						</h3>
 					</div>
+				{:else if title}
+					<h3>{@render title()}</h3>
 				{:else if titleText}
-					<h4>{titleText}</h4>
+					<h3>{titleText}</h3>
 				{/if}
-				{#if descriptionText}
+				{#if description}
+					<p>{@render description()}</p>
+				{:else if descriptionText}
 					<!-- Description fills available space and truncates with ellipsis -->
 					<p>{descriptionText}</p>
 				{:else if subtitleText}

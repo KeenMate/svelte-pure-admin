@@ -8,6 +8,7 @@
 		Button,
 		ButtonGroup,
 		BasicList,
+		OrderedList,
 		CommandPalette,
 		NavbarSearch,
 		Navbar
@@ -350,7 +351,7 @@
 				</Alert>
 
 				<h4 class="mb-2">Commands (/)</h4>
-				<Table class="pa-table--compact">
+				<Table isCompact>
 					<thead>
 						<tr>
 							<th>Shortcut</th>
@@ -378,7 +379,7 @@
 
 				<p class="mb-3">Use <code>:</code> prefix to search within a specific context:</p>
 
-				<Table class="pa-table--compact">
+				<Table isCompact>
 					<thead>
 						<tr>
 							<th>Shortcut</th>
@@ -415,24 +416,24 @@
 
 				<div class="mb-3">
 					<h4 class="mb-2">Example: /r (Reports)</h4>
-					<ol class="pa-list-ordered">
+					<OrderedList>
 						<li>Type <code>/r</code> and press Space</li>
 						<li>Select a report (e.g., "Product Sales")</li>
 						<li>If report needs time range, " in " is auto-added</li>
 						<li>Select or type a time range (e.g., "30 days")</li>
 						<li>Press Enter to execute</li>
-					</ol>
+					</OrderedList>
 				</div>
 
 				<div class="mb-3">
 					<h4 class="mb-2">Example: /export</h4>
-					<ol class="pa-list-ordered">
+					<OrderedList>
 						<li>Type <code>/export</code> and press Space</li>
 						<li>Select what to export (Products, Users, Orders)</li>
 						<li>" as " is auto-added</li>
 						<li>Select format (CSV, JSON, Excel)</li>
 						<li>Press Enter to execute</li>
-					</ol>
+					</OrderedList>
 				</div>
 			</Card>
 
@@ -442,7 +443,7 @@
 					<h3>Keyboard Shortcuts</h3>
 				{/snippet}
 
-				<Table class="pa-table--compact">
+				<Table isCompact>
 					<thead>
 						<tr>
 							<th>Key</th>

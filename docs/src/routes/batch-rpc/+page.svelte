@@ -15,6 +15,7 @@
 		FormLabel,
 		Input,
 		Spinner,
+		BasicList,
 		createBatch,
 		pureDataConfig,
 		commonResponseConfig
@@ -546,12 +547,12 @@ const transport = createPhoenixTransport(channel, {
 		The Batch RPC Service solves this by:
 	</Paragraph>
 
-	<ul class="pa-list-basic mt-3">
+	<BasicList class="mt-3">
 		<li><strong>Collecting calls</strong> - Queue multiple RPC calls before sending</li>
 		<li><strong>Single request</strong> - Send all calls in one message over WebSocket/HTTP</li>
 		<li><strong>Backend parallelization</strong> - Backend can process all calls in parallel</li>
 		<li><strong>Independent resolution</strong> - Each call's promise resolves/rejects independently</li>
-	</ul>
+	</BasicList>
 
 	<Heading level={4} class="mt-4">Basic Usage</Heading>
 	<HighlightedCode language="typescript" code={codeBasicUsage} />

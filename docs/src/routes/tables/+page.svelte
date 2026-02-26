@@ -16,7 +16,8 @@
 		Column,
 		Field,
 		Fields,
-		Alert
+		Alert,
+		BasicList
 	} from '@keenmate/svelte-pure-admin';
 
 	// Product data for Load More demo
@@ -61,7 +62,7 @@
 	/>
 
 	<!-- Table -->
-	<div class="pa-table-container">
+	<TableContainer>
 		<Table>
 			{#snippet children()}
 				<thead>
@@ -145,7 +146,7 @@
 				</tbody>
 			{/snippet}
 		</Table>
-	</div>
+	</TableContainer>
 
 	<!-- Pager Below Table (Right) -->
 	<Pager
@@ -158,7 +159,7 @@
 
 <!-- Striped Table -->
 <Card titleText="Striped Table">
-	<div class="pa-table-container">
+	<TableContainer>
 		<Table isStriped>
 			{#snippet children()}
 				<thead>
@@ -202,7 +203,7 @@
 				</tbody>
 			{/snippet}
 		</Table>
-	</div>
+	</TableContainer>
 </Card>
 
 <!-- Table Size Variants -->
@@ -212,7 +213,7 @@
 <!-- XS Size Table -->
 <Card titleText="XS Size">
 	<Paragraph>Compact rows - fits button/input XS. Best for dense data grids. Use <code>size="xs"</code>.</Paragraph>
-	<div class="pa-table-container">
+	<TableContainer>
 		<Table size="xs">
 			{#snippet children()}
 				<thead>
@@ -264,13 +265,13 @@
 				</tbody>
 			{/snippet}
 		</Table>
-	</div>
+	</TableContainer>
 </Card>
 
 <!-- Default Size Table -->
 <Card titleText="Default Size">
 	<Paragraph>Standard rows - fits button/input SM and default sizes. No size prop needed.</Paragraph>
-	<div class="pa-table-container">
+	<TableContainer>
 		<Table>
 			{#snippet children()}
 				<thead>
@@ -322,13 +323,13 @@
 				</tbody>
 			{/snippet}
 		</Table>
-	</div>
+	</TableContainer>
 </Card>
 
 <!-- SM Size Table -->
 <Card titleText="SM Size">
 	<Paragraph>Slightly wider horizontal padding than default. Use <code>size="sm"</code>.</Paragraph>
-	<div class="pa-table-container">
+	<TableContainer>
 		<Table size="sm">
 			{#snippet children()}
 				<thead>
@@ -380,13 +381,13 @@
 				</tbody>
 			{/snippet}
 		</Table>
-	</div>
+	</TableContainer>
 </Card>
 
 <!-- LG Size Table -->
 <Card titleText="LG Size">
 	<Paragraph>Spacious rows - fits button/input LG. Good for forms in tables. Use <code>size="lg"</code>.</Paragraph>
-	<div class="pa-table-container">
+	<TableContainer>
 		<Table size="lg">
 			{#snippet children()}
 				<thead>
@@ -438,13 +439,13 @@
 				</tbody>
 			{/snippet}
 		</Table>
-	</div>
+	</TableContainer>
 </Card>
 
 <!-- XL Size Table -->
 <Card titleText="XL Size">
 	<Paragraph>Extra spacious rows - fits button/input XL. Best for presentation tables. Use <code>size="xl"</code>.</Paragraph>
-	<div class="pa-table-container">
+	<TableContainer>
 		<Table size="xl">
 			{#snippet children()}
 				<thead>
@@ -496,7 +497,7 @@
 				</tbody>
 			{/snippet}
 		</Table>
-	</div>
+	</TableContainer>
 </Card>
 
 <!-- Size Reference -->
@@ -552,7 +553,7 @@
 
 <Card titleText="Load More Positioning">
 	<Heading level={4}>Table with Left-aligned Load More</Heading>
-	<div class="pa-table-container">
+	<TableContainer>
 		<Table>
 			{#snippet children()}
 				<thead>
@@ -575,7 +576,7 @@
 				</tbody>
 			{/snippet}
 		</Table>
-	</div>
+	</TableContainer>
 
 	{#if hasMoreProducts}
 		<LoadMore
@@ -589,7 +590,7 @@
 	{/if}
 
 	<Heading level={4} class="mt-8">Table with Center Load More</Heading>
-	<div class="pa-table-container">
+	<TableContainer>
 		<Table>
 			{#snippet children()}
 				<thead>
@@ -622,7 +623,7 @@
 				</tbody>
 			{/snippet}
 		</Table>
-	</div>
+	</TableContainer>
 
 	<LoadMore
 		align="center"
@@ -632,7 +633,7 @@
 	/>
 
 	<Heading level={4} class="mt-8">Table with Right Load More (Loading State)</Heading>
-	<div class="pa-table-container">
+	<TableContainer>
 		<Table>
 			{#snippet children()}
 				<thead>
@@ -665,7 +666,7 @@
 				</tbody>
 			{/snippet}
 		</Table>
-	</div>
+	</TableContainer>
 
 	<LoadMore
 		align="end"
@@ -1539,7 +1540,7 @@
 <!-- CSS Classes Reference -->
 <Card titleText="CSS Classes Reference" class="mt-8">
 	<Heading level={4}>Tables</Heading>
-	<ul class="pa-list-basic pa-list-basic--compact">
+	<BasicList spacing="compact">
 		<li><code>pa-table-container</code> - Scrollable table wrapper with border</li>
 		<li><code>pa-table-container--panel</code> - Card-like containment with shadow and margin</li>
 		<li><code>pa-table-container__header</code> - Header row for panel tables</li>
@@ -1555,10 +1556,10 @@
 		<li><code>pa-table--responsive</code> - Stacks into cards on mobile</li>
 		<li><code>pa-table--responsive-grid</code> - CSS grid layout on mobile</li>
 		<li><code>.col-auto</code> - Auto-width column (shrinks to content)</li>
-	</ul>
+	</BasicList>
 
 	<Heading level={4} class="mt-4">Pager</Heading>
-	<ul class="pa-list-basic pa-list-basic--compact">
+	<BasicList spacing="compact">
 		<li><code>pa-pager</code> - Pagination container (default: centered)</li>
 		<li><code>pa-pager--left</code> - Left-aligned</li>
 		<li><code>pa-pager--center</code> - Center-aligned</li>
@@ -1568,10 +1569,10 @@
 		<li><code>pa-pager__info</code> - Page input and text</li>
 		<li><code>pa-pager__input</code> - Page number input</li>
 		<li><code>pa-pager__text</code> - "/ X pages" text</li>
-	</ul>
+	</BasicList>
 
 	<Heading level={4} class="mt-4">Load More</Heading>
-	<ul class="pa-list-basic pa-list-basic--compact">
+	<BasicList spacing="compact">
 		<li><code>pa-load-more</code> - Load more container (default: centered)</li>
 		<li><code>pa-load-more--left</code> - Left-aligned</li>
 		<li><code>pa-load-more--center</code> - Center-aligned</li>
@@ -1581,10 +1582,10 @@
 		<li><code>pa-load-more__spinner</code> - Spinner element</li>
 		<li><code>pa-load-more__text</code> - Button text</li>
 		<li><code>pa-load-more__count</code> - Count display (e.g., "3 of 150")</li>
-	</ul>
+	</BasicList>
 
 	<Heading level={4} class="mt-4">Table Card</Heading>
-	<ul class="pa-list-basic pa-list-basic--compact">
+	<BasicList spacing="compact">
 		<li><code>pa-table-card</code> - Card container for tables</li>
 		<li><code>pa-table-card--plain</code> - Removes card styling (no border, shadow, background)</li>
 		<li><code>pa-table-card--primary</code>, <code>--success</code>, <code>--warning</code>, <code>--danger</code> - Semantic color variants</li>
@@ -1593,5 +1594,5 @@
 		<li><code>pa-table-card__body</code> - Body container for table</li>
 		<li><code>pa-table-card__body--scrollable</code> - Enables horizontal scroll</li>
 		<li><code>pa-table-card__footer</code> - Footer for pagination/summary</li>
-	</ul>
+	</BasicList>
 </Card>

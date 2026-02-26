@@ -11,6 +11,8 @@ docs/package-lock.json
 dist/
 build/
 .svelte-kit/
+packages/svelte-pure-admin/ai/
+packages/svelte-pure-admin/README.md
 .vercel/
 .netlify/
 

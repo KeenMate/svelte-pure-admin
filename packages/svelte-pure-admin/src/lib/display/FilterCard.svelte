@@ -108,7 +108,7 @@
 					<Button
 						variant="primary"
 						isIconOnly
-						titleText={isExpanded ? $_('pureAdmin.common.buttons.hideFilters') : $_('pureAdmin.common.buttons.moreFilters')}
+						titleText={isExpanded ? $_('pureAdmin.buttons.hideFilters') : $_('pureAdmin.buttons.moreFilters')}
 						onclick={handleToggle}
 						{disabled}
 					>
@@ -124,7 +124,7 @@
 					<Button
 						variant="secondary"
 						isIconOnly
-						titleText={$_('pureAdmin.common.buttons.clearAll')}
+						titleText={$_('pureAdmin.buttons.clearAll')}
 						onclick={handleClear}
 						{disabled}
 					>
@@ -136,7 +136,7 @@
 					<Button
 						variant="primary"
 						isIconOnly
-						titleText={$_('pureAdmin.common.buttons.refresh')}
+						titleText={$_('pureAdmin.buttons.refresh')}
 						onclick={handleRefresh}
 						disabled={disabled || isLoading}
 					>
@@ -154,10 +154,10 @@
 				{#if shouldShowAdvancedActions}
 					<div class="pa-filter-card__advanced-actions">
 						<Button variant="secondary" onclick={handleClearAdvanced} {disabled}>
-							{$_('pureAdmin.common.buttons.clearFilters')}
+							{$_('pureAdmin.buttons.clearFilters')}
 						</Button>
 						<Button variant="primary" onclick={handleApply} disabled={disabled || isLoading}>
-							{$_('pureAdmin.common.buttons.applyFilters')}
+							{$_('pureAdmin.buttons.applyFilters')}
 						</Button>
 					</div>
 				{/if}

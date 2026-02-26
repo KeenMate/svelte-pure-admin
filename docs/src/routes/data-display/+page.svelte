@@ -15,7 +15,8 @@
 		Input,
 		Paragraph,
 		Heading,
-		Alert
+		Alert,
+		BasicList
 	} from '@keenmate/svelte-pure-admin';
 
 	// Order data for Detail Panel Integration
@@ -699,30 +700,30 @@
 			<Grid>
 				<Column size="1-2">
 					<Heading level={4}>Field Elements</Heading>
-					<ul class="pa-list-basic pa-list-basic--compact">
+					<BasicList spacing="compact">
 						<li><code>pa-field</code> - Label-value pair</li>
 						<li><code>pa-field__label</code> - Label element</li>
 						<li><code>pa-field__value</code> - Value element</li>
 						<li><code>pa-field--full</code> - Span all grid columns</li>
-					</ul>
+					</BasicList>
 
 					<Heading level={4} class="mt-4">Container & Groups</Heading>
-					<ul class="pa-list-basic pa-list-basic--compact">
+					<BasicList spacing="compact">
 						<li><code>pa-fields</code> - Field container</li>
 						<li><code>pa-field-group</code> - Section wrapper</li>
 						<li><code>pa-field-group__title</code> - Section title</li>
-					</ul>
+					</BasicList>
 
 					<Heading level={4} class="mt-4">Grid Columns</Heading>
-					<ul class="pa-list-basic pa-list-basic--compact">
+					<BasicList spacing="compact">
 						<li><code>pa-fields--cols-2</code> - 2 columns</li>
 						<li><code>pa-fields--cols-3</code> - 3 columns</li>
 						<li><code>pa-fields--cols-4</code> - 4 columns</li>
-					</ul>
+					</BasicList>
 				</Column>
 				<Column size="1-2">
 					<Heading level={4}>Layout Modifiers</Heading>
-					<ul class="pa-list-basic pa-list-basic--compact">
+					<BasicList spacing="compact">
 						<li><code>pa-fields--horizontal</code> - Label left, value right</li>
 						<li><code>pa-fields--table</code> - Table-like widths</li>
 						<li><code>pa-fields--bordered</code> - Row separators</li>
@@ -734,15 +735,15 @@
 						<li><code>pa-fields--filled</code> - Background panel</li>
 						<li><code>pa-fields--color-&#123;1-9&#125;</code> - Border color</li>
 						<li><code>pa-fields--no-border</code> - Remove border</li>
-					</ul>
+					</BasicList>
 
 					<Heading level={4} class="mt-4">Combining</Heading>
-					<ul class="pa-list-basic pa-list-basic--compact">
+					<BasicList spacing="compact">
 						<li><code>table bordered</code></li>
 						<li><code>horizontal compact</code></li>
 						<li><code>filled cols=&#123;2&#125;</code></li>
 						<li><code>filled color=&#123;1&#125;</code> (tinted bg)</li>
-					</ul>
+					</BasicList>
 				</Column>
 			</Grid>
 		</Card>

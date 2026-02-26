@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Heading, Paragraph, Modal, Card, Grid, Column, Button, ButtonGroup, Alert, Table, Badge, FormGroup, FormLabel, Input, Textarea, Select, Checkbox, BasicList, Callout } from '@keenmate/svelte-pure-admin';
-		
+	import { Heading, Paragraph, Modal, Card, Grid, Column, Button, ButtonGroup, Alert, Table, Badge, FormGroup, FormLabel, Input, Textarea, Select, Checkbox, BasicList, Callout, CodeBlock, Code } from '@keenmate/svelte-pure-admin';
+
 	// Modal visibility state
 	let showSmall = $state(false);
 	let showMedium = $state(false);
@@ -20,6 +20,20 @@
 	let showCentered = $state(false);
 	let showTop = $state(false);
 	let showStatic = $state(false);
+	let showScrollable = $state(false);
+	let showPreventClose = $state(false);
+
+	// beforeCloseCallback demo state
+	let hasUnsavedChanges = $state(false);
+	let preventCloseBlocked = $state(false);
+
+	function beforeClose(): boolean {
+		if (hasUnsavedChanges) {
+			preventCloseBlocked = true;
+			return false;
+		}
+		return true;
+	}
 </script>
 
 <!-- Basic Modal Examples -->
@@ -58,6 +72,8 @@
 			<Heading level={4}>Behavior Modifiers</Heading>
 			<ButtonGroup>
 				<Button variant="warning" onclick={() => (showStatic = true)}>Static Modal</Button>
+				<Button variant="info" onclick={() => (showScrollable = true)}>Scrollable Body</Button>
+				<Button variant="secondary" onclick={() => { hasUnsavedChanges = false; preventCloseBlocked = false; showPreventClose = true; }}>Prevent Close</Button>
 			</ButtonGroup>
 		</Column>
 	</Grid>
@@ -79,6 +95,228 @@
 		<Button variant="warning" isOutline onclick={() => (showConfirmAction = true)}>Action Confirmation</Button>
 		<Button variant="info" isOutline onclick={() => (showInfo = true)}>Information Dialog</Button>
 	</ButtonGroup>
+</Card>
+
+<!-- Modal vs dialogService -->
+<Card titleText="Modal vs dialogService — When to Use Which">
+	<Callout variant="info" headingText="Use Modal directly when you need:">
+		Complex body content — forms, formatted text, grids, tables, components, or any Svelte template markup.
+		The <Code>{'<Modal>'}</Code> component gives you full Svelte template power via snippets.
+	</Callout>
+	<Callout variant="info" headingText="Use dialogService when you need:" class="mt-3">
+		Simple programmatic dialogs — confirm/alert/prompt with plain text messages.
+		The <Code>dialogService</Code> is promise-based and requires no template markup, but body content is limited to a plain text <Code>message</Code> string.
+	</Callout>
+
+	<Grid class="mt-4">
+		<Column size="100" md="1-2">
+			<Heading level={5}>Modal (template-based)</Heading>
+			<BasicList spacing="compact">
+				<li>Forms with inputs, selects, checkboxes</li>
+				<li>Formatted/multiline text with HTML</li>
+				<li>Grids, tables, components in the body</li>
+				<li>Custom header/footer layouts</li>
+				<li>Two-way data binding with <Code>bind:</Code></li>
+				<li>Full control over show/hide via <Code>bind:show</Code></li>
+			</BasicList>
+		</Column>
+		<Column size="100" md="1-2">
+			<Heading level={5}>dialogService (programmatic)</Heading>
+			<BasicList spacing="compact">
+				<li>Quick confirm/cancel decisions</li>
+				<li>Alert notifications (acknowledge and close)</li>
+				<li>Single text input prompts</li>
+				<li>Sequential dialog chains (await one after another)</li>
+				<li>No template markup needed — call from any function</li>
+				<li>Returns a Promise with the user's choice</li>
+			</BasicList>
+		</Column>
+	</Grid>
+</Card>
+
+<!-- Code Examples -->
+<Card titleText="Code Examples">
+	<Grid>
+		<Column size="100" md="1-2">
+			<Heading level={4}>Basic Modal (show/hide)</Heading>
+			<CodeBlock>{`<script lang="ts">
+  let showModal = $state(false);
+</script>
+
+<Button onclick={() => showModal = true}>
+  Open Modal
+</Button>
+
+<Modal bind:show={showModal} titleText="My Modal">
+  <Paragraph>Modal body content here.</Paragraph>
+
+  {#snippet footer()}
+    <Button variant="secondary"
+      onclick={() => showModal = false}>
+      Cancel
+    </Button>
+    <Button variant="primary">Save</Button>
+  {/snippet}
+</Modal>`}</CodeBlock>
+		</Column>
+		<Column size="100" md="1-2">
+			<Heading level={4}>Form Modal</Heading>
+			<CodeBlock>{`<Modal bind:show={showForm}
+  titleText="Edit Profile" size="lg">
+  <Grid>
+    <Column size="100" md="1-2">
+      <FormGroup>
+        <FormLabel>Name</FormLabel>
+        <Input bind:value={name} />
+      </FormGroup>
+    </Column>
+    <Column size="100" md="1-2">
+      <FormGroup>
+        <FormLabel>Email</FormLabel>
+        <Input type="email" bind:value={email} />
+      </FormGroup>
+    </Column>
+    <Column size="100">
+      <FormGroup>
+        <FormLabel>Bio</FormLabel>
+        <Textarea bind:value={bio} rows={3} />
+      </FormGroup>
+    </Column>
+  </Grid>
+
+  {#snippet footer()}
+    <Button variant="secondary"
+      onclick={() => showForm = false}>
+      Cancel
+    </Button>
+    <Button variant="primary"
+      onclick={handleSave}>
+      Save Changes
+    </Button>
+  {/snippet}
+</Modal>`}</CodeBlock>
+		</Column>
+	</Grid>
+
+	<Grid class="mt-4">
+		<Column size="100" md="1-2">
+			<Heading level={4}>Prevent Close (beforeCloseCallback)</Heading>
+			<CodeBlock>{`<script lang="ts">
+  let showModal = $state(false);
+  let hasUnsavedChanges = $state(false);
+
+  function beforeClose(): boolean {
+    if (hasUnsavedChanges) {
+      return false; // Prevent closing
+    }
+    return true; // Allow closing
+  }
+</script>
+
+<Modal bind:show={showModal}
+  titleText="Edit Document"
+  beforeCloseCallback={beforeClose}>
+  <Input oninput={() =>
+    hasUnsavedChanges = true} />
+
+  {#snippet footer()}
+    <Button variant="secondary" onclick={() => {
+      hasUnsavedChanges = false;
+      showModal = false;
+    }}>Discard</Button>
+    <Button variant="primary"
+      onclick={save}>Save</Button>
+  {/snippet}
+</Modal>`}</CodeBlock>
+		</Column>
+		<Column size="100" md="1-2">
+			<Heading level={4}>Scrollable + Static + Variants</Heading>
+			<CodeBlock>{`<!-- Scrollable body -->
+<Modal bind:show={showTerms}
+  titleText="Terms of Service"
+  isScrollable size="lg">
+  <div style="height: 2000px;">
+    Long scrollable content...
+  </div>
+  {#snippet footer()}
+    <Button variant="primary"
+      onclick={() => showTerms = false}>
+      Accept
+    </Button>
+  {/snippet}
+</Modal>
+
+<!-- Static (no ESC / backdrop close) -->
+<Modal bind:show={showProcessing}
+  isStatic shouldShowClose={false}>
+  <Spinner size="lg" />
+  Processing...
+</Modal>
+
+<!-- Themed header only -->
+<Modal bind:show={showDanger}
+  titleText="Delete Item"
+  headerVariant="danger">
+  Are you sure?
+  {#snippet footer()}
+    <Button variant="danger">Delete</Button>
+  {/snippet}
+</Modal>
+
+<!-- Full modal theme -->
+<Modal bind:show={showSuccess}
+  titleText="Done!" variant="success">
+  Operation completed.
+</Modal>`}</CodeBlock>
+		</Column>
+	</Grid>
+</Card>
+
+<!-- API Reference -->
+<Card titleText="API Reference">
+	<Heading level={4} class="mt-0">Modal Props</Heading>
+	<Table isStriped isCompact>
+		<thead>
+			<tr>
+				<th>Prop</th>
+				<th>Type</th>
+				<th>Default</th>
+				<th>Description</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr><td><Code>show</Code></td><td>boolean (bindable)</td><td>false</td><td>Show/hide the modal</td></tr>
+			<tr><td><Code>size</Code></td><td>'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'fw'</td><td>'md'</td><td>Modal width</td></tr>
+			<tr><td><Code>variant</Code></td><td>'primary' | 'success' | 'warning' | 'danger' | 'info'</td><td>-</td><td>Full modal theming</td></tr>
+			<tr><td><Code>headerVariant</Code></td><td>same as variant</td><td>-</td><td>Header-only theming</td></tr>
+			<tr><td><Code>position</Code></td><td>'center' | 'top'</td><td>'center'</td><td>Vertical position</td></tr>
+			<tr><td><Code>isScrollable</Code></td><td>boolean</td><td>false</td><td>Scrollable body content</td></tr>
+			<tr><td><Code>isStatic</Code></td><td>boolean</td><td>false</td><td>Prevents ESC/backdrop close</td></tr>
+			<tr><td><Code>titleText</Code></td><td>string</td><td>-</td><td>Modal title</td></tr>
+			<tr><td><Code>shouldShowClose</Code></td><td>boolean</td><td>true</td><td>Show close button in header</td></tr>
+			<tr><td><Code>shouldCloseOnEscape</Code></td><td>boolean</td><td>true</td><td>Close on ESC key</td></tr>
+			<tr><td><Code>beforeCloseCallback</Code></td><td>() => boolean | void</td><td>-</td><td>Return false to prevent closing</td></tr>
+			<tr><td><Code>onclose</Code></td><td>() => void</td><td>-</td><td>Called after modal closes</td></tr>
+			<tr><td><Code>class</Code></td><td>string</td><td>''</td><td>Additional modal classes</td></tr>
+			<tr><td><Code>bodyClass</Code></td><td>string</td><td>''</td><td>Additional body classes</td></tr>
+			<tr><td><Code>footerClass</Code></td><td>string</td><td>''</td><td>Additional footer classes</td></tr>
+		</tbody>
+	</Table>
+
+	<Heading level={4} class="mt-4">Snippet Slots</Heading>
+	<Table isStriped isCompact>
+		<thead>
+			<tr>
+				<th>Snippet</th>
+				<th>Description</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr><td><Code>header</Code></td><td>Custom header content (replaces default title)</td></tr>
+			<tr><td><Code>children</Code></td><td>Modal body content (default slot)</td></tr>
+			<tr><td><Code>footer</Code></td><td>Footer content (typically action buttons)</td></tr>
+		</tbody>
+	</Table>
 </Card>
 
 <!-- Modal Definitions -->
@@ -518,5 +756,35 @@
 	{#snippet footer()}
 		<Button variant="secondary" onclick={() => (showStatic = false)}>Cancel</Button>
 		<Button variant="warning" onclick={() => (showStatic = false)}>I Understand</Button>
+	{/snippet}
+</Modal>
+
+<!-- Scrollable Modal -->
+<Modal bind:show={showScrollable} size="lg" isScrollable titleText="Scrollable Modal">
+	<Paragraph>This modal has a scrollable body. The header and footer stay fixed while the body content scrolls.</Paragraph>
+	<Paragraph>Useful for long content like terms of service, license agreements, or lengthy forms.</Paragraph>
+	{#each Array(15) as _, i}
+		<Paragraph>Paragraph {i + 1}: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</Paragraph>
+	{/each}
+	{#snippet footer()}
+		<Button variant="secondary" onclick={() => (showScrollable = false)}>Close</Button>
+		<Button variant="primary" onclick={() => (showScrollable = false)}>Accept</Button>
+	{/snippet}
+</Modal>
+
+<!-- Prevent Close Modal -->
+<Modal bind:show={showPreventClose} titleText="Edit Document" beforeCloseCallback={beforeClose}>
+	<Paragraph>This modal uses <Code>beforeCloseCallback</Code> to prevent closing when there are unsaved changes.</Paragraph>
+	<Paragraph>Type something below, then try closing the modal via the X button, ESC key, or backdrop click.</Paragraph>
+	<FormGroup class="mt-3">
+		<FormLabel>Document content</FormLabel>
+		<Textarea placeholder="Type something to trigger unsaved changes..." rows={3} oninput={() => { hasUnsavedChanges = true; preventCloseBlocked = false; }} />
+	</FormGroup>
+	{#if preventCloseBlocked}
+		<Alert variant="warning" class="mt-3">Close was blocked! You have unsaved changes. Click "Discard" to close without saving.</Alert>
+	{/if}
+	{#snippet footer()}
+		<Button variant="secondary" onclick={() => { hasUnsavedChanges = false; preventCloseBlocked = false; showPreventClose = false; }}>Discard</Button>
+		<Button variant="primary" onclick={() => { hasUnsavedChanges = false; preventCloseBlocked = false; showPreventClose = false; }}>Save</Button>
 	{/snippet}
 </Modal>

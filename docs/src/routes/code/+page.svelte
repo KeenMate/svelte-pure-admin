@@ -1,25 +1,5 @@
 <script lang="ts">
-			import { Heading, Paragraph, Card, Grid, Column, Code, CodeBlock } from '@keenmate/svelte-pure-admin';
-
-	function copyCode(event: MouseEvent) {
-		const button = event.currentTarget as HTMLButtonElement;
-		const codeBlock = button.closest('.pa-code-block');
-		if (!codeBlock) return;
-
-		const code = codeBlock.querySelector('.pa-code')?.textContent;
-		if (!code) return;
-
-		navigator.clipboard.writeText(code).then(() => {
-			const originalHTML = button.innerHTML;
-			button.innerHTML = '<span class="pa-btn__icon">✓</span> Copied!';
-			button.classList.add('pa-btn--success');
-
-			setTimeout(() => {
-				button.innerHTML = originalHTML;
-				button.classList.remove('pa-btn--success');
-			}, 2000);
-		});
-	}
+			import { Heading, Paragraph, Card, Grid, Column, Code, CodeBlock, CodeBlockWithHeader } from '@keenmate/svelte-pure-admin';
 </script>
 
 <Paragraph>Display code snippets, JSON data, configuration files, and terminal output with syntax highlighting and copy functionality.</Paragraph>
@@ -87,47 +67,25 @@ console.log(result);`}</Code>
 <Card titleText="Code Blocks with Headers">
 	<Grid>
 		<Column size="100" md="1-2">
-			<div class="pa-code-block">
-				<div class="pa-code-block__header">
-					<span class="pa-code-block__title">server.js</span>
-					<button class="pa-btn pa-btn--xs pa-btn--secondary" onclick={copyCode}>
-						<span class="pa-btn__icon">📋</span>
-						Copy
-					</button>
-				</div>
-				<div class="pa-code-block__body">
-					<Code>{`const express = require('express');
+			<CodeBlockWithHeader titleText="server.js">{`const express = require('express');
 const app = express();
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-app.listen(3000);`}</Code>
-				</div>
-			</div>
+app.listen(3000);`}</CodeBlockWithHeader>
 		</Column>
 
 		<Column size="100" md="1-2">
-			<div class="pa-code-block">
-				<div class="pa-code-block__header">
-					<span class="pa-code-block__title">package.json</span>
-					<button class="pa-btn pa-btn--xs pa-btn--secondary" onclick={copyCode}>
-						<span class="pa-btn__icon">📋</span>
-						Copy
-					</button>
-				</div>
-				<div class="pa-code-block__body">
-					<Code language="json">{`{
+			<CodeBlockWithHeader titleText="package.json" language="json">{`{
     "name": "my-app",
     "version": "1.0.0",
     "scripts": {
         "start": "node server.js",
         "dev": "nodemon server.js"
     }
-}`}</Code>
-				</div>
-			</div>
+}`}</CodeBlockWithHeader>
 		</Column>
 	</Grid>
 </Card>

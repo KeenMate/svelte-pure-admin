@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { Heading, Paragraph, Card, Grid, Column, FormGroup, FormLabel, FormHelp, Input, NumberInput, DateInput, FileInput, RangeInput, ColorInput, Textarea, Select, Checkbox, CheckboxGroup, Radio, RadioGroup, InputGroup, InputGroupPrepend, InputGroupAppend, Button, CodeBlock } from '@keenmate/svelte-pure-admin';
+	import { Heading, Paragraph, Card, Grid, Column, FormGroup, FormLabel, FormHelp, Input, NumberInput, DateInput, FileInput, RangeInput, ColorInput, Textarea, Select, Checkbox, CheckboxGroup, Radio, RadioGroup, InputGroup, InputGroupPrepend, InputGroupAppend, Button, CodeBlock, BasicList } from '@keenmate/svelte-pure-admin';
+
+	let isSearchMode = $state(false);
 </script>
 
 <Paragraph>Comprehensive showcase of all input types, states, sizes, and variations available in the framework.</Paragraph>
@@ -89,22 +91,22 @@
 		<Column size="100" md="1-3">
 			<FormGroup>
 				<FormLabel>Color 1</FormLabel>
-				<input type="text" class="pa-input pa-input--color-1" value="Color 1 input" />
-				<small class="pa-form-help pa-form-help--color-1">Colored help text</small>
+				<Input themeColor={1} value="Color 1 input" />
+				<FormHelp themeColor={1}>Colored help text</FormHelp>
 			</FormGroup>
 		</Column>
 		<Column size="100" md="1-3">
 			<FormGroup>
 				<FormLabel>Color 2</FormLabel>
-				<input type="text" class="pa-input pa-input--color-2" value="Color 2 input" />
-				<small class="pa-form-help pa-form-help--color-2">Colored help text</small>
+				<Input themeColor={2} value="Color 2 input" />
+				<FormHelp themeColor={2}>Colored help text</FormHelp>
 			</FormGroup>
 		</Column>
 		<Column size="100" md="1-3">
 			<FormGroup>
 				<FormLabel>Color 3</FormLabel>
-				<input type="text" class="pa-input pa-input--color-3" value="Color 3 input" />
-				<small class="pa-form-help">Gray help text (no color class)</small>
+				<Input themeColor={3} value="Color 3 input" />
+				<FormHelp>Gray help text (no color class)</FormHelp>
 			</FormGroup>
 		</Column>
 	</Grid>
@@ -153,7 +155,7 @@
 				<FormLabel>With Button</FormLabel>
 				<InputGroup>
 					<Input placeholder="Search..." />
-					<Button variant="primary" class="pa-input-group__button">Go</Button>
+					<Button variant="primary" isInputGroupButton>Go</Button>
 				</InputGroup>
 			</FormGroup>
 		</Column>
@@ -169,6 +171,26 @@
 					<InputGroupAppend>.com</InputGroupAppend>
 					<InputGroupAppend>🔗</InputGroupAppend>
 				</InputGroup>
+			</FormGroup>
+		</Column>
+
+		<!-- Toggle Mode Button (Filter / Search) + Go -->
+		<Column size="100">
+			<FormGroup>
+				<FormLabel>Toggle Mode Button (Filter / Search) + Go</FormLabel>
+				<InputGroup>
+					<Button
+						variant="primary"
+						isInputGroupButton
+						titleText={isSearchMode ? 'Search mode — click to switch to Filter' : 'Filter mode — click to switch to Search'}
+						onclick={() => isSearchMode = !isSearchMode}
+					>
+						<i class={isSearchMode ? 'fa-solid fa-magnifying-glass' : 'fa-solid fa-filter'}></i>
+					</Button>
+					<Input placeholder={isSearchMode ? 'Search...' : 'Filter...'} />
+					<Button variant="primary" isInputGroupButton>Go</Button>
+				</InputGroup>
+				<FormHelp>Click the icon button to switch between Filter and Search modes</FormHelp>
 			</FormGroup>
 		</Column>
 
@@ -548,7 +570,16 @@
   <InputGroupPrepend>$</InputGroupPrepend>
   <Input placeholder="Amount" />
   <InputGroupAppend>.00</InputGroupAppend>
-  <Button variant="primary" class="pa-input-group__button">Go</Button>
+  <Button variant="primary" isInputGroupButton>Go</Button>
+</InputGroup>
+
+<!-- Toggle Mode Button (Filter / Search) + Go -->
+<InputGroup>
+  <Button variant="primary" isInputGroupButton onclick={toggleMode}>
+    <i class={isSearch ? 'fa-solid fa-magnifying-glass' : 'fa-solid fa-filter'}></i>
+  </Button>
+  <Input placeholder={isSearch ? 'Search...' : 'Filter...'} />
+  <Button variant="primary" isInputGroupButton>Go</Button>
 </InputGroup>
 
 <!-- Multiple prepends/appends -->
@@ -605,34 +636,34 @@
 <!-- CSS Classes Reference -->
 <Card titleText="CSS Classes Reference">
 	<Heading level={4}>Text Inputs</Heading>
-	<ul class="pa-list-basic pa-list-basic--compact">
+	<BasicList spacing="compact">
 		<li><code>pa-input</code> - Base input styling</li>
 		<li><code>pa-input--xs</code> - Extra small input</li>
 		<li><code>pa-input--sm</code> - Small input</li>
 		<li><code>pa-input--lg</code> - Large input</li>
 		<li><code>pa-input--xl</code> - Extra large input</li>
-	</ul>
+	</BasicList>
 
 	<Heading level={4} class="mt-4">Select Dropdowns</Heading>
-	<ul class="pa-list-basic pa-list-basic--compact">
+	<BasicList spacing="compact">
 		<li><code>pa-select</code> - Base select styling</li>
 		<li><code>pa-select--xs</code> - Extra small select</li>
 		<li><code>pa-select--sm</code> - Small select</li>
 		<li><code>pa-select--lg</code> - Large select</li>
 		<li><code>pa-select--xl</code> - Extra large select</li>
-	</ul>
+	</BasicList>
 
 	<Heading level={4} class="mt-4">Textareas</Heading>
-	<ul class="pa-list-basic pa-list-basic--compact">
+	<BasicList spacing="compact">
 		<li><code>pa-textarea</code> - Base textarea styling</li>
 		<li><code>pa-textarea--xs</code> - Extra small textarea</li>
 		<li><code>pa-textarea--sm</code> - Small textarea</li>
 		<li><code>pa-textarea--lg</code> - Large textarea</li>
 		<li><code>pa-textarea--xl</code> - Extra large textarea</li>
-	</ul>
+	</BasicList>
 
 	<Heading level={4} class="mt-4">Input Groups</Heading>
-	<ul class="pa-list-basic pa-list-basic--compact">
+	<BasicList spacing="compact">
 		<li><code>pa-input-group</code> - Container for input with addons</li>
 		<li><code>pa-input-group__prepend</code> - Addon before input</li>
 		<li><code>pa-input-group__append</code> - Addon after input</li>
@@ -641,48 +672,48 @@
 		<li><code>pa-input-group--sm</code> - Small input group</li>
 		<li><code>pa-input-group--lg</code> - Large input group</li>
 		<li><code>pa-input-group--xl</code> - Extra large input group</li>
-	</ul>
+	</BasicList>
 
 	<Heading level={4} class="mt-4">Form Layout</Heading>
-	<ul class="pa-list-basic pa-list-basic--compact">
+	<BasicList spacing="compact">
 		<li><code>pa-form</code> - Form container with label styling</li>
 		<li><code>pa-form-group</code> - Form field container with spacing</li>
 		<li><code>pa-form-group--horizontal</code> - Horizontal label/input layout</li>
 		<li><code>pa-form-actions</code> - Container for form buttons</li>
-	</ul>
+	</BasicList>
 
 	<Heading level={4} class="mt-4">Validation States (on form-group)</Heading>
-	<ul class="pa-list-basic pa-list-basic--compact">
+	<BasicList spacing="compact">
 		<li><code>pa-form-group--success</code> - Success state (green border)</li>
 		<li><code>pa-form-group--warning</code> - Warning state (yellow border)</li>
 		<li><code>pa-form-group--error</code> - Error state (red border)</li>
-	</ul>
+	</BasicList>
 
 	<Heading level={4} class="mt-4">Validation States (on input)</Heading>
-	<ul class="pa-list-basic pa-list-basic--compact">
+	<BasicList spacing="compact">
 		<li><code>pa-input--success</code>, <code>pa-select--success</code>, <code>pa-textarea--success</code> - Success state</li>
 		<li><code>pa-input--warning</code>, <code>pa-select--warning</code>, <code>pa-textarea--warning</code> - Warning state</li>
 		<li><code>pa-input--error</code>, <code>pa-select--error</code>, <code>pa-textarea--error</code> - Error state</li>
-	</ul>
+	</BasicList>
 
 	<Heading level={4} class="mt-4">Theme Color Variants (on input)</Heading>
-	<ul class="pa-list-basic pa-list-basic--compact">
+	<BasicList spacing="compact">
 		<li><code>pa-input--color-1</code> through <code>pa-input--color-9</code> - Theme color slots</li>
 		<li><code>pa-select--color-1</code> through <code>pa-select--color-9</code> - Theme color slots</li>
 		<li><code>pa-textarea--color-1</code> through <code>pa-textarea--color-9</code> - Theme color slots</li>
-	</ul>
+	</BasicList>
 
 	<Heading level={4} class="mt-4">Help Text</Heading>
-	<ul class="pa-list-basic pa-list-basic--compact">
+	<BasicList spacing="compact">
 		<li><code>pa-form-help</code> - Help text below input</li>
 		<li><code>pa-form-help--success</code> - Success colored help text</li>
 		<li><code>pa-form-help--warning</code> - Warning colored help text</li>
 		<li><code>pa-form-help--error</code> - Error colored help text</li>
 		<li><code>pa-form-help--color-1</code> through <code>pa-form-help--color-9</code> - Theme color slots</li>
-	</ul>
+	</BasicList>
 
 	<Heading level={4} class="mt-4">Checkboxes</Heading>
-	<ul class="pa-list-basic pa-list-basic--compact">
+	<BasicList spacing="compact">
 		<li><code>pa-checkbox-group</code> - Container for multiple checkboxes</li>
 		<li><code>pa-checkbox</code> - Checkbox wrapper (label element)</li>
 		<li><code>pa-checkbox__box</code> - Custom checkbox visual</li>
@@ -693,10 +724,10 @@
 		<li><code>pa-checkbox--xl</code> - Extra large checkbox</li>
 		<li><code>pa-checkbox--x</code> - X mark instead of checkmark</li>
 		<li><code>pa-checkbox--disabled</code> - Disabled state</li>
-	</ul>
+	</BasicList>
 
 	<Heading level={4} class="mt-4">Radio Buttons</Heading>
-	<ul class="pa-list-basic pa-list-basic--compact">
+	<BasicList spacing="compact">
 		<li><code>pa-radio-group</code> - Container for multiple radios</li>
 		<li><code>pa-radio</code> - Radio button wrapper (label element)</li>
 		<li><code>pa-radio__label</code> - Radio label text</li>
@@ -704,5 +735,5 @@
 		<li><code>pa-radio--sm</code> - Small radio</li>
 		<li><code>pa-radio--lg</code> - Large radio</li>
 		<li><code>pa-radio--xl</code> - Extra large radio</li>
-	</ul>
+	</BasicList>
 </Card>

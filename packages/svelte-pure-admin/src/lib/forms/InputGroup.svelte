@@ -7,13 +7,15 @@
 	interface Props {
 		/** Size variant - should match the size of inputs inside */
 		size?: 'xs' | 'sm' | 'lg' | 'xl';
+		/** Inline style */
+		style?: string;
 		/** Additional CSS classes */
 		class?: string;
 		/** Children content */
 		children?: import('svelte').Snippet;
 	}
 
-	let { size, class: className = '', children }: Props = $props();
+	let { size, style, class: className = '', children }: Props = $props();
 
 	// Build class string
 	const classes = $derived(() => {
@@ -24,6 +26,6 @@
 	});
 </script>
 
-<div class={classes()}>
+<div class={classes()} {style}>
 	{@render children?.()}
 </div>

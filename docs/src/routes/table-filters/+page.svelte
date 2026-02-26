@@ -6,6 +6,7 @@
 		Select,
 		InputGroup,
 		InputGroupPrepend,
+		DateInput,
 		FormGroup,
 		FormLabel,
 		Button,
@@ -103,22 +104,22 @@
 
 	<div class="d-flex gap-5 align-items-center flex-wrap">
 		<!-- Search by rule -->
-		<div class="pa-input-group" style="flex: 1; min-width: 200px;">
+		<InputGroup style="flex: 1; min-width: 200px;">
 			<span class="pa-input-group__prepend">🔍</span>
 			<Input placeholder="Search by rule" />
-		</div>
+		</InputGroup>
 
 		<!-- Filter by data source -->
-		<div class="pa-input-group" style="flex: 1; min-width: 200px;">
+		<InputGroup style="flex: 1; min-width: 200px;">
 			<span class="pa-input-group__prepend">🌐</span>
 			<Input placeholder="Filter by data source" />
-		</div>
+		</InputGroup>
 
 		<!-- Filter by Organization tree -->
-		<div class="pa-input-group" style="flex: 1; min-width: 200px;">
+		<InputGroup style="flex: 1; min-width: 200px;">
 			<span class="pa-input-group__prepend">🌐</span>
 			<Input placeholder="Filter by Organization tree" />
-		</div>
+		</InputGroup>
 
 		<!-- Action buttons -->
 		<Button variant="secondary" isIconOnly titleText="Clear all filters"><i class="fas fa-times"></i></Button>
@@ -184,13 +185,13 @@
 						<Grid>
 							<Column size="100" md="50">
 								<div class="pa-input-wrapper">
-									<input type="date" class="pa-input" />
+									<DateInput />
 									<button class="pa-input-wrapper__clear" type="button">×</button>
 								</div>
 							</Column>
 							<Column size="100" md="50">
 								<div class="pa-input-wrapper">
-									<input type="date" class="pa-input" />
+									<DateInput />
 									<button class="pa-input-wrapper__clear" type="button">×</button>
 								</div>
 							</Column>
@@ -318,7 +319,7 @@
 			<FormGroup>
 				<FormLabel>Date</FormLabel>
 				<div class="pa-input-wrapper">
-					<input type="date" class="pa-input" />
+					<DateInput />
 					<button class="pa-input-wrapper__clear" type="button">×</button>
 				</div>
 			</FormGroup>

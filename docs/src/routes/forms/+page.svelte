@@ -1,6 +1,7 @@
 <script lang="ts">
 	import {
 		Card,
+		Form,
 		FormGroup,
 		FormLabel,
 		FormHelp,
@@ -174,7 +175,7 @@
 		</div>
 	{/snippet}
 
-	<form class="pa-form">
+	<Form>
 		<Grid>
 			<Column size="100" md="50">
 				<FormGroup>
@@ -230,12 +231,12 @@
 				</FormGroup>
 			</Column>
 		</Grid>
-	</form>
+	</Form>
 </Card>
 
 <!-- Form with Buttons in Footer -->
 <Card titleText="Contact Information">
-	<form class="pa-form">
+	<Form>
 		<Grid>
 			<Column size="100" md="50">
 				<FormGroup>
@@ -258,7 +259,7 @@
 				</FormGroup>
 			</Column>
 		</Grid>
-	</form>
+	</Form>
 
 	{#snippet footer()}
 		<ButtonGroup>
@@ -283,7 +284,7 @@
 
 <!-- Form with Buttons in Body -->
 <Card titleText="Quick Settings">
-	<form class="pa-form">
+	<Form>
 		<FormGroup>
 			<FormLabel for="setting1">Setting Name</FormLabel>
 			<Input id="setting1" placeholder="Enter value" bind:value={settingName} />
@@ -309,12 +310,12 @@
 				Apply
 			</Button>
 		</ButtonGroup>
-	</form>
+	</Form>
 </Card>
 
 <!-- Three Column Compact Form -->
 <Card titleText="Compact Three Column Layout">
-	<form class="pa-form">
+	<Form>
 		<Grid>
 			<Column size="100" md="1-3">
 				<FormGroup>
@@ -362,12 +363,12 @@
 				</FormGroup>
 			</Column>
 		</Grid>
-	</form>
+	</Form>
 </Card>
 
 <!-- Input Groups with Icons -->
 <Card titleText="Input Groups">
-	<form class="pa-form">
+	<Form>
 		<Grid>
 			<Column size="100" md="50">
 				<FormGroup>
@@ -466,12 +467,12 @@
 				</FormGroup>
 			</Column>
 		</Grid>
-	</form>
+	</Form>
 </Card>
 
 <!-- Form States -->
 <Card titleText="Form States">
-	<form class="pa-form">
+	<Form>
 		<Grid>
 			<Column size="100" md="1-3">
 				<FormGroup>
@@ -511,12 +512,12 @@
 				</FormGroup>
 			</Column>
 		</Grid>
-	</form>
+	</Form>
 </Card>
 
 <!-- Input Sizes -->
 <Card titleText="Input Sizes">
-	<form class="pa-form">
+	<Form>
 		<FormGroup>
 			<FormLabel for="xs-input">Extra Small Input</FormLabel>
 			<Input id="xs-input" size="xs" placeholder="Extra small" />
@@ -541,12 +542,12 @@
 			<FormLabel for="xl-input">Extra Large Input</FormLabel>
 			<Input id="xl-input" size="xl" placeholder="Extra large" />
 		</FormGroup>
-	</form>
+	</Form>
 </Card>
 
 <!-- Checkboxes and Radio Buttons -->
 <Card titleText="Checkboxes and Radio Buttons">
-	<form class="pa-form">
+	<Form>
 		<FormGroup>
 			<FormLabel>Checkboxes (Custom Tri-State)</FormLabel>
 			<CheckboxGroup>
@@ -564,12 +565,12 @@
 				<Radio name="radio-group" value="c" disabled labelText="Choice C (disabled)" />
 			</RadioGroup>
 		</FormGroup>
-	</form>
+	</Form>
 </Card>
 
 <!-- Checkbox and Radio Sizes -->
 <Card titleText="Checkbox & Radio Sizes">
-	<form class="pa-form">
+	<Form>
 		<Grid>
 			<Column size="100" md="50">
 				<FormGroup>
@@ -597,7 +598,7 @@
 				</FormGroup>
 			</Column>
 		</Grid>
-	</form>
+	</Form>
 </Card>
 
 <!-- Horizontal Form Layout -->
@@ -607,7 +608,7 @@
 		<Paragraph class="pa-text--sm pa-text--secondary m-0">Labels on the left, inputs on the right with varying field widths</Paragraph>
 	{/snippet}
 
-	<form class="pa-form">
+	<Form>
 		<!-- Line 1: First Name, Last Name, Email (equal widths) -->
 		<Grid>
 			<!-- First Name -->
@@ -704,7 +705,7 @@
 				</ButtonGroup>
 			</Column>
 		</Grid>
-	</form>
+	</Form>
 
 	{#snippet footer()}
 		<Paragraph class="pa-text--sm pa-text--secondary m-0">

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Paragraph, Code, CodeBlock, Heading, Card, Button, ButtonGroup, Alert, Table, dialogService } from '@keenmate/svelte-pure-admin';
+	import { Paragraph, Code, CodeBlock, Heading, Card, Button, ButtonGroup, Alert, Callout, Table, dialogService } from '@keenmate/svelte-pure-admin';
 				
 	// Result state for confirm dialogs
 	let confirmResult = $state<{ result: boolean; shown: boolean }>({ result: false, shown: false });
@@ -411,6 +411,12 @@ switch (result) {
     break;
 }`;
 </script>
+
+<!-- When to use -->
+<Callout variant="warning" headingText="dialogService is for simple text-only dialogs">
+	The <Code>message</Code> property only accepts a plain string rendered as a <Code>{'<Paragraph>'}</Code>.
+	For complex body content — forms, formatted text, grids, tables, or any Svelte components — use a <Code>{'<Modal>'}</Code> component directly instead. See the <a href="/modals">Modals</a> page for examples.
+</Callout>
 
 <!-- Basic Usage -->
 <Card titleText="Basic Usage" class="pa-section">

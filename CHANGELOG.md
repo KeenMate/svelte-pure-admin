@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Inputs docs**: Added "Toggle Mode Button (Filter / Search) + Go" example — demonstrates buttons on both sides of an InputGroup with reactive icon/placeholder toggle using `isInputGroupButton` prop
+- **Modals docs**: Added code examples section with 4 patterns: basic show/hide, form modal, `beforeCloseCallback`, scrollable/static/variants
+- **Modals docs**: Added API reference table with all Modal props and snippet slots
+- **Modals docs**: Added live demos for scrollable body (`isScrollable`) and prevent close (`beforeCloseCallback`)
+- **Modals docs**: Added "Modal vs dialogService — When to Use Which" comparison card
+- **Modal-dialogs docs**: Added callout explaining that `dialogService` is limited to plain text messages, linking to Modals page for complex content
+
+### Changed
+
+- **Inputs docs**: Updated "With Button" example and code snippets to use `isInputGroupButton` prop instead of manual `class="pa-input-group__button"`
+
+### Fixed
+
+- **CheckboxBox**: Changed wrapper element from `<span>` to `<label>` so clicks on the styled box correctly toggle the hidden input (matches pure-admin-core snippet fix)
+- **Toast**: Progress bar now animates correctly — deferred `progressWidth` update to `requestAnimationFrame` so the browser paints the initial 100% state before transitioning to 0%
+- **Toasts demo**: Replaced deprecated physical positions (`top-right`, `top-left`, etc.) with logical RTL-aware positions (`top-end`, `top-start`, etc.) — physical positions were removed in pure-admin-core v1.4.0
+- **Toasts demo**: Replaced Grid/Column layout with ButtonGroup for Toast Variants section (matches pure-admin-core demo update)
+- **Tabs demo**: Added `class="mb-4"` to first Grid in "Tabs as Card Header" section to create visible gap between stacked rows
+- **Sidebar navigation**: Added `active` prop to all SidebarItem links using `$page.url.pathname` so the current page is visually highlighted
+
 ### Breaking Changes
 
 #### Prop Naming Convention Alignment (KeenMate Standard)
@@ -338,26 +360,146 @@ $_('pureAdmin.dialog.confirm'); // in .svelte files
 - `pureAdmin.common.buttons.close`, `pureAdmin.common.buttons.clearAll`, `pureAdmin.common.buttons.refresh`, `pureAdmin.common.buttons.moreFilters`, `pureAdmin.common.buttons.hideFilters`, `pureAdmin.common.buttons.clearFilters`, `pureAdmin.common.buttons.applyFilters`
 - `pureAdmin.a11y.closeProfile`, `pureAdmin.a11y.closeDetailPanel`, `pureAdmin.a11y.scrollTabsLeft`, `pureAdmin.a11y.scrollTabsRight`, `pureAdmin.a11y.openSearch`, `pureAdmin.a11y.toggleSidebar`, `pureAdmin.a11y.removeFromFavorites`, `pureAdmin.a11y.dragToResizeSidebar`, `pureAdmin.a11y.settings`
 
+#### New Data Display v2 Components
+
+- **DescTable** — Ant Design-style descriptions table with tinted label cells. Props: `cols` (2/3), `class`
+- **DescTableItem** — Single label-value pair in DescTable. Props: `labelText`, `isFull`, `children`
+- **DotLeaders** — Dotted leader lines container for invoice/menu-style layouts. Props: `class`
+- **DotLeadersItem** — Single row with label, dots, value. Props: `labelText`, `valueText`, `isTotal`, `children`
+- **PropCard** — Bordered property card with header + row dividers (Stripe-style). Props: `class`, `children`
+- **PropCardRow** — Single row in PropCard with label + value. Props: `labelText`, `valueText`, `isBold`, `children`
+- **Banded** — Banded rows container with fixed-width tinted label column. Props: `isTruncate`, `class`, `children`
+- **BandedRow** — Single row with tinted label + value. Props: `labelText`, `valueText`, `class`, `labelClass`, `children`
+- **AccentGrid** — Responsive grid with color-coded left borders. Props: `class`, `children`
+- **AccentGridItem** — Grid cell with color-coded left border. Props: `labelText`, `valueText`, `variant` (success/warning/danger/info), `children`
+
+#### New Data Visualization Components
+
+SCSS source: `_data-viz.scss`
+
+- **Progress** — Progress bar with optional label group wrapper. Props: `value` (0-100, `--value: {value}%`), `labelText`, `valueText`, `size` (xs/sm/lg), `variant` (DataVizVariant), `isRounded`, `isStriped`, `isAnimated`
+- **ProgressRing** — Circular progress ring via conic-gradient. Props: `value` (0-100, `--value: {value}`), `valueText`, `labelText`, `size` (sm/lg), `variant`
+- **Gauge** — Semicircle gauge via conic-gradient. Props: `value` (0-100, `--value: {value}`), `valueText`, `labelText`, `minText`, `maxText`, `variant`, `isZones` (multi-zone green/yellow/red)
+- **DataBar** — Inline bar for table cells. Props: `value` (0-100, `--value: {value}%`), `valueText`, `variant`, `isNegative`
+- **StackedBar** — Stacked bar container. Props: `size` (sm/lg), `isRounded`
+- **StackedBarSegment** — Stacked bar segment. Props: `value` (0-100, `--value: {value}%`), `variant` (success/warning/danger/info/secondary)
+- **StackedBarLegend** — Legend container (sibling of StackedBar). Props: `class`, `children`
+- **StackedBarLegendItem** — Legend item with color swatch. Props: `variant` (primary/success/warning/danger/info/secondary)
+- **Sparkline** — Sparkline bar chart container. Props: `size` (sm/lg), `variant` (DataVizVariant)
+- **SparklineBar** — Individual sparkline bar. Props: `value` (0-100, `--value: {value}%`)
+- **Heatmap** — Heatmap grid container. Props: `variant` (success/danger), `isCompact`, `cols` (default 53)
+- **HeatmapCell** — Heatmap cell. Props: `level` (0-4, maps to `data-level`)
+- **HeatmapLegend** — Self-contained legend with 5 fixed cells (levels 0-4). Props: `lessText`, `moreText`
+- **BarList** — Bar list container. Props: `variant` (DataVizVariant), `isCompact`
+- **BarListItem** — Bar list item with label, value, and bar fill via `::after`. Props: `labelText`, `valueText`, `value` (0-100, `--value: {value}%`)
+
+#### New Type Exports
+
+- **DataVizVariant** — `'success' | 'warning' | 'danger' | 'info'` shared type for data visualization component variants
+
+#### New Props on Existing Components (cont.)
+
+- **Card**: `liveState` (`'up' | 'down' | 'neutral'`) — live-data card state with CSS tint transitions (`pa-card--live-up`, `pa-card--live-down`, `pa-card--live-neutral`)
+- **Card**: `title` snippet — rich content title (alternative to `titleText` for titles containing markup like `<code>`)
+- **Card**: `description` snippet — rich content description (alternative to `descriptionText` for descriptions containing markup)
+- **Card**: `isGhost` — ghost mode, invisible container with no background, border, or shadow (`pa-card--ghost`)
+- **Fields**: `isLinear` — ultra-clean side-by-side layout without borders/backgrounds
+- **Fields**: `isChips` — Notion-style inline pills layout
+- **Field**: `valueVariant` — color variant for chips mode (success/warning/danger)
+- **BandedRow**: `labelClass` — additional CSS classes for the label element (e.g., width utilities like `wr-8`)
+- **BandedRow**: `copyMode` (`'btn' | 'click' | 'hover'`) — copy-to-clipboard with three interaction styles: always-visible button, click value, hover-reveal button. Also `copyValue` (override text) and `oncopy` callback
+- **PropCardRow**: `copyMode` (`'btn' | 'click' | 'hover'`) — copy-to-clipboard support. Copy button renders before value text (`order: -1` in CSS) to keep values right-aligned. Also `copyValue` and `oncopy`
+- **DescTableItem**: `copyMode` (`'btn' | 'click' | 'hover'`) — copy-to-clipboard support with button inside value cell. Also `copyValue` and `oncopy`
+- **AccentGridItem**: `copyMode` (`'btn' | 'click' | 'hover'`) — copy-to-clipboard support on accent grid items. Also `copyValue` and `oncopy`
+
+#### New Component: ProgressGroup
+
+- **ProgressGroup** — Label row wrapper for progress bars (Progress, StackedBar, etc.). Renders a `pa-progress-group` div with a `pa-progress__label` row containing label text and value text, followed by child content. Props: `labelText`, `valueText`, `class`, `children`
+
+#### New Props on Existing Components (cont. 2 — component completeness)
+
+These props were added so that demo pages can use components instead of raw `pa-*` HTML. The design principle: **if you need to know a `pa-*` class name, the component is failing at its job.**
+
+- **Table**: `isHover` — adds `pa-table--hover` class for row hover highlighting
+- **Table**: `isBorderless` — adds `pa-table--borderless` class for removing all cell borders
+- **Table**: `isCompact` — adds `pa-table--compact` class for tighter row spacing
+- **Table**: `isResponsive` — adds `pa-table--responsive` class for responsive stacking on small screens
+- **Badge**: `themeColor` (`ThemeColor`, 1-9) — applies color slot background via `pa-badge--color-{N}`
+- **Alert**: `themeColor` (`ThemeColor`, 1-9) — applies color slot background via `pa-bg-color-{N}`
+- **FormHelp**: `themeColor` (`ThemeColor`, 1-9) — applies color slot styling via `pa-form-help--color-{N}`
+- **Card**: `isHeaderUnderlined` (`boolean`) — accent-colored border under the heading in card header (`pa-card__header--underlined`)
+- **Card**: `headerUnderlineColor` (`'success' | 'warning' | 'danger' | 'info'`) — semantic color variant for the header underline (requires `isHeaderUnderlined`)
+- **Card**: `headerUnderlineThemeColor` (`ThemeColor`, 1-9) — theme color slot for the header underline (`pa-card__header--underline-color-{N}`, requires `isHeaderUnderlined`)
+- **Card**: `headerClass` (`string`) — additional CSS classes appended to the `pa-card__header` element (useful for color slot backgrounds like `pa-bg-color-N`)
+- **Button**: Rest props spread (`{...restProps}`) — forwards arbitrary HTML attributes like `data-*`, `aria-*`, `title`, etc. to the underlying `<button>` element
+- **InputGroup**: `style` (`string`) — inline style attribute on the `pa-input-group` wrapper
+- **Form**: Auto-adds `pa-form` class — the `<Form>` component now always includes the `pa-form` class on the rendered `<form>` element, so consumers no longer need to pass `class="pa-form"` manually
+
+#### Docs: Eliminate Raw HTML Across Demo Pages
+
+Systematic replacement of raw `pa-*` CSS class HTML with proper Svelte component usage across ~27 demo pages. This ensures demo pages serve as correct usage examples and validates that the component API covers all common patterns.
+
+**Pages updated:**
+- **kpi-dashboard**: 6× ProgressGroup, Table `isHover`
+- **movies, movies-panel, movies/detail**: Table `isHover`, LoaderCenter
+- **events-callbacks**: Table `isCompact isStriped`, Input, Grid/Column
+- **data-visualization**: Table `isStriped isHover`, ProgressGroup
+- **detail-panel**: Table `isBorderless`, LoaderCenter
+- **colors**: Card `headerClass`, Alert `themeColor`, Badge `themeColor`
+- **loaders**: LoaderCenter, LoaderOverlay
+- **forms**: 10× Form (auto `pa-form`)
+- **timeline**: 2× Callout
+- **code**: 2× CodeBlockWithHeader (removed dead `copyCode` function)
+- **inputs**: Input/FormHelp `themeColor`, BasicList
+- **i18n**: Select, Input
+- **auto-theme**: Select
+- **checkbox-lists**: 4× CheckboxBox
+- **tables**: 10× TableContainer, 4× BasicList
+- **tables-sizing**: 3× TableContainer
+- **tables-responsive**: 3× Table `isResponsive`
+- **+layout.svelte**: Tabs/TabItem/TabPanel (profile panel tabs)
+- **table-filters**: InputGroup with style, DateInput
+- **data-display**: 5× BasicList
+- **cards**: 7× BasicList
+- **grid**: 17× Column
+- **batch-rpc**: 1× BasicList
+- **command-palette**: 2× OrderedList, 3× Table `isCompact`
+- **buttons**: 36× Button (with rest props for `data-*` attributes)
+
 #### Docs Pages
 
 - **Events & Callbacks** (`/events-callbacks`) — Interactive test page with 17 components wired to a shared event log for testing all `on*` event handlers and `*Callback` props
 - **Auto Theme** (`/auto-theme`)
 - **Data Display** (`/data-display`)
+- **Data Display v2** (`/data-display-2`) — Full showcase of v2 data display patterns: DescTable, DotLeaders, PropCard, Banded, AccentGrid with real-world invoice example and copyable fields demo (all 3 copy modes across all 4 pattern types)
+- **Data Visualization** (`/data-visualization`) — Full showcase of all data viz components: Progress bars (sizes, colors, rounded, striped, animated), Stacked bars with legend, Progress rings, Gauges (colors, zones), Data bars (colors, negative), Heatmaps (colors, compact, legend), Sparklines, Bar lists, Card live states
 - **Detail Panel** (`/detail-panel`)
 - **i18n** (`/i18n`)
 - **Table Filters** (`/table-filters`)
 
+#### Docs Updates
+
+- **Cards** (`/cards`) — Added Card Header Three-Part Layout section (title + description + actions, truncation, tooltips, wrap modifier), Ghost Card section, Underlined Headers section, and CSS Classes Reference
+
 ### Fixed
 
+- **Select**: Default value changed from empty string (`''`) to `undefined` so the browser naturally shows the first `<option>` — previously selects appeared blank until user interacted with them
+- **Copy icon mismatch**: Replaced Lucide/Feather stroke SVG with Font Awesome `fa-copy` filled SVG in all copyable components (Field, DescTableItem, PropCardRow, BandedRow, AccentGridItem) to match pure-admin's icon style
 - **Modal**: Setting `show` to `false` via binding (e.g., parent toggling `bind:show`) now triggers `beforeCloseCallback` and `onclose`, matching the behavior of closing via X button, backdrop click, or Escape key. Previously, only internal close actions ran the callback flow. Implemented via `$effect.pre()` with `wasOpen`/`internalClose` tracking flags
 - **FormErrorSummary**: Changed inner BasicList margin from `mt-2 mb-0` to `mt-0 mb-0`
 
 ### Changed
 
+- **Grid**: `GapSize` type expanded to match pure-admin's full `$semantic-spacers` map: `'0' | 'xs' | 'sm' | 'md' | 'base' | 'lg' | 'xl' | '2xl'`
+- **Grid**: `gap` prop now also accepts numbers (1-20), producing `gap-{n}` utility classes matching pure-admin's numeric gap system
 - **SettingsPanel**: Container width and sidebar mode now use `localStorage` instead of URL query params (no more page reloads for layout changes)
 - **SettingsPanel**: Removed `'font-family-delivery'` font option
 - **package.json**: GitHub URLs corrected from `keenmate` (lowercase) to `KeenMate` (proper case) in repository URL, homepage, and bugs URL
 - **package.json**: Dev dependencies changed from `file:` references to versioned `^1.5.0` for `@keenmate/pure-admin-core` and `@keenmate/pure-admin-theme-audi`
+- **package.json**: Bumped `@keenmate/pure-admin-core` peer dependency from `^1.5.1` to `^2.0.0`
+- **package.json**: Added `ai/` to `files` array and build script copies `ai/` reference files into package at build time
+- **docs/buttons**: Fixed Button Text Alignment demo to use `wr-20` (matching pure-admin demo) instead of `wr-15`
+- **docs/package.json**: Bumped all `@keenmate/pure-admin-*` packages (core + 5 themes) from `^1.5.0` to `^1.5.1`
 
 ### CSS Features (via pure-admin-core unreleased)
 These features are available through CSS classes (use via `class` prop) without dedicated Svelte component props:

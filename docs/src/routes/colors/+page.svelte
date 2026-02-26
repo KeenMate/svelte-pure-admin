@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Heading, Paragraph, Card, Grid, Column, Badge, Code } from '@keenmate/svelte-pure-admin';
+	import { Heading, Paragraph, Card, Grid, Column, Badge, Code, Alert, type ThemeColor } from '@keenmate/svelte-pure-admin';
 
 	// Color swatch data for semantic colors
 	const semanticColors = [
@@ -81,7 +81,7 @@
 			</Paragraph>
 			<div class="d-flex flex-wrap gap-xs" style="margin-top: 1rem;">
 				{#each colorSlots as color}
-					<span class="pa-badge pa-bg-color-{color.num}" style="color: white;">bg-color-{color.num}</span>
+					<Badge themeColor={color.num as ThemeColor}>bg-color-{color.num}</Badge>
 				{/each}
 			</div>
 		</Column>
@@ -118,50 +118,35 @@
 	<Paragraph>Examples of color utilities applied to various components.</Paragraph>
 
 	<Heading level={4}>Alerts with Theme Colors</Heading>
-	<div class="pa-alert pa-bg-color-1" style="color: white; border: none;">
+	<Alert themeColor={1}>
 		<strong>Color 1 Alert:</strong> Using <code style="color: inherit;">.pa-bg-color-1</code> utility
 		class.
-	</div>
-	<div class="pa-alert pa-bg-color-4" style="color: white; border: none;">
+	</Alert>
+	<Alert themeColor={4}>
 		<strong>Color 4 Alert:</strong> Using <code style="color: inherit;">.pa-bg-color-4</code> utility
 		class.
-	</div>
-	<div class="pa-alert pa-bg-color-7" style="color: white; border: none;">
+	</Alert>
+	<Alert themeColor={7}>
 		<strong>Color 7 Alert:</strong> Using <code style="color: inherit;">.pa-bg-color-7</code> utility
 		class.
-	</div>
+	</Alert>
 
 	<Heading level={4} class="mt-4">Cards with Colored Headers</Heading>
 	<Grid>
 		<Column size="100" md="1-3">
-			<div class="pa-card">
-				<div class="pa-card__header pa-bg-color-1" style="color: white;">
-					<h3 style="color: inherit;">Color 1 Header</h3>
-				</div>
-				<div class="pa-card__body">
-					Card with <Code>.pa-bg-color-1</Code> on header.
-				</div>
-			</div>
+			<Card headerClass="pa-bg-color-1" titleText="Color 1 Header">
+				Card with <Code>.pa-bg-color-1</Code> on header.
+			</Card>
 		</Column>
 		<Column size="100" md="1-3">
-			<div class="pa-card">
-				<div class="pa-card__header pa-bg-color-5" style="color: white;">
-					<h3 style="color: inherit;">Color 5 Header</h3>
-				</div>
-				<div class="pa-card__body">
-					Card with <Code>.pa-bg-color-5</Code> on header.
-				</div>
-			</div>
+			<Card headerClass="pa-bg-color-5" titleText="Color 5 Header">
+				Card with <Code>.pa-bg-color-5</Code> on header.
+			</Card>
 		</Column>
 		<Column size="100" md="1-3">
-			<div class="pa-card">
-				<div class="pa-card__header pa-bg-color-8" style="color: white;">
-					<h3 style="color: inherit;">Color 8 Header</h3>
-				</div>
-				<div class="pa-card__body">
-					Card with <Code>.pa-bg-color-8</Code> on header.
-				</div>
-			</div>
+			<Card headerClass="pa-bg-color-8" titleText="Color 8 Header">
+				Card with <Code>.pa-bg-color-8</Code> on header.
+			</Card>
 		</Column>
 	</Grid>
 
@@ -171,9 +156,9 @@
 		<Badge variant="warning">Warning</Badge>
 		<Badge variant="danger">Danger</Badge>
 		<Badge variant="info">Info</Badge>
-		<span class="pa-badge pa-bg-color-1" style="color: white;">Color 1</span>
-		<span class="pa-badge pa-bg-color-2" style="color: white;">Color 2</span>
-		<span class="pa-badge pa-bg-color-6" style="color: white;">Color 6</span>
-		<span class="pa-badge pa-bg-color-9" style="color: white;">Color 9</span>
+		<Badge themeColor={1}>Color 1</Badge>
+		<Badge themeColor={2}>Color 2</Badge>
+		<Badge themeColor={6}>Color 6</Badge>
+		<Badge themeColor={9}>Color 9</Badge>
 	</div>
 </Card>

@@ -21,7 +21,7 @@ export type Size = 'xs' | 'sm' | 'lg' | 'xl';
 export type ExtendedSize = 'xs' | 'sm' | 'lg' | 'xl' | '2xl';
 
 // Horizontal alignment
-export type HorizontalAlignment = 'left' | 'center' | 'right';
+export type HorizontalAlignment = 'start' | 'center' | 'end';
 
 // Vertical alignment
 export type VerticalAlignment = 'start' | 'center' | 'end' | 'stretch' | 'baseline';
@@ -31,6 +31,9 @@ export type TextMode = 'default' | 'muted';
 
 // Form validation state
 export type ValidationState = 'default' | 'success' | 'warning' | 'error';
+
+// Data visualization color variants
+export type DataVizVariant = 'success' | 'warning' | 'danger' | 'info';
 
 // Theme colors (1-9)
 export type ThemeColor = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;

@@ -1,0 +1,1058 @@
+COMMON PATTERNS
+===============
+
+CRITICAL: This is a Svelte 5 component library. ALL components use runes ($props, $state, $derived).
+Never use legacy Svelte syntax (export let, $:, <slot>).
+All CSS classes follow BEM naming: pa-[block]__[element]--[modifier].
+
+
+1. SNIPPET PATTERN (REPLACES SLOTS)
+-------------------------------------
+Svelte 5 replaces <slot> with {#snippet} blocks and {@render}.
+Components declare snippets as Snippet type props.
+
+Simple card with text title:
+
+<Card titleText="My Card">
+  <p>This is the body content (children snippet).</p>
+</Card>
+
+Card with all snippet sections:
+
+<Card titleText="User Details">
+  {#snippet header()}
+    <h3>Custom Header Content</h3>
+  {/snippet}
+
+  <p>Body content goes here as children.</p>
+
+  {#snippet footer()}
+    <Button variant="primary">Save Changes</Button>
+    <Button variant="secondary" isOutline>Cancel</Button>
+  {/snippet}
+</Card>
+
+Card with tools (actions in header):
+
+<Card titleText="Orders">
+  {#snippet tools()}
+    <Button size="sm" variant="primary">Add New</Button>
+    <Button size="sm" variant="secondary" isOutline>Export</Button>
+  {/snippet}
+
+  <Table isStriped>...</Table>
+</Card>
+
+Card with title icon:
+
+<Card titleText="Analytics">
+  {#snippet titleIcon()}
+    <svg>...</svg>
+  {/snippet}
+
+  <p>Dashboard content</p>
+</Card>
+
+Modal with header, body, footer:
+
+<Modal bind:show={isOpen} titleText="Confirm Delete">
+  <p>Are you sure you want to delete this item?</p>
+
+  {#snippet footer()}
+    <Button variant="danger" onclick={handleDelete}>Delete</Button>
+    <Button variant="secondary" isOutline onclick={() => isOpen = false}>Cancel</Button>
+  {/snippet}
+</Modal>
+
+
+2. BINDABLE VALUES
+-------------------
+Many components support two-way binding with $bindable() internally.
+
+Input binding:
+
+<script>
+  let name = $state('');
+  let email = $state('');
+  let bio = $state('');
+</script>
+
+<Input bind:value={name} placeholder="Full name" />
+<Input bind:value={email} type="email" placeholder="Email" />
+<Textarea bind:value={bio} placeholder="Tell us about yourself" />
+
+Checkbox and Radio binding:
+
+<script>
+  let agreed = $state(false);
+  let selectedPlan = $state('free');
+</script>
+
+<Checkbox bind:checked={agreed}>I agree to the terms</Checkbox>
+
+<Radio bind:checked={selectedPlan} name="plan" value="free">Free</Radio>
+<Radio bind:checked={selectedPlan} name="plan" value="pro">Pro</Radio>
+
+Modal show binding:
+
+<script>
+  let showModal = $state(false);
+</script>
+
+<Button onclick={() => showModal = true}>Open Modal</Button>
+<Modal bind:show={showModal} titleText="Settings">
+  <p>Modal content</p>
+</Modal>
+
+Toast show binding:
+
+<script>
+  let showToast = $state(false);
+</script>
+
+<Button onclick={() => showToast = true}>Show Notification</Button>
+<ToastContainer position="top-end">
+  {#if showToast}
+    <Toast variant="success" titleText="Done" messageText="Saved." bind:show={showToast} />
+  {/if}
+</ToastContainer>
+
+
+3. CLASS BUILDING ($derived PATTERN)
+-------------------------------------
+Every component uses $derived() with a function for dynamic class strings.
+This is the standard pattern -- replicate it in your own components.
+
+Component internal pattern:
+
+<script lang="ts">
+  interface Props {
+    variant?: 'primary' | 'secondary' | 'success' | 'danger';
+    size?: 'sm' | 'lg';
+    isOutline?: boolean;
+    isBlock?: boolean;
+    class?: string;
+    children?: import('svelte').Snippet;
+  }
+
+  let {
+    variant = 'primary',
+    size,
+    isOutline = false,
+    isBlock = false,
+    class: className = '',
+    children
+  }: Props = $props();
+
+  const classes = $derived(() => {
+    const base = ['pa-component'];
+    if (isOutline) {
+      base.push(`pa-component--outline-${variant}`);
+    } else {
+      base.push(`pa-component--${variant}`);
+    }
+    if (size) base.push(`pa-component--${size}`);
+    if (isBlock) base.push('pa-component--block');
+    if (className) base.push(className);
+    return base.join(' ');
+  });
+</script>
+
+<div class={classes()}>
+  {@render children?.()}
+</div>
+
+IMPORTANT: classes is a FUNCTION -- use class={classes()} not class={classes}.
+
+
+4. EVENT HANDLERS (LOWERCASE, NATIVE DOM STYLE)
+-------------------------------------------------
+Svelte 5 uses lowercase event handlers matching native DOM events.
+Use shorthand {onclick} when prop name matches attribute.
+
+Button click:
+
+<Button onclick={() => console.log('clicked')}>Click Me</Button>
+<Button onclick={handleSave} variant="success">Save</Button>
+
+Modal close:
+
+<Modal
+  bind:show={showModal}
+  titleText="Confirm"
+  onclose={() => console.log('modal closed')}
+>
+  <p>Are you sure?</p>
+</Modal>
+
+Input events:
+
+<Input
+  bind:value={search}
+  oninput={(e) => handleSearch(e.currentTarget.value)}
+  onblur={() => touched = true}
+  onfocus={() => console.log('focused')}
+  onkeydown={(e) => { if (e.key === 'Enter') submit(); }}
+/>
+
+Prevent close with callback:
+
+<Modal
+  bind:show={showForm}
+  beforeCloseCallback={() => {
+    if (hasUnsavedChanges) {
+      return false; // Prevents closing
+    }
+  }}
+  onclose={() => resetForm()}
+>
+  ...
+</Modal>
+
+
+5. GRID LAYOUT PATTERNS
+-------------------------
+The Grid system uses pa-row and column classes.
+
+Two-column layout:
+
+<Grid gap="md">
+  <Column md="1-3">
+    <Card titleText="Sidebar">
+      <p>Navigation</p>
+    </Card>
+  </Column>
+  <Column md="2-3">
+    <Card titleText="Content">
+      <p>Main content area</p>
+    </Card>
+  </Column>
+</Grid>
+
+Three-column dashboard:
+
+<Grid gap="md">
+  <Column md="1-3">
+    <Card isStat>
+      <Stat labelText="Users" number="1,234" changeText="+12%" changeDirection="positive" />
+    </Card>
+  </Column>
+  <Column md="1-3">
+    <Card isStat>
+      <Stat labelText="Revenue" number="$45K" changeText="+8%" changeDirection="positive" />
+    </Card>
+  </Column>
+  <Column md="1-3">
+    <Card isStat>
+      <Stat labelText="Errors" number="23" changeText="-5%" changeDirection="negative" />
+    </Card>
+  </Column>
+</Grid>
+
+Four-column stat cards:
+
+<Grid gap="md">
+  <Column sm="1-2" lg="1-4">
+    <Card isStat><Stat variant="hero" labelText="Total Users" number="12,345" changeText="+2.5%" changeDirection="positive" /></Card>
+  </Column>
+  <Column sm="1-2" lg="1-4">
+    <Card isStat><Stat variant="hero" labelText="Active Now" number="1,234" changeText="+15" changeDirection="positive" /></Card>
+  </Column>
+  <Column sm="1-2" lg="1-4">
+    <Card isStat><Stat variant="hero" labelText="Revenue" number="$89,432" changeText="+8.3%" changeDirection="positive" /></Card>
+  </Column>
+  <Column sm="1-2" lg="1-4">
+    <Card isStat><Stat variant="hero" labelText="Bounce Rate" number="24.5%" changeText="+1.2%" changeDirection="negative" /></Card>
+  </Column>
+</Grid>
+
+Equal height cards:
+
+<Grid gap="md" sameHeight>
+  <Column md="1-3"><Card titleText="Short">Content</Card></Column>
+  <Column md="1-3"><Card titleText="Tall">Lots of content here...</Card></Column>
+  <Column md="1-3"><Card titleText="Medium">Some content</Card></Column>
+</Grid>
+
+
+6. CARD WITH TABLE PATTERN
+----------------------------
+TableCard is purpose-built for tables -- no body padding, proper border-radius.
+
+Basic table card:
+
+<TableCard titleText="Users">
+  <Table isStriped isHover>
+    <thead>
+      <tr><th>Name</th><th>Email</th><th>Role</th></tr>
+    </thead>
+    <tbody>
+      {#each users as user}
+        <tr>
+          <td>{user.name}</td>
+          <td>{user.email}</td>
+          <td><Badge variant={user.role === 'admin' ? 'danger' : 'info'}>{user.role}</Badge></td>
+        </tr>
+      {/each}
+    </tbody>
+  </Table>
+</TableCard>
+
+Table card with actions and pagination:
+
+<TableCard titleText="Orders">
+  {#snippet actions()}
+    <Button size="sm" variant="primary">
+      {#snippet icon()}<svg>...</svg>{/snippet}
+      New Order
+    </Button>
+    <Button size="sm" variant="secondary" isOutline>Export</Button>
+  {/snippet}
+
+  <Table isStriped isHover isCompact>
+    <thead>
+      <tr><th>ID</th><th>Customer</th><th>Total</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      {#each orders as order}
+        <tr>
+          <td>{order.id}</td>
+          <td>{order.customer}</td>
+          <td>{order.total}</td>
+          <td><Badge variant={getStatusVariant(order.status)}>{order.status}</Badge></td>
+        </tr>
+      {/each}
+    </tbody>
+  </Table>
+
+  {#snippet footer()}
+    <Pager currentPage={page} totalPages={totalPages} onpagechange={(p) => page = p} />
+  {/snippet}
+</TableCard>
+
+Scrollable wide table:
+
+<TableCard titleText="Audit Log" isScrollable>
+  <Table isStriped size="xs">
+    <thead>
+      <tr><th>Timestamp</th><th>User</th><th>Action</th><th>Resource</th><th>IP</th><th>Details</th></tr>
+    </thead>
+    <tbody>...</tbody>
+  </Table>
+</TableCard>
+
+
+7. DASHBOARD STAT CARDS
+-------------------------
+
+Hero stats (big numbers with change indicators):
+
+<Grid gap="md">
+  <Column sm="1-2" lg="1-4">
+    <Card isStat>
+      <Stat variant="hero" labelText="Total Users" number="12,345" changeText="+2.5%" changeDirection="positive" />
+    </Card>
+  </Column>
+  <Column sm="1-2" lg="1-4">
+    <Card isStat>
+      <Stat variant="hero" labelText="Revenue" number="$89,432" changeText="+8.3%" changeDirection="positive" />
+    </Card>
+  </Column>
+</Grid>
+
+Default stats with icons:
+
+<Grid gap="md">
+  <Column md="1-3">
+    <Card isStat>
+      <Stat number="1,234" labelText="Active Users">
+        {#snippet icon()}<svg>...</svg>{/snippet}
+      </Stat>
+    </Card>
+  </Column>
+</Grid>
+
+Square stat variant:
+
+<Grid gap="md">
+  <Column md="1-4">
+    <Card isStat>
+      <Stat variant="square" color="primary" number="42" symbolText="%" labelText="Completion" />
+    </Card>
+  </Column>
+  <Column md="1-4">
+    <Card isStat>
+      <Stat variant="square" color="success" number="98" symbolText="%" labelText="Uptime" />
+    </Card>
+  </Column>
+</Grid>
+
+
+8. FORM WITH VALIDATION
+-------------------------
+
+Basic form layout:
+
+<Form>
+  <FormGroup isRequired>
+    <FormLabel>Full Name</FormLabel>
+    <Input bind:value={name} placeholder="Enter your name" required />
+  </FormGroup>
+
+  <FormGroup isRequired>
+    <FormLabel>Email</FormLabel>
+    <Input bind:value={email} type="email" placeholder="you@example.com" required />
+  </FormGroup>
+
+  <FormGroup>
+    <FormLabel>Bio</FormLabel>
+    <Textarea bind:value={bio} placeholder="Tell us about yourself" />
+  </FormGroup>
+
+  <Button type="submit" variant="primary">Submit</Button>
+</Form>
+
+Form with validation errors (using errors/touched props):
+
+<script>
+  let email = $state('');
+  let password = $state('');
+  let touchedFields = $state({ email: false, password: false });
+  let errors = $state({ email: [], password: [] });
+
+  function validate() {
+    errors.email = !email ? ['Email is required'] : [];
+    errors.password = password.length < 8 ? ['Password must be 8+ characters'] : [];
+  }
+</script>
+
+<Form>
+  <FormGroup state={touchedFields.email && errors.email.length ? 'error' : undefined} isRequired>
+    <FormLabel>Email</FormLabel>
+    <Input
+      bind:value={email}
+      type="email"
+      errors={errors.email}
+      touched={touchedFields.email}
+      onblur={() => { touchedFields.email = true; validate(); }}
+    />
+  </FormGroup>
+
+  <FormGroup state={touchedFields.password && errors.password.length ? 'error' : undefined} isRequired>
+    <FormLabel>Password</FormLabel>
+    <Input
+      bind:value={password}
+      type="password"
+      errors={errors.password}
+      touched={touchedFields.password}
+      onblur={() => { touchedFields.password = true; validate(); }}
+    />
+  </FormGroup>
+
+  <Button type="submit" variant="primary">Sign In</Button>
+</Form>
+
+Horizontal form layout:
+
+<Form>
+  <FormGroup isHorizontal>
+    <FormLabel>Name</FormLabel>
+    <Input bind:value={name} />
+  </FormGroup>
+  <FormGroup isHorizontal>
+    <FormLabel>Email</FormLabel>
+    <Input bind:value={email} type="email" />
+  </FormGroup>
+</Form>
+
+Form with error summary:
+
+<FormErrorSummary
+  errors={[
+    { field: 'Email', id: 'email-input', message: 'Email is required' },
+    { field: 'Password', id: 'password-input', message: 'Must be 8+ characters' }
+  ]}
+  show={submitted}
+/>
+
+Input group with addons:
+
+<InputGroup>
+  <InputGroupPrepend>https://</InputGroupPrepend>
+  <Input bind:value={url} placeholder="example.com" />
+  <InputGroupAppend>
+    <Button variant="primary" isInputGroupButton>Go</Button>
+  </InputGroupAppend>
+</InputGroup>
+
+
+9. LOADING STATES
+------------------
+
+Full page overlay:
+
+{#if loading}
+  <LoaderOverlay>
+    <Spinner size="lg" />
+  </LoaderOverlay>
+{/if}
+
+Card with loading state:
+
+<Card titleText="Users">
+  {#if loading}
+    <LoaderCenter>
+      <Loader type="dots" />
+    </LoaderCenter>
+  {:else}
+    <Table isStriped>
+      <thead><tr><th>Name</th><th>Email</th></tr></thead>
+      <tbody>
+        {#each users as user}
+          <tr><td>{user.name}</td><td>{user.email}</td></tr>
+        {/each}
+      </tbody>
+    </Table>
+  {/if}
+</Card>
+
+Button with loading state:
+
+<Button variant="primary" isLoading={saving} disabled={saving} onclick={handleSave}>
+  {saving ? 'Saving...' : 'Save Changes'}
+</Button>
+
+Loader variants:
+
+<Loader type="dots" />
+<Loader type="bars" />
+<Loader type="pulse" />
+<Loader type="ring" />
+<Loader type="wave" />
+<Spinner size="sm" />
+<Spinner size="lg" />
+
+
+10. TOAST NOTIFICATIONS
+------------------------
+
+Basic toast setup:
+
+<script>
+  let toasts = $state([]);
+
+  function addToast(variant, title, message) {
+    toasts = [...toasts, { id: Date.now(), variant, title, message, show: true }];
+  }
+
+  function removeToast(id) {
+    toasts = toasts.filter(t => t.id !== id);
+  }
+</script>
+
+<Button onclick={() => addToast('success', 'Saved', 'Changes saved.')}>Show Toast</Button>
+
+<ToastContainer position="top-end">
+  {#each toasts as toast (toast.id)}
+    <Toast
+      variant={toast.variant}
+      titleText={toast.title}
+      messageText={toast.message}
+      bind:show={toast.show}
+      onclose={() => removeToast(toast.id)}
+    />
+  {/each}
+</ToastContainer>
+
+Toast with progress bar:
+
+<Toast
+  variant="info"
+  titleText="Processing"
+  messageText="Your file is being uploaded..."
+  shouldShowProgress
+  duration={10000}
+/>
+
+Toast positions:
+
+<ToastContainer position="top-end">...</ToastContainer>      <!-- Top right (LTR) -->
+<ToastContainer position="top-start">...</ToastContainer>    <!-- Top left (LTR) -->
+<ToastContainer position="top-center">...</ToastContainer>   <!-- Top center -->
+<ToastContainer position="bottom-end">...</ToastContainer>   <!-- Bottom right (LTR) -->
+<ToastContainer position="bottom-start">...</ToastContainer> <!-- Bottom left (LTR) -->
+<ToastContainer position="bottom-center">...</ToastContainer><!-- Bottom center -->
+
+
+11. DIALOG SERVICE (PROGRAMMATIC)
+----------------------------------
+Promise-based dialogs -- no component placement needed (just DialogContainer).
+
+Setup (once in layout):
+
+<script>
+  import { DialogContainer } from '@keenmate/svelte-pure-admin';
+</script>
+
+<DialogContainer />
+
+Usage anywhere in app:
+
+<script>
+  import { dialogService } from '@keenmate/svelte-pure-admin';
+
+  async function handleDelete() {
+    const confirmed = await dialogService.confirm({
+      title: 'Delete Item?',
+      message: 'This action cannot be undone.',
+      variant: 'danger',
+      confirmText: 'Delete',
+      cancelText: 'Keep It'
+    });
+
+    if (confirmed) {
+      await deleteItem();
+    }
+  }
+
+  async function showAlert() {
+    await dialogService.alert({
+      title: 'Success!',
+      message: 'The operation completed.',
+      variant: 'success'
+    });
+  }
+
+  async function askForName() {
+    const name = await dialogService.prompt({
+      title: 'Enter Name',
+      message: 'What should we call this item?',
+      placeholder: 'Item name...',
+      validator: (value) => value.length >= 3 ? true : 'Name must be 3+ characters'
+    });
+
+    if (name !== null) {
+      // User submitted a value
+      console.log('Name:', name);
+    }
+  }
+
+  async function customDialog() {
+    const result = await dialogService.custom({
+      title: 'Choose Action',
+      message: 'What would you like to do with this file?',
+      buttons: [
+        { label: 'Download', value: 'download', variant: 'primary' },
+        { label: 'Share', value: 'share', variant: 'info', isOutline: true },
+        { label: 'Delete', value: 'delete', variant: 'danger', isOutline: true },
+        { label: 'Cancel', value: 'cancel', variant: 'secondary' }
+      ],
+      dismissValue: 'cancel'
+    });
+
+    if (result === 'download') { /* ... */ }
+  }
+</script>
+
+
+12. DATA DISPLAY PATTERNS
+---------------------------
+
+Field/Fields (label-value pairs):
+
+<Fields cols={2} isHorizontal isBordered>
+  <Field labelText="Name" valueText="John Doe" />
+  <Field labelText="Email" valueText="john@example.com" copyMode="btn" />
+  <Field labelText="Role" valueText="Admin" valueVariant="success" />
+  <Field labelText="Status" valueText="Active" />
+</Fields>
+
+Fields with different layouts:
+
+<!-- Table layout (consistent label widths) -->
+<Fields isTable isBordered>
+  <Field labelText="Created" valueText="2024-01-15" />
+  <Field labelText="Modified" valueText="2024-03-20" />
+  <Field labelText="Owner" valueText="Jane Smith" />
+</Fields>
+
+<!-- Linear layout (ultra-clean) -->
+<Fields isLinear>
+  <Field labelText="Type" valueText="Invoice" />
+  <Field labelText="Amount" valueText="$1,234.56" />
+</Fields>
+
+<!-- Chips layout (Notion-style pills) -->
+<Fields isChips>
+  <Field labelText="Tags" valueText="Urgent" valueVariant="danger" />
+  <Field labelText="Priority" valueText="High" valueVariant="warning" />
+</Fields>
+
+Description table (Ant Design style):
+
+<DescTable cols={2}>
+  <DescTableItem labelText="Product">Cloud Hosting</DescTableItem>
+  <DescTableItem labelText="Billing">Monthly</DescTableItem>
+  <DescTableItem labelText="Price">$29.99</DescTableItem>
+  <DescTableItem labelText="Status"><Badge variant="success">Active</Badge></DescTableItem>
+</DescTable>
+
+Dot leaders (invoice/menu style):
+
+<DotLeaders>
+  <DotLeadersItem labelText="Web Hosting" valueText="$29.99" />
+  <DotLeadersItem labelText="SSL Certificate" valueText="$9.99" />
+  <DotLeadersItem labelText="Domain Name" valueText="$12.00" />
+  <DotLeadersItem labelText="Total" valueText="$51.98" isTotal />
+</DotLeaders>
+
+Prop card (Stripe-style):
+
+<PropCard titleText="Payment Details">
+  <PropCardRow labelText="Card" valueText="**** 4242" />
+  <PropCardRow labelText="Expiry" valueText="12/2025" />
+  <PropCardRow labelText="Amount" valueText="$99.00" isBold />
+</PropCard>
+
+Banded rows:
+
+<Banded>
+  <BandedRow labelText="CPU">Intel i9-13900K</BandedRow>
+  <BandedRow labelText="RAM">64 GB DDR5</BandedRow>
+  <BandedRow labelText="Storage">2 TB NVMe SSD</BandedRow>
+</Banded>
+
+
+13. DATA VISUALIZATION PATTERNS
+---------------------------------
+
+Progress bar:
+
+<Progress value={75} labelText="Upload Progress" valueText="75%" variant="success" />
+<Progress value={30} size="sm" isRounded isStriped isAnimated />
+
+Progress ring:
+
+<ProgressRing value={85} size="lg" variant="success" />
+
+Gauge:
+
+<Gauge value={72} minText="0" maxText="100" variant="success" />
+<Gauge value={45} isZones />
+
+Stacked bar with legend:
+
+<StackedBar isRounded>
+  <StackedBarSegment variant="success" value={45} />
+  <StackedBarSegment variant="warning" value={30} />
+  <StackedBarSegment variant="danger" value={25} />
+</StackedBar>
+<StackedBarLegend>
+  <StackedBarLegendItem variant="success" labelText="Passed" valueText="45%" />
+  <StackedBarLegendItem variant="warning" labelText="Warning" valueText="30%" />
+  <StackedBarLegendItem variant="danger" labelText="Failed" valueText="25%" />
+</StackedBarLegend>
+
+Sparkline:
+
+<Sparkline>
+  {#each dailyValues as val}
+    <SparklineBar value={val} />
+  {/each}
+</Sparkline>
+
+Heatmap:
+
+<Heatmap variant="success" cols={7}>
+  {#each contributions as level}
+    <HeatmapCell {level} />
+  {/each}
+</Heatmap>
+<HeatmapLegend variant="success" lessText="Less" moreText="More" />
+
+Bar list:
+
+<BarList variant="info">
+  <BarListItem labelText="Chrome" valueText="45%" value={45} />
+  <BarListItem labelText="Firefox" valueText="25%" value={25} />
+  <BarListItem labelText="Safari" valueText="20%" value={20} />
+  <BarListItem labelText="Edge" valueText="10%" value={10} />
+</BarList>
+
+
+14. COMPLETE DASHBOARD PAGE
+-----------------------------
+
+<script>
+  import {
+    Layout, LayoutInner, LayoutContent, Navbar, Sidebar, SidebarItem,
+    Main, Footer, Grid, Column, Card, Stat, TableCard, Table,
+    Badge, Button, Progress, ToastContainer, Toast
+  } from '@keenmate/svelte-pure-admin';
+  import '@keenmate/pure-admin-core/css';
+
+  let users = $state([
+    { name: 'Alice', email: 'alice@co.com', role: 'Admin', status: 'Active' },
+    { name: 'Bob', email: 'bob@co.com', role: 'User', status: 'Inactive' }
+  ]);
+</script>
+
+<Layout size="xl">
+  <Navbar titleText="Dashboard">
+    {#snippet tools()}
+      <Button size="sm" variant="primary">New</Button>
+    {/snippet}
+  </Navbar>
+
+  <LayoutInner>
+    <Sidebar>
+      <SidebarItem href="/" labelText="Dashboard" isActive />
+      <SidebarItem href="/users" labelText="Users" />
+      <SidebarItem href="/settings" labelText="Settings" />
+    </Sidebar>
+
+    <Main>
+      <LayoutContent>
+        <!-- Stats Row -->
+        <Grid gap="md">
+          <Column sm="1-2" lg="1-4">
+            <Card isStat>
+              <Stat variant="hero" labelText="Users" number="1,234" changeText="+12%" changeDirection="positive" />
+            </Card>
+          </Column>
+          <Column sm="1-2" lg="1-4">
+            <Card isStat>
+              <Stat variant="hero" labelText="Revenue" number="$45K" changeText="+8%" changeDirection="positive" />
+            </Card>
+          </Column>
+          <Column sm="1-2" lg="1-4">
+            <Card isStat>
+              <Stat variant="hero" labelText="Orders" number="567" changeText="-3%" changeDirection="negative" />
+            </Card>
+          </Column>
+          <Column sm="1-2" lg="1-4">
+            <Card isStat>
+              <Stat variant="hero" labelText="Uptime" number="99.9%" changeText="0%" changeDirection="neutral" />
+            </Card>
+          </Column>
+        </Grid>
+
+        <!-- Charts and Progress -->
+        <Grid gap="md" class="mt-4">
+          <Column md="2-3">
+            <Card titleText="Storage Usage">
+              <Progress value={75} labelText="Disk Space" valueText="75 GB / 100 GB" variant="info" />
+              <Progress value={45} labelText="Bandwidth" valueText="45 GB / 100 GB" variant="success" class="mt-3" />
+              <Progress value={90} labelText="Memory" valueText="90%" variant="danger" class="mt-3" />
+            </Card>
+          </Column>
+          <Column md="1-3">
+            <Card titleText="Quick Stats">
+              <Fields isTable isBordered>
+                <Field labelText="CPU" valueText="32%" />
+                <Field labelText="Memory" valueText="8.2 GB" />
+                <Field labelText="Disk I/O" valueText="125 MB/s" />
+                <Field labelText="Network" valueText="2.4 Gbps" />
+              </Fields>
+            </Card>
+          </Column>
+        </Grid>
+
+        <!-- Users Table -->
+        <div class="mt-4">
+          <TableCard titleText="Recent Users">
+            {#snippet actions()}
+              <Button size="sm" variant="primary">Add User</Button>
+            {/snippet}
+
+            <Table isStriped isHover>
+              <thead>
+                <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr>
+              </thead>
+              <tbody>
+                {#each users as user}
+                  <tr>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td><Badge variant="info" size="sm">{user.role}</Badge></td>
+                    <td><Badge variant={user.status === 'Active' ? 'success' : 'secondary'} size="sm">{user.status}</Badge></td>
+                  </tr>
+                {/each}
+              </tbody>
+            </Table>
+          </TableCard>
+        </div>
+      </LayoutContent>
+
+      <Footer>
+        <p>2024 My App. All rights reserved.</p>
+      </Footer>
+    </Main>
+  </LayoutInner>
+</Layout>
+
+<ToastContainer position="top-end" />
+
+
+15. DETAIL VIEW / PROFILE PAGE
+--------------------------------
+
+<Grid gap="md">
+  <Column md="1-3">
+    <Card titleText="Profile">
+      <Fields isTable isBordered>
+        <Field labelText="Name" valueText="John Doe" />
+        <Field labelText="Email" valueText="john@example.com" copyMode="hover" />
+        <Field labelText="Phone" valueText="+1 555-0123" copyMode="btn" />
+        <Field labelText="Role" valueText="Administrator" valueVariant="success" />
+        <Field labelText="Status" valueText="Active" valueVariant="success" />
+      </Fields>
+    </Card>
+  </Column>
+
+  <Column md="2-3">
+    <Card titleText="Activity">
+      <Timeline variant="simple">
+        <TimelineItem variant="success" time="2 hours ago">
+          Updated profile settings
+        </TimelineItem>
+        <TimelineItem variant="info" time="Yesterday">
+          Logged in from new device
+        </TimelineItem>
+        <TimelineItem variant="warning" time="3 days ago">
+          Changed password
+        </TimelineItem>
+      </Timeline>
+    </Card>
+  </Column>
+</Grid>
+
+
+16. KEYBOARD SHORTCUTS
+-----------------------
+
+<script>
+  import { shortcutRegistry, ShortcutHelpDialog } from '@keenmate/svelte-pure-admin';
+  import { onMount } from 'svelte';
+
+  let showHelp = $state(false);
+
+  onMount(() => {
+    const unregister = shortcutRegistry.register({
+      id: 'search',
+      key: 'k',
+      modifiers: { ctrl: true },
+      description: 'Open search',
+      category: 'Navigation',
+      action: () => openSearch()
+    });
+
+    shortcutRegistry.register({
+      id: 'help',
+      key: '?',
+      description: 'Show keyboard shortcuts',
+      category: 'General',
+      action: () => { showHelp = true; }
+    });
+
+    return unregister;
+  });
+</script>
+
+<ShortcutHelpDialog bind:show={showHelp} />
+
+
+17. COMMAND PALETTE
+--------------------
+
+<script>
+  import { CommandPalette } from '@keenmate/svelte-pure-admin';
+
+  let showPalette = $state(false);
+
+  const commands = [
+    {
+      shortcut: '/r',
+      name: 'Generate Report',
+      description: 'Create a new report',
+      icon: '📊',
+      steps: [
+        {
+          id: 'type',
+          placeholder: 'Select report type...',
+          getOptions: () => [
+            { id: 'sales', label: 'Sales Report', value: 'sales' },
+            { id: 'users', label: 'Users Report', value: 'users' }
+          ]
+        }
+      ],
+      onComplete: (selections) => {
+        const type = selections[0]?.option?.value;
+        generateReport(type);
+      }
+    }
+  ];
+
+  const contexts = [
+    {
+      shortcut: ':u',
+      name: 'Users',
+      description: 'Search users',
+      icon: '👤',
+      onSearch: async (query) => {
+        const results = await searchUsers(query);
+        return results.map(u => ({
+          id: u.id, title: u.name, subtitle: u.email
+        }));
+      },
+      onSelect: (result) => navigateTo(`/users/${result.id}`)
+    }
+  ];
+</script>
+
+<CommandPalette bind:show={showPalette} {commands} {contexts} />
+
+
+18. BATCH RPC (MULTIPLE API CALLS IN ONE REQUEST)
+---------------------------------------------------
+
+<script>
+  import { createBatch, createHttpTransport, pureDataConfig } from '@keenmate/svelte-pure-admin';
+
+  const transport = createHttpTransport('/api/rpc/batch', pureDataConfig, {
+    getHeaders: () => ({
+      'Authorization': `Bearer ${authToken}`
+    })
+  });
+
+  async function loadDashboard() {
+    const batch = createBatch(transport);
+
+    const stats = batch.add('dashboard.getStats');
+    const users = batch.add('users.getRecent', { limit: 10 });
+    const orders = batch.add('orders.getRecent', { limit: 5 });
+
+    await batch.execute(); // 1 HTTP request instead of 3
+
+    dashboardStats = await stats;
+    recentUsers = await users;
+    recentOrders = await orders;
+  }
+</script>
+
+
+CRITICAL REMINDERS
+-------------------
+- Svelte 5 ONLY: $props(), $state(), $derived(), $bindable(), $effect()
+- NO legacy: no 'export let', no '$:', no '<slot>'
+- Snippets replace slots: {#snippet name()}...{/snippet}, {@render name?.()}
+- Event handlers: lowercase on* (onclick, onclose, not onClick, onClose)
+- Class building: $derived(() => { ... }) returns a FUNCTION, use class={classes()}
+- BEM classes: pa-[block]__[element]--[modifier]
+- RTL-aware: use start/end not left/right (toast positions, alignment)
+
+NEXT STEPS
+----------
+- i18n and translations --> i18n.txt
+- Naming conventions --> naming-conventions.txt
+- TypeScript types --> typescript-types.txt

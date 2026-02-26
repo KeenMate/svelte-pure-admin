@@ -69,13 +69,19 @@
 			return () => clearTimeout(timer);
 		} else if (duration > 0 && shouldShowProgress) {
 			// Auto-dismiss with progress bar animation
-			progressWidth = 0;
+			// Delay setting to 0 so browser paints the initial 100% first
+			const frame = requestAnimationFrame(() => {
+				progressWidth = 0;
+			});
 
 			const timer = setTimeout(() => {
 				handleClose();
 			}, duration);
 
-			return () => clearTimeout(timer);
+			return () => {
+				cancelAnimationFrame(frame);
+				clearTimeout(timer);
+			};
 		}
 	});
 
@@ -96,7 +102,7 @@
 		<div class="pa-toast__message">{messageText}</div>
 	</div>
 
-	<button class="pa-toast__close" onclick={handleClose} aria-label={$_('pureAdmin.common.buttons.close')}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+	<button class="pa-toast__close" onclick={handleClose} aria-label={$_('pureAdmin.buttons.close')}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
 
 	{#if shouldShowProgress && duration > 0}
 		<div

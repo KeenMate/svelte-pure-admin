@@ -70,7 +70,7 @@
 	});
 </script>
 
-<span class={wrapperClasses()}>
+<label class={wrapperClasses()}>
 	<input
 		bind:this={inputElement}
 		type="checkbox"
@@ -82,4 +82,4 @@
 		{onchange}
 	/>
 	<span class="pa-checkbox__box"></span>
-</span>
+</label>

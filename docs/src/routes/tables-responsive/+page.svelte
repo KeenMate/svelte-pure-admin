@@ -46,7 +46,7 @@
 
 <!-- Basic Responsive Table -->
 <Card titleText="Basic Responsive Table" subtitleText="Simple user data isTable with automatic mobile transformation" hasPadding={false} class="mb-4">
-	<table class="pa-table pa-table--responsive">
+	<Table isResponsive>
 		<thead>
 			<tr>
 				<th>ID</th>
@@ -86,12 +86,12 @@
 				<td data-label="Status"><Badge variant="danger">Inactive</Badge></td>
 			</tr>
 		</tbody>
-	</table>
+	</Table>
 </Card>
 
 <!-- Product Table -->
 <Card titleText="Product Catalog" subtitleText="E-commerce product isTable with images, prices, and stock status" hasPadding={false} class="mb-4">
-	<table class="pa-table pa-table--responsive pa-table--striped">
+	<Table isResponsive isStriped>
 		<thead>
 			<tr>
 				<th class="col-auto">Actions</th>
@@ -156,12 +156,12 @@
 				<td data-label="Rating">⭐⭐⭐⭐ (4.7)</td>
 			</tr>
 		</tbody>
-	</table>
+	</Table>
 </Card>
 
 <!-- Orders Table -->
 <Card titleText="Recent Orders" subtitleText="Order management isTable with dates, customers, and amounts" hasPadding={false} class="mb-4">
-	<table class="pa-table pa-table--responsive">
+	<Table isResponsive>
 		<thead>
 			<tr>
 				<th class="col-auto">Actions</th>
@@ -219,7 +219,7 @@
 				<td data-label="Status"><Badge variant="danger">Cancelled</Badge></td>
 			</tr>
 		</tbody>
-	</table>
+	</Table>
 </Card>
 
 <!-- Code Example -->

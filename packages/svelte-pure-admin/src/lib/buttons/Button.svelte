@@ -51,6 +51,8 @@
 		icon?: import('svelte').Snippet;
 		/** Children (button content) */
 		children?: import('svelte').Snippet;
+		/** Rest props (data-*, aria-*, etc.) */
+		[key: string]: any;
 	}
 
 	let {
@@ -72,7 +74,8 @@
 		titleText,
 		class: className = '',
 		icon,
-		children
+		children,
+		...restProps
 	}: Props = $props();
 
 	// Build class string
@@ -117,6 +120,7 @@
 		class:disabled={disabled || isLoading}
 		{onclick}
 		data-ripple={isRipple ? true : undefined}
+		{...restProps}
 	>
 		{#if isLoading}
 			<span class="pa-btn__spinner"></span>
@@ -141,6 +145,7 @@
 		class={classes()}
 		{onclick}
 		data-ripple={isRipple ? true : undefined}
+		{...restProps}
 	>
 		{#if isLoading}
 			<span class="pa-btn__spinner"></span>

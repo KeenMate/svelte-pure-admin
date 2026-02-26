@@ -1,0 +1,863 @@
+LAYOUT COMPONENTS
+=================
+
+CRITICAL: This is a Svelte 5 component library (@keenmate/svelte-pure-admin).
+- All components use Svelte 5 runes ($props, $state, $derived)
+- Content sections use Snippets ({#snippet}), NOT slots (<slot>)
+- BEM class names internally (pa-*) - you never write CSS classes manually
+- Import from '@keenmate/svelte-pure-admin'
+
+INSTALLATION
+------------
+npm install @keenmate/svelte-pure-admin
+
+CSS must be imported once in your app (e.g., +layout.svelte):
+
+<script>
+  import '@keenmate/pure-admin-core/css';
+</script>
+
+LAYOUT STRUCTURE OVERVIEW
+-------------------------
+The layout system uses a nested hierarchy:
+
+Layout > LayoutInner > Sidebar + LayoutContent > Main + Footer
+
+Every Pure Admin app follows this pattern:
+
+<Layout>
+  <Navbar />
+  <LayoutInner>
+    <Sidebar />
+    <LayoutContent>
+      <Main>
+        ...page content...
+      </Main>
+      <Footer />
+    </LayoutContent>
+  </LayoutInner>
+</Layout>
+
+
+COMPLETE LAYOUT SETUP EXAMPLE
+------------------------------
+
+<script lang="ts">
+  import {
+    Layout, LayoutInner, LayoutContent,
+    Navbar, Sidebar, SidebarItem,
+    Main, Footer, Grid, Column, Section
+  } from '@keenmate/svelte-pure-admin';
+  import { page } from '$app/stores';
+
+  let sidebarCollapsed = $state(false);
+
+  function toggleSidebar() {
+    sidebarCollapsed = !sidebarCollapsed;
+    document.body.classList.toggle('sidebar-hidden', sidebarCollapsed);
+  }
+</script>
+
+<Layout>
+  <Navbar
+    showBurger={true}
+    burgerActive={!sidebarCollapsed}
+    onburgerclick={toggleSidebar}
+  >
+    {#snippet brand()}
+      <img src="/logo.svg" alt="My App" />
+      <h1>My App</h1>
+    {/snippet}
+
+    {#snippet navEnd()}
+      <li><a href="/settings">Settings</a></li>
+      <li><a href="/profile">Profile</a></li>
+    {/snippet}
+  </Navbar>
+
+  <LayoutInner>
+    <Sidebar>
+      <SidebarItem href="/" labelText="Dashboard" active={$page.url.pathname === '/'}>
+        {#snippet icon()}<i class="fa fa-home"></i>{/snippet}
+      </SidebarItem>
+      <SidebarItem href="/users" labelText="Users" active={$page.url.pathname.startsWith('/users')}>
+        {#snippet icon()}<i class="fa fa-users"></i>{/snippet}
+      </SidebarItem>
+      <SidebarItem labelText="Reports" hasSubmenu={true}>
+        {#snippet icon()}<i class="fa fa-chart-bar"></i>{/snippet}
+        {#snippet submenu()}
+          <SidebarItem href="/reports/sales" labelText="Sales" active={$page.url.pathname === '/reports/sales'} />
+          <SidebarItem href="/reports/traffic" labelText="Traffic" active={$page.url.pathname === '/reports/traffic'} />
+        {/snippet}
+      </SidebarItem>
+    </Sidebar>
+
+    <LayoutContent>
+      <Main>
+        <Section titleText="Welcome">
+          <p>Your page content here.</p>
+        </Section>
+      </Main>
+
+      <Footer>
+        {#snippet start()}
+          <p>Copyright 2026 My Company</p>
+        {/snippet}
+        {#snippet end()}
+          <p>v1.0.0</p>
+        {/snippet}
+      </Footer>
+    </LayoutContent>
+  </LayoutInner>
+</Layout>
+
+
+LAYOUT
+------
+Top-level layout wrapper. Renders <div class="pa-layout">.
+
+Props:
+  class?: string          Additional CSS classes
+  children?: Snippet      Content (Navbar + LayoutInner)
+
+Width constraints are set via body classes, not on this component:
+  document.body.classList.add('pa-container-md');   // sm, md, lg, xl, 2xl
+
+<Layout>
+  ...
+</Layout>
+
+<Layout class="my-custom-layout">
+  ...
+</Layout>
+
+
+LAYOUT INNER
+-------------
+Wrapper for Sidebar + LayoutContent. Renders <div class="pa-layout__inner">.
+
+Props:
+  class?: string          Additional CSS classes
+  children?: Snippet      Content (Sidebar + LayoutContent)
+
+<LayoutInner>
+  <Sidebar>...</Sidebar>
+  <LayoutContent>...</LayoutContent>
+</LayoutInner>
+
+
+LAYOUT CONTENT
+--------------
+Wrapper for main content area (excludes sidebar). Renders <div class="pa-layout__content">.
+
+Props:
+  class?: string          Additional CSS classes
+  children?: Snippet      Content (Main + Footer)
+
+<LayoutContent>
+  <Main>...</Main>
+  <Footer />
+</LayoutContent>
+
+
+NAVBAR
+------
+Header/navigation bar. Renders <nav class="pa-navbar"> with three-section layout:
+  - pa-header__start (burger, brand, start nav)
+  - pa-header__center (page title, search)
+  - pa-header__end (end nav, notifications, profile)
+
+Auto-config: When no brand snippet is provided, uses config.app.name and config.app.logo
+from PureAdminProvider context.
+
+Props:
+  class?: string              Additional CSS classes for outer nav
+  innerClass?: string         Additional CSS classes for inner div
+  brand?: Snippet             Brand section (logo + title)
+  navStart?: Snippet          Start navigation links (renders inside <ul>)
+  search?: Snippet            Search bar (center section)
+  navEnd?: Snippet            End navigation links (renders inside <ul>)
+  title?: Snippet             Page title (center section)
+  notifications?: Snippet     Notifications area (end section)
+  profile?: Snippet           Profile button (end section)
+  onburgerclick?: () => void  Burger menu click handler
+  showBurger?: boolean        Show burger menu button (default: false)
+  burgerActive?: boolean      Burger in active X state (default: false)
+  children?: Snippet          Fallback content
+
+Minimal navbar:
+
+<Navbar />
+
+Navbar with brand and burger:
+
+<Navbar showBurger={true} burgerActive={!collapsed} onburgerclick={toggle}>
+  {#snippet brand()}
+    <img src="/logo.svg" alt="Logo" />
+    <h1>App Name</h1>
+  {/snippet}
+</Navbar>
+
+Navbar with nav links on both sides:
+
+<Navbar showBurger={true} onburgerclick={toggleSidebar}>
+  {#snippet brand()}
+    <h1>Admin Panel</h1>
+  {/snippet}
+
+  {#snippet navStart()}
+    <li><a href="/dashboard">Dashboard</a></li>
+    <li><a href="/analytics">Analytics</a></li>
+  {/snippet}
+
+  {#snippet title()}
+    <h2>Page Title</h2>
+  {/snippet}
+
+  {#snippet navEnd()}
+    <li><a href="/help">Help</a></li>
+    <li><a href="/account">Account</a></li>
+  {/snippet}
+
+  {#snippet notifications()}
+    <button class="pa-header__notification-btn">3</button>
+  {/snippet}
+
+  {#snippet profile()}
+    <button class="pa-header__profile-btn">JD</button>
+  {/snippet}
+</Navbar>
+
+
+SIDEBAR
+-------
+Side navigation panel. Renders <aside class="pa-layout__sidebar"> with <nav class="pa-sidebar__nav"><ul>.
+
+Props:
+  mode?: 'sticky' | 'icon-collapse'    Sidebar mode modifier
+  isResizable?: boolean                 Enable drag-to-resize (default: false)
+  class?: string                        Additional CSS classes
+  children?: Snippet                    SidebarItem components
+
+Resizable sidebar features:
+  - Drag handle appears on the right edge
+  - Width saved to localStorage, restored on load
+  - Min 180px, max 500px
+  - Double-click handle to reset to default (288px)
+
+Basic sidebar:
+
+<Sidebar>
+  <SidebarItem href="/" labelText="Home" />
+  <SidebarItem href="/about" labelText="About" />
+</Sidebar>
+
+Resizable sidebar:
+
+<Sidebar isResizable={true}>
+  <SidebarItem href="/" labelText="Dashboard" />
+</Sidebar>
+
+Icon-collapse mode (shows only icons when collapsed):
+
+<Sidebar mode="icon-collapse">
+  <SidebarItem href="/" labelText="Home">
+    {#snippet icon()}<i class="fa fa-home"></i>{/snippet}
+  </SidebarItem>
+</Sidebar>
+
+To collapse/show sidebar, toggle body class:
+
+document.body.classList.toggle('sidebar-hidden');
+
+
+SIDEBAR ITEM
+-------------
+Individual sidebar navigation item. Renders <li class="pa-sidebar__item">.
+Supports links, buttons, and collapsible submenus with localStorage persistence.
+
+Props:
+  href?: string                       Item URL (renders <a>)
+  active?: boolean                    Is active/selected (default: false)
+  icon?: Snippet                      Icon content
+  labelText: string                   Label text (REQUIRED)
+  hasSubmenu?: boolean                Has expandable submenu (default: false)
+  submenu?: Snippet                   Submenu items
+  onclick?: (event: MouseEvent) => void   Click handler
+  class?: string                      Additional CSS classes
+  shouldKeepIconSpace?: boolean       Keep icon space even without icon (default: true)
+
+When href is not provided and hasSubmenu is false, renders a <button>.
+When hasSubmenu is true, renders a toggle <button> with chevron.
+Submenu open/close state is saved to localStorage using labelText as key.
+
+Simple link item:
+
+<SidebarItem href="/dashboard" labelText="Dashboard" active={$page.url.pathname === '/dashboard'} />
+
+Item with icon:
+
+<SidebarItem href="/users" labelText="Users" active={$page.url.pathname.startsWith('/users')}>
+  {#snippet icon()}<i class="fa fa-users"></i>{/snippet}
+</SidebarItem>
+
+Item with collapsible submenu:
+
+<SidebarItem labelText="Settings" hasSubmenu={true}>
+  {#snippet icon()}<i class="fa fa-cog"></i>{/snippet}
+  {#snippet submenu()}
+    <SidebarItem href="/settings/general" labelText="General" />
+    <SidebarItem href="/settings/security" labelText="Security" />
+    <SidebarItem href="/settings/notifications" labelText="Notifications" />
+  {/snippet}
+</SidebarItem>
+
+Button item (no href):
+
+<SidebarItem labelText="Logout" onclick={() => logout()}>
+  {#snippet icon()}<i class="fa fa-sign-out"></i>{/snippet}
+</SidebarItem>
+
+Active state with SvelteKit page store:
+
+<script>
+  import { page } from '$app/stores';
+</script>
+
+<SidebarItem href="/users" labelText="Users" active={$page.url.pathname.startsWith('/users')}>
+  {#snippet icon()}<i class="fa fa-users"></i>{/snippet}
+</SidebarItem>
+
+Without icon space (for sub-items that do not need alignment):
+
+<SidebarItem href="/item" labelText="No Icon" shouldKeepIconSpace={false} />
+
+
+MAIN
+----
+Main content area. Renders <main class="pa-layout__main">.
+By default wraps content in <div class="pa-layout__main__inner">.
+
+Props:
+  useInner?: boolean       Use inner wrapper div (default: true)
+  class?: string           Additional CSS classes for main
+  innerClass?: string      Additional CSS classes for inner wrapper
+  children?: Snippet       Page content
+
+<Main>
+  <h1>Page Title</h1>
+  <p>Content goes here.</p>
+</Main>
+
+Without inner wrapper:
+
+<Main useInner={false}>
+  <div class="custom-wrapper">Content</div>
+</Main>
+
+With custom classes:
+
+<Main class="my-main" innerClass="my-inner">
+  <p>Styled content</p>
+</Main>
+
+
+FOOTER
+------
+Footer component. Renders <footer class="pa-layout__footer">.
+Three-section layout: start (copyright), center, end (version/links).
+Auto-config: When no start snippet is provided, uses config.app.copyright from PureAdminProvider.
+
+Props:
+  class?: string           Additional CSS classes
+  start?: Snippet          Start section (copyright; left in LTR, right in RTL)
+  center?: Snippet         Center section (optional)
+  end?: Snippet            End section (version, links; right in LTR, left in RTL)
+  endVertical?: boolean    Stack end section items vertically (default: false)
+  children?: Snippet       Legacy fallback (renders all content directly)
+
+Basic footer:
+
+<Footer>
+  {#snippet start()}
+    <p>Copyright 2026 My Company</p>
+  {/snippet}
+  {#snippet end()}
+    <p>v2.1.0</p>
+  {/snippet}
+</Footer>
+
+Three-section footer:
+
+<Footer>
+  {#snippet start()}
+    <p>Copyright 2026</p>
+  {/snippet}
+  {#snippet center()}
+    <a href="/privacy">Privacy</a> | <a href="/terms">Terms</a>
+  {/snippet}
+  {#snippet end()}
+    <p>Built with Pure Admin</p>
+  {/snippet}
+</Footer>
+
+Footer with vertical end section:
+
+<Footer endVertical={true}>
+  {#snippet start()}
+    <p>My App</p>
+  {/snippet}
+  {#snippet end()}
+    <p>Version 1.0.0</p>
+    <p>Build 2026-02-22</p>
+  {/snippet}
+</Footer>
+
+
+GRID
+----
+Row container for the column grid system. Renders <div class="pa-row">.
+Uses CSS flexbox with modifier classes for alignment, gutters, and gap.
+
+Props:
+  noGutter?: boolean                        Remove spacing between columns (default: false)
+  justify?: 'center' | 'end' | 'between' | 'around'    Horizontal alignment
+  align?: 'top' | 'middle' | 'bottom'      Vertical alignment
+  sameHeight?: boolean                      Force all columns to equal height (default: false)
+  gap?: '0' | 'xs' | 'sm' | 'md' | 'base' | 'lg' | 'xl' | '2xl' | number
+                                            Gap between items (semantic name or numeric 1-20)
+  class?: string                            Additional CSS classes
+  style?: string                            Inline styles
+  children?: Snippet                        Column components
+
+Basic grid:
+
+<Grid>
+  <Column size="50">Left half</Column>
+  <Column size="50">Right half</Column>
+</Grid>
+
+Three equal columns:
+
+<Grid>
+  <Column size="1-3">One</Column>
+  <Column size="1-3">Two</Column>
+  <Column size="1-3">Three</Column>
+</Grid>
+
+Centered content with gap:
+
+<Grid justify="center" gap="md">
+  <Column size="1-3">Centered</Column>
+</Grid>
+
+No gutters:
+
+<Grid noGutter={true}>
+  <Column size="50">Flush left</Column>
+  <Column size="50">Flush right</Column>
+</Grid>
+
+Same-height columns (for card grids):
+
+<Grid sameHeight={true} gap="lg">
+  <Column size="1-3"><Card>Short</Card></Column>
+  <Column size="1-3"><Card>Tall card with more content</Card></Column>
+  <Column size="1-3"><Card>Medium</Card></Column>
+</Grid>
+
+Vertical and horizontal alignment:
+
+<Grid align="middle" justify="between">
+  <Column size="30">Short</Column>
+  <Column size="30">Tall content here</Column>
+</Grid>
+
+Numeric gap (1-20):
+
+<Grid gap={4}>
+  <Column size="50">Left</Column>
+  <Column size="50">Right</Column>
+</Grid>
+
+
+COLUMN
+------
+Grid column with responsive breakpoints. Renders <div class="pa-col-*">.
+
+Supports percentage widths (5% increments: 5, 10, 15, ..., 100),
+fraction widths (1-2, 1-3, 2-3, 1-4, 3-4, etc.), and auto width.
+
+Props:
+  size?: ColumnSize           Base column size
+  sm?: ColumnSize             Size at >=576px
+  md?: ColumnSize             Size at >=768px
+  lg?: ColumnSize             Size at >=992px
+  xl?: ColumnSize             Size at >=1200px
+  offset?: OffsetSize         Left margin offset (5% increments, 5-95)
+  offsetSm?: OffsetSize       Offset at >=576px
+  offsetMd?: OffsetSize       Offset at >=768px
+  offsetLg?: OffsetSize       Offset at >=992px
+  offsetXl?: OffsetSize       Offset at >=1200px
+  class?: string              Additional CSS classes
+  style?: string              Inline styles
+  children?: Snippet          Column content
+
+ColumnSize: '5' | '10' | '15' | ... | '100' | '1-2' | '1-3' | '2-3' | '1-4' | '3-4' |
+            '1-5' | '2-5' | '3-5' | '4-5' | '1-6' | '5-6' | '1-12' | '5-12' |
+            '7-12' | '11-12' | 'auto'
+
+OffsetSize: '5' | '10' | '15' | ... | '95'
+
+Fixed width columns:
+
+<Grid>
+  <Column size="25">25%</Column>
+  <Column size="75">75%</Column>
+</Grid>
+
+Fraction-based columns:
+
+<Grid>
+  <Column size="1-3">One third</Column>
+  <Column size="2-3">Two thirds</Column>
+</Grid>
+
+Auto-sizing (no size prop):
+
+<Grid>
+  <Column>Auto width</Column>
+  <Column>Auto width</Column>
+</Grid>
+
+RESPONSIVE BREAKPOINT EXAMPLES:
+
+Full width on mobile, two columns on medium, three on large:
+
+<Grid>
+  <Column size="100" md="50" lg="1-3">
+    Card 1
+  </Column>
+  <Column size="100" md="50" lg="1-3">
+    Card 2
+  </Column>
+  <Column size="100" md="100" lg="1-3">
+    Card 3
+  </Column>
+</Grid>
+
+Sidebar layout that collapses on small screens:
+
+<Grid>
+  <Column size="100" lg="25">
+    Sidebar content
+  </Column>
+  <Column size="100" lg="75">
+    Main content
+  </Column>
+</Grid>
+
+With offset:
+
+<Grid>
+  <Column size="50" offset="25">
+    Centered 50% column with 25% offset
+  </Column>
+</Grid>
+
+Responsive offsets:
+
+<Grid>
+  <Column size="100" md="50" offsetMd="25">
+    Centered on medium+, full width on small
+  </Column>
+</Grid>
+
+Dashboard layout example:
+
+<Grid gap="md" sameHeight={true}>
+  <Column size="100" md="50" xl="25">
+    <Card>Metric 1</Card>
+  </Column>
+  <Column size="100" md="50" xl="25">
+    <Card>Metric 2</Card>
+  </Column>
+  <Column size="100" md="50" xl="25">
+    <Card>Metric 3</Card>
+  </Column>
+  <Column size="100" md="50" xl="25">
+    <Card>Metric 4</Card>
+  </Column>
+</Grid>
+
+
+SECTION
+-------
+Page section container with optional title. Renders <div class="pa-section">.
+
+Props:
+  titleText?: string       Section title (renders <h3>)
+  class?: string           Additional CSS classes
+  children?: Snippet       Section content
+
+<Section titleText="User Management">
+  <p>Manage your users here.</p>
+</Section>
+
+Without title:
+
+<Section>
+  <p>Untitled section content.</p>
+</Section>
+
+With custom class:
+
+<Section titleText="Reports" class="my-reports-section">
+  <Grid>
+    <Column size="1-2">Chart 1</Column>
+    <Column size="1-2">Chart 2</Column>
+  </Grid>
+</Section>
+
+
+DIVIDER
+-------
+Horizontal rule / separator. Renders <hr>.
+
+Props:
+  spacing?: string         Margin utility classes (e.g., "my-4")
+  class?: string           Additional CSS classes
+
+<Divider />
+
+With spacing:
+
+<Divider spacing="my-4" />
+
+With custom class:
+
+<Divider class="my-custom-divider" />
+
+
+SLIDE PANEL
+-----------
+Fixed overlay panel that slides in from the right. Uses pa-detail-panel--overlay CSS.
+Supports escape key and backdrop click to close. Locks body scroll when open.
+
+Props:
+  show?: boolean (bindable)    Controls panel visibility (default: false)
+  onclose?: () => void         Called when panel is closed
+  class?: string               Additional CSS classes
+  children?: Snippet           Panel content
+
+<script lang="ts">
+  let showPanel = $state(false);
+</script>
+
+<button onclick={() => showPanel = true}>Open Panel</button>
+
+<SlidePanel bind:show={showPanel} onclose={() => console.log('closed')}>
+  <div class="pa-detail-panel__header">
+    <h3>Detail View</h3>
+    <button onclick={() => showPanel = false}>X</button>
+  </div>
+  <div class="pa-detail-panel__body">
+    <p>Panel content here.</p>
+  </div>
+</SlidePanel>
+
+
+SETTINGS PANEL
+--------------
+Runtime-configurable settings panel. Provides UI for:
+- Theme selection and mode (light/dark/auto)
+- Layout width (fluid, sm, md, lg, xl, 2xl)
+- Sidebar options (behavior, collapsed, resizable, mode)
+- Display options (compact mode, RTL)
+- Profile panel options (avatar, icon-only tabs)
+- Font size and family
+
+All settings are persisted to localStorage and applied to DOM automatically.
+
+Props:
+  onsettingschange?: (settings: SettingsPanelState) => void
+                             Callback when settings change
+  availableThemes?: ThemeOption[]
+                             Available themes (if empty, theme selector is hidden)
+  defaultTheme?: string      Default theme ID
+
+ThemeOption: { id: string; name: string; cssPath: string }
+
+<script lang="ts">
+  const themes = [
+    { id: 'default', name: 'Default', cssPath: '/themes/default.css' },
+    { id: 'dark', name: 'Dark', cssPath: '/themes/dark.css' },
+    { id: 'corporate', name: 'Corporate', cssPath: '/themes/corporate.css' }
+  ];
+</script>
+
+<SettingsPanel
+  availableThemes={themes}
+  defaultTheme="default"
+  onsettingschange={(s) => console.log('Settings changed:', s)}
+/>
+
+Without themes (just layout/display settings):
+
+<SettingsPanel />
+
+
+COMPLETE SVELTEKIT LAYOUT EXAMPLE
+-----------------------------------
+File: src/routes/+layout.svelte
+
+<script lang="ts">
+  import '@keenmate/pure-admin-core/css';
+  import {
+    Layout, LayoutInner, LayoutContent,
+    Navbar, Sidebar, SidebarItem,
+    Main, Footer, SettingsPanel
+  } from '@keenmate/svelte-pure-admin';
+  import { page } from '$app/stores';
+
+  let { children } = $props();
+
+  let sidebarCollapsed = $state(false);
+
+  function toggleSidebar() {
+    sidebarCollapsed = !sidebarCollapsed;
+    document.body.classList.toggle('sidebar-hidden', sidebarCollapsed);
+  }
+
+  const themes = [
+    { id: 'default', name: 'Default', cssPath: '/themes/default.css' },
+    { id: 'dark', name: 'Dark', cssPath: '/themes/dark.css' }
+  ];
+</script>
+
+<Layout>
+  <Navbar showBurger={true} burgerActive={!sidebarCollapsed} onburgerclick={toggleSidebar}>
+    {#snippet brand()}
+      <img src="/logo.svg" alt="My App" />
+      <h1>My App</h1>
+    {/snippet}
+
+    {#snippet navEnd()}
+      <li><a href="/help">Help</a></li>
+    {/snippet}
+  </Navbar>
+
+  <LayoutInner>
+    <Sidebar isResizable={true}>
+      <SidebarItem href="/" labelText="Dashboard" active={$page.url.pathname === '/'}>
+        {#snippet icon()}<i class="fa fa-home"></i>{/snippet}
+      </SidebarItem>
+
+      <SidebarItem href="/users" labelText="Users" active={$page.url.pathname.startsWith('/users')}>
+        {#snippet icon()}<i class="fa fa-users"></i>{/snippet}
+      </SidebarItem>
+
+      <SidebarItem labelText="Reports" hasSubmenu={true}>
+        {#snippet icon()}<i class="fa fa-chart-bar"></i>{/snippet}
+        {#snippet submenu()}
+          <SidebarItem href="/reports/sales" labelText="Sales"
+            active={$page.url.pathname === '/reports/sales'} />
+          <SidebarItem href="/reports/traffic" labelText="Traffic"
+            active={$page.url.pathname === '/reports/traffic'} />
+        {/snippet}
+      </SidebarItem>
+
+      <SidebarItem labelText="Settings" hasSubmenu={true}>
+        {#snippet icon()}<i class="fa fa-cog"></i>{/snippet}
+        {#snippet submenu()}
+          <SidebarItem href="/settings/general" labelText="General"
+            active={$page.url.pathname === '/settings/general'} />
+          <SidebarItem href="/settings/security" labelText="Security"
+            active={$page.url.pathname === '/settings/security'} />
+        {/snippet}
+      </SidebarItem>
+    </Sidebar>
+
+    <LayoutContent>
+      <Main>
+        {@render children?.()}
+      </Main>
+
+      <Footer>
+        {#snippet start()}
+          <p>Copyright 2026 My Company</p>
+        {/snippet}
+        {#snippet end()}
+          <p>v1.0.0</p>
+        {/snippet}
+      </Footer>
+    </LayoutContent>
+  </LayoutInner>
+</Layout>
+
+<SettingsPanel availableThemes={themes} defaultTheme="default" />
+
+
+RESPONSIVE GRID PATTERNS
+--------------------------
+
+Stats row (4 cards, responsive):
+
+<Grid gap="md" sameHeight={true}>
+  <Column size="100" sm="50" xl="25"><Card>Revenue</Card></Column>
+  <Column size="100" sm="50" xl="25"><Card>Users</Card></Column>
+  <Column size="100" sm="50" xl="25"><Card>Orders</Card></Column>
+  <Column size="100" sm="50" xl="25"><Card>Growth</Card></Column>
+</Grid>
+
+Two-column form layout:
+
+<Grid gap="md">
+  <Column size="100" md="50">
+    <FormGroup>
+      <FormLabel>First Name</FormLabel>
+      <Input bind:value={firstName} />
+    </FormGroup>
+  </Column>
+  <Column size="100" md="50">
+    <FormGroup>
+      <FormLabel>Last Name</FormLabel>
+      <Input bind:value={lastName} />
+    </FormGroup>
+  </Column>
+</Grid>
+
+Sidebar + main content layout (within Main):
+
+<Grid gap="lg">
+  <Column size="100" lg="1-4">
+    <Card>Filters panel</Card>
+  </Column>
+  <Column size="100" lg="3-4">
+    <Card>Data table</Card>
+  </Column>
+</Grid>
+
+
+CRITICAL REMINDERS
+------------------
+- Layout hierarchy: Layout > LayoutInner > Sidebar + LayoutContent > Main + Footer
+- Navbar goes BEFORE LayoutInner, as a direct child of Layout
+- Sidebar collapse is controlled via body class: document.body.classList.toggle('sidebar-hidden')
+- Container width is set via body class: document.body.classList.add('pa-container-lg')
+- SidebarItem requires labelText prop (it is mandatory)
+- SidebarItem submenu state is persisted to localStorage automatically
+- Sidebar resize width is persisted to localStorage automatically
+- Snippets use {#snippet name()} ... {/snippet} syntax, NOT <slot>
+- navStart and navEnd render inside <ul>, so provide <li> elements
+- Footer uses logical directions (start/end) for RTL support
+- Grid sameHeight is useful for card grids where cards have different content lengths
+- Column with no size prop and no responsive sizes renders as pa-col (auto width)
+- All components accept class prop for custom CSS classes
+
+NEXT STEPS
+----------
+- Form components -> forms.txt
+- Display components (Card, Badge, Table, etc.) -> check library exports
+- Feedback components (Alert, Toast, Modal) -> check library exports
+- Data visualization (Progress, Gauge, Heatmap, etc.) -> check library exports

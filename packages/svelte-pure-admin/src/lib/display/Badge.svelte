@@ -5,8 +5,11 @@
 	 */
 
 	import type { BaseBadgeProps } from './badge-types';
+	import type { ThemeColor } from '../types';
 
 	interface Props extends BaseBadgeProps {
+		/** Theme color variant (1-9) — applies pa-bg-color-N */
+		themeColor?: ThemeColor;
 		/** Icon snippet */
 		icon?: import('svelte').Snippet;
 		/** Children content */
@@ -18,6 +21,7 @@
 		size,
 		isPill = false,
 		isEllipsisStart = false,
+		themeColor,
 		class: className = '',
 		onclick,
 		icon,
@@ -31,6 +35,7 @@
 		if (size) base.push(`pa-badge--${size}`);
 		if (isPill) base.push('pa-badge--pill');
 		if (isEllipsisStart) base.push('pa-badge--ellipsis-left');
+		if (themeColor) base.push(`pa-bg-color-${themeColor}`);
 		if (className) base.push(className);
 		return base.join(' ');
 	});

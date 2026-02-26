@@ -288,19 +288,19 @@
 	<Paragraph class="text-muted mb-1">Use <code>.text-truncate</code> with a fixed width (<code>.wr-*</code>) to truncate long text with ellipsis</Paragraph>
 	<div class="component-showcase">
 		<Tooltip text="This is a very long button text that will be truncated with ellipsis" position="bottom" multiline>
-			<button class="pa-btn pa-btn--secondary text-truncate wr-15">
+			<Button variant="secondary" class="text-truncate wr-15">
 				This is a very long button text that will be truncated with ellipsis
-			</button>
+			</Button>
 		</Tooltip>
 		<Tooltip text="Another long button" position="bottom">
-			<button class="pa-btn pa-btn--primary text-truncate wr-10">
+			<Button variant="primary" class="text-truncate wr-10">
 				Another long button
-			</button>
+			</Button>
 		</Tooltip>
 		<Tooltip text="Short width truncation" position="bottom">
-			<button class="pa-btn pa-btn--success text-truncate wr-8">
+			<Button variant="success" class="text-truncate wr-8">
 				Short width truncation
-			</button>
+			</Button>
 		</Tooltip>
 	</div>
 </Card>
@@ -341,25 +341,11 @@
 			<Grid class="mb-2">
 				<Column size="100">
 					<ButtonGroup>
-						<button
-							class="pa-btn pa-btn--primary pa-btn--icon-only pa-btn--xs"
-							title="XS - 28px"><i class="fa-solid fa-star"></i></button
-						>
-						<button
-							class="pa-btn pa-btn--primary pa-btn--icon-only pa-btn--sm"
-							title="SM - 32px"><i class="fa-solid fa-star"></i></button
-						>
-						<button class="pa-btn pa-btn--primary pa-btn--icon-only" title="Default - 40px"
-							><i class="fa-solid fa-star"></i></button
-						>
-						<button
-							class="pa-btn pa-btn--primary pa-btn--icon-only pa-btn--lg"
-							title="LG - 48px"><i class="fa-solid fa-star"></i></button
-						>
-						<button
-							class="pa-btn pa-btn--primary pa-btn--icon-only pa-btn--xl"
-							title="XL - 56px"><i class="fa-solid fa-star"></i></button
-						>
+						<Button variant="primary" isIconOnly size="xs" titleText="XS - 28px"><i class="fa-solid fa-star"></i></Button>
+						<Button variant="primary" isIconOnly size="sm" titleText="SM - 32px"><i class="fa-solid fa-star"></i></Button>
+						<Button variant="primary" isIconOnly titleText="Default - 40px"><i class="fa-solid fa-star"></i></Button>
+						<Button variant="primary" isIconOnly size="lg" titleText="LG - 48px"><i class="fa-solid fa-star"></i></Button>
+						<Button variant="primary" isIconOnly size="xl" titleText="XL - 56px"><i class="fa-solid fa-star"></i></Button>
 					</ButtonGroup>
 				</Column>
 			</Grid>
@@ -367,24 +353,12 @@
 			<Grid class="mb-2">
 				<Column size="100">
 					<ButtonGroup>
-						<button class="pa-btn pa-btn--primary pa-btn--icon-only" title="Save"
-							><i class="fa-solid fa-floppy-disk"></i></button
-						>
-						<button class="pa-btn pa-btn--secondary pa-btn--icon-only" title="Search"
-							><i class="fa-solid fa-magnifying-glass"></i></button
-						>
-						<button class="pa-btn pa-btn--success pa-btn--icon-only" title="Check"
-							><i class="fa-solid fa-check"></i></button
-						>
-						<button class="pa-btn pa-btn--warning pa-btn--icon-only" title="Warning"
-							><i class="fa-solid fa-triangle-exclamation"></i></button
-						>
-						<button class="pa-btn pa-btn--danger pa-btn--icon-only" title="Trash"
-							><i class="fa-solid fa-trash"></i></button
-						>
-						<button class="pa-btn pa-btn--info pa-btn--icon-only" title="Info"
-							><i class="fa-solid fa-circle-info"></i></button
-						>
+						<Button variant="primary" isIconOnly titleText="Save"><i class="fa-solid fa-floppy-disk"></i></Button>
+						<Button variant="secondary" isIconOnly titleText="Search"><i class="fa-solid fa-magnifying-glass"></i></Button>
+						<Button variant="success" isIconOnly titleText="Check"><i class="fa-solid fa-check"></i></Button>
+						<Button variant="warning" isIconOnly titleText="Warning"><i class="fa-solid fa-triangle-exclamation"></i></Button>
+						<Button variant="danger" isIconOnly titleText="Trash"><i class="fa-solid fa-trash"></i></Button>
+						<Button variant="info" isIconOnly titleText="Info"><i class="fa-solid fa-circle-info"></i></Button>
 					</ButtonGroup>
 				</Column>
 			</Grid>
@@ -392,24 +366,12 @@
 			<Grid class="mb-2">
 				<Column size="100">
 					<ButtonGroup>
-						<button class="pa-btn pa-btn--primary pa-btn--icon-only pa-btn--xs" title="View"
-							>👁️</button
-						>
-						<button class="pa-btn pa-btn--secondary pa-btn--icon-only pa-btn--xs" title="Edit"
-							>✏️</button
-						>
-						<button class="pa-btn pa-btn--danger pa-btn--icon-only pa-btn--xs" title="Delete"
-							>🗑️</button
-						>
-						<button class="pa-btn pa-btn--success pa-btn--icon-only pa-btn--xs" title="Check"
-							><i class="fa-solid fa-check"></i></button
-						>
-						<button class="pa-btn pa-btn--warning pa-btn--icon-only pa-btn--xs" title="Warning"
-							><i class="fa-solid fa-triangle-exclamation"></i></button
-						>
-						<button class="pa-btn pa-btn--info pa-btn--icon-only pa-btn--xs" title="Download"
-							><i class="fa-solid fa-download"></i></button
-						>
+						<Button variant="primary" isIconOnly size="xs" titleText="View">👁️</Button>
+						<Button variant="secondary" isIconOnly size="xs" titleText="Edit">✏️</Button>
+						<Button variant="danger" isIconOnly size="xs" titleText="Delete">🗑️</Button>
+						<Button variant="success" isIconOnly size="xs" titleText="Check"><i class="fa-solid fa-check"></i></Button>
+						<Button variant="warning" isIconOnly size="xs" titleText="Warning"><i class="fa-solid fa-triangle-exclamation"></i></Button>
+						<Button variant="info" isIconOnly size="xs" titleText="Download"><i class="fa-solid fa-download"></i></Button>
 					</ButtonGroup>
 				</Column>
 			</Grid>
@@ -417,30 +379,10 @@
 			<Grid>
 				<Column size="100">
 					<ButtonGroup>
-						<button
-							class="pa-btn pa-btn--primary pa-btn--icon-only"
-							title="Save"
-							data-ripple
-							data-loading-demo><i class="fa-solid fa-floppy-disk"></i></button
-						>
-						<button
-							class="pa-btn pa-btn--secondary pa-btn--icon-only"
-							title="Refresh"
-							data-ripple
-							data-loading-demo><i class="fa-solid fa-rotate-right"></i></button
-						>
-						<button
-							class="pa-btn pa-btn--success pa-btn--icon-only"
-							title="Upload"
-							data-ripple
-							data-loading-demo><i class="fa-solid fa-upload"></i></button
-						>
-						<button
-							class="pa-btn pa-btn--danger pa-btn--icon-only"
-							title="Delete"
-							data-ripple
-							data-loading-demo><i class="fa-solid fa-trash"></i></button
-						>
+						<Button variant="primary" isIconOnly titleText="Save" data-ripple data-loading-demo><i class="fa-solid fa-floppy-disk"></i></Button>
+						<Button variant="secondary" isIconOnly titleText="Refresh" data-ripple data-loading-demo><i class="fa-solid fa-rotate-right"></i></Button>
+						<Button variant="success" isIconOnly titleText="Upload" data-ripple data-loading-demo><i class="fa-solid fa-upload"></i></Button>
+						<Button variant="danger" isIconOnly titleText="Delete" data-ripple data-loading-demo><i class="fa-solid fa-trash"></i></Button>
 					</ButtonGroup>
 				</Column>
 			</Grid>
@@ -454,26 +396,26 @@
 		Use <code>minwr-*</code> + <code>maxwr-*</code> to constrain width. Add <code>text-truncate</code> on an inner span for ellipsis:
 	</Paragraph>
 	<div class="d-flex flex-column align-items-start gap-sm">
-		<button class="pa-btn pa-btn--primary minwr-10 maxwr-10">
-			<span class="pa-btn__icon">✓</span>
+		<Button variant="primary" class="minwr-10 maxwr-10">
+			{#snippet icon()}✓{/snippet}
 			<span class="text-truncate">OK</span>
-		</button>
-		<button class="pa-btn pa-btn--success minwr-10 maxwr-10">
-			<span class="pa-btn__icon">→</span>
+		</Button>
+		<Button variant="success" class="minwr-10 maxwr-10">
+			{#snippet icon()}→{/snippet}
 			<span class="text-truncate">Save Changes</span>
-		</button>
-		<button class="pa-btn pa-btn--secondary minwr-10 maxwr-10">
-			<span class="pa-btn__icon">×</span>
+		</Button>
+		<Button variant="secondary" class="minwr-10 maxwr-10">
+			{#snippet icon()}×{/snippet}
 			<span class="text-truncate">Cancel and Go Back</span>
-		</button>
+		</Button>
 	</div>
 
 	<Heading level={4} class="mt-6">Different Widths (<code>minwr-8</code> to <code>minwr-20</code>)</Heading>
 	<div class="d-flex flex-column align-items-start gap-sm">
-		<button class="pa-btn pa-btn--primary minwr-8">minwr-8</button>
-		<button class="pa-btn pa-btn--primary minwr-10">minwr-10</button>
-		<button class="pa-btn pa-btn--primary minwr-15">minwr-15</button>
-		<button class="pa-btn pa-btn--primary minwr-20">minwr-20</button>
+		<Button variant="primary" class="minwr-8">minwr-8</Button>
+		<Button variant="primary" class="minwr-10">minwr-10</Button>
+		<Button variant="primary" class="minwr-15">minwr-15</Button>
+		<Button variant="primary" class="minwr-20">minwr-20</Button>
 	</div>
 </Card>
 
@@ -486,15 +428,15 @@
 
 			<Heading level={4}>Inline Start Aligned</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" class="wr-15" align="start">
+				<Button variant="primary" class="wr-20" align="start">
 					{#snippet icon()}✓{/snippet}
 					OK
 				</Button>
-				<Button variant="success" class="wr-15" align="start">
+				<Button variant="success" class="wr-20" align="start">
 					{#snippet icon()}→{/snippet}
 					Continue
 				</Button>
-				<Button variant="secondary" class="wr-15" align="start">
+				<Button variant="secondary" class="wr-20" align="start">
 					{#snippet icon()}×{/snippet}
 					Discard All Changes
 				</Button>
@@ -502,15 +444,15 @@
 
 			<Heading level={4} class="mt-6">Inline End Aligned</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" class="wr-15" align="end" iconPosition="end">
+				<Button variant="primary" class="wr-20" align="end" iconPosition="end">
 					{#snippet icon()}✓{/snippet}
 					OK
 				</Button>
-				<Button variant="success" class="wr-15" align="end" iconPosition="end">
+				<Button variant="success" class="wr-20" align="end" iconPosition="end">
 					{#snippet icon()}→{/snippet}
 					Continue
 				</Button>
-				<Button variant="secondary" class="wr-15" align="end" iconPosition="end">
+				<Button variant="secondary" class="wr-20" align="end" iconPosition="end">
 					{#snippet icon()}×{/snippet}
 					Discard All Changes
 				</Button>
@@ -518,25 +460,25 @@
 
 			<Heading level={4} class="mt-6">Center Aligned</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" class="wr-15" align="center">
+				<Button variant="primary" class="wr-20" align="center">
 					{#snippet icon()}✓{/snippet}
 					OK
 				</Button>
-				<Button variant="success" class="wr-15" align="center">Continue</Button>
-				<Button variant="secondary" class="wr-15" align="center">Discard All Changes</Button>
+				<Button variant="success" class="wr-20" align="center">Continue</Button>
+				<Button variant="secondary" class="wr-20" align="center">Discard All Changes</Button>
 			</ButtonGroup>
 
 			<Heading level={4} class="mt-6">Justified</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" class="wr-15" align="justify">
+				<Button variant="primary" class="wr-20" align="justify">
 					{#snippet icon()}✓{/snippet}
 					OK
 				</Button>
-				<Button variant="success" class="wr-15" align="justify">
+				<Button variant="success" class="wr-20" align="justify">
 					{#snippet icon()}→{/snippet}
 					Continue
 				</Button>
-				<Button variant="secondary" class="wr-15" align="justify">
+				<Button variant="secondary" class="wr-20" align="justify">
 					{#snippet icon()}×{/snippet}
 					Discard All Changes
 				</Button>
@@ -551,15 +493,15 @@
 
 			<Heading level={4}>Inline Start Aligned</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" class="wr-15" align="start">
+				<Button variant="primary" class="wr-20" align="start">
 					{#snippet icon()}<i class="fa-solid fa-floppy-disk"></i>{/snippet}
 					Save
 				</Button>
-				<Button variant="success" class="wr-15" align="start">
+				<Button variant="success" class="wr-20" align="start">
 					{#snippet icon()}<i class="fa-solid fa-check"></i>{/snippet}
 					Approve Request
 				</Button>
-				<Button variant="danger" class="wr-15" align="start">
+				<Button variant="danger" class="wr-20" align="start">
 					{#snippet icon()}<i class="fa-solid fa-trash"></i>{/snippet}
 					Delete Selected Items
 				</Button>
@@ -567,15 +509,15 @@
 
 			<Heading level={4} class="mt-6">Inline End Aligned</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" class="wr-15" align="end" iconPosition="end">
+				<Button variant="primary" class="wr-20" align="end" iconPosition="end">
 					{#snippet icon()}<i class="fa-solid fa-floppy-disk"></i>{/snippet}
 					Save
 				</Button>
-				<Button variant="success" class="wr-15" align="end" iconPosition="end">
+				<Button variant="success" class="wr-20" align="end" iconPosition="end">
 					{#snippet icon()}<i class="fa-solid fa-arrow-right"></i>{/snippet}
 					Approve Request
 				</Button>
-				<Button variant="secondary" class="wr-15" align="end" iconPosition="end">
+				<Button variant="secondary" class="wr-20" align="end" iconPosition="end">
 					{#snippet icon()}<i class="fa-solid fa-gear"></i>{/snippet}
 					Delete Selected Items
 				</Button>
@@ -583,15 +525,15 @@
 
 			<Heading level={4} class="mt-6">Center Aligned</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" class="wr-15" align="center">
+				<Button variant="primary" class="wr-20" align="center">
 					{#snippet icon()}<i class="fa-solid fa-upload"></i>{/snippet}
 					Upload
 				</Button>
-				<Button variant="success" class="wr-15" align="center">
+				<Button variant="success" class="wr-20" align="center">
 					{#snippet icon()}<i class="fa-solid fa-plus"></i>{/snippet}
 					Add New Item
 				</Button>
-				<Button variant="info" class="wr-15" align="center">
+				<Button variant="info" class="wr-20" align="center">
 					{#snippet icon()}<i class="fa-solid fa-magnifying-glass"></i>{/snippet}
 					Search Entire Database
 				</Button>
@@ -599,15 +541,15 @@
 
 			<Heading level={4} class="mt-6">Justified</Heading>
 			<ButtonGroup vertical>
-				<Button variant="primary" class="wr-15" align="justify">
+				<Button variant="primary" class="wr-20" align="justify">
 					{#snippet icon()}<i class="fa-solid fa-user"></i>{/snippet}
 					Profile
 				</Button>
-				<Button variant="success" class="wr-15" align="justify">
+				<Button variant="success" class="wr-20" align="justify">
 					{#snippet icon()}<i class="fa-solid fa-envelope"></i>{/snippet}
 					Messages
 				</Button>
-				<Button variant="danger" class="wr-15" align="justify">
+				<Button variant="danger" class="wr-20" align="justify">
 					{#snippet icon()}<i class="fa-solid fa-right-from-bracket"></i>{/snippet}
 					Logout
 				</Button>
@@ -637,21 +579,21 @@
 		<Card titleText="Loading State Buttons">
 			<Paragraph class="mb-1">Click buttons to simulate loading states:</Paragraph>
 			<ButtonGroup>
-				<button class="pa-btn pa-btn--primary pa-btn--ripple" data-loading-demo data-ripple>
+				<Button variant="primary" isRipple data-loading-demo data-ripple>
 					Save Changes
-				</button>
-				<button class="pa-btn pa-btn--secondary pa-btn--ripple" data-loading-demo data-ripple>
+				</Button>
+				<Button variant="secondary" isRipple data-loading-demo data-ripple>
 					Load Data
-				</button>
-				<button class="pa-btn pa-btn--success pa-btn--ripple" data-loading-demo data-ripple>
+				</Button>
+				<Button variant="success" isRipple data-loading-demo data-ripple>
 					Submit Form
-				</button>
-				<button class="pa-btn pa-btn--warning pa-btn--ripple" data-loading-demo data-ripple>
+				</Button>
+				<Button variant="warning" isRipple data-loading-demo data-ripple>
 					Process
-				</button>
-				<button class="pa-btn pa-btn--danger pa-btn--ripple" data-loading-demo data-ripple>
+				</Button>
+				<Button variant="danger" isRipple data-loading-demo data-ripple>
 					Delete Item
-				</button>
+				</Button>
 			</ButtonGroup>
 		</Card>
 	</Column>

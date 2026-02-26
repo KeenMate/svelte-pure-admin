@@ -1,0 +1,563 @@
+DOCUMENTATION INDEX
+===================
+
+Quick reference for finding documentation on specific topics.
+Library: @keenmate/svelte-pure-admin (Svelte 5 component library)
+CSS framework: @keenmate/pure-admin-core
+
+FILE OVERVIEW
+-------------
+getting-started.txt      - Installation, CSS import, PureAdminProvider, first component
+layout.txt               - Layout, Navbar, Sidebar, Grid, Column, Footer, Section, SlidePanel
+forms.txt                - Form, FormGroup, Input, Select, Checkbox, Radio, validation
+display.txt              - Card, Table, Badge, List, Timeline, Code, Stat, Pager
+data-display.txt         - Field, Fields, DescTable, DotLeaders, PropCard, Banded, AccentGrid
+data-visualization.txt   - Progress, Gauge, Heatmap, Sparkline, StackedBar, BarList, DataBar
+feedback.txt             - Alert, Callout, Modal, Toast, Loader, Spinner, Popover, Popconfirm, Dialog
+navigation.txt           - Tabs, CommandPalette, NavbarSearch
+theming.txt              - CSS import, theme packages, color slots 1-9, dark mode
+i18n.txt                 - svelte-i18n setup, locale switching, translation keys
+typescript-types.txt     - Exported types, prop interfaces, ThemeColor, ColorVariant
+naming-conventions.txt   - KeenMate naming: is*, on*, *Text, *Callback
+common-patterns.txt      - Snippets, $derived classes, event handlers, bindable props
+
+KEYWORD INDEX
+=============
+
+A
+-
+AccentGrid -> data-display.txt
+AccentGridItem -> data-display.txt
+Actions (card footer) -> display.txt
+Actions (alert) -> feedback.txt
+ActivityFeed -> display.txt
+ActivityFeedItem -> display.txt
+addMessages -> i18n.txt
+Alert -> feedback.txt
+align (Button) -> display.txt, common-patterns.txt
+Animated (progress) -> data-visualization.txt
+auto (theme) -> theming.txt
+
+B
+-
+Badge -> display.txt
+BadgeGroup -> display.txt
+BadgeItem -> typescript-types.txt
+BadgeSize -> typescript-types.txt
+BadgeVariant -> typescript-types.txt
+Banded -> data-display.txt
+BandedRow -> data-display.txt
+BarList -> data-visualization.txt
+BarListItem -> data-visualization.txt
+BasicList -> display.txt
+BEM classes -> common-patterns.txt, getting-started.txt
+bindable props -> common-patterns.txt, forms.txt
+Block button -> display.txt, common-patterns.txt
+Boolean props (is*/has*/should*) -> naming-conventions.txt
+Bordered (Fields) -> data-display.txt
+brand (Navbar) -> layout.txt
+Burger menu -> layout.txt
+Button -> display.txt, common-patterns.txt
+ButtonGroup -> display.txt
+
+C
+-
+Callback naming -> naming-conventions.txt
+Callout -> feedback.txt
+Card -> display.txt
+CardTab -> display.txt
+CardTabContent -> display.txt
+changeDirection (Stat) -> display.txt
+Checkbox -> forms.txt
+CheckboxBox -> forms.txt
+CheckboxGroup -> forms.txt
+CheckboxList -> display.txt
+CheckboxListItem -> display.txt
+children (Snippet) -> common-patterns.txt, getting-started.txt
+class prop -> common-patterns.txt, naming-conventions.txt
+Code -> display.txt
+CodeBlock -> display.txt
+CodeBlockWithHeader -> display.txt
+ColorInput -> forms.txt
+ColorVariant -> typescript-types.txt
+Column -> layout.txt
+cols (DescTable) -> data-display.txt
+cols (Fields) -> data-display.txt
+cols (Heatmap) -> data-visualization.txt
+CommandPalette -> navigation.txt
+Compact (Fields) -> data-display.txt
+CompositeBadge -> display.txt
+CompositeBadgeGroup -> display.txt
+CompositeBadgeItem -> typescript-types.txt
+Configuration -> getting-started.txt, common-patterns.txt
+ConfirmDialogOptions -> feedback.txt, typescript-types.txt
+Content (Main) -> layout.txt
+context (Svelte) -> getting-started.txt, common-patterns.txt
+copyValueCallback -> naming-conventions.txt
+Corporate theme -> theming.txt
+createBatch -> common-patterns.txt
+CSS import -> getting-started.txt, theming.txt
+CSS variables -> theming.txt
+Custom classes -> common-patterns.txt
+
+D
+-
+Dark mode -> theming.txt
+dark theme -> theming.txt
+DataBar -> data-visualization.txt
+DataVizVariant -> typescript-types.txt, data-visualization.txt
+DateInput -> forms.txt
+defaultConfig -> getting-started.txt, common-patterns.txt
+DefinitionList -> display.txt
+$derived -> common-patterns.txt, getting-started.txt
+DescTable -> data-display.txt
+DescTableItem -> data-display.txt
+descriptionText (Card) -> display.txt
+DetailPanel -> display.txt
+DetailView -> display.txt
+DialogButton -> feedback.txt, typescript-types.txt
+DialogContainer -> feedback.txt
+dialogService -> feedback.txt
+dialogStore -> feedback.txt
+DialogVariant -> feedback.txt, typescript-types.txt
+disabled -> forms.txt, common-patterns.txt
+Dismissible (Alert) -> feedback.txt
+Divider -> layout.txt
+DotLeaders -> data-display.txt
+DotLeadersItem -> data-display.txt
+
+E
+-
+Em -> display.txt
+en (locale) -> i18n.txt
+Event handlers (on*) -> naming-conventions.txt, common-patterns.txt
+express theme -> theming.txt
+ExtendedSize -> typescript-types.txt
+
+F
+-
+Feedback components -> feedback.txt
+Field -> data-display.txt
+FieldGroup -> data-display.txt
+Fields -> data-display.txt
+FileInput -> forms.txt
+FilterCard -> display.txt
+Footer -> layout.txt
+footer (Card snippet) -> display.txt, common-patterns.txt
+Form -> forms.txt
+FormErrorSummary -> forms.txt
+FormField -> forms.txt
+FormGroup -> forms.txt
+FormHelp -> forms.txt
+FormLabel -> forms.txt
+formatShortcut -> navigation.txt
+Fraction sizes (Column) -> layout.txt
+
+G
+-
+gap (Grid) -> layout.txt
+Gauge -> data-visualization.txt
+getLocaleFromNavigator -> i18n.txt
+getLocaleFromQueryString -> i18n.txt
+Ghost mode (Card) -> display.txt
+Grid -> layout.txt
+
+H
+-
+hasPadding (Card) -> display.txt
+Heading -> display.txt
+header (Card snippet) -> display.txt, common-patterns.txt
+Heatmap -> data-visualization.txt
+HeatmapCell -> data-visualization.txt
+HeatmapLegend -> data-visualization.txt
+HorizontalAlignment -> typescript-types.txt
+href (Button) -> display.txt
+
+I
+-
+i18n -> i18n.txt
+I18nConfig -> getting-started.txt, i18n.txt
+I18nInitOptions -> i18n.txt, typescript-types.txt
+Icon (Button) -> display.txt, common-patterns.txt
+iconPosition (Button) -> display.txt
+initI18n -> i18n.txt
+Input -> forms.txt
+InputGroup -> forms.txt
+InputGroupAppend -> forms.txt
+InputGroupPrepend -> forms.txt
+Installation -> getting-started.txt
+is* (boolean naming) -> naming-conventions.txt
+isBlock -> display.txt, naming-conventions.txt
+isChips (Fields) -> data-display.txt
+isCompact (Heatmap) -> data-visualization.txt
+isDismissible -> feedback.txt, naming-conventions.txt
+isGhost (Card) -> display.txt
+isLinear (Fields) -> data-display.txt
+isLoading (Button) -> display.txt
+isLocaleLoaded -> i18n.txt
+isNegative (DataBar) -> data-visualization.txt
+isOutline -> feedback.txt, display.txt
+isRipple (Button) -> display.txt
+isRounded (StackedBar) -> data-visualization.txt
+isStat (Card) -> display.txt
+isTotal (DotLeadersItem) -> data-display.txt
+isZones (Gauge) -> data-visualization.txt
+
+J
+-
+justify (Grid) -> layout.txt
+
+K
+-
+Keyboard shortcuts -> navigation.txt
+
+L
+-
+Label -> display.txt
+labelText -> naming-conventions.txt, display.txt
+Language -> i18n.txt, typescript-types.txt
+Layout -> layout.txt, getting-started.txt
+LayoutContent -> layout.txt
+LayoutInner -> layout.txt
+level (HeatmapCell) -> data-visualization.txt
+Link -> display.txt
+List -> display.txt
+ListItem -> display.txt
+liveState (Card) -> display.txt
+Loader -> feedback.txt
+LoaderCenter -> feedback.txt
+LoaderOverlay -> feedback.txt
+LoaderType -> feedback.txt, typescript-types.txt
+loadLocale -> i18n.txt
+LoadMore -> display.txt
+locale -> i18n.txt
+locales -> i18n.txt
+
+M
+-
+Main -> layout.txt, getting-started.txt
+mergeConfig -> getting-started.txt, common-patterns.txt
+MetricList -> display.txt
+MetricListItem -> display.txt
+minimal theme -> theming.txt
+Modal -> feedback.txt
+
+N
+-
+Naming conventions -> naming-conventions.txt
+Navbar -> layout.txt, getting-started.txt
+NavbarSearch -> navigation.txt
+NavDropdown -> navigation.txt
+NavItem -> navigation.txt
+noGutter (Grid) -> layout.txt
+NotificationsPanel -> feedback.txt
+NumberInput -> forms.txt
+
+O
+-
+on* (event naming) -> naming-conventions.txt
+onburgerclick -> layout.txt
+onclick -> common-patterns.txt, naming-conventions.txt
+onclose -> feedback.txt, naming-conventions.txt
+ondismiss -> feedback.txt, naming-conventions.txt
+OrderedList -> display.txt
+Outline (Alert) -> feedback.txt
+Outline (Button) -> display.txt
+
+P
+-
+pa-* (BEM classes) -> common-patterns.txt, getting-started.txt
+Pager -> display.txt
+PaletteMode -> navigation.txt, typescript-types.txt
+Paragraph -> display.txt
+Percentage sizes (Column) -> layout.txt
+Popconfirm -> feedback.txt
+Popover -> feedback.txt
+PopoverContainer -> feedback.txt
+ProfilePanel -> layout.txt
+ProfilePanelFavoriteItem -> layout.txt
+ProfilePanelFavorites -> layout.txt
+ProfilePanelNavItem -> layout.txt
+Progress -> data-visualization.txt
+ProgressGroup -> data-visualization.txt
+ProgressRing -> data-visualization.txt
+PropCard -> data-display.txt
+PropCardRow -> data-display.txt
+$props -> common-patterns.txt, getting-started.txt
+Provider -> getting-started.txt, common-patterns.txt
+PureAdminConfig -> getting-started.txt, typescript-types.txt
+PureAdminProvider -> getting-started.txt, common-patterns.txt
+PureAdminTranslations -> i18n.txt, typescript-types.txt
+
+Q
+-
+QuickActions -> display.txt
+
+R
+-
+Radio -> forms.txt
+RadioGroup -> forms.txt
+RangeInput -> forms.txt
+readonly -> forms.txt
+register (i18n) -> i18n.txt
+registerLibraryTranslations -> i18n.txt
+Relaxed (Fields) -> data-display.txt
+required -> forms.txt
+Responsive grid -> layout.txt
+RPC (Batch) -> common-patterns.txt
+RTL support -> theming.txt, layout.txt
+Runes (Svelte 5) -> common-patterns.txt, getting-started.txt
+
+S
+-
+sameHeight (Grid) -> layout.txt
+SearchContext -> navigation.txt, typescript-types.txt
+SearchResult -> navigation.txt, typescript-types.txt
+Section -> layout.txt
+Select -> forms.txt
+SettingsPanel -> layout.txt
+ShortcutHelpDialog -> navigation.txt
+shortcutRegistry -> navigation.txt
+Sidebar -> layout.txt, getting-started.txt
+SidebarItem -> layout.txt, getting-started.txt
+Size -> typescript-types.txt
+SlidePanel -> layout.txt
+SmallText -> forms.txt
+Snippet (Svelte 5) -> common-patterns.txt, getting-started.txt
+Sparkline -> data-visualization.txt
+SparklineBar -> data-visualization.txt
+Spinner -> feedback.txt
+StackedBar -> data-visualization.txt
+StackedBarLegend -> data-visualization.txt
+StackedBarLegendItem -> data-visualization.txt
+StackedBarSegment -> data-visualization.txt
+$state -> common-patterns.txt, getting-started.txt
+Stat -> display.txt
+StatusList -> display.txt
+StatusListItem -> display.txt
+StepOption -> navigation.txt, typescript-types.txt
+StepSelection -> navigation.txt, typescript-types.txt
+Striped (Fields) -> data-display.txt
+Striped (Progress) -> data-visualization.txt
+Striped (Table) -> display.txt
+Strong -> display.txt
+subtitleText (Card) -> display.txt
+svelte-i18n -> i18n.txt
+SvelteKit -> getting-started.txt
+
+T
+-
+Table -> display.txt
+TableCard -> display.txt
+TableContainer -> display.txt
+TableResponsive -> display.txt
+TabItem -> navigation.txt
+TabPanel -> navigation.txt
+Tabs -> navigation.txt
+TabsContainer -> navigation.txt
+TabsContent -> navigation.txt
+TabsOverflow -> navigation.txt
+TabsScrollable -> navigation.txt
+TabsVerticalLayout -> navigation.txt
+Text -> display.txt
+Textarea -> forms.txt
+*Text suffix -> naming-conventions.txt
+ThemeColor -> typescript-types.txt, theming.txt
+Theme packages -> theming.txt, getting-started.txt
+themeColor (Alert) -> feedback.txt
+Timeline -> display.txt
+TimelineItem -> display.txt
+TimelineItemData -> display.txt, typescript-types.txt
+TimelineItemVariant -> display.txt, typescript-types.txt
+TimelineVariant -> display.txt, typescript-types.txt
+titleText -> naming-conventions.txt, display.txt
+Toast -> feedback.txt
+ToastContainer -> feedback.txt
+Tooltip -> feedback.txt
+tools (Card snippet) -> display.txt
+Typography -> display.txt
+
+U
+-
+usePureAdminConfig -> common-patterns.txt, getting-started.txt
+
+V
+-
+Validation -> forms.txt
+ValidationState -> typescript-types.txt, forms.txt
+valueVariant (Field) -> data-display.txt
+variant -> common-patterns.txt, typescript-types.txt
+VerticalAlignment -> typescript-types.txt
+
+W
+-
+--wrap (Card header) -> display.txt
+
+COMMON QUESTIONS
+================
+
+Q: How do I get started with svelte-pure-admin?
+A: -> getting-started.txt
+
+Q: How do I set up the admin layout with sidebar and navbar?
+A: -> layout.txt, getting-started.txt
+
+Q: How do I create forms with validation?
+A: -> forms.txt
+
+Q: How do I display data in cards, tables, badges?
+A: -> display.txt
+
+Q: How do I show label-value pairs and structured data?
+A: -> data-display.txt
+
+Q: How do I add progress bars, gauges, heatmaps?
+A: -> data-visualization.txt
+
+Q: How do I show alerts, modals, toasts?
+A: -> feedback.txt
+
+Q: How do I add tabs and command palette?
+A: -> navigation.txt
+
+Q: How do I change themes or enable dark mode?
+A: -> theming.txt
+
+Q: How do I add internationalization (i18n)?
+A: -> i18n.txt
+
+Q: Where are the TypeScript type exports?
+A: -> typescript-types.txt
+
+Q: What is the naming convention for props?
+A: -> naming-conventions.txt
+
+Q: How do Svelte 5 snippets work in this library?
+A: -> common-patterns.txt, getting-started.txt
+
+Q: How do I build dynamic CSS classes with $derived?
+A: -> common-patterns.txt
+
+Q: How do I use the Grid and Column system?
+A: -> layout.txt
+
+Q: How do I configure the PureAdminProvider?
+A: -> getting-started.txt, common-patterns.txt
+
+Q: How do I use bindable props for two-way binding?
+A: -> common-patterns.txt, forms.txt
+
+Q: How do I use event handlers like onclick and onclose?
+A: -> naming-conventions.txt, common-patterns.txt
+
+Q: What is the difference between *Text props and Snippet props?
+A: -> naming-conventions.txt, common-patterns.txt
+
+Q: How do I use the dialog service for confirm/alert/prompt?
+A: -> feedback.txt
+
+Q: How do I register keyboard shortcuts?
+A: -> navigation.txt
+
+Q: How do I use the Batch RPC service?
+A: -> common-patterns.txt
+
+FEATURES BY CATEGORY
+====================
+
+GETTING STARTED
+- Installation and setup -> getting-started.txt
+- CSS import -> getting-started.txt, theming.txt
+- Provider setup -> getting-started.txt
+- First page -> getting-started.txt
+
+LAYOUT & STRUCTURE
+- Admin layout (sidebar, navbar) -> layout.txt
+- Grid system (rows, columns) -> layout.txt
+- Responsive breakpoints -> layout.txt
+- Sections and dividers -> layout.txt
+- Slide panel -> layout.txt
+- Settings panel -> layout.txt
+
+FORMS & INPUT
+- Text inputs -> forms.txt
+- Number, date, file, range, color inputs -> forms.txt
+- Select dropdowns -> forms.txt
+- Checkboxes and radios -> forms.txt
+- Form groups and labels -> forms.txt
+- Validation states -> forms.txt
+- Input groups (prepend/append) -> forms.txt
+- Error summaries -> forms.txt
+
+DISPLAY & DATA
+- Cards (standard, ghost, stat, tabbed) -> display.txt
+- Tables (striped, hover, compact, bordered) -> display.txt
+- Badges and labels -> display.txt
+- Lists (basic, ordered, definition, checkbox) -> display.txt
+- Timeline -> display.txt
+- Code blocks -> display.txt
+- Statistics -> display.txt
+- Pagination (Pager, LoadMore) -> display.txt
+- Detail views -> display.txt
+
+DATA DISPLAY (STRUCTURED)
+- Field and Fields containers -> data-display.txt
+- Description tables (DescTable) -> data-display.txt
+- Dot leaders (invoice style) -> data-display.txt
+- Property cards (PropCard) -> data-display.txt
+- Banded rows -> data-display.txt
+- Accent grid -> data-display.txt
+
+DATA VISUALIZATION
+- Progress bars -> data-visualization.txt
+- Progress rings (circular) -> data-visualization.txt
+- Gauges (semicircle) -> data-visualization.txt
+- Data bars (inline table cells) -> data-visualization.txt
+- Stacked bars (multi-segment) -> data-visualization.txt
+- Sparklines (mini bar charts) -> data-visualization.txt
+- Heatmaps -> data-visualization.txt
+- Bar lists (horizontal labeled bars) -> data-visualization.txt
+
+FEEDBACK & OVERLAYS
+- Alerts -> feedback.txt
+- Callouts -> feedback.txt
+- Modals -> feedback.txt
+- Dialog service (confirm/alert/prompt) -> feedback.txt
+- Toasts -> feedback.txt
+- Tooltips -> feedback.txt
+- Popovers -> feedback.txt
+- Popconfirm -> feedback.txt
+- Loaders and spinners -> feedback.txt
+- Notifications panel -> feedback.txt
+
+NAVIGATION
+- Tabs (horizontal, vertical, scrollable, overflow) -> navigation.txt
+- Command palette -> navigation.txt
+- Navbar search -> navigation.txt
+- Nav items and dropdowns -> navigation.txt
+- Keyboard shortcuts -> navigation.txt
+
+THEMING & STYLING
+- Theme packages -> theming.txt
+- Color slots (1-9) -> theming.txt
+- Dark mode -> theming.txt
+- CSS variables -> theming.txt
+- Custom classes -> common-patterns.txt
+
+INTERNATIONALIZATION
+- svelte-i18n integration -> i18n.txt
+- Built-in locales (en, cs) -> i18n.txt
+- Locale switching -> i18n.txt
+- Translation keys -> i18n.txt
+
+TYPESCRIPT & CONVENTIONS
+- Type exports -> typescript-types.txt
+- Prop interfaces -> typescript-types.txt
+- Naming conventions -> naming-conventions.txt
+- Component patterns -> common-patterns.txt
+
+SERVICES
+- Dialog service -> feedback.txt
+- Shortcut registry -> navigation.txt
+- Batch RPC -> common-patterns.txt
+- i18n service -> i18n.txt

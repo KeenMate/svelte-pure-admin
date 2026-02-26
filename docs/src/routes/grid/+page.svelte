@@ -45,50 +45,50 @@
 <Card titleText="Basic Usage" subtitleText="Auto-equal width columns with .pa-col">
 	<h4>Two Equal Columns</h4>
 	<Grid class="mb-4">
-		<div class="pa-col">
-			<Alert variant="primary">.pa-col</Alert>
-		</div>
-		<div class="pa-col">
-			<Alert variant="primary">.pa-col</Alert>
-		</div>
+		<Column>
+			<div class="grid-demo-cell">.pa-col</div>
+		</Column>
+		<Column>
+			<div class="grid-demo-cell">.pa-col</div>
+		</Column>
 	</Grid>
 
 	<h4>Three Equal Columns</h4>
 	<Grid class="mb-4">
-		<div class="pa-col">
-			<Alert variant="primary">.pa-col</Alert>
-		</div>
-		<div class="pa-col">
-			<Alert variant="primary">.pa-col</Alert>
-		</div>
-		<div class="pa-col">
-			<Alert variant="primary">.pa-col</Alert>
-		</div>
+		<Column>
+			<div class="grid-demo-cell">.pa-col</div>
+		</Column>
+		<Column>
+			<div class="grid-demo-cell">.pa-col</div>
+		</Column>
+		<Column>
+			<div class="grid-demo-cell">.pa-col</div>
+		</Column>
 	</Grid>
 
 	<h4>Four Equal Columns</h4>
 	<Grid class="mb-4">
-		<div class="pa-col">
-			<Alert variant="primary">.pa-col</Alert>
-		</div>
-		<div class="pa-col">
-			<Alert variant="primary">.pa-col</Alert>
-		</div>
-		<div class="pa-col">
-			<Alert variant="primary">.pa-col</Alert>
-		</div>
-		<div class="pa-col">
-			<Alert variant="primary">.pa-col</Alert>
-		</div>
+		<Column>
+			<div class="grid-demo-cell">.pa-col</div>
+		</Column>
+		<Column>
+			<div class="grid-demo-cell">.pa-col</div>
+		</Column>
+		<Column>
+			<div class="grid-demo-cell">.pa-col</div>
+		</Column>
+		<Column>
+			<div class="grid-demo-cell">.pa-col</div>
+		</Column>
 	</Grid>
 
 	<h4>Auto Width Column</h4>
 	<Grid>
-		<div class="pa-col">
-			<Alert variant="primary">.pa-col (fills remaining)</Alert>
-		</div>
+		<Column>
+			<div class="grid-demo-cell">.pa-col (fills remaining)</div>
+		</Column>
 		<Column size="auto">
-			<Alert variant="primary">.pa-col-auto (content width)</Alert>
+			<div class="grid-demo-cell">.pa-col-auto (content width)</div>
 		</Column>
 	</Grid>
 </Card>
@@ -96,30 +96,30 @@
 <!-- Percentage Columns -->
 <Card titleText="Percentage Columns" subtitleText="Fixed widths in 5% increments: .pa-col-5 through .pa-col-100">
 	<Grid class="mb-2">
-		<Column size="25"><Alert variant="primary">.pa-col-25</Alert></Column>
-		<Column size="75"><Alert variant="primary">.pa-col-75</Alert></Column>
+		<Column size="25"><div class="grid-demo-cell">.pa-col-25</div></Column>
+		<Column size="75"><div class="grid-demo-cell">.pa-col-75</div></Column>
 	</Grid>
 	<Grid class="mb-2">
-		<Column size="1-3"><Alert variant="primary">.pa-col-1-3</Alert></Column>
-		<Column size="2-3"><Alert variant="primary">.pa-col-2-3</Alert></Column>
+		<Column size="1-3"><div class="grid-demo-cell">.pa-col-1-3</div></Column>
+		<Column size="2-3"><div class="grid-demo-cell">.pa-col-2-3</div></Column>
 	</Grid>
 	<Grid class="mb-2">
-		<Column size="50"><Alert variant="primary">.pa-col-50</Alert></Column>
-		<Column size="50"><Alert variant="primary">.pa-col-50</Alert></Column>
+		<Column size="50"><div class="grid-demo-cell">.pa-col-50</div></Column>
+		<Column size="50"><div class="grid-demo-cell">.pa-col-50</div></Column>
 	</Grid>
 	<Grid class="mb-2">
-		<Column size="40"><Alert variant="primary">.pa-col-40</Alert></Column>
-		<Column size="60"><Alert variant="primary">.pa-col-60</Alert></Column>
+		<Column size="40"><div class="grid-demo-cell">.pa-col-40</div></Column>
+		<Column size="60"><div class="grid-demo-cell">.pa-col-60</div></Column>
 	</Grid>
 	<Grid class="mb-2">
-		<Column size="20"><Alert variant="primary">20</Alert></Column>
-		<Column size="20"><Alert variant="primary">20</Alert></Column>
-		<Column size="20"><Alert variant="primary">20</Alert></Column>
-		<Column size="20"><Alert variant="primary">20</Alert></Column>
-		<Column size="20"><Alert variant="primary">20</Alert></Column>
+		<Column size="20"><div class="grid-demo-cell">20</div></Column>
+		<Column size="20"><div class="grid-demo-cell">20</div></Column>
+		<Column size="20"><div class="grid-demo-cell">20</div></Column>
+		<Column size="20"><div class="grid-demo-cell">20</div></Column>
+		<Column size="20"><div class="grid-demo-cell">20</div></Column>
 	</Grid>
 	<Grid>
-		<Column size="100"><Alert variant="primary">.pa-col-100 (full width)</Alert></Column>
+		<Column size="100"><div class="grid-demo-cell">.pa-col-100 (full width)</div></Column>
 	</Grid>
 
 	<Alert variant="info" class="mt-4">
@@ -131,65 +131,65 @@
 <Card titleText="Fraction Columns" subtitleText="Intuitive naming for common layouts: .pa-col-1-3, .pa-col-2-3, etc.">
 	<h4>Halves (1/2)</h4>
 	<Grid class="mb-4">
-		<Column size="1-2"><Alert variant="primary">.pa-col-1-2 (50%)</Alert></Column>
-		<Column size="1-2"><Alert variant="primary">.pa-col-1-2 (50%)</Alert></Column>
+		<Column size="1-2"><div class="grid-demo-cell">.pa-col-1-2 (50%)</div></Column>
+		<Column size="1-2"><div class="grid-demo-cell">.pa-col-1-2 (50%)</div></Column>
 	</Grid>
 
 	<h4>Thirds (1/3, 2/3)</h4>
 	<Grid class="mb-2">
-		<Column size="1-3"><Alert variant="primary">.pa-col-1-3 (33.3%)</Alert></Column>
-		<Column size="2-3"><Alert variant="primary">.pa-col-2-3 (66.7%)</Alert></Column>
+		<Column size="1-3"><div class="grid-demo-cell">.pa-col-1-3 (33.3%)</div></Column>
+		<Column size="2-3"><div class="grid-demo-cell">.pa-col-2-3 (66.7%)</div></Column>
 	</Grid>
 	<Grid class="mb-4">
-		<Column size="1-3"><Alert variant="primary">1/3</Alert></Column>
-		<Column size="1-3"><Alert variant="primary">1/3</Alert></Column>
-		<Column size="1-3"><Alert variant="primary">1/3</Alert></Column>
+		<Column size="1-3"><div class="grid-demo-cell">1/3</div></Column>
+		<Column size="1-3"><div class="grid-demo-cell">1/3</div></Column>
+		<Column size="1-3"><div class="grid-demo-cell">1/3</div></Column>
 	</Grid>
 
 	<h4>Quarters (1/4, 3/4)</h4>
 	<Grid class="mb-2">
-		<Column size="1-4"><Alert variant="primary">.pa-col-1-4 (25%)</Alert></Column>
-		<Column size="3-4"><Alert variant="primary">.pa-col-3-4 (75%)</Alert></Column>
+		<Column size="1-4"><div class="grid-demo-cell">.pa-col-1-4 (25%)</div></Column>
+		<Column size="3-4"><div class="grid-demo-cell">.pa-col-3-4 (75%)</div></Column>
 	</Grid>
 	<Grid class="mb-4">
-		<Column size="1-4"><Alert variant="primary">1/4</Alert></Column>
-		<Column size="1-4"><Alert variant="primary">1/4</Alert></Column>
-		<Column size="1-4"><Alert variant="primary">1/4</Alert></Column>
-		<Column size="1-4"><Alert variant="primary">1/4</Alert></Column>
+		<Column size="1-4"><div class="grid-demo-cell">1/4</div></Column>
+		<Column size="1-4"><div class="grid-demo-cell">1/4</div></Column>
+		<Column size="1-4"><div class="grid-demo-cell">1/4</div></Column>
+		<Column size="1-4"><div class="grid-demo-cell">1/4</div></Column>
 	</Grid>
 
 	<h4>Fifths (1/5, 2/5, 3/5, 4/5)</h4>
 	<Grid class="mb-2">
-		<Column size="1-5"><Alert variant="primary">1/5</Alert></Column>
-		<Column size="4-5"><Alert variant="primary">4/5</Alert></Column>
+		<Column size="1-5"><div class="grid-demo-cell">1/5</div></Column>
+		<Column size="4-5"><div class="grid-demo-cell">4/5</div></Column>
 	</Grid>
 	<Grid class="mb-4">
-		<Column size="2-5"><Alert variant="primary">2/5</Alert></Column>
-		<Column size="3-5"><Alert variant="primary">3/5</Alert></Column>
+		<Column size="2-5"><div class="grid-demo-cell">2/5</div></Column>
+		<Column size="3-5"><div class="grid-demo-cell">3/5</div></Column>
 	</Grid>
 
 	<h4>Sixths (1/6, 5/6)</h4>
 	<Grid class="mb-2">
-		<Column size="1-6"><Alert variant="primary">1/6</Alert></Column>
-		<Column size="5-6"><Alert variant="primary">5/6</Alert></Column>
+		<Column size="1-6"><div class="grid-demo-cell">1/6</div></Column>
+		<Column size="5-6"><div class="grid-demo-cell">5/6</div></Column>
 	</Grid>
 	<Grid class="mb-4">
-		<Column size="1-6"><Alert variant="primary">1/6</Alert></Column>
-		<Column size="1-6"><Alert variant="primary">1/6</Alert></Column>
-		<Column size="1-6"><Alert variant="primary">1/6</Alert></Column>
-		<Column size="1-6"><Alert variant="primary">1/6</Alert></Column>
-		<Column size="1-6"><Alert variant="primary">1/6</Alert></Column>
-		<Column size="1-6"><Alert variant="primary">1/6</Alert></Column>
+		<Column size="1-6"><div class="grid-demo-cell">1/6</div></Column>
+		<Column size="1-6"><div class="grid-demo-cell">1/6</div></Column>
+		<Column size="1-6"><div class="grid-demo-cell">1/6</div></Column>
+		<Column size="1-6"><div class="grid-demo-cell">1/6</div></Column>
+		<Column size="1-6"><div class="grid-demo-cell">1/6</div></Column>
+		<Column size="1-6"><div class="grid-demo-cell">1/6</div></Column>
 	</Grid>
 
 	<h4>Twelfths (1/12, 5/12, 7/12, 11/12)</h4>
 	<Grid class="mb-2">
-		<Column size="1-12"><Alert variant="primary">1/12</Alert></Column>
-		<Column size="11-12"><Alert variant="primary">11/12</Alert></Column>
+		<Column size="1-12"><div class="grid-demo-cell">1/12</div></Column>
+		<Column size="11-12"><div class="grid-demo-cell">11/12</div></Column>
 	</Grid>
 	<Grid>
-		<Column size="5-12"><Alert variant="primary">5/12</Alert></Column>
-		<Column size="7-12"><Alert variant="primary">7/12</Alert></Column>
+		<Column size="5-12"><div class="grid-demo-cell">5/12</div></Column>
+		<Column size="7-12"><div class="grid-demo-cell">7/12</div></Column>
 	</Grid>
 </Card>
 
@@ -198,32 +198,32 @@
 	<h4>Mobile-First Pattern</h4>
 	<Paragraph class="pa-text--secondary mb-2">Full width on mobile, 50% on medium screens and up:</Paragraph>
 	<Grid class="mb-4">
-		<Column size="100" md="50"><Alert variant="primary">.pa-col-100 .pa-col-md-50</Alert></Column>
-		<Column size="100" md="50"><Alert variant="primary">.pa-col-100 .pa-col-md-50</Alert></Column>
+		<Column size="100" md="50"><div class="grid-demo-cell">.pa-col-100 .pa-col-md-50</div></Column>
+		<Column size="100" md="50"><div class="grid-demo-cell">.pa-col-100 .pa-col-md-50</div></Column>
 	</Grid>
 
 	<h4>Progressive Columns</h4>
 	<Paragraph class="pa-text--secondary mb-2">Different layouts at each breakpoint:</Paragraph>
 	<Grid class="mb-4">
 		<Column size="100" sm="50" lg="25">
-			<Alert variant="primary">100% → 50% → 25%</Alert>
+			<div class="grid-demo-cell">100% &rarr; 50% &rarr; 25%</div>
 		</Column>
 		<Column size="100" sm="50" lg="25">
-			<Alert variant="primary">100% → 50% → 25%</Alert>
+			<div class="grid-demo-cell">100% &rarr; 50% &rarr; 25%</div>
 		</Column>
 		<Column size="100" sm="50" lg="25">
-			<Alert variant="primary">100% → 50% → 25%</Alert>
+			<div class="grid-demo-cell">100% &rarr; 50% &rarr; 25%</div>
 		</Column>
 		<Column size="100" sm="50" lg="25">
-			<Alert variant="primary">100% → 50% → 25%</Alert>
+			<div class="grid-demo-cell">100% &rarr; 50% &rarr; 25%</div>
 		</Column>
 	</Grid>
 
 	<h4>Responsive Fractions</h4>
 	<Paragraph class="pa-text--secondary mb-2">Fractions also support breakpoints:</Paragraph>
 	<Grid>
-		<Column size="100" md="1-3"><Alert variant="primary">.pa-col-100 .pa-col-md-1-3</Alert></Column>
-		<Column size="100" md="2-3"><Alert variant="primary">.pa-col-100 .pa-col-md-2-3</Alert></Column>
+		<Column size="100" md="1-3"><div class="grid-demo-cell">.pa-col-100 .pa-col-md-1-3</div></Column>
+		<Column size="100" md="2-3"><div class="grid-demo-cell">.pa-col-100 .pa-col-md-2-3</div></Column>
 	</Grid>
 </Card>
 
@@ -231,22 +231,22 @@
 <Card titleText="Offsets" subtitleText={`Push columns with left margin: .pa-offset-{size}`}>
 	<h4>Centering with Offsets</h4>
 	<Grid class="mb-2">
-		<Column size="50" offset="25"><Alert variant="primary">.pa-col-50 .pa-offset-25</Alert></Column>
+		<Column size="50" offset="25"><div class="grid-demo-cell">.pa-col-50 .pa-offset-25</div></Column>
 	</Grid>
 	<Grid class="mb-4">
-		<Column size="1-3" class="pa-offset-33"><Alert variant="primary">.pa-col-1-3 .pa-offset-33</Alert></Column>
+		<Column size="1-3" class="pa-offset-33"><div class="grid-demo-cell">.pa-col-1-3 .pa-offset-33</div></Column>
 	</Grid>
 
 	<h4>Asymmetric Layouts</h4>
 	<Grid class="mb-2">
-		<Column size="30" offset="10"><Alert variant="primary">.pa-col-30 .pa-offset-10</Alert></Column>
-		<Column size="40" offset="10"><Alert variant="primary">.pa-col-40 .pa-offset-10</Alert></Column>
+		<Column size="30" offset="10"><div class="grid-demo-cell">.pa-col-30 .pa-offset-10</div></Column>
+		<Column size="40" offset="10"><div class="grid-demo-cell">.pa-col-40 .pa-offset-10</div></Column>
 	</Grid>
 
 	<h4>Responsive Offsets</h4>
 	<Grid>
 		<Column size="100" md="50" offsetMd="25">
-			<Alert variant="primary">.pa-col-100 .pa-col-md-50 .pa-offset-md-25<br><small>Full width mobile, centered on desktop</small></Alert>
+			<div class="grid-demo-cell">.pa-col-100 .pa-col-md-50 .pa-offset-md-25<br><small>Full width mobile, centered on desktop</small></div>
 		</Column>
 	</Grid>
 </Card>
@@ -257,25 +257,25 @@
 
 	<Paragraph class="pa-text--secondary mb-2"><Code>.pa-row--center</Code></Paragraph>
 	<Grid justify="center" class="mb-2" style="background: var(--base-primary-bg);">
-		<Column size="30"><Alert variant="primary">Centered</Alert></Column>
+		<Column size="30"><div class="grid-demo-cell">Centered</div></Column>
 	</Grid>
 
 	<Paragraph class="pa-text--secondary mb-2"><Code>.pa-row--end</Code></Paragraph>
 	<Grid justify="end" class="mb-2" style="background: var(--base-primary-bg);">
-		<Column size="30"><Alert variant="primary">Right aligned</Alert></Column>
+		<Column size="30"><div class="grid-demo-cell">Right aligned</div></Column>
 	</Grid>
 
 	<Paragraph class="pa-text--secondary mb-2"><Code>.pa-row--between</Code></Paragraph>
 	<Grid justify="between" class="mb-2" style="background: var(--base-primary-bg);">
-		<Column size="20"><Alert variant="primary">Left</Alert></Column>
-		<Column size="20"><Alert variant="primary">Right</Alert></Column>
+		<Column size="20"><div class="grid-demo-cell">Left</div></Column>
+		<Column size="20"><div class="grid-demo-cell">Right</div></Column>
 	</Grid>
 
 	<Paragraph class="pa-text--secondary mb-2"><Code>.pa-row--around</Code></Paragraph>
 	<Grid justify="around" class="mb-4" style="background: var(--base-primary-bg);">
-		<Column size="20"><Alert variant="primary">A</Alert></Column>
-		<Column size="20"><Alert variant="primary">B</Alert></Column>
-		<Column size="20"><Alert variant="primary">C</Alert></Column>
+		<Column size="20"><div class="grid-demo-cell">A</div></Column>
+		<Column size="20"><div class="grid-demo-cell">B</div></Column>
+		<Column size="20"><div class="grid-demo-cell">C</div></Column>
 	</Grid>
 
 	<h4>Vertical Alignment</h4>
@@ -283,22 +283,22 @@
 		<Column size="100" md="1-3">
 			<Paragraph class="pa-text--secondary mb-2"><Code>.pa-row--top</Code></Paragraph>
 			<Grid align="top" style="background: var(--base-primary-bg); min-height: 100px;">
-				<div class="pa-col"><Alert variant="primary">Top</Alert></div>
-				<div class="pa-col"><Alert variant="primary">Top</Alert></div>
+				<Column><div class="grid-demo-cell">Top</div></Column>
+				<Column><div class="grid-demo-cell">Top</div></Column>
 			</Grid>
 		</Column>
 		<Column size="100" md="1-3">
 			<Paragraph class="pa-text--secondary mb-2"><Code>.pa-row--middle</Code></Paragraph>
 			<Grid align="middle" style="background: var(--base-primary-bg); min-height: 100px;">
-				<div class="pa-col"><Alert variant="primary">Middle</Alert></div>
-				<div class="pa-col"><Alert variant="primary">Middle</Alert></div>
+				<Column><div class="grid-demo-cell">Middle</div></Column>
+				<Column><div class="grid-demo-cell">Middle</div></Column>
 			</Grid>
 		</Column>
 		<Column size="100" md="1-3">
 			<Paragraph class="pa-text--secondary mb-2"><Code>.pa-row--bottom</Code></Paragraph>
 			<Grid align="bottom" style="background: var(--base-primary-bg); min-height: 100px;">
-				<div class="pa-col"><Alert variant="primary">Bottom</Alert></div>
-				<div class="pa-col"><Alert variant="primary">Bottom</Alert></div>
+				<Column><div class="grid-demo-cell">Bottom</div></Column>
+				<Column><div class="grid-demo-cell">Bottom</div></Column>
 			</Grid>
 		</Column>
 	</Grid>
@@ -308,16 +308,16 @@
 <Card titleText="No Gutter" subtitleText="Remove spacing between columns with .pa-row--no-gutter">
 	<h4>Default (with gutter)</h4>
 	<Grid class="mb-4">
-		<Column size="1-3"><Alert variant="primary">1/3</Alert></Column>
-		<Column size="1-3"><Alert variant="primary">1/3</Alert></Column>
-		<Column size="1-3"><Alert variant="primary">1/3</Alert></Column>
+		<Column size="1-3"><div class="grid-demo-cell">1/3</div></Column>
+		<Column size="1-3"><div class="grid-demo-cell">1/3</div></Column>
+		<Column size="1-3"><div class="grid-demo-cell">1/3</div></Column>
 	</Grid>
 
 	<h4>No Gutter</h4>
 	<Grid noGutter>
-		<Column size="1-3"><Alert variant="primary">1/3</Alert></Column>
-		<Column size="1-3"><Alert variant="primary">1/3</Alert></Column>
-		<Column size="1-3"><Alert variant="primary">1/3</Alert></Column>
+		<Column size="1-3"><div class="grid-demo-cell">1/3</div></Column>
+		<Column size="1-3"><div class="grid-demo-cell">1/3</div></Column>
+		<Column size="1-3"><div class="grid-demo-cell">1/3</div></Column>
 	</Grid>
 </Card>
 
@@ -342,14 +342,14 @@
 
 	<h4>Live Demo (resize browser)</h4>
 	<Grid>
-		<div class="pa-col">
-			<Alert variant="danger" class="pa-hide-md">
+		<Column>
+			<div class="grid-demo-cell pa-hide-md" style="background: var(--base-danger-color);">
 				<strong>Mobile Only</strong><br>.pa-hide-md
-			</Alert>
-			<Alert variant="success" class="pa-hide-below-md">
+			</div>
+			<div class="grid-demo-cell pa-hide-below-md" style="background: var(--base-success-color);">
 				<strong>Desktop Only</strong><br>.pa-hide-below-md
-			</Alert>
-		</div>
+			</div>
+		</Column>
 	</Grid>
 </Card>
 
@@ -357,16 +357,16 @@
 <Card titleText="Nested Grids" subtitleText="Grids can be nested inside columns">
 	<Grid>
 		<Column size="1-3">
-			<Alert variant="primary">1/3</Alert>
+			<div class="grid-demo-cell">1/3</div>
 		</Column>
 		<Column size="2-3">
-			<Alert variant="info">
-				<Paragraph class="pa-text--secondary mb-2">Nested grid inside 2/3 column:</Paragraph>
+			<div style="background: var(--base-primary-bg); padding: 0.8rem; border-radius: 4px;">
+				<p class="pa-text pa-text--secondary mb-2">Nested grid inside 2/3 column:</p>
 				<Grid>
-					<Column size="1-2"><Alert variant="secondary">Nested 1/2</Alert></Column>
-					<Column size="1-2"><Alert variant="secondary">Nested 1/2</Alert></Column>
+					<Column size="1-2"><div class="grid-demo-cell" style="background: var(--base-text-color-2);">Nested 1/2</div></Column>
+					<Column size="1-2"><div class="grid-demo-cell" style="background: var(--base-text-color-2);">Nested 1/2</div></Column>
 				</Grid>
-			</Alert>
+			</div>
 		</Column>
 	</Grid>
 </Card>
@@ -464,3 +464,15 @@
 		</Column>
 	</Grid>
 </Card>
+
+<style>
+.grid-demo-cell {
+	background: #007bff;
+	color: white;
+	padding: 1rem;
+	text-align: center;
+	border-radius: 4px;
+	font-size: 1.2rem;
+	margin-bottom: 0.4rem;
+}
+</style>

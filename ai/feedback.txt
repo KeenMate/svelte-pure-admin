@@ -1,0 +1,1327 @@
+FEEDBACK COMPONENTS
+====================
+
+CRITICAL: This is a Svelte 5 component library (@keenmate/svelte-pure-admin).
+- All components use Svelte 5 runes ($props, $state, $derived, $bindable)
+- Content slots use Snippets ({@render children?.()}), NOT <slot />
+- Internal BEM classes: pa-alert, pa-modal, pa-toast, pa-spinner, etc.
+- CSS is provided by @keenmate/pure-admin-core (must be imported separately)
+- Event handlers use lowercase: onclick, onclose, ondismiss (Svelte 5 native)
+
+INSTALLATION
+------------
+npm install @keenmate/svelte-pure-admin
+
+Import CSS in your layout:
+<script>
+  import '@keenmate/pure-admin-core/css';
+</script>
+
+IMPORTS
+-------
+import {
+  Alert,
+  Callout,
+  Modal,
+  Toast,
+  ToastContainer,
+  Spinner,
+  Loader,
+  LoaderCenter,
+  LoaderOverlay,
+  Tooltip,
+  Popover,
+  PopoverContainer,
+  Popconfirm,
+  NotificationsPanel,
+  DialogContainer,
+  dialogService
+} from '@keenmate/svelte-pure-admin';
+
+
+=====================================================================
+ALERT
+=====================================================================
+
+Inline notification banners for contextual messages.
+
+PROPS:
+  variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark'
+                             -- Alert color variant (default: 'primary')
+  size?: 'sm' | 'lg'        -- Alert size
+  themeColor?: 1-9           -- Theme color (applies pa-bg-color-N)
+  isDismissible?: boolean    -- Shows close button (default: false)
+  isOutline?: boolean        -- Outline style (default: false)
+  headingText?: string       -- Alert heading text
+  class?: string             -- Additional CSS classes
+  icon?: Snippet             -- Icon snippet (enables complex layout with pa-alert__content wrapper)
+  children?: Snippet         -- Alert body content
+  list?: Snippet             -- List items rendered in pa-alert__list <ul>
+  actions?: Snippet          -- Action buttons rendered in pa-alert__actions
+  ondismiss?: () => void     -- Fired when alert is dismissed
+
+IMPORTANT: When the icon snippet is provided, the alert switches to a complex
+layout with pa-alert__icon + pa-alert__content wrapper. Without icon, it uses
+a simple flat layout.
+
+BASIC USAGE:
+
+<Alert variant="success">Operation completed successfully.</Alert>
+
+<Alert variant="danger">Something went wrong. Please try again.</Alert>
+
+<Alert variant="warning">Your session will expire in 5 minutes.</Alert>
+
+WITH HEADING:
+
+<Alert variant="info" headingText="New Update Available">
+  Version 2.1 is now available with performance improvements.
+</Alert>
+
+OUTLINE STYLE:
+
+<Alert variant="primary" isOutline>This is an outlined alert.</Alert>
+
+<Alert variant="danger" isOutline headingText="Error">
+  Connection to the server failed.
+</Alert>
+
+DISMISSIBLE:
+
+<Alert variant="warning" isDismissible ondismiss={() => console.log('dismissed')}>
+  This alert can be closed by the user.
+</Alert>
+
+COMPLEX ALERT WITH ICON:
+
+<Alert variant="danger" headingText="Deployment Failed">
+  {#snippet icon()}
+    <svg>...</svg>
+  {/snippet}
+  The build process exited with code 1.
+  {#snippet list()}
+    <li>Missing environment variable: DATABASE_URL</li>
+    <li>TypeScript compilation error in src/index.ts:42</li>
+  {/snippet}
+  {#snippet actions()}
+    <button class="pa-btn pa-btn--sm pa-btn--danger">Retry Build</button>
+    <button class="pa-btn pa-btn--sm pa-btn--secondary">View Logs</button>
+  {/snippet}
+</Alert>
+
+SIZE VARIANTS:
+
+<Alert variant="info" size="sm">Small compact alert.</Alert>
+
+<Alert variant="info" size="lg" headingText="Large Alert">
+  This is a larger alert with more visual prominence.
+</Alert>
+
+THEME COLOR:
+
+<Alert variant="primary" themeColor={3}>
+  Custom themed alert using theme color 3.
+</Alert>
+
+
+=====================================================================
+CALLOUT
+=====================================================================
+
+Documentation-style callouts with left border accent. Use for tips,
+notes, warnings, and important information blocks.
+
+PROPS:
+  variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info'
+                            -- Callout color (default: 'info')
+  size?: 'sm' | 'lg'       -- Callout size
+  headingText?: string      -- Callout heading text
+  class?: string            -- Additional CSS classes
+  icon?: Snippet            -- Icon snippet (enables complex layout)
+  children?: Snippet        -- Callout body content
+
+BASIC USAGE:
+
+<Callout variant="info" headingText="Note">
+  This feature requires version 2.0 or higher.
+</Callout>
+
+<Callout variant="warning" headingText="Caution">
+  Modifying this setting will restart the service.
+</Callout>
+
+<Callout variant="danger" headingText="Breaking Change">
+  The API endpoint has been renamed from /v1/users to /v2/users.
+</Callout>
+
+<Callout variant="success" headingText="Tip">
+  You can use keyboard shortcuts to speed up navigation.
+</Callout>
+
+WITH ICON:
+
+<Callout variant="info" headingText="Pro Tip">
+  {#snippet icon()}
+    <svg>...</svg>
+  {/snippet}
+  Use Ctrl+K to open the command palette.
+</Callout>
+
+SIZE VARIANTS:
+
+<Callout variant="info" size="sm">Compact callout for tight spaces.</Callout>
+
+<Callout variant="warning" size="lg" headingText="Important">
+  This is a large callout for critical information.
+</Callout>
+
+ALERT VS CALLOUT:
+  Alert  = Contextual feedback to user actions (success, error, warning states)
+  Callout = Static informational blocks in documentation or guides
+
+
+=====================================================================
+MODAL
+=====================================================================
+
+Dialog overlay with backdrop, header, body, and footer.
+
+PROPS:
+  show?: boolean (bindable)     -- Show/hide modal (default: false)
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'fw'
+                                -- Modal size (default: 'md')
+  variant?: 'primary' | 'success' | 'warning' | 'danger' | 'info'
+                                -- Full modal theming
+  headerVariant?: 'primary' | 'success' | 'warning' | 'danger' | 'info'
+                                -- Header-only theming
+  position?: 'center' | 'top'  -- Modal position (default: 'center')
+  isScrollable?: boolean        -- Scrollable body (default: false)
+  isStatic?: boolean            -- Prevents ESC/backdrop close (default: false)
+  titleText?: string            -- Modal title text
+  shouldShowClose?: boolean     -- Show close button (default: true)
+  shouldCloseOnEscape?: boolean -- Close on ESC key (default: true)
+  beforeCloseCallback?: () => boolean | void
+                                -- Return false to prevent closing
+  onclose?: () => void          -- Fired after modal closes
+  class?: string                -- Additional modal CSS classes
+  bodyClass?: string            -- Additional body CSS classes
+  footerClass?: string          -- Additional footer CSS classes
+  header?: Snippet              -- Custom header content
+  children?: Snippet            -- Modal body content
+  footer?: Snippet              -- Modal footer content
+
+IMPORTANT: show is $bindable -- use bind:show for two-way binding.
+When isStatic is true, both ESC key and backdrop click are disabled.
+
+WHEN TO USE MODAL vs DIALOG SERVICE:
+
+  Use <Modal> directly when you need:
+    - Complex body content: forms, formatted/multiline text, grids, tables, components
+    - Custom header or footer layouts via snippets
+    - Two-way data binding (bind:value on inputs inside the modal)
+    - Full template power — anything you can write in a Svelte template
+
+  Use dialogService when you need:
+    - Simple programmatic confirm/alert/prompt with plain text messages
+    - No template markup — just await the result from any function
+    - Sequential dialog chains (await one after another)
+
+  IMPORTANT: dialogService.custom() only renders the `message` as a <Paragraph>.
+  There is NO way to pass Svelte snippets or components through the JS function.
+  For rich content, always use <Modal> directly in your template.
+
+BASIC USAGE:
+
+<script lang="ts">
+  import { Modal, Button } from '@keenmate/svelte-pure-admin';
+  let showModal = $state(false);
+</script>
+
+<Button onclick={() => showModal = true}>Open Modal</Button>
+
+<Modal bind:show={showModal} titleText="Confirm Action">
+  Are you sure you want to proceed?
+
+  {#snippet footer()}
+    <Button variant="secondary" onclick={() => showModal = false}>Cancel</Button>
+    <Button variant="primary" onclick={() => { doAction(); showModal = false; }}>Confirm</Button>
+  {/snippet}
+</Modal>
+
+SIZE VARIANTS:
+
+<Modal bind:show={showSm} titleText="Small Modal" size="sm">
+  Compact dialog for simple confirmations.
+  {#snippet footer()}
+    <Button variant="primary" onclick={() => showSm = false}>OK</Button>
+  {/snippet}
+</Modal>
+
+<Modal bind:show={showLg} titleText="Large Modal" size="lg">
+  Wider dialog for forms and detailed content.
+  {#snippet footer()}
+    <Button variant="secondary" onclick={() => showLg = false}>Cancel</Button>
+    <Button variant="primary">Save</Button>
+  {/snippet}
+</Modal>
+
+<Modal bind:show={showFw} titleText="Full Width" size="fw">
+  Full-width dialog spanning the entire viewport.
+  {#snippet footer()}
+    <Button variant="secondary" onclick={() => showFw = false}>Close</Button>
+  {/snippet}
+</Modal>
+
+THEMED MODAL:
+
+<Modal bind:show={showDanger} titleText="Delete Item" variant="danger">
+  This action cannot be undone. All data will be permanently deleted.
+  {#snippet footer()}
+    <Button variant="secondary" onclick={() => showDanger = false}>Cancel</Button>
+    <Button variant="danger" onclick={handleDelete}>Delete</Button>
+  {/snippet}
+</Modal>
+
+HEADER-ONLY THEME:
+
+<Modal bind:show={showHeaderTheme} titleText="Warning" headerVariant="warning">
+  Only the header bar is themed, body stays neutral.
+  {#snippet footer()}
+    <Button variant="warning" onclick={() => showHeaderTheme = false}>Acknowledge</Button>
+  {/snippet}
+</Modal>
+
+SCROLLABLE BODY:
+
+<Modal bind:show={showScroll} titleText="Terms of Service" isScrollable size="lg">
+  <div style="height: 2000px;">
+    Very long content that scrolls within the modal body...
+  </div>
+  {#snippet footer()}
+    <Button variant="primary" onclick={() => showScroll = false}>Accept</Button>
+  {/snippet}
+</Modal>
+
+STATIC MODAL (NO CLOSE ON ESC/BACKDROP):
+
+<Modal bind:show={showStatic} titleText="Processing..." isStatic shouldShowClose={false}>
+  Please wait while we process your request.
+  <Spinner size="lg" />
+</Modal>
+
+PREVENT CLOSE WITH CALLBACK:
+
+<script lang="ts">
+  let showModal = $state(false);
+  let hasUnsavedChanges = $state(false);
+
+  function beforeClose(): boolean {
+    if (hasUnsavedChanges) {
+      return false; // Prevent closing
+    }
+    return true; // Allow closing
+  }
+</script>
+
+<Modal
+  bind:show={showModal}
+  titleText="Edit Profile"
+  beforeCloseCallback={beforeClose}
+  onclose={() => console.log('modal closed')}
+>
+  <input oninput={() => hasUnsavedChanges = true} />
+  {#snippet footer()}
+    <Button variant="secondary" onclick={() => { hasUnsavedChanges = false; showModal = false; }}>
+      Discard
+    </Button>
+    <Button variant="primary" onclick={save}>Save</Button>
+  {/snippet}
+</Modal>
+
+CUSTOM HEADER:
+
+<Modal bind:show={showCustom} size="lg">
+  {#snippet header()}
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <svg>...</svg>
+      <h3>Custom Header Layout</h3>
+      <span class="pa-badge pa-badge--success">New</span>
+    </div>
+  {/snippet}
+  Body content with custom header above.
+  {#snippet footer()}
+    <Button variant="primary" onclick={() => showCustom = false}>Done</Button>
+  {/snippet}
+</Modal>
+
+TOP-POSITIONED MODAL:
+
+<Modal bind:show={showTop} titleText="Quick Action" position="top" size="sm">
+  Modal appears near the top of the viewport.
+  {#snippet footer()}
+    <Button variant="primary" onclick={() => showTop = false}>OK</Button>
+  {/snippet}
+</Modal>
+
+
+=====================================================================
+TOAST + TOAST CONTAINER
+=====================================================================
+
+Notification toasts with auto-dismiss and optional progress bar.
+
+TOAST PROPS:
+  variant?: 'primary' | 'success' | 'danger' | 'warning' | 'info'
+                                 -- Toast color (default: 'primary')
+  titleText: string              -- Toast title (REQUIRED)
+  messageText: string            -- Toast message (REQUIRED)
+  show?: boolean (bindable)      -- Show/hide toast (default: true)
+  duration?: number              -- Auto-dismiss in ms, 0 for persistent (default: 5000)
+  shouldShowProgress?: boolean   -- Show progress bar (default: false)
+  icon?: Snippet                 -- Custom icon
+  onclose?: () => void           -- Fired when toast closes
+  class?: string                 -- Additional CSS classes
+
+TOAST CONTAINER PROPS:
+  position?: 'top-end' | 'top-center' | 'top-start' | 'bottom-end' | 'bottom-center' | 'bottom-start'
+                                 -- Position on screen (default: 'top-end')
+  class?: string                 -- Additional CSS classes
+  children?: Snippet             -- Toast children
+
+IMPORTANT: Positions use logical directions (start/end), NOT physical (left/right).
+This ensures correct positioning in RTL layouts. 'top-end' = top-right in LTR.
+
+BASIC USAGE:
+
+<ToastContainer position="top-end">
+  <Toast
+    variant="success"
+    titleText="Saved"
+    messageText="Your changes have been saved."
+  />
+</ToastContainer>
+
+WITH PROGRESS BAR:
+
+<ToastContainer position="top-end">
+  <Toast
+    variant="info"
+    titleText="Uploading"
+    messageText="File upload in progress..."
+    shouldShowProgress
+    duration={8000}
+  />
+</ToastContainer>
+
+PERSISTENT TOAST (NO AUTO-DISMISS):
+
+<Toast
+  variant="warning"
+  titleText="Connection Lost"
+  messageText="Attempting to reconnect..."
+  duration={0}
+/>
+
+COMPLETE TOAST SYSTEM:
+
+<script lang="ts">
+  import { Toast, ToastContainer, Button } from '@keenmate/svelte-pure-admin';
+
+  type ToastData = {
+    id: number;
+    variant: 'success' | 'danger' | 'warning' | 'info';
+    title: string;
+    message: string;
+  };
+
+  let toasts = $state<ToastData[]>([]);
+  let nextId = 0;
+
+  function addToast(variant: ToastData['variant'], title: string, message: string) {
+    toasts = [...toasts, { id: nextId++, variant, title, message }];
+  }
+
+  function removeToast(id: number) {
+    toasts = toasts.filter(t => t.id !== id);
+  }
+</script>
+
+<Button variant="success" onclick={() => addToast('success', 'Success', 'Item saved.')}>
+  Show Success Toast
+</Button>
+<Button variant="danger" onclick={() => addToast('danger', 'Error', 'Something failed.')}>
+  Show Error Toast
+</Button>
+
+<ToastContainer position="top-end">
+  {#each toasts as toast (toast.id)}
+    <Toast
+      variant={toast.variant}
+      titleText={toast.title}
+      messageText={toast.message}
+      shouldShowProgress
+      duration={5000}
+      onclose={() => removeToast(toast.id)}
+    />
+  {/each}
+</ToastContainer>
+
+POSITION VARIANTS:
+
+<ToastContainer position="top-end">...</ToastContainer>
+<ToastContainer position="top-center">...</ToastContainer>
+<ToastContainer position="top-start">...</ToastContainer>
+<ToastContainer position="bottom-end">...</ToastContainer>
+<ToastContainer position="bottom-center">...</ToastContainer>
+<ToastContainer position="bottom-start">...</ToastContainer>
+
+
+=====================================================================
+SPINNER
+=====================================================================
+
+Simple spinning loader indicator.
+
+PROPS:
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+                                 -- Spinner size
+  variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info'
+                                 -- Spinner color
+  class?: string                 -- Additional CSS classes
+
+BASIC USAGE:
+
+<Spinner />
+
+SIZE VARIANTS:
+
+<Spinner size="xs" />
+<Spinner size="sm" />
+<Spinner size="md" />
+<Spinner size="lg" />
+<Spinner size="xl" />
+<Spinner size="2xl" />
+
+COLOR VARIANTS:
+
+<Spinner variant="primary" />
+<Spinner variant="success" />
+<Spinner variant="danger" />
+<Spinner variant="warning" />
+
+INLINE WITH TEXT:
+
+<p>
+  <Spinner size="sm" variant="primary" />
+  Loading data...
+</p>
+
+
+=====================================================================
+LOADER
+=====================================================================
+
+Advanced animated loaders: dots, bars, pulse, ring, wave.
+For simple spinning indicators, use Spinner instead.
+
+PROPS:
+  type?: 'dots' | 'bars' | 'pulse' | 'ring' | 'wave'
+                              -- Loader animation type (default: 'dots')
+  size?: 'default' | 'lg'    -- Loader size
+  color?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info'
+                              -- Loader color (uses text-* utility classes)
+  class?: string              -- Additional CSS classes
+
+BASIC USAGE:
+
+<Loader type="dots" />
+<Loader type="bars" />
+<Loader type="pulse" />
+<Loader type="ring" />
+<Loader type="wave" />
+
+LARGE SIZE:
+
+<Loader type="dots" size="lg" />
+<Loader type="wave" size="lg" color="primary" />
+
+COLOR VARIANTS:
+
+<Loader type="bars" color="success" />
+<Loader type="pulse" color="danger" />
+<Loader type="ring" color="warning" />
+
+NOTE: 'dots' renders 3 spans, 'bars' and 'wave' render 5 spans,
+'pulse' and 'ring' are CSS-only (no child spans).
+
+
+=====================================================================
+LOADER CENTER
+=====================================================================
+
+Utility wrapper that centers loader content horizontally and vertically.
+
+PROPS:
+  style?: string      -- Inline style
+  class?: string      -- Additional CSS classes
+  children?: Snippet  -- Loader + optional text
+
+USAGE:
+
+<LoaderCenter>
+  <Spinner size="lg" variant="primary" />
+  <p>Loading content...</p>
+</LoaderCenter>
+
+WITH CUSTOM HEIGHT:
+
+<LoaderCenter style="min-height: 400px;">
+  <Loader type="dots" size="lg" color="primary" />
+</LoaderCenter>
+
+
+=====================================================================
+LOADER OVERLAY
+=====================================================================
+
+Full-screen overlay loader that blocks interaction.
+
+PROPS:
+  class?: string      -- Additional CSS classes
+  children?: Snippet  -- Loader + optional text
+
+USAGE:
+
+{#if isLoading}
+  <LoaderOverlay>
+    <Spinner size="2xl" variant="primary" />
+    <p>Processing your request...</p>
+  </LoaderOverlay>
+{/if}
+
+TABLE WITH OVERLAY:
+
+<div style="position: relative;">
+  <table class="pa-table">
+    <!-- table content -->
+  </table>
+  {#if isLoadingTable}
+    <LoaderOverlay>
+      <Loader type="dots" size="lg" color="primary" />
+    </LoaderOverlay>
+  {/if}
+</div>
+
+
+=====================================================================
+TOOLTIP
+=====================================================================
+
+Hover-activated text tooltip using Floating UI for smart positioning.
+
+PROPS:
+  text: string                                  -- Tooltip text (REQUIRED)
+  position?: 'top' | 'right' | 'bottom' | 'left'
+                                                -- Position (default: 'top')
+  variant?: 'primary' | 'success' | 'warning' | 'danger' | 'color-1' ... 'color-9'
+                                                -- Color variant
+  multiline?: boolean                           -- 20rem width, left-aligned (default: false)
+  isHelp?: boolean                              -- Question mark cursor (default: false)
+  class?: string                                -- Additional CSS classes
+  children?: Snippet                            -- Trigger element content
+
+IMPORTANT: Requires Floating UI (@floating-ui/dom) loaded globally as
+window.FloatingUIDOM. Without it, a console warning is shown and
+positioning may not work correctly.
+
+BASIC USAGE:
+
+<Tooltip text="This is a tooltip">
+  Hover over me
+</Tooltip>
+
+POSITION VARIANTS:
+
+<Tooltip text="Top tooltip" position="top">Top</Tooltip>
+<Tooltip text="Right tooltip" position="right">Right</Tooltip>
+<Tooltip text="Bottom tooltip" position="bottom">Bottom</Tooltip>
+<Tooltip text="Left tooltip" position="left">Left</Tooltip>
+
+COLOR VARIANTS:
+
+<Tooltip text="Primary" variant="primary">Hover</Tooltip>
+<Tooltip text="Success" variant="success">Hover</Tooltip>
+<Tooltip text="Warning" variant="warning">Hover</Tooltip>
+<Tooltip text="Danger" variant="danger">Hover</Tooltip>
+
+MULTILINE:
+
+<Tooltip
+  text="This is a longer tooltip that wraps to multiple lines for detailed explanations."
+  multiline
+>
+  Hover for details
+</Tooltip>
+
+HELP CURSOR:
+
+<Tooltip text="Click to learn more about this feature" isHelp>
+  What is this?
+</Tooltip>
+
+NOTE: Tooltip uses physical positions (left/right) NOT logical (start/end)
+because arrow positioning requires physical directions.
+
+
+=====================================================================
+POPOVER
+=====================================================================
+
+Click-triggered rich content overlays using Floating UI and portal pattern.
+
+POPOVER PROPS:
+  titleText: string                    -- Popover title (REQUIRED)
+  placement?: 'top' | 'right' | 'bottom' | 'left'
+                                       -- Placement (default: 'top')
+  size?: 'sm' | 'lg'                  -- Size variant
+  alignment?: 'center' | 'end'        -- Text alignment in body
+  triggerText?: string                 -- Default trigger button text (default: '?')
+  class?: string                      -- Additional CSS classes
+  trigger?: Snippet                   -- Custom trigger element
+  header?: Snippet                    -- Custom header (replaces default)
+  children?: Snippet                  -- Popover body content
+
+IMPORTANT: You MUST include <PopoverContainer /> once at the root of your app
+(e.g., in +layout.svelte). Only one popover can be open at a time.
+Requires Floating UI (@floating-ui/dom) loaded globally.
+
+SETUP (in +layout.svelte):
+
+<script lang="ts">
+  import { PopoverContainer } from '@keenmate/svelte-pure-admin';
+</script>
+
+<slot />
+<PopoverContainer />
+
+BASIC USAGE:
+
+<Popover titleText="More Info" placement="bottom">
+  <p>Here is some additional information about this feature.</p>
+</Popover>
+
+This renders a small "?" trigger button. Click to show the popover.
+
+CUSTOM TRIGGER:
+
+<Popover titleText="User Details" placement="right">
+  {#snippet trigger()}
+    <span class="pa-badge pa-badge--primary">John Doe</span>
+  {/snippet}
+  <p>Email: john@example.com</p>
+  <p>Role: Administrator</p>
+</Popover>
+
+SIZE VARIANTS:
+
+<Popover titleText="Small" size="sm" placement="bottom">
+  Compact popover.
+</Popover>
+
+<Popover titleText="Large" size="lg" placement="bottom">
+  Wider popover with more room for content.
+</Popover>
+
+TEXT ALIGNMENT:
+
+<Popover titleText="Centered" alignment="center" placement="bottom">
+  This text is centered within the popover body.
+</Popover>
+
+
+=====================================================================
+POPCONFIRM
+=====================================================================
+
+Small confirmation dialog anchored to a trigger element. Perfect for
+delete confirmations and quick yes/no decisions.
+
+PROPS:
+  show?: boolean (bindable)            -- Show/hide popconfirm (default: false)
+  messageText: string                  -- Confirmation message (REQUIRED)
+  position?: 'top' | 'bottom' | 'left' | 'right'
+                                       -- Position (default: 'bottom')
+  icon?: 'danger' | 'warning' | 'info' -- Icon variant
+  isCompact?: boolean                  -- Compact size (default: false)
+  confirmText?: string                 -- Confirm button text (default: i18n)
+  cancelText?: string                  -- Cancel button text (default: i18n)
+  confirmVariant?: string              -- Confirm button color (default: 'primary')
+  trigger?: HTMLElement | null         -- Trigger element for positioning
+  onconfirm?: () => void               -- Fired on confirm
+  oncancel?: () => void                -- Fired on cancel
+  class?: string                       -- Additional CSS classes
+
+IMPORTANT: show is $bindable. You must provide the trigger element reference
+for Floating UI positioning. Requires Floating UI loaded globally.
+
+BASIC USAGE:
+
+<script lang="ts">
+  import { Popconfirm, Button } from '@keenmate/svelte-pure-admin';
+
+  let showConfirm = $state(false);
+  let triggerEl: HTMLElement;
+
+  function handleConfirm() {
+    console.log('Confirmed!');
+  }
+</script>
+
+<button
+  bind:this={triggerEl}
+  onclick={() => showConfirm = !showConfirm}
+  class="pa-btn pa-btn--danger"
+>
+  Delete Item
+</button>
+
+<Popconfirm
+  bind:show={showConfirm}
+  messageText="Are you sure you want to delete this item?"
+  trigger={triggerEl}
+  confirmVariant="danger"
+  onconfirm={handleConfirm}
+  oncancel={() => console.log('Cancelled')}
+/>
+
+WITH ICON:
+
+<Popconfirm
+  bind:show={showConfirm}
+  messageText="This action cannot be undone."
+  icon="danger"
+  trigger={triggerEl}
+  confirmVariant="danger"
+  confirmText="Yes, delete"
+  cancelText="No, keep it"
+  onconfirm={handleDelete}
+/>
+
+COMPACT MODE:
+
+<Popconfirm
+  bind:show={showConfirm}
+  messageText="Remove?"
+  isCompact
+  trigger={triggerEl}
+  onconfirm={handleRemove}
+/>
+
+NOTE: Popconfirm uses physical positions (left/right) for arrow placement,
+NOT logical (start/end). Clicking outside closes the popconfirm automatically.
+
+
+=====================================================================
+DIALOG SERVICE + DIALOG CONTAINER
+=====================================================================
+
+Promise-based programmatic dialog system. No need to manage modal state
+manually -- just await the result.
+
+SETUP (required once in +layout.svelte):
+
+<script lang="ts">
+  import { DialogContainer } from '@keenmate/svelte-pure-admin';
+</script>
+
+<slot />
+<DialogContainer />
+
+IMPORTS:
+
+import { dialogService } from '@keenmate/svelte-pure-admin';
+
+
+CONFIRM DIALOG
+--------------
+Returns Promise<boolean> -- true if confirmed, false if cancelled.
+
+const result = await dialogService.confirm({
+  title: 'Delete User',
+  message: 'Are you sure you want to delete this user? This cannot be undone.',
+  confirmText: 'Delete',
+  cancelText: 'Cancel',
+  variant: 'danger',
+  confirmVariant: 'danger'
+});
+
+if (result) {
+  await deleteUser(userId);
+}
+
+CONFIRM OPTIONS:
+  title?: string              -- Dialog title
+  message?: string            -- Dialog message
+  confirmText?: string        -- Confirm button text (default: i18n 'OK')
+  cancelText?: string         -- Cancel button text (default: i18n 'Cancel')
+  confirmVariant?: DialogVariant -- Confirm button color
+  variant?: 'primary' | 'success' | 'warning' | 'danger' | 'info'
+  size?: 'sm' | 'md' | 'lg' | 'xl'
+  position?: 'center' | 'top'
+  closeOnBackdrop?: boolean
+
+
+ALERT DIALOG
+------------
+Returns Promise<void> -- resolves when user clicks OK.
+
+await dialogService.alert({
+  title: 'Success!',
+  message: 'Your profile has been updated.',
+  variant: 'success'
+});
+
+ALERT OPTIONS:
+  title?: string
+  message?: string
+  okText?: string             -- OK button text (default: i18n 'OK')
+  variant?: DialogVariant
+  size?: DialogSize
+  position?: 'center' | 'top'
+
+
+PROMPT DIALOG
+-------------
+Returns Promise<string | null> -- string value if submitted, null if cancelled.
+
+const name = await dialogService.prompt({
+  title: 'Rename File',
+  message: 'Enter a new name for the file:',
+  defaultValue: 'document.txt',
+  placeholder: 'filename.ext',
+  confirmText: 'Rename',
+  cancelText: 'Cancel'
+});
+
+if (name !== null) {
+  await renameFile(fileId, name);
+}
+
+PROMPT WITH VALIDATION:
+
+const email = await dialogService.prompt({
+  title: 'Enter Email',
+  message: 'Provide your email address:',
+  placeholder: 'you@example.com',
+  validator: (value) => {
+    if (!value.includes('@')) return 'Please enter a valid email';
+    return true;
+  }
+});
+
+PROMPT OPTIONS:
+  title?: string
+  message?: string
+  defaultValue?: string       -- Initial input value
+  placeholder?: string        -- Input placeholder
+  confirmText?: string
+  cancelText?: string
+  validator?: (value: string) => true | string
+                              -- Return true if valid, error string if invalid
+  closeOnBackdrop?: boolean   -- Always false for prompts
+
+
+CUSTOM DIALOG
+-------------
+Returns Promise<T> -- the value of the clicked button, or dismissValue.
+
+const action = await dialogService.custom({
+  title: 'Save Changes?',
+  message: 'You have unsaved changes. What would you like to do?',
+  buttons: [
+    { label: 'Discard', value: 'discard', variant: 'danger' },
+    { label: 'Save as Draft', value: 'draft', variant: 'secondary' },
+    { label: 'Save & Publish', value: 'publish', variant: 'success' }
+  ],
+  dismissValue: 'discard'
+});
+
+if (action === 'publish') {
+  await saveAndPublish();
+} else if (action === 'draft') {
+  await saveAsDraft();
+}
+
+CUSTOM BUTTON OPTIONS:
+  label: string               -- Button text
+  value: T                    -- Value returned when clicked
+  variant?: ColorVariant      -- Button color (default: 'secondary')
+  isOutline?: boolean         -- Outline button style
+  class?: string              -- Additional button CSS class
+  disabled?: boolean          -- Disable button
+
+CUSTOM DIALOG OPTIONS:
+  title?: string
+  message?: string
+  buttons: DialogButton<T>[]  -- Array of button definitions
+  dismissValue?: T            -- Value when closed via ESC/backdrop
+  variant?: DialogVariant
+  size?: DialogSize
+
+
+=====================================================================
+NOTIFICATIONS PANEL
+=====================================================================
+
+Dropdown panel for displaying notifications (placeholder/demo component).
+
+PROPS:
+  show?: boolean (bindable)  -- Show/hide panel (default: false)
+  class?: string             -- Additional CSS classes
+
+NOTE: This is currently a demo component with hardcoded notification items.
+It demonstrates the pa-notifications CSS pattern. In production, you would
+customize the content with your own notification data.
+
+BASIC USAGE:
+
+<script lang="ts">
+  import { NotificationsPanel } from '@keenmate/svelte-pure-admin';
+  let showNotifications = $state(false);
+</script>
+
+<button onclick={() => showNotifications = !showNotifications}>
+  Notifications
+</button>
+
+<NotificationsPanel bind:show={showNotifications} />
+
+
+=====================================================================
+COMPLETE EXAMPLES
+=====================================================================
+
+EXAMPLE 1: FORM WITH VALIDATION ALERTS AND MODAL CONFIRM
+
+<script lang="ts">
+  import { Alert, Modal, Button, dialogService } from '@keenmate/svelte-pure-admin';
+
+  let errors = $state<string[]>([]);
+  let showSuccess = $state(false);
+
+  async function handleSubmit() {
+    errors = [];
+
+    // Validate
+    if (!formData.name) errors.push('Name is required');
+    if (!formData.email) errors.push('Email is required');
+
+    if (errors.length > 0) return;
+
+    // Confirm before submitting
+    const confirmed = await dialogService.confirm({
+      title: 'Submit Form',
+      message: 'Are you sure you want to submit this form?',
+      confirmText: 'Submit',
+      variant: 'primary'
+    });
+
+    if (!confirmed) return;
+
+    await submitForm(formData);
+    showSuccess = true;
+  }
+</script>
+
+{#if errors.length > 0}
+  <Alert variant="danger" isDismissible headingText="Validation Failed">
+    {#snippet list()}
+      {#each errors as error}
+        <li>{error}</li>
+      {/each}
+    {/snippet}
+  </Alert>
+{/if}
+
+{#if showSuccess}
+  <Alert variant="success" isDismissible ondismiss={() => showSuccess = false}>
+    Form submitted successfully!
+  </Alert>
+{/if}
+
+
+EXAMPLE 2: CRUD OPERATIONS WITH TOAST NOTIFICATIONS
+
+<script lang="ts">
+  import {
+    Button, Toast, ToastContainer, dialogService
+  } from '@keenmate/svelte-pure-admin';
+
+  type ToastItem = {
+    id: number;
+    variant: 'success' | 'danger' | 'warning' | 'info';
+    title: string;
+    message: string;
+  };
+
+  let toasts = $state<ToastItem[]>([]);
+  let toastId = 0;
+
+  function notify(variant: ToastItem['variant'], title: string, message: string) {
+    toasts = [...toasts, { id: toastId++, variant, title, message }];
+  }
+
+  async function handleDelete(item: Item) {
+    const confirmed = await dialogService.confirm({
+      title: 'Delete Item',
+      message: `Are you sure you want to delete "${item.name}"?`,
+      variant: 'danger',
+      confirmVariant: 'danger',
+      confirmText: 'Delete'
+    });
+
+    if (!confirmed) return;
+
+    try {
+      await api.deleteItem(item.id);
+      notify('success', 'Deleted', `"${item.name}" has been deleted.`);
+    } catch (e) {
+      notify('danger', 'Error', `Failed to delete "${item.name}".`);
+    }
+  }
+
+  async function handleSave(item: Item) {
+    try {
+      await api.saveItem(item);
+      notify('success', 'Saved', 'Changes saved successfully.');
+    } catch (e) {
+      notify('danger', 'Error', 'Failed to save changes.');
+    }
+  }
+</script>
+
+<ToastContainer position="top-end">
+  {#each toasts as toast (toast.id)}
+    <Toast
+      variant={toast.variant}
+      titleText={toast.title}
+      messageText={toast.message}
+      shouldShowProgress
+      duration={4000}
+      onclose={() => toasts = toasts.filter(t => t.id !== toast.id)}
+    />
+  {/each}
+</ToastContainer>
+
+
+EXAMPLE 3: FULL PAGE WITH LOADING STATES
+
+<script lang="ts">
+  import {
+    Spinner, Loader, LoaderCenter, LoaderOverlay, Card, Button
+  } from '@keenmate/svelte-pure-admin';
+
+  let isPageLoading = $state(true);
+  let isTableLoading = $state(false);
+  let isSaving = $state(false);
+
+  // Simulate page load
+  setTimeout(() => isPageLoading = false, 2000);
+</script>
+
+{#if isPageLoading}
+  <LoaderCenter style="min-height: 60vh;">
+    <Loader type="dots" size="lg" color="primary" />
+    <p>Loading dashboard...</p>
+  </LoaderCenter>
+{:else}
+  <Card>
+    {#snippet header()}
+      <h3>Data Table</h3>
+      <Button onclick={refreshTable} disabled={isTableLoading}>
+        {#if isTableLoading}
+          <Spinner size="xs" /> Refreshing...
+        {:else}
+          Refresh
+        {/if}
+      </Button>
+    {/snippet}
+
+    <div style="position: relative; min-height: 200px;">
+      <table class="pa-table">
+        <!-- table rows -->
+      </table>
+
+      {#if isTableLoading}
+        <LoaderOverlay>
+          <Loader type="bars" color="primary" />
+        </LoaderOverlay>
+      {/if}
+    </div>
+  </Card>
+{/if}
+
+{#if isSaving}
+  <LoaderOverlay>
+    <Spinner size="2xl" variant="primary" />
+    <p>Saving changes...</p>
+  </LoaderOverlay>
+{/if}
+
+
+EXAMPLE 4: INTERACTIVE CONFIRMATION FLOW
+
+<script lang="ts">
+  import { dialogService } from '@keenmate/svelte-pure-admin';
+
+  async function handlePublish() {
+    // Step 1: Confirm publish
+    const confirmed = await dialogService.confirm({
+      title: 'Publish Article',
+      message: 'This will make the article visible to all users.',
+      confirmText: 'Publish',
+      variant: 'primary'
+    });
+
+    if (!confirmed) return;
+
+    // Step 2: Choose visibility
+    const visibility = await dialogService.custom({
+      title: 'Choose Visibility',
+      message: 'Who should be able to see this article?',
+      buttons: [
+        { label: 'Public', value: 'public', variant: 'success' },
+        { label: 'Members Only', value: 'members', variant: 'primary' },
+        { label: 'Private', value: 'private', variant: 'secondary' }
+      ],
+      dismissValue: null
+    });
+
+    if (visibility === null) return;
+
+    try {
+      await publishArticle(articleId, visibility);
+      await dialogService.alert({
+        title: 'Published!',
+        message: `Article published with ${visibility} visibility.`,
+        variant: 'success'
+      });
+    } catch (e) {
+      await dialogService.alert({
+        title: 'Error',
+        message: 'Failed to publish article. Please try again.',
+        variant: 'danger'
+      });
+    }
+  }
+</script>
+
+
+EXAMPLE 5: TOOLTIP AND POPOVER ON TABLE ACTIONS
+
+<script lang="ts">
+  import {
+    Tooltip, Popover, PopoverContainer, Popconfirm
+  } from '@keenmate/svelte-pure-admin';
+
+  let deleteTargets = $state<Record<string, { show: boolean; trigger: HTMLElement | null }>>({});
+
+  function initDeleteTarget(id: string) {
+    if (!deleteTargets[id]) {
+      deleteTargets[id] = { show: false, trigger: null };
+    }
+  }
+</script>
+
+<table class="pa-table pa-table--hover">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>
+        <Tooltip text="The current status of each item" position="top">
+          Status
+        </Tooltip>
+      </th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {#each items as item}
+      <tr>
+        <td>{item.name}</td>
+        <td>
+          <Tooltip text={item.statusDetails} position="right">
+            <span class="pa-badge pa-badge--{item.statusColor}">{item.status}</span>
+          </Tooltip>
+        </td>
+        <td>
+          <Popover titleText="Item Details" placement="left">
+            {#snippet trigger()}
+              <button class="pa-btn pa-btn--sm pa-btn--secondary">Details</button>
+            {/snippet}
+            <p>Created: {item.createdAt}</p>
+            <p>Updated: {item.updatedAt}</p>
+            <p>Owner: {item.owner}</p>
+          </Popover>
+        </td>
+      </tr>
+    {/each}
+  </tbody>
+</table>
+
+<PopoverContainer />
+
+
+=====================================================================
+LAYOUT SETUP CHECKLIST
+=====================================================================
+
+For a complete feedback system, add these to your root +layout.svelte:
+
+<script lang="ts">
+  import '@keenmate/pure-admin-core/css';
+  import {
+    ToastContainer,
+    DialogContainer,
+    PopoverContainer
+  } from '@keenmate/svelte-pure-admin';
+</script>
+
+<slot />
+
+<!-- Global containers (render once at root level) -->
+<ToastContainer position="top-end">
+  <!-- Managed by your toast store -->
+</ToastContainer>
+<DialogContainer />
+<PopoverContainer />
+
+
+=====================================================================
+CRITICAL REMINDERS
+=====================================================================
+
+DO:
+  - Import CSS from @keenmate/pure-admin-core separately
+  - Place DialogContainer, PopoverContainer, ToastContainer at root layout
+  - Use bind:show for two-way binding on Modal, Toast, Popconfirm
+  - Use beforeCloseCallback to prevent modal close (return false)
+  - Use dialogService for programmatic confirm/alert/prompt (await the result)
+  - Use logical positions for ToastContainer (top-end, bottom-start, etc.)
+  - Load Floating UI globally for Tooltip, Popover, Popconfirm positioning
+
+DO NOT:
+  - Use <slot> syntax (Svelte 5 uses Snippets: {@render children?.()})
+  - Use export let (Svelte 5 uses $props())
+  - Use camelCase event handlers (onclick not onClick, onclose not onClose)
+  - Use physical positions for toast (top-right is WRONG, use top-end)
+  - Nest PopoverContainer inside other components (must be at root)
+  - Forget to include DialogContainer when using dialogService
+  - Use multiple PopoverContainer instances (only one is needed)
+
+NEXT STEPS
+----------
+- Data visualization components (Progress, Gauge, Sparkline) -> data-visualization.txt
+- Display components (Field, DescTable, PropCard) -> data-display.txt
+- Layout components (Card, Grid) -> layout.txt
+- Form components (Input, Select, Checkbox) -> forms.txt

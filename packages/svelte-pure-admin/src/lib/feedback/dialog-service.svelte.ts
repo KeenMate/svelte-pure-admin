@@ -126,10 +126,10 @@ export const dialogService = {
 	 */
 	confirm(options: ConfirmDialogOptions = {}): Promise<boolean> {
 		const defaultOptions: ConfirmDialogOptions = {
-			title: t('dialog.confirm'),
-			message: t('dialog.areYouSure'),
-			confirmText: t('dialog.ok'),
-			cancelText: t('dialog.cancel'),
+			title: t('pureAdmin.dialog.confirm'),
+			message: t('pureAdmin.dialog.areYouSure'),
+			confirmText: t('pureAdmin.buttons.ok'),
+			cancelText: t('pureAdmin.buttons.cancel'),
 			variant: 'primary',
 			size: 'sm',
 			position: 'center',
@@ -145,9 +145,9 @@ export const dialogService = {
 	 */
 	alert(options: AlertDialogOptions = {}): Promise<void> {
 		const defaultOptions: AlertDialogOptions = {
-			title: t('dialog.alert'),
+			title: t('pureAdmin.dialog.alert'),
 			message: '',
-			okText: t('dialog.ok'),
+			okText: t('pureAdmin.buttons.ok'),
 			variant: 'primary',
 			size: 'sm',
 			position: 'center',
@@ -163,12 +163,12 @@ export const dialogService = {
 	 */
 	prompt(options: PromptDialogOptions = {}): Promise<string | null> {
 		const defaultOptions: PromptDialogOptions = {
-			title: t('dialog.input'),
-			message: t('dialog.enterValue'),
+			title: t('pureAdmin.dialog.input'),
+			message: t('pureAdmin.dialog.enterValue'),
 			defaultValue: '',
 			placeholder: '',
-			confirmText: t('dialog.ok'),
-			cancelText: t('dialog.cancel'),
+			confirmText: t('pureAdmin.buttons.ok'),
+			cancelText: t('pureAdmin.buttons.cancel'),
 			variant: 'primary',
 			size: 'sm',
 			position: 'center',
@@ -184,7 +184,7 @@ export const dialogService = {
 	 */
 	custom<T>(options: CustomDialogOptions<T>): Promise<T> {
 		const defaultOptions: CustomDialogOptions<T> = {
-			title: t('dialog.defaultTitle'),
+			title: t('pureAdmin.dialog.defaultTitle'),
 			message: '',
 			variant: 'primary',
 			size: 'sm',

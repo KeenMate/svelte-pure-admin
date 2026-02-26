@@ -7,6 +7,8 @@
 	 */
 
 	interface Props {
+		/** Inline style */
+		style?: string;
 		/** Additional CSS classes */
 		class?: string;
 		/** Children content (loader + optional text) */
@@ -14,6 +16,7 @@
 	}
 
 	let {
+		style,
 		class: className = '',
 		children
 	}: Props = $props();
@@ -26,6 +29,6 @@
 	});
 </script>
 
-<div class={classes()}>
+<div class={classes()} {style}>
 	{@render children?.()}
 </div>

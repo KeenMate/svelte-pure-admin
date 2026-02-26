@@ -4,7 +4,7 @@
 	 * Based on @keenmate/pure-admin-core scss/core-components/_statistics.scss
 	 */
 
-	type StatVariant = 'hero' | 'square';
+	type StatVariant = 'hero' | 'hero-compact' | 'square';
 	type StatColor = 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger';
 	type ChangeDirection = 'positive' | 'negative' | 'neutral';
 
@@ -61,7 +61,7 @@
 	<div class={classes()}>
 		{@render children()}
 	</div>
-{:else if variant === 'hero'}
+{:else if variant === 'hero' || variant === 'hero-compact'}
 	<div class={classes()}>
 		<div class="pa-stat__label">{labelText}</div>
 		<div class="pa-stat__value">{number}</div>

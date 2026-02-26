@@ -7,6 +7,8 @@
 		Column,
 		Spinner,
 		Loader,
+		LoaderCenter,
+		LoaderOverlay,
 		CodeBlock
 	} from '@keenmate/svelte-pure-admin';
 </script>
@@ -94,9 +96,9 @@
 <Card titleText="Centered Loaders" class="mb-6">
 
 	<div class="h-20x position-relative border border-dashed rounded">
-		<div class="pa-loader-overlay">
+		<LoaderOverlay>
 			<Spinner size="xl" variant="primary" />
-		</div>
+		</LoaderOverlay>
 	</div>
 </Card>
 
@@ -105,16 +107,16 @@
 
 	<Grid>
 		<Column size="100" md="1-2" class="mb-4">
-			<div class="pa-loader-center h-15x border border-dashed rounded">
+			<LoaderCenter class="h-15x border border-dashed rounded">
 				<Spinner size="lg" variant="primary" />
 				<Paragraph class="mt-4 text-secondary">Loading data...</Paragraph>
-			</div>
+			</LoaderCenter>
 		</Column>
 		<Column size="100" md="1-2" class="mb-4">
-			<div class="pa-loader-center h-15x border border-dashed rounded">
+			<LoaderCenter class="h-15x border border-dashed rounded">
 				<Spinner size="lg" variant="success" />
 				<Paragraph class="mt-4 text-secondary">Processing...</Paragraph>
-			</div>
+			</LoaderCenter>
 		</Column>
 	</Grid>
 </Card>
@@ -129,9 +131,9 @@
 					<Heading level={4}>Loading Card</Heading>
 				{/snippet}
 				<div class="pa-card__body h-15x position-relative">
-					<div class="pa-loader-overlay">
+					<LoaderOverlay>
 						<Spinner size="lg" variant="primary" />
-					</div>
+					</LoaderOverlay>
 				</div>
 			</Card>
 		</Column>
@@ -210,53 +212,29 @@
 <Card titleText="Usage Examples">
 
 	<Heading level={4} class="mb-2">Basic Spinner</Heading>
-	<CodeBlock language="html" class="mb-4">&lt;div class="pa-spinner"&gt;&lt;/div&gt;</CodeBlock>
+	<CodeBlock class="mb-4">{`<Spinner />`}</CodeBlock>
 
 	<Heading level={4} class="mb-2">Sized Spinner</Heading>
-	<CodeBlock language="html" class="mb-4">&lt;div class="pa-spinner pa-spinner--lg"&gt;&lt;/div&gt;</CodeBlock>
+	<CodeBlock class="mb-4">{`<Spinner size="lg" />`}</CodeBlock>
 
 	<Heading level={4} class="mb-2">Colored Spinner</Heading>
-	<CodeBlock language="html" class="mb-4">&lt;div class="pa-spinner pa-spinner--lg pa-spinner--primary"&gt;&lt;/div&gt;</CodeBlock>
+	<CodeBlock class="mb-4">{`<Spinner size="lg" variant="primary" />`}</CodeBlock>
 
 	<Heading level={4} class="mb-2">Centered Loader with Overlay</Heading>
-	<CodeBlock language="html" class="mb-4">&lt;div class="pa-loader-overlay"&gt;
-  &lt;div class="pa-spinner pa-spinner--xl"&gt;&lt;/div&gt;
-&lt;/div&gt;</CodeBlock>
+	<CodeBlock class="mb-4">{`<LoaderOverlay>
+  <Spinner size="xl" variant="primary" />
+</LoaderOverlay>`}</CodeBlock>
 
 	<Heading level={4} class="mb-2">Centered Loader with Text</Heading>
-	<CodeBlock language="html" class="mb-4">&lt;div class="pa-loader-center"&gt;
-  &lt;div class="pa-spinner pa-spinner--lg"&gt;&lt;/div&gt;
-  &lt;p class="mt-4"&gt;Loading...&lt;/p&gt;
-&lt;/div&gt;</CodeBlock>
+	<CodeBlock class="mb-4">{`<LoaderCenter>
+  <Spinner size="lg" />
+  <Paragraph class="mt-4">Loading...</Paragraph>
+</LoaderCenter>`}</CodeBlock>
 
-	<Heading level={4} class="mb-2">Dots Loader</Heading>
-	<CodeBlock language="html" class="mb-4">&lt;div class="pa-loader-dots"&gt;
-  &lt;span&gt;&lt;/span&gt;
-  &lt;span&gt;&lt;/span&gt;
-  &lt;span&gt;&lt;/span&gt;
-&lt;/div&gt;</CodeBlock>
-
-	<Heading level={4} class="mb-2">Bars Loader</Heading>
-	<CodeBlock language="html" class="mb-4">&lt;div class="pa-loader-bars"&gt;
-  &lt;span&gt;&lt;/span&gt;
-  &lt;span&gt;&lt;/span&gt;
-  &lt;span&gt;&lt;/span&gt;
-  &lt;span&gt;&lt;/span&gt;
-  &lt;span&gt;&lt;/span&gt;
-&lt;/div&gt;</CodeBlock>
-
-	<Heading level={4} class="mb-2">Pulse Loader</Heading>
-	<CodeBlock language="html" class="mb-4">&lt;div class="pa-loader-pulse"&gt;&lt;/div&gt;</CodeBlock>
-
-	<Heading level={4} class="mb-2">Ring Loader</Heading>
-	<CodeBlock language="html" class="mb-4">&lt;div class="pa-loader-ring"&gt;&lt;/div&gt;</CodeBlock>
-
-	<Heading level={4} class="mb-2">Wave Loader</Heading>
-	<CodeBlock language="html">&lt;div class="pa-loader-wave"&gt;
-  &lt;span&gt;&lt;/span&gt;
-  &lt;span&gt;&lt;/span&gt;
-  &lt;span&gt;&lt;/span&gt;
-  &lt;span&gt;&lt;/span&gt;
-  &lt;span&gt;&lt;/span&gt;
-&lt;/div&gt;</CodeBlock>
+	<Heading level={4} class="mb-2">Loader Types</Heading>
+	<CodeBlock class="mb-4">{`<Loader type="dots" size="lg" color="primary" />
+<Loader type="bars" size="lg" color="success" />
+<Loader type="pulse" size="lg" color="danger" />
+<Loader type="ring" size="lg" color="warning" />
+<Loader type="wave" size="lg" color="info" />`}</CodeBlock>
 </Card>

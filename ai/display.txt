@@ -1,0 +1,1070 @@
+DISPLAY COMPONENTS
+==================
+
+CRITICAL: This is a Svelte 5 component library (@keenmate/svelte-pure-admin)
+- All components use Svelte 5 runes ($props, $state, $derived)
+- Content slots use Snippets ({#snippet}), NOT legacy <slot>
+- All CSS classes use BEM naming: pa-[block]__[element]--[modifier]
+- Import components from '@keenmate/svelte-pure-admin'
+
+INSTALLATION
+------------
+npm install @keenmate/svelte-pure-admin
+
+CSS must be imported separately:
+<script>
+  import '@keenmate/pure-admin-core/css';
+</script>
+
+
+CARD
+----
+The main container component. Supports title, header/footer snippets, ghost mode,
+stat card style, live state indicators, and inline tabs.
+
+Props:
+  variant?       'primary' | 'success' | 'warning' | 'danger' | 'info'
+                 | 'color-1' through 'color-9'
+  titleText?     string - Simple title text in header
+  title?         Snippet - Rich content title (alternative to titleText)
+  descriptionText? string - Inline description with title, truncates with ellipsis
+  description?   Snippet - Rich description (alternative to descriptionText)
+  subtitleText?  string - Below title (deprecated, use descriptionText)
+  headerWrap?    boolean (false) - Allow description to wrap to its own line
+  hasInlineTabs? boolean (false) - Pill-style tab buttons in header
+  headerClass?   string - Additional CSS classes on the header element
+  isGhost?       boolean (false) - Invisible container (no bg, border, shadow)
+  isStat?        boolean (false) - Stat card styling
+  hasPadding?    boolean (true) - Body has padding (false removes it)
+  liveState?     'up' | 'down' | 'neutral' - Tinted background for live data
+  class?         string - Additional CSS classes
+
+Snippets:
+  header?        Custom header content (replaces default title layout)
+  titleIcon?     Icon before title text
+  tools?         Toolbar area in header (buttons, dropdowns)
+  tabs?          Tab buttons in header (replaces other header content)
+  children?      Body content (main card content)
+  footer?        Custom footer content
+  actions?       Footer action buttons (right side)
+
+Basic card:
+
+<Card titleText="Users">
+  <p>Card body content goes here.</p>
+</Card>
+
+Card with header tools and footer actions:
+
+<Card titleText="Active Users" descriptionText="Last 30 days">
+  {#snippet tools()}
+    <Button variant="secondary" size="sm">Export</Button>
+    <Button variant="primary" size="sm">Add User</Button>
+  {/snippet}
+
+  <Table isStriped isHover>
+    <thead><tr><th>Name</th><th>Email</th></tr></thead>
+    <tbody>
+      <tr><td>John</td><td>john@example.com</td></tr>
+    </tbody>
+  </Table>
+
+  {#snippet footer()}
+    <Pager currentPage={1} totalPages={10} />
+  {/snippet}
+</Card>
+
+Card with custom header snippet:
+
+<Card>
+  {#snippet header()}
+    <h3>Custom Header</h3>
+    <Badge variant="success">Live</Badge>
+  {/snippet}
+  Body content here.
+</Card>
+
+Ghost card (invisible container, same spacing):
+
+<Card isGhost titleText="Ghost Section">
+  <p>No background, border, or shadow.</p>
+</Card>
+
+Live state card (tinted background reflecting data changes):
+
+<Card titleText="Stock Price" liveState="up">
+  <p>$142.50 (+2.3%)</p>
+</Card>
+
+Card with tabs:
+
+<script>
+  let activeTab = $state('overview');
+</script>
+
+<Card hasInlineTabs>
+  {#snippet tabs()}
+    <CardTab active={activeTab === 'overview'} onclick={() => activeTab = 'overview'}>
+      Overview
+    </CardTab>
+    <CardTab active={activeTab === 'details'} onclick={() => activeTab = 'details'}>
+      Details
+    </CardTab>
+  {/snippet}
+
+  {#if activeTab === 'overview'}
+    <p>Overview content</p>
+  {:else}
+    <p>Details content</p>
+  {/if}
+</Card>
+
+Stat card (inside a Grid):
+
+<Grid cols={4}>
+  <Card isStat titleText="Total Revenue">
+    <Stat number="$48,200" labelText="Revenue" changeText="+12.5%" changeDirection="positive" variant="hero" />
+  </Card>
+</Grid>
+
+
+CARDTAB / CARDTABCONTENT
+-------------------------
+Helper components for Card tabs.
+
+CardTab Props:
+  active?        boolean (false) - Whether this tab is active
+  onclick?       (event: MouseEvent) => void
+  class?         string
+  children?      Snippet
+
+CardTabContent Props:
+  active?        boolean (false) - Whether this tab content is visible
+  id?            string - Tab content ID
+  class?         string
+  children?      Snippet
+
+
+FILTERCARD
+----------
+Expandable filter card with inline filters and collapsible advanced section.
+Built on top of pa-card with pa-filter-card classes.
+
+Props:
+  isExpanded?            boolean (false, bindable) - Advanced filters expanded
+  shouldShowToggle?      boolean (true) - Show expand/collapse button
+  shouldShowClear?       boolean (true) - Show clear all button
+  shouldShowRefresh?     boolean (true) - Show refresh button
+  shouldShowAdvancedActions? boolean (true) - Show Apply/Clear in advanced section
+  disabled?              boolean (false) - Disable all inputs
+  isLoading?             boolean (false) - Loading state
+  class?                 string
+  onclear?               () => void
+  onrefresh?             () => void
+  onapply?               () => void
+  ontoggle?              (expanded: boolean) => void
+
+Snippets:
+  filters?               Main inline filters (search, selects)
+  advancedFilters?       Collapsible advanced filters section
+  actions?               Custom action buttons
+
+<FilterCard
+  onclear={handleClear}
+  onrefresh={handleRefresh}
+  onapply={handleApply}
+>
+  {#snippet filters()}
+    <Input placeholder="Search..." bind:value={search} />
+    <Select bind:value={status}>
+      <option value="">All</option>
+      <option value="active">Active</option>
+    </Select>
+  {/snippet}
+
+  {#snippet advancedFilters()}
+    <FormGroup>
+      <FormLabel>Date Range</FormLabel>
+      <Input type="date" bind:value={startDate} />
+    </FormGroup>
+  {/snippet}
+</FilterCard>
+
+
+TABLECARD
+---------
+A card container specifically for tables. No body padding, handles table overflow
+and border-radius properly.
+
+Props:
+  titleText?     string - Card title
+  variant?       'primary' | 'success' | 'warning' | 'danger'
+  color?         1-9 (theme color)
+  isScrollable?  boolean (false) - Horizontal scrolling for wide tables
+  isPlain?       boolean (false) - Remove card styling (border, shadow, bg)
+  class?         string
+
+Snippets:
+  header?        Custom header (replaces title)
+  actions?       Header action buttons
+  children?      Table content
+  footer?        Footer (pagination, summary)
+
+<TableCard titleText="Users">
+  {#snippet actions()}
+    <Button variant="primary" size="sm">Add User</Button>
+  {/snippet}
+
+  <Table isStriped isHover>
+    <thead>
+      <tr><th>Name</th><th>Email</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Alice</td><td>alice@co.com</td><td><Badge variant="success">Active</Badge></td></tr>
+      <tr><td>Bob</td><td>bob@co.com</td><td><Badge variant="danger">Inactive</Badge></td></tr>
+    </tbody>
+  </Table>
+
+  {#snippet footer()}
+    <Pager bind:currentPage totalPages={10} onprevious={prev} onnext={next} />
+  {/snippet}
+</TableCard>
+
+
+TABLE
+-----
+HTML table with visual modifiers.
+
+Props:
+  isStriped?       boolean (false) - Zebra striping
+  isHover?         boolean (false) - Row hover highlight
+  isBorderless?    boolean (false) - No cell borders
+  isCompact?       boolean (false) - Reduced padding (alias for size="xs")
+  size?            'xs' | 'sm' | 'lg' | 'xl' - Cell padding size
+  isBordered?      boolean (false) - Full borders on all sides
+  isResponsive?    boolean (false) - Horizontal scroll on overflow
+  isResponsiveGrid? boolean (false) - Grid layout, collapses to cards on mobile
+  class?           string
+  children?        Snippet
+
+<Table isStriped isHover>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Role</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {#each users as user}
+      <tr>
+        <td>{user.id}</td>
+        <td>{user.name}</td>
+        <td>{user.role}</td>
+        <td><Badge variant={user.active ? 'success' : 'danger'}>{user.active ? 'Active' : 'Inactive'}</Badge></td>
+      </tr>
+    {/each}
+  </tbody>
+</Table>
+
+Compact bordered table:
+
+<Table isCompact isBordered>
+  <thead><tr><th>Key</th><th>Value</th></tr></thead>
+  <tbody>
+    <tr><td>Version</td><td>1.5.0</td></tr>
+    <tr><td>Build</td><td>2024-01-15</td></tr>
+  </tbody>
+</Table>
+
+
+TABLECONTAINER
+--------------
+Container for tables with optional panel styling. Base provides overflow-x scroll
+and border-radius. Panel adds card-like shadow and hover effect.
+
+Props:
+  isPanel?       boolean (false) - Card-like visual containment
+  titleText?     string - Title (only shown when isPanel=true)
+  class?         string
+
+Snippets:
+  header?        Custom header (only shown when isPanel=true)
+  actions?       Header action buttons (only shown when isPanel=true)
+  children?      Table content
+
+<TableContainer isPanel titleText="Sales Report">
+  {#snippet actions()}
+    <Button variant="secondary" size="sm">Export CSV</Button>
+  {/snippet}
+
+  <Table isStriped>
+    <thead><tr><th>Month</th><th>Revenue</th></tr></thead>
+    <tbody>
+      <tr><td>January</td><td>$12,500</td></tr>
+    </tbody>
+  </Table>
+</TableContainer>
+
+
+TABLERESPONSIVE
+---------------
+Simple wrapper that adds horizontal scrolling for wide tables.
+
+Props:
+  class?         string
+  children?      Snippet
+
+<TableResponsive>
+  <Table>
+    <!-- wide table with many columns -->
+  </Table>
+</TableResponsive>
+
+
+BADGE
+-----
+Inline label/tag component.
+
+Props:
+  variant?       'primary' | 'secondary' | 'success' | 'danger' | 'warning'
+                 | 'info' | 'light' | 'dark'
+  size?          'xs' | 'sm' | 'lg' | 'xl'
+  isPill?        boolean (false) - Rounded pill shape
+  isEllipsisStart? boolean (false) - Ellipsis at start (left in LTR)
+  themeColor?    1-9 - Theme color (applies pa-bg-color-N)
+  onclick?       (event: MouseEvent) => void
+  class?         string
+
+Snippets:
+  icon?          Icon content before text
+  children?      Badge text
+
+Badge variants:
+
+<Badge variant="primary">Primary</Badge>
+<Badge variant="success">Active</Badge>
+<Badge variant="danger" isPill>Error</Badge>
+<Badge variant="warning" size="lg">Warning</Badge>
+<Badge variant="info" size="xs">Info</Badge>
+
+Badge with icon:
+
+<Badge variant="success">
+  {#snippet icon()}
+    <i class="fa fa-check"></i>
+  {/snippet}
+  Verified
+</Badge>
+
+Clickable badge:
+
+<Badge variant="primary" onclick={() => console.log('clicked')}>
+  Click me
+</Badge>
+
+Theme color badge:
+
+<Badge themeColor={3}>Custom Color</Badge>
+
+
+LABEL
+-----
+Similar to Badge but simpler. Supports outline style.
+
+Props:
+  variant?       'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info'
+  size?          'xs' | 'sm' | 'lg' | 'xl'
+  isOutline?     boolean (false)
+  class?         string
+  children?      Snippet
+
+<Label variant="success">Published</Label>
+<Label variant="danger" isOutline>Draft</Label>
+<Label variant="info" size="sm">Beta</Label>
+
+
+COMPOSITEBADGE
+--------------
+Badge with icon, label, and button/count sections.
+
+Props:
+  variant?       'primary' | 'secondary' | 'success' | 'danger' | 'warning'
+                 | 'info' | 'light' | 'dark' (default: 'primary')
+  labelVariant?  Same as variant - Mixed label color
+  buttonVariant? Same as variant - Mixed button color
+  labelText      string (required) - Label section text
+  buttonText     string | number (required) - Button/count section text
+  isInteractive? boolean (false) - Render button as interactive element
+  onbuttonclick? (event: MouseEvent) => void
+  onlabelclick?  (event: MouseEvent) => void
+  class?         string
+
+Snippets:
+  icon?          Icon content
+
+<CompositeBadge
+  variant="primary"
+  labelText="Issues"
+  buttonText={42}
+/>
+
+<CompositeBadge
+  variant="success"
+  labelVariant="success"
+  buttonVariant="dark"
+  labelText="Merged"
+  buttonText={7}
+  isInteractive
+  onbuttonclick={() => console.log('count clicked')}
+>
+  {#snippet icon()}
+    <i class="fa fa-code-branch"></i>
+  {/snippet}
+</CompositeBadge>
+
+
+BADGEGROUP
+----------
+Container for multiple badges with expand/collapse behavior.
+Supports data-driven mode with member mappings and legacy array mode.
+
+Props:
+  badges?              BadgeItem[] - Legacy badge array
+  data?                T[] - Generic data array
+  displayValueMember?  string ('label') - Property for display text
+  variantMember?       string ('variant') - Property for badge variant
+  pillMember?          string ('pill') - Property for pill flag
+  sizeMember?          string ('size') - Property for size
+  idMember?            string ('id') - Property for unique key
+  getDisplayValueCallback? (item: T) => string
+  getVariantCallback?  (item: T) => BadgeVariant | undefined
+  limit?               number (5) - Max visible before "N more"
+  showAll?             boolean (false) - Show all without limit
+  onbadgeclick?        (item: T, event: MouseEvent) => void
+  class?               string
+  children?            Snippet
+
+Data-driven mode:
+
+<script>
+  const tags = [
+    { id: 1, name: 'JavaScript', type: 'primary' },
+    { id: 2, name: 'TypeScript', type: 'info' },
+    { id: 3, name: 'Svelte', type: 'success' },
+  ];
+</script>
+
+<BadgeGroup
+  data={tags}
+  displayValueMember="name"
+  variantMember="type"
+  limit={5}
+  onbadgeclick={(tag) => console.log(tag.name)}
+/>
+
+Legacy mode:
+
+<BadgeGroup badges={[
+  { label: 'Active', variant: 'success' },
+  { label: 'Draft', variant: 'warning' },
+  { label: 'Archived', variant: 'secondary' }
+]} />
+
+Snippet mode (manual):
+
+<BadgeGroup>
+  <Badge variant="primary">Tag 1</Badge>
+  <Badge variant="success">Tag 2</Badge>
+</BadgeGroup>
+
+
+BASICLIST
+---------
+Simple unordered list with visual modifiers.
+
+Props:
+  spacing?       'compact' | 'spacious'
+  isUnstyled?    boolean (false) - Remove bullets and padding
+  isInline?      boolean (false) - Horizontal layout
+  isBordered?    boolean (false) - Borders between items
+  isStriped?     boolean (false) - Zebra striping
+  hasIcon?       boolean (false) - Show checkmark icons
+  iconVariant?   'success' | 'danger' | 'info' | 'warning' (default: 'success')
+  class?         string
+  children?      Snippet
+
+<BasicList isBordered>
+  <li>First item</li>
+  <li>Second item</li>
+  <li>Third item</li>
+</BasicList>
+
+<BasicList hasIcon iconVariant="success" spacing="compact">
+  <li>Feature A included</li>
+  <li>Feature B included</li>
+  <li>Feature C included</li>
+</BasicList>
+
+<BasicList isInline isUnstyled>
+  <li>Home</li>
+  <li>About</li>
+  <li>Contact</li>
+</BasicList>
+
+
+LIST / LISTITEM
+---------------
+Rich list with avatar, title, subtitle, and meta text.
+
+List Props:
+  class?         string
+  children?      Snippet
+
+ListItem Props:
+  titleText?     string
+  subtitleText?  string
+  metaText?      string
+  avatar?        string | Snippet - Avatar content
+  class?         string
+  children?      Snippet - Custom layout (replaces title/subtitle/meta)
+
+<List>
+  <ListItem
+    titleText="John Doe"
+    subtitleText="Software Engineer"
+    metaText="2 hours ago"
+    avatar="JD"
+  />
+  <ListItem
+    titleText="Jane Smith"
+    subtitleText="Product Manager"
+    metaText="5 hours ago"
+  >
+    {#snippet avatar()}
+      <img src="/avatars/jane.jpg" alt="Jane" />
+    {/snippet}
+  </ListItem>
+</List>
+
+
+ORDEREDLIST
+-----------
+Ordered list with optional roman or alphabetical markers.
+
+Props:
+  style?         'roman' | 'alpha' (default: numeric)
+  class?         string
+  children?      Snippet
+
+<OrderedList>
+  <li>First step</li>
+  <li>Second step</li>
+</OrderedList>
+
+<OrderedList style="roman">
+  <li>Introduction</li>
+  <li>Methods</li>
+  <li>Results</li>
+</OrderedList>
+
+
+DEFINITIONLIST
+--------------
+Definition list (dt/dd pairs) with optional inline layout.
+
+Props:
+  isInline?      boolean (false) - Horizontal key-value pairs
+  class?         string
+  children?      Snippet
+
+<DefinitionList>
+  <dt>Name</dt>
+  <dd>John Doe</dd>
+  <dt>Email</dt>
+  <dd>john@example.com</dd>
+</DefinitionList>
+
+<DefinitionList isInline>
+  <dt>Status</dt>
+  <dd>Active</dd>
+  <dt>Role</dt>
+  <dd>Admin</dd>
+</DefinitionList>
+
+
+CHECKBOXLIST
+------------
+Container for checkbox list items with layout variants.
+
+Props:
+  variant?       'compact' | 'bordered' | 'striped'
+  layout?        'inline' | 'grid' | '2col' | '3col'
+  class?         string
+  children?      Snippet
+
+<CheckboxList variant="bordered" layout="2col">
+  <li><Checkbox>Option A</Checkbox></li>
+  <li><Checkbox>Option B</Checkbox></li>
+  <li><Checkbox>Option C</Checkbox></li>
+  <li><Checkbox>Option D</Checkbox></li>
+</CheckboxList>
+
+
+TIMELINE / TIMELINEITEM
+-----------------------
+Timeline component with three variants: simple, alternating, feed.
+Supports data-driven mode, legacy array mode, and snippet mode.
+
+Timeline Props:
+  variant?       'simple' | 'alternating' | 'feed' (default: 'simple')
+  data?          T[] - Generic data array
+  items?         TimelineItemData[] - Legacy mode
+  class?         string
+
+  Member mappings (for data mode):
+    variantMember?    string ('variant')
+    filledMember?     string ('filled')
+    timeMember?       string ('time')
+    dateMember?       string ('date')
+    iconTextMember?   string ('iconText')
+    avatarUrlMember?  string ('avatarUrl')
+    contentMember?    string ('content')
+    commentMember?    string ('comment')
+    idMember?         string ('id')
+
+  Callbacks:
+    getVariantCallback?   (item: T) => TimelineItemVariant | undefined
+    getContentCallback?   (item: T) => string
+
+  Template snippets:
+    iconTemplate?     Snippet<[T]> - Custom icon per item
+    contentTemplate?  Snippet<[T]> - Custom content per item
+    commentTemplate?  Snippet<[T]> - Custom comment per item
+
+  Events:
+    onitemclick?      (item: T, event: MouseEvent) => void
+
+TimelineItem Props:
+  variant?       'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info'
+  isFilled?      boolean (false) - Filled marker dot
+  isDateHeader?  boolean (false) - Date header row (feed timeline)
+  timeText?      string - Time/date text
+  date?          string - Date (alternating timeline)
+  iconText?      string - Icon text (alternating timeline)
+  iconTemplate?  Snippet - Custom icon
+  avatarUrl?     string - Avatar image (feed timeline)
+  avatarAlt?     string ('User')
+  onclick?       (event: MouseEvent) => void
+  class?         string
+  children?      Snippet - Content
+  commentTemplate? Snippet - Comment (feed timeline)
+
+Simple timeline (snippet mode):
+
+<Timeline variant="simple">
+  <TimelineItem variant="success" isFilled timeText="10:30 AM">
+    Order confirmed
+  </TimelineItem>
+  <TimelineItem variant="primary" timeText="11:00 AM">
+    Processing payment
+  </TimelineItem>
+  <TimelineItem variant="info" timeText="11:15 AM">
+    Shipped
+  </TimelineItem>
+</Timeline>
+
+Alternating timeline:
+
+<Timeline variant="alternating">
+  <TimelineItem date="Jan 2024" iconText="1">
+    Company founded
+  </TimelineItem>
+  <TimelineItem date="Mar 2024" iconText="2" variant="success">
+    First product launch
+  </TimelineItem>
+</Timeline>
+
+Feed timeline:
+
+<Timeline variant="feed">
+  <TimelineItem
+    avatarUrl="/avatars/alice.jpg"
+    avatarAlt="Alice"
+    timeText="2 hours ago"
+  >
+    Alice commented on the pull request.
+    {#snippet commentTemplate()}
+      Looks good to me! Ready to merge.
+    {/snippet}
+  </TimelineItem>
+</Timeline>
+
+Data-driven timeline:
+
+<script>
+  const events = [
+    { id: 1, status: 'success', timestamp: '10:30', message: 'Deployed', filled: true },
+    { id: 2, status: 'warning', timestamp: '10:45', message: 'High CPU usage' },
+  ];
+</script>
+
+<Timeline
+  variant="simple"
+  data={events}
+  variantMember="status"
+  filledMember="filled"
+  timeMember="timestamp"
+  contentMember="message"
+  onitemclick={(item) => console.log(item.message)}
+/>
+
+
+CODE / CODEBLOCK / CODEBLOCKWITHHEADER
+---------------------------------------
+Inline code and code blocks.
+
+Code Props:
+  language?      string
+  class?         string
+  children?      Snippet
+
+CodeBlock Props:
+  language?      'javascript' | 'typescript' | 'json' | 'html' | 'css' | 'bash'
+                 | 'sql' | 'python' | 'svelte'
+  isCompact?     boolean (false) - Smaller padding
+  class?         string
+  children?      Snippet
+
+CodeBlockWithHeader Props:
+  titleText      string (required) - Header title (e.g. filename)
+  language?      'javascript' | 'json' | 'html' | 'css' | 'bash' | 'sql' | 'python'
+  showCopy?      boolean (true) - Show copy button
+  class?         string
+  children?      Snippet
+
+Inline code:
+
+<p>Run <Code>npm install</Code> to install dependencies.</p>
+
+Code block:
+
+<CodeBlock language="javascript">
+{`const greeting = "Hello, world!";
+console.log(greeting);`}
+</CodeBlock>
+
+Code block with header:
+
+<CodeBlockWithHeader titleText="config.ts" language="typescript">
+{`export const config = {
+  apiUrl: 'https://api.example.com',
+  timeout: 5000,
+};`}
+</CodeBlockWithHeader>
+
+
+STAT
+----
+Statistic display component with multiple variants.
+
+Props:
+  variant?       'hero' | 'hero-compact' | 'square'
+  color?         'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger'
+                 (for square variant)
+  iconVariant?   Same as color (default: 'primary') - Icon color
+  number?        string | number - Value to display
+  labelText?     string - Label text
+  changeText?    string - Change indicator (e.g. "+12.5%")
+  changeDirection? 'positive' | 'negative' | 'neutral'
+  symbolText?    string - Symbol (for square variant)
+  class?         string
+
+Snippets:
+  icon?          Icon (for default variant)
+  children?      Custom layout
+
+Default stat (with icon):
+
+<Stat number="1,234" labelText="Total Users">
+  {#snippet icon()}
+    <i class="fa fa-users"></i>
+  {/snippet}
+</Stat>
+
+Hero stat (large, prominent):
+
+<Stat variant="hero" number="$48,200" labelText="Revenue" changeText="+12.5%" changeDirection="positive" />
+
+Hero compact stat:
+
+<Stat variant="hero-compact" number="842" labelText="Active Sessions" changeText="-3.2%" changeDirection="negative" />
+
+Square stat:
+
+<Stat variant="square" color="success" number="99.9%" symbolText="%" labelText="Uptime" />
+
+Stats in a grid:
+
+<Grid cols={4}>
+  <Stat variant="hero-compact" number="12,450" labelText="Users" changeText="+8%" changeDirection="positive" />
+  <Stat variant="hero-compact" number="$84K" labelText="Revenue" changeText="+23%" changeDirection="positive" />
+  <Stat variant="hero-compact" number="342" labelText="Orders" changeText="-2%" changeDirection="negative" />
+  <Stat variant="hero-compact" number="98.5%" labelText="Uptime" changeText="0%" changeDirection="neutral" />
+</Grid>
+
+
+PAGER
+-----
+Pagination component for tables and lists.
+
+Props:
+  currentPage?   number (1, bindable) - Current page
+  totalPages?    number (1) - Total page count
+  align?         'start' | 'center' | 'end' (default: 'center')
+  showPageInput? boolean (true) - Show page number input
+  showInfo?      boolean (true) - Show info text
+  disablePrevious? boolean (false)
+  disableNext?   boolean (false)
+  infoText?      string - Custom info text
+  class?         string
+  onprevious?    (event: MouseEvent) => void
+  onnext?        (event: MouseEvent) => void
+  onpagechange?  (page: number) => void
+  onfirst?       (event: MouseEvent) => void - Show First button
+  onlast?        (event: MouseEvent) => void - Show Last button
+
+Snippets:
+  controls?      Custom navigation buttons
+  info?          Custom info area
+
+<script>
+  let page = $state(1);
+  const totalPages = 25;
+
+  function prev() { if (page > 1) page--; }
+  function next() { if (page < totalPages) page++; }
+</script>
+
+<Pager
+  bind:currentPage={page}
+  {totalPages}
+  onprevious={prev}
+  onnext={next}
+  disablePrevious={page <= 1}
+  disableNext={page >= totalPages}
+/>
+
+With first/last buttons:
+
+<Pager
+  bind:currentPage={page}
+  {totalPages}
+  onprevious={prev}
+  onnext={next}
+  onfirst={() => page = 1}
+  onlast={() => page = totalPages}
+  disablePrevious={page <= 1}
+  disableNext={page >= totalPages}
+/>
+
+
+LOADMORE
+--------
+Load more button for infinite scroll/lazy loading.
+
+Props:
+  align?         'start' | 'center' | 'end' (default: 'center')
+  isLoading?     boolean (false)
+  text?          string - Button text (default: i18n "Load More")
+  count?         string - Count text (e.g. "25 of 250")
+  shouldShowCount? boolean (false)
+  onclick?       (event: MouseEvent) => void
+  class?         string
+  children?      Snippet - Custom button content
+
+<LoadMore
+  onclick={loadNextPage}
+  isLoading={loading}
+  count="25 of 250"
+  shouldShowCount
+/>
+
+
+DETAILVIEW / DETAILPANEL
+------------------------
+Overlay panel for viewing details of a selected item (e.g. table row click).
+
+DetailView Props:
+  show?            boolean (false, bindable) - Panel visibility
+  shouldShowBackdrop? boolean (true) - Backdrop overlay
+  isOverlay?       boolean (true) - Overlay mode (false = inline split-view)
+  class?           string
+  onclose?         () => void
+
+Snippets:
+  main?            Main content area (table, list)
+  children?        Panel content (DetailPanel goes here)
+
+DetailPanel Props:
+  titleText?       string - Panel title
+  isResizable?     boolean (true) - Drag-to-resize handle
+  isBordered?      boolean (false) - Top/bottom borders on content
+  class?           string
+  onclose?         () => void
+
+Snippets:
+  header?          Custom header (replaces title)
+  actions?         Header action buttons (between title and close button)
+  tabs?            Tabs between header and body
+  children?        Body content
+  footer?          Footer (action buttons)
+
+<script>
+  let showDetail = $state(false);
+  let selectedUser = $state(null);
+
+  function selectUser(user) {
+    selectedUser = user;
+    showDetail = true;
+  }
+</script>
+
+<DetailView bind:show={showDetail} onclose={() => showDetail = false}>
+  {#snippet main()}
+    <TableCard titleText="Users">
+      <Table isStriped isHover>
+        <thead><tr><th>Name</th><th>Email</th></tr></thead>
+        <tbody>
+          {#each users as user}
+            <tr onclick={() => selectUser(user)}>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+            </tr>
+          {/each}
+        </tbody>
+      </Table>
+    </TableCard>
+  {/snippet}
+
+  <DetailPanel
+    titleText={selectedUser?.name ?? 'User Details'}
+    onclose={() => showDetail = false}
+  >
+    {#snippet actions()}
+      <Button variant="primary" size="sm">Edit</Button>
+    {/snippet}
+
+    <Fields cols={2} isHorizontal>
+      <Field labelText="Name" valueText={selectedUser?.name} />
+      <Field labelText="Email" valueText={selectedUser?.email} copyMode="click" />
+      <Field labelText="Role" valueText={selectedUser?.role} />
+    </Fields>
+
+    {#snippet footer()}
+      <Button variant="danger" size="sm">Delete</Button>
+      <Button variant="primary" size="sm">Save</Button>
+    {/snippet}
+  </DetailPanel>
+</DetailView>
+
+
+COMPLETE TABLE PAGE EXAMPLE
+----------------------------
+Putting it all together: filter card + table card + pager + detail view.
+
+<script>
+  import {
+    Card, FilterCard, TableCard, Table, Badge, Button,
+    Pager, DetailView, DetailPanel, Fields, Field, Input, Select, Grid
+  } from '@keenmate/svelte-pure-admin';
+
+  let page = $state(1);
+  let showDetail = $state(false);
+  let selectedItem = $state(null);
+  let search = $state('');
+  let status = $state('');
+
+  const users = [
+    { id: 1, name: 'Alice', email: 'alice@co.com', role: 'Admin', active: true },
+    { id: 2, name: 'Bob', email: 'bob@co.com', role: 'User', active: false },
+  ];
+</script>
+
+<DetailView bind:show={showDetail} onclose={() => showDetail = false}>
+  {#snippet main()}
+    <FilterCard onclear={() => { search = ''; status = ''; }} onrefresh={() => {}}>
+      {#snippet filters()}
+        <Input placeholder="Search users..." bind:value={search} />
+        <Select bind:value={status}>
+          <option value="">All Statuses</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </Select>
+      {/snippet}
+    </FilterCard>
+
+    <TableCard titleText="Users">
+      {#snippet actions()}
+        <Button variant="primary" size="sm">Add User</Button>
+      {/snippet}
+
+      <Table isStriped isHover>
+        <thead>
+          <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          {#each users as user}
+            <tr onclick={() => { selectedItem = user; showDetail = true; }}>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+              <td>{user.role}</td>
+              <td>
+                <Badge variant={user.active ? 'success' : 'danger'}>
+                  {user.active ? 'Active' : 'Inactive'}
+                </Badge>
+              </td>
+            </tr>
+          {/each}
+        </tbody>
+      </Table>
+
+      {#snippet footer()}
+        <Pager bind:currentPage={page} totalPages={10} />
+      {/snippet}
+    </TableCard>
+  {/snippet}
+
+  <DetailPanel titleText={selectedItem?.name ?? ''} onclose={() => showDetail = false}>
+    <Fields cols={2} isHorizontal isBordered>
+      <Field labelText="Name" valueText={selectedItem?.name} />
+      <Field labelText="Email" valueText={selectedItem?.email} copyMode="hover" />
+      <Field labelText="Role" valueText={selectedItem?.role} />
+    </Fields>
+  </DetailPanel>
+</DetailView>
+
+
+CRITICAL REMINDERS
+------------------
+- Always import CSS: import '@keenmate/pure-admin-core/css'
+- Use Svelte 5 runes: $props(), $state(), $derived(), $bindable()
+- Content uses Snippets ({#snippet name()}...{/snippet}), NOT <slot>
+- Event handlers are lowercase: onclick, onclose, onchange (NOT onClick)
+- Boolean props use is* prefix: isGhost, isStriped, isHover
+- Behavior flags use should* prefix: shouldShowToggle, shouldShowCount
+- Class prop pattern: class?: string with let { class: className = '' } = $props()
+- Card body has padding by default (hasPadding=true), TableCard has none
+- TableCard is preferred over Card for tables (proper padding alignment)
+- Pager currentPage is bindable
+- DetailView show is bindable
+- FilterCard isExpanded is bindable
+
+NEXT STEPS
+----------
+- Data display patterns (Field, Fields, DescTable, etc.) -> data-display.txt
+- Data visualization (Progress, Gauge, Heatmap, etc.) -> data-viz.txt
+- Form components (Input, Select, Checkbox, etc.) -> forms.txt
+- Layout components (Layout, Sidebar, Header) -> layout.txt
+- Feedback components (Modal, Toast, Alert) -> feedback.txt

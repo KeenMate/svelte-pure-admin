@@ -8,7 +8,8 @@
 		Button,
 		Badge,
 		CodeBlock,
-		BasicList
+		BasicList,
+		Callout
 	} from '@keenmate/svelte-pure-admin';
 </script>
 
@@ -50,11 +51,11 @@
 				<div class="text-secondary text-sm mt-1">
 					Jan 20, 2021
 				</div>
-				<div class="pa-callout pa-callout--info mt-3">
+				<Callout variant="info" class="mt-3">
 					<Paragraph class="mb-0 text-sm text-secondary">
 						"I've reviewed the candidate's technical test submission. The code quality is excellent and demonstrates strong understanding of React patterns. I recommend moving forward with the next interview stage."
 					</Paragraph>
-				</div>
+				</Callout>
 		</TimelineItem>
 
 		<TimelineItem
@@ -105,11 +106,11 @@
 				<div class="text-secondary text-sm mt-1">
 					Jan 17, 2021
 				</div>
-				<div class="pa-callout pa-callout--danger mt-3">
+				<Callout variant="danger" class="mt-3">
 					<Paragraph class="mb-0 text-sm text-secondary">
 						<strong class="text-danger">URGENT:</strong> Payment processing fails when cart total exceeds $1000. Multiple customers affected. Needs immediate attention.
 					</Paragraph>
-				</div>
+				</Callout>
 		</TimelineItem>
 
 		<TimelineItem

@@ -2,9 +2,6 @@
 	/**
 	 * Pure Admin Select Component (Svelte 5)
 	 * Based on @keenmate/pure-admin-core snippets/forms.html
-	 *
-	 * Note: For multiple select, use SelectMultiple component or add `multiple` attribute directly.
-	 * Svelte requires `multiple` to be static when using bind:value.
 	 */
 
 	import type { ThemeColor } from '../types';
@@ -42,7 +39,7 @@
 	}
 
 	let {
-		value = $bindable(''),
+		value = $bindable(),
 		size,
 		state,
 		errors,

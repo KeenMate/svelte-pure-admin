@@ -6,8 +6,6 @@
 export const en: Record<string, string> = {
 	// Dialog
 	'pureAdmin.dialog.confirm': 'Confirm',
-	'pureAdmin.dialog.cancel': 'Cancel',
-	'pureAdmin.dialog.ok': 'OK',
 	'pureAdmin.dialog.alert': 'Alert',
 	'pureAdmin.dialog.input': 'Input',
 	'pureAdmin.dialog.areYouSure': 'Are you sure?',
@@ -54,14 +52,17 @@ export const en: Record<string, string> = {
 	'pureAdmin.field.clickToCopy': 'Click to copy',
 	'pureAdmin.field.copied': 'Copied!',
 
-	// Common buttons
-	'pureAdmin.common.buttons.close': 'Close',
-	'pureAdmin.common.buttons.clearAll': 'Clear all',
-	'pureAdmin.common.buttons.refresh': 'Refresh',
-	'pureAdmin.common.buttons.moreFilters': 'More filters',
-	'pureAdmin.common.buttons.hideFilters': 'Hide filters',
-	'pureAdmin.common.buttons.clearFilters': 'Clear Filters',
-	'pureAdmin.common.buttons.applyFilters': 'Apply Filters',
+	// Buttons
+	'pureAdmin.buttons.ok': 'OK',
+	'pureAdmin.buttons.cancel': 'Cancel',
+	'pureAdmin.buttons.confirm': 'Confirm',
+	'pureAdmin.buttons.close': 'Close',
+	'pureAdmin.buttons.clearAll': 'Clear all',
+	'pureAdmin.buttons.refresh': 'Refresh',
+	'pureAdmin.buttons.moreFilters': 'More filters',
+	'pureAdmin.buttons.hideFilters': 'Hide filters',
+	'pureAdmin.buttons.clearFilters': 'Clear Filters',
+	'pureAdmin.buttons.applyFilters': 'Apply Filters',
 
 	// Accessibility labels
 	'pureAdmin.a11y.closeProfile': 'Close Profile',

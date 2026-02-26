@@ -25,12 +25,18 @@
 		isInline?: boolean;
 		/** Equal-width auto columns */
 		isRow?: boolean;
+		/** Ultra-clean side-by-side layout, weight + color contrast only */
+		isLinear?: boolean;
+		/** Notion-style inline flowing pairs with pill/chip values */
+		isChips?: boolean;
 		/** Subtle background panel */
 		isFilled?: boolean;
 		/** Theme color for left border (1-9) */
 		color?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 		/** Show left border (set false to remove) */
 		hasBorder?: boolean;
+		/** Wrap in pa-fields-container for CSS container query responsive behavior */
+		hasContainerQuery?: boolean;
 		/** Additional CSS classes */
 		class?: string;
 		/** Field components */
@@ -47,9 +53,12 @@
 		isRelaxed = false,
 		isInline = false,
 		isRow = false,
+		isLinear = false,
+		isChips = false,
 		isFilled = false,
 		color,
 		hasBorder = true,
+		hasContainerQuery = false,
 		class: className = '',
 		children
 	}: Props = $props();
@@ -66,6 +75,8 @@
 		if (isTable) base.push('pa-fields--table');
 		if (isInline) base.push('pa-fields--inline');
 		if (isRow) base.push('pa-fields--row');
+		if (isLinear) base.push('pa-fields--linear');
+		if (isChips) base.push('pa-fields--chips');
 
 		// Visual modifiers
 		if (isBordered) base.push('pa-fields--bordered');
@@ -89,6 +100,14 @@
 	});
 </script>
 
+{#if hasContainerQuery}
+<div class="pa-fields-container">
+	<div class={classes()}>
+		{@render children?.()}
+	</div>
+</div>
+{:else}
 <div class={classes()}>
 	{@render children?.()}
 </div>
+{/if}

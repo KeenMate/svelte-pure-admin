@@ -24,7 +24,11 @@
 		ProfilePanel,
 		ProfilePanelFavoriteItem,
 		CommandPalette,
-		TableCard
+		TableCard,
+		Table,
+		Input,
+		Grid,
+		Column
 	} from '@keenmate/svelte-pure-admin';
 
 	import type { SearchResult } from '@keenmate/svelte-pure-admin';
@@ -128,11 +132,11 @@
 	appear in the log.
 </Paragraph>
 
-<div class="pa-row pa-row--top">
+<Grid align="top">
 	<!-- ================================================================== -->
 	<!-- LEFT COLUMN: Component demos                                        -->
 	<!-- ================================================================== -->
-	<div class="pa-col-1-2 d-flex flex-column gap-md">
+	<Column size="1-2" class="d-flex flex-column gap-md">
 
 		<!-- 1. ALERT -->
 		<Card>
@@ -341,7 +345,9 @@
 				ontoggle={(expanded) => log('FilterCard', 'ontoggle', `expanded: ${expanded}`)}
 			>
 				{#snippet filters()}
-					<input class="pa-input pa-input--sm" placeholder="Search..." style="max-width:200px" />
+					<div style="max-width:200px">
+						<Input size="sm" placeholder="Search..." />
+					</div>
 				{/snippet}
 				{#snippet advancedFilters()}
 					<p>Advanced filter options go here.</p>
@@ -482,19 +488,19 @@
 			/>
 		</Card>
 
-	</div>
+	</Column>
 
 	<!-- ================================================================== -->
 	<!-- RIGHT COLUMN: Event log                                             -->
 	<!-- ================================================================== -->
-	<div class="pa-col-1-2">
+	<Column size="1-2">
 		<div class="position-sticky overflow-y-auto max-h-screen">
 			<TableCard titleText="Event Log ({logEntries.length})">
 				{#snippet actions()}
 					<Button variant="secondary" size="sm" onclick={clearLog}>Clear</Button>
 				{/snippet}
 
-				<table class="pa-table pa-table--compact pa-table--striped">
+				<Table isCompact isStriped>
 					<thead>
 						<tr>
 							<th>Time</th>
@@ -521,9 +527,9 @@
 							{/each}
 						{/if}
 					</tbody>
-				</table>
+				</Table>
 			</TableCard>
 		</div>
-	</div>
-</div>
+	</Column>
+</Grid>
 

@@ -6,8 +6,6 @@
 export const cs: Record<string, string> = {
 	// Dialog
 	'pureAdmin.dialog.confirm': 'Potvrdit',
-	'pureAdmin.dialog.cancel': 'Zrušit',
-	'pureAdmin.dialog.ok': 'OK',
 	'pureAdmin.dialog.alert': 'Upozornění',
 	'pureAdmin.dialog.input': 'Vstup',
 	'pureAdmin.dialog.areYouSure': 'Jste si jisti?',
@@ -54,14 +52,17 @@ export const cs: Record<string, string> = {
 	'pureAdmin.field.clickToCopy': 'Klikněte pro zkopírování',
 	'pureAdmin.field.copied': 'Zkopírováno!',
 
-	// Common buttons
-	'pureAdmin.common.buttons.close': 'Zavřít',
-	'pureAdmin.common.buttons.clearAll': 'Vymazat vše',
-	'pureAdmin.common.buttons.refresh': 'Obnovit',
-	'pureAdmin.common.buttons.moreFilters': 'Více filtrů',
-	'pureAdmin.common.buttons.hideFilters': 'Skrýt filtry',
-	'pureAdmin.common.buttons.clearFilters': 'Vymazat filtry',
-	'pureAdmin.common.buttons.applyFilters': 'Použít filtry',
+	// Buttons
+	'pureAdmin.buttons.ok': 'OK',
+	'pureAdmin.buttons.cancel': 'Zrušit',
+	'pureAdmin.buttons.confirm': 'Potvrdit',
+	'pureAdmin.buttons.close': 'Zavřít',
+	'pureAdmin.buttons.clearAll': 'Vymazat vše',
+	'pureAdmin.buttons.refresh': 'Obnovit',
+	'pureAdmin.buttons.moreFilters': 'Více filtrů',
+	'pureAdmin.buttons.hideFilters': 'Skrýt filtry',
+	'pureAdmin.buttons.clearFilters': 'Vymazat filtry',
+	'pureAdmin.buttons.applyFilters': 'Použít filtry',
 
 	// Accessibility labels
 	'pureAdmin.a11y.closeProfile': 'Zavřít profil',

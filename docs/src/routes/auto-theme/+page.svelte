@@ -12,7 +12,8 @@
 		Table,
 		BasicList,
 		Code,
-		Strong
+		Strong,
+		Select
 	} from '@keenmate/svelte-pure-admin';
 	import { HighlightedCode } from '$lib/components';
 	import { onMount } from 'svelte';
@@ -197,14 +198,11 @@ function applyThemeToDOM(resolvedMode: 'light' | 'dark') {
 		<Column size="100" md="50">
 			<Heading level={5}>Theme Mode Selector</Heading>
 			<div class="d-flex align-items-center gap-2 mt-2">
-				<select
-					class="pa-select"
-					bind:value={demoThemeMode}
-				>
+				<Select bind:value={demoThemeMode}>
 					<option value="light">Light</option>
 					<option value="dark">Dark</option>
 					<option value="auto">Auto (System)</option>
-				</select>
+				</Select>
 			</div>
 
 			<div class="mt-3 p-3 bg-light rounded">
