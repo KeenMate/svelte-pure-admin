@@ -9,12 +9,14 @@
   import { onMount } from "svelte";
   import { popoverManager } from "./popover-manager.svelte";
   import { _ } from '../i18n';
+  import { createShadowDOMProxy } from './shadow-dom-proxy';
 
   let wrapperElement = $state<HTMLDivElement | null>(null);
   let contentElement = $state<HTMLDivElement | null>(null);
   let cleanupAutoUpdate: (() => void) | null = null;
   let isPositioned = $state(false);
   let currentPopoverId: string | null = null;
+  const shadowProxy = createShadowDOMProxy();
 
   const popover = $derived(popoverManager.current);
 
@@ -57,9 +59,12 @@
       return;
     }
 
+    // Use proxy if trigger is inside Shadow DOM (Floating UI can't reach it directly)
+    const positionTarget = shadowProxy.getTarget(popover.triggerElement);
+
     // Position based on the CONTENT element (which has actual dimensions)
     const { x, y } = await computePosition(
-      popover.triggerElement,
+      positionTarget,
       contentElement,
       {
         placement: popover.placement,
@@ -125,8 +130,9 @@
           }
 
           const { autoUpdate } = window.FloatingUIDOM;
+          const positionTarget = shadowProxy.getTarget(popover.triggerElement);
           cleanupAutoUpdate = autoUpdate(
-            popover.triggerElement,
+            positionTarget,
             contentElement,
             updatePosition
           );
@@ -151,6 +157,7 @@
       if (cleanupAutoUpdate) {
         cleanupAutoUpdate();
       }
+      shadowProxy.destroy();
     };
   });
 </script>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card, Button, ButtonGroup, Table, Badge, Popconfirm, Toast, ToastContainer, Grid, Column, Heading } from '@keenmate/svelte-pure-admin';
+	import { Card, Button, ButtonGroup, Table, Badge, Popconfirm, Toast, ToastContainer, Grid, Column, Heading, CodeBlock, Callout } from '@keenmate/svelte-pure-admin';
 											
 	// Popconfirm states and triggers
 	let showDeletePopconfirm = $state(false);
@@ -431,6 +431,110 @@
 			onconfirm={() => handleTableDelete(row.id)}
 		/>
 	{/each}
+</Card>
+
+<!-- WebGrid + Shadow DOM Integration -->
+<Card titleText="WebGrid Integration (Shadow DOM)" subtitleText="Using a single shared Popconfirm with @keenmate/web-grid inline toolbar — toolbar buttons live inside Shadow DOM, handled transparently since v1.5.1">
+
+	<Callout variant="info">
+		Since v1.5.1, Popconfirm automatically handles triggers inside Shadow DOM (e.g. web-grid toolbar buttons). No extra code needed — just pass the trigger element from the event detail.
+	</Callout>
+
+	<Heading level={4} class="mt-4">Pattern: Single Shared Popconfirm</Heading>
+	<p class="mb-2">Instead of creating a Popconfirm per row, use one shared instance with dynamic trigger, message, and callback:</p>
+
+	<CodeBlock language="svelte">{`<script lang="ts">
+  import { Popconfirm, Toast, ToastContainer } from '@keenmate/svelte-pure-admin';
+
+  // Shared popconfirm state
+  let showConfirm = $state(false);
+  let confirmTrigger = $state<HTMLElement | null>(null);
+  let confirmMessage = $state('');
+  let confirmCallback = $state<(() => void) | null>(null);
+
+  // Toast feedback
+  let showToast = $state(false);
+  let toastMessage = $state('');
+
+  // Helper to open popconfirm with dynamic content
+  function confirmDelete(
+    trigger: HTMLElement,
+    message: string,
+    callback: () => void
+  ) {
+    confirmTrigger = trigger;
+    confirmMessage = message;
+    confirmCallback = callback;
+    showConfirm = true;
+  }
+
+  function handleConfirm() {
+    confirmCallback?.();
+    showConfirm = false;
+  }
+
+  // WebGrid toolbar definition
+  const rowToolbar = [
+    {
+      id: 'edit',
+      icon: '<i class="fas fa-pencil"></i>',
+      title: 'Edit'
+    },
+    {
+      id: 'delete',
+      icon: '<i class="fas fa-trash text-danger"></i>',
+      title: 'Delete'
+    }
+  ];
+
+  // Handle toolbar button clicks from web-grid
+  function handleToolbarClick(e: CustomEvent) {
+    const { itemId, toolbarItem, triggerElement } = e.detail;
+
+    if (toolbarItem.id === 'delete') {
+      // triggerElement is inside Shadow DOM — handled automatically!
+      confirmDelete(
+        triggerElement,
+        \`Are you sure you want to delete "\${itemId}"?\`,
+        () => {
+          // your delete logic here
+          toastMessage = \`Item \${itemId} deleted\`;
+          showToast = true;
+        }
+      );
+    }
+  }
+</script>
+
+<!-- Web Grid with inline toolbar -->
+<km-web-grid
+  ontoolbarclick={handleToolbarClick}
+  ...
+/>
+
+<!-- Single shared Popconfirm for the whole page -->
+<Popconfirm
+  bind:show={showConfirm}
+  trigger={confirmTrigger}
+  messageText={confirmMessage}
+  icon="danger"
+  confirmText="Confirm"
+  confirmVariant="danger"
+  onconfirm={handleConfirm}
+/>
+
+<ToastContainer position="top-end">
+  <Toast bind:show={showToast} variant="success"
+    titleText="Success" messageText={toastMessage} />
+</ToastContainer>`}</CodeBlock>
+
+	<Heading level={4} class="mt-4">Key Points</Heading>
+	<ul class="pa-list">
+		<li><strong>Single instance</strong> — one <code>&lt;Popconfirm&gt;</code> for all rows, driven by reactive state</li>
+		<li><strong>Shadow DOM</strong> — web-grid toolbar buttons live inside Shadow DOM; the <code>triggerElement</code> from the event detail is passed directly and positioning works automatically</li>
+		<li><strong>Dynamic callback</strong> — store the delete callback in state so <code>onconfirm</code> calls the right handler per row</li>
+		<li><strong>No extra config</strong> — the Shadow DOM proxy (v1.5.1) creates a light-DOM mirror element for Floating UI positioning</li>
+	</ul>
 </Card>
 
 <!-- Toast notifications -->

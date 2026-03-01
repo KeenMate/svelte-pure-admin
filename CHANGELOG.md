@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.5.1] - 2026-03-01
+
+### Fixed
+
+- **Popconfirm**: Auto-handle Shadow DOM triggers — when the trigger element is inside a ShadowRoot (e.g. web-grid toolbar buttons), a light-DOM proxy element is automatically created for Floating UI positioning. Consumers no longer need manual proxy spans or helper functions.
+- **Popconfirm**: Fixed flash of content (FOAC) on first open — popconfirm now stays hidden (`visibility: hidden`) until Floating UI calculates position, preventing a brief flash at the default CSS position (0,0)
+- **PopoverContainer**: Same Shadow DOM proxy fix applied for defensive coverage
 
 ### Added
 
@@ -15,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Modals docs**: Added live demos for scrollable body (`isScrollable`) and prevent close (`beforeCloseCallback`)
 - **Modals docs**: Added "Modal vs dialogService — When to Use Which" comparison card
 - **Modal-dialogs docs**: Added callout explaining that `dialogService` is limited to plain text messages, linking to Modals page for complex content
+- **Popconfirm docs**: Added "WebGrid Integration (Shadow DOM)" code example showing single shared Popconfirm pattern with `@keenmate/web-grid` inline toolbar — dynamic trigger, message, and callback per row
 
 ### Changed
 

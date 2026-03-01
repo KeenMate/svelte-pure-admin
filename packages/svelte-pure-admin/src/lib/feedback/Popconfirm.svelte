@@ -11,6 +11,7 @@
 
 	import { onMount } from 'svelte';
 	import { _ } from '../i18n';
+	import { createShadowDOMProxy } from './shadow-dom-proxy';
 
 	type Position = 'top' | 'bottom' | 'left' | 'right';
 	type IconVariant = 'danger' | 'warning' | 'info';
@@ -63,7 +64,8 @@
 
 	let popconfirmEl: HTMLDivElement;
 	let actualPosition = $state<Position>('bottom');
-	let mounted = $state(false);
+	let isPositioned = $state(false);
+	const shadowProxy = createShadowDOMProxy();
 
 	// Sync actualPosition with position prop (before Floating UI adjusts it)
 	$effect(() => {
@@ -100,8 +102,11 @@
 
 		const { computePosition, flip, shift, offset } = window.FloatingUIDOM;
 
+		// Use proxy if trigger is inside Shadow DOM (Floating UI can't reach it directly)
+		const positionTarget = shadowProxy.getTarget(trigger);
+
 		try {
-			const { x, y, placement } = await computePosition(trigger, popconfirmEl, {
+			const { x, y, placement } = await computePosition(positionTarget, popconfirmEl, {
 				placement: position,
 				middleware: [
 					offset(8),
@@ -116,6 +121,8 @@
 				left: `${x}px`,
 				top: `${y}px`
 			});
+
+			isPositioned = true;
 		} catch (error) {
 			console.error('Error positioning popconfirm:', error);
 		}
@@ -150,11 +157,14 @@
 
 		return () => {
 			document.removeEventListener('click', handleClickOutside);
+			shadowProxy.destroy();
 		};
 	});
 
 	$effect(() => {
 		if (show && trigger) {
+			// Reset position state so the popconfirm is hidden until Floating UI calculates
+			isPositioned = false;
 			// Use setTimeout to ensure DOM is ready and trigger is positioned
 			setTimeout(() => updatePosition(), 0);
 		}
@@ -176,7 +186,7 @@
 	});
 </script>
 
-<div bind:this={popconfirmEl} class={classes()}>
+<div bind:this={popconfirmEl} class={classes()} style:visibility={show && !isPositioned ? 'hidden' : undefined}>
 	<div class="pa-popconfirm__arrow"></div>
 	<div class="pa-popconfirm__content">
 		<div class={messageClasses()}>
