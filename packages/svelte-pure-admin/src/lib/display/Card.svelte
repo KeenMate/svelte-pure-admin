@@ -33,6 +33,8 @@
 		description?: import('svelte').Snippet;
 		/** Subtitle/description text (shown below title) - deprecated, use descriptionText for inline layout */
 		subtitleText?: string;
+		/** Subtitle snippet (for rich content subtitles with markup - alternative to subtitleText) */
+		subtitle?: import('svelte').Snippet;
 		/** Allow header description to wrap to its own line (v1.4.1 --wrap modifier) */
 		headerWrap?: boolean;
 		/** Accent border under heading in card header */
@@ -74,6 +76,7 @@
 		descriptionText,
 		description,
 		subtitleText,
+		subtitle,
 		headerWrap = false,
 		isHeaderUnderlined = false,
 		headerUnderlineColor,
@@ -129,7 +132,7 @@
 	});
 
 	// Determine if we should show header
-	const hasHeader = $derived(header || titleText || title || titleIcon || descriptionText || description || subtitleText || tools || tabs);
+	const hasHeader = $derived(header || titleText || title || titleIcon || descriptionText || description || subtitleText || subtitle || tools || tabs);
 	// Determine if we should show footer
 	const hasFooter = $derived(footer || actions);
 </script>
@@ -164,6 +167,8 @@
 				{:else if descriptionText}
 					<!-- Description fills available space and truncates with ellipsis -->
 					<p>{descriptionText}</p>
+				{:else if subtitle}
+					<p class="pa-text pa-text--secondary">{@render subtitle()}</p>
 				{:else if subtitleText}
 					<!-- Legacy subtitleText (shown as secondary text) -->
 					<p class="pa-text pa-text--secondary">{subtitleText}</p>

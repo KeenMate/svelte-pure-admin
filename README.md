@@ -138,7 +138,7 @@ npm install @keenmate/svelte-pure-admin @keenmate/pure-admin-core
 ### Display — Cards, Badges, Tables, Lists
 | Component | Description |
 |-----------|-------------|
-| `Card` | Card with header, body, footer, ghost mode, live state, tabs |
+| `Card` | Card with header, body, footer, ghost mode, live state, tabs, subtitle snippet |
 | `FilterCard` | Expandable filter card with inline + advanced sections |
 | `CardTab` | Tab within a card header |
 | `CardTabContent` | Content panel for card tab |

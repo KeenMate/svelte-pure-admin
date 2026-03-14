@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.2] - 2026-03-14
+
+### Added
+
+- **Card**: Added `subtitle` snippet prop for rich content subtitles (markup, `<code>`, etc.) — complements the existing plain-text `subtitleText` prop, following the same pattern as `title`/`titleText` and `description`/`descriptionText`
+- **Docs**: Validation Timing Strategies (Pattern 8) — now interactive with live email validation demos for on-input, on-blur, and on-submit strategies
+
 ## [1.5.1] - 2026-03-01
 
 ### Fixed

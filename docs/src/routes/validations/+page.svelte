@@ -34,6 +34,42 @@
 	} from '@keenmate/svelte-pure-admin';
 
 	let showToast = $state(false);
+
+	// Pattern 8: Validation Timing state
+	// -- On Input (real-time) --
+	let onInputEmail = $state('');
+	let onInputError = $derived(() => {
+		if (!onInputEmail) return '';
+		if (!onInputEmail.includes('@')) return 'Must contain @';
+		if (!onInputEmail.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) return 'Invalid email format';
+		return '';
+	});
+
+	// -- On Blur --
+	let onBlurEmail = $state('');
+	let onBlurTouched = $state(false);
+	let onBlurError = $derived(() => {
+		if (!onBlurTouched) return '';
+		if (!onBlurEmail) return 'Email is required';
+		if (!onBlurEmail.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) return 'Invalid email format';
+		return '';
+	});
+
+	// -- On Submit --
+	let onSubmitEmail = $state('');
+	let onSubmitError = $state('');
+	let onSubmitSuccess = $state(false);
+	function handleSubmitValidation() {
+		onSubmitSuccess = false;
+		if (!onSubmitEmail) {
+			onSubmitError = 'Email is required';
+		} else if (!onSubmitEmail.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+			onSubmitError = 'Invalid email format';
+		} else {
+			onSubmitError = '';
+			onSubmitSuccess = true;
+		}
+	}
 </script>
 
 <Paragraph>Different UI patterns for displaying form validation errors. Choose the pattern that best fits your UX requirements.</Paragraph>
@@ -323,35 +359,66 @@
 
 <!-- Pattern 8: Validation Timing -->
 <Card titleText="8. Validation Timing Strategies">
-	<Paragraph class="mb-3">When to trigger validation affects user experience significantly.</Paragraph>
+	<Paragraph class="mb-3">When to trigger validation affects user experience significantly. Try each approach below.</Paragraph>
 
 	<Grid>
 		<Column size="100" md="1-3">
 			<Card class="pa-card--bordered h-100" variant="warning" titleText="On Input (Real-time)">
-				<FormGroup state="error">
+				<FormGroup state={onInputError() ? 'error' : onInputEmail ? 'success' : undefined}>
 					<FormLabel>Email</FormLabel>
-					<Input type="email" value="user@" state="error" placeholder="Type to see validation..." />
-					<FormHelp variant="error">Email incomplete</FormHelp>
+					<Input
+						type="email"
+						bind:value={onInputEmail}
+						state={onInputError() ? 'error' : onInputEmail ? 'success' : undefined}
+						placeholder="Type to see validation..."
+					/>
+					{#if onInputError()}
+						<FormHelp variant="error">{onInputError()}</FormHelp>
+					{:else if onInputEmail}
+						<FormHelp variant="success">Looks good!</FormHelp>
+					{/if}
 				</FormGroup>
-				<SmallText class="mt-2 text-muted">Validates as user types. Can feel aggressive.</SmallText>
+				<SmallText class="mt-2 text-muted">Validates on every keystroke. Can feel aggressive.</SmallText>
 			</Card>
 		</Column>
 		<Column size="100" md="1-3">
 			<Card class="pa-card--bordered h-100" variant="success" titleText="On Blur (Recommended)">
-				<FormGroup state="error">
+				<FormGroup state={onBlurError() ? 'error' : (onBlurTouched && onBlurEmail) ? 'success' : undefined}>
 					<FormLabel>Email</FormLabel>
-					<Input type="email" value="invalid" state="error" placeholder="Tab out to validate..." />
-					<FormHelp variant="error">Invalid email format</FormHelp>
+					<Input
+						type="email"
+						bind:value={onBlurEmail}
+						state={onBlurError() ? 'error' : (onBlurTouched && onBlurEmail) ? 'success' : undefined}
+						placeholder="Tab out to validate..."
+						onblur={() => onBlurTouched = true}
+					/>
+					{#if onBlurError()}
+						<FormHelp variant="error">{onBlurError()}</FormHelp>
+					{:else if onBlurTouched && onBlurEmail}
+						<FormHelp variant="success">Looks good!</FormHelp>
+					{/if}
 				</FormGroup>
 				<SmallText class="mt-2 text-muted">Validates when field loses focus. Good balance.</SmallText>
 			</Card>
 		</Column>
 		<Column size="100" md="1-3">
 			<Card class="pa-card--bordered h-100" variant="info" titleText="On Submit">
-				<FormGroup>
+				<FormGroup state={onSubmitError ? 'error' : onSubmitSuccess ? 'success' : undefined}>
 					<FormLabel>Email</FormLabel>
-					<Input type="email" value="anything" placeholder="No validation until submit" />
+					<Input
+						type="email"
+						bind:value={onSubmitEmail}
+						state={onSubmitError ? 'error' : onSubmitSuccess ? 'success' : undefined}
+						placeholder="No validation until submit"
+						oninput={() => { onSubmitError = ''; onSubmitSuccess = false; }}
+					/>
+					{#if onSubmitError}
+						<FormHelp variant="error">{onSubmitError}</FormHelp>
+					{:else if onSubmitSuccess}
+						<FormHelp variant="success">Looks good!</FormHelp>
+					{/if}
 				</FormGroup>
+				<Button variant="info" size="sm" class="mt-2" onclick={handleSubmitValidation}>Submit</Button>
 				<SmallText class="mt-2 text-muted">All errors shown at once on submit. Traditional approach.</SmallText>
 			</Card>
 		</Column>
