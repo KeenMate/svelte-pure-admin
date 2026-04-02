@@ -11,7 +11,7 @@ interface PopoverState {
 	title: string;
 	content: Snippet;
 	header?: Snippet;
-	placement: 'top' | 'right' | 'bottom' | 'left';
+	placement: 'top' | 'end' | 'bottom' | 'start';
 	size?: 'sm' | 'lg';
 	alignment?: 'center' | 'end';
 }

@@ -9,7 +9,7 @@
 
 	import { onMount } from 'svelte';
 
-	type TooltipPosition = 'top' | 'right' | 'bottom' | 'left';
+	type TooltipPosition = 'top' | 'end' | 'bottom' | 'start';
 	type TooltipVariant =
 		| 'primary'
 		| 'success'
@@ -36,6 +36,8 @@
 		multiline?: boolean;
 		/** Help cursor (question mark cursor) */
 		isHelp?: boolean;
+		/** Keyword tooltip — dotted underline + help cursor for inline term explanations */
+		isKeyword?: boolean;
 		/** Additional CSS classes */
 		class?: string;
 		/** Children content */
@@ -48,6 +50,7 @@
 		variant,
 		multiline = false,
 		isHelp = false,
+		isKeyword = false,
 		class: className = '',
 		children
 	}: Props = $props();
@@ -55,6 +58,14 @@
 	let triggerElement: HTMLSpanElement;
 	let tooltipElement: HTMLDivElement | null = null;
 	let cleanupAutoUpdate: (() => void) | null = null;
+
+	// Map logical positions (start/end) to Floating UI physical positions
+	function toFloatingPlacement(pos: TooltipPosition): string {
+		const isRtl = typeof document !== 'undefined' && document.dir === 'rtl';
+		if (pos === 'start') return isRtl ? 'right' : 'left';
+		if (pos === 'end') return isRtl ? 'left' : 'right';
+		return pos; // top, bottom pass through
+	}
 
 	// Build class string for trigger
 	// Note: pa-tooltip--floating disables CSS ::before/::after tooltips when using Floating UI
@@ -64,6 +75,7 @@
 		if (variant) base.push(`pa-tooltip--${variant}`);
 		if (multiline) base.push('pa-tooltip--multiline');
 		if (isHelp) base.push('pa-tooltip--help');
+		if (isKeyword) base.push('pa-tooltip--keyword');
 		if (className) base.push(className);
 		return base.join(' ');
 	});
@@ -101,7 +113,7 @@
 			if (!tooltipElement) return;
 
 			const { x, y } = await computePosition(triggerElement, tooltipElement, {
-				placement: position,
+				placement: toFloatingPlacement(position),
 				middleware: [
 					offset(8),
 					flip(),

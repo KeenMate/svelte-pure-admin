@@ -17,8 +17,8 @@
 		class?: string;
 		/** Header snippet (replaces title, only shown when panel=true) */
 		header?: import('svelte').Snippet;
-		/** Actions in header (only shown when panel=true) */
-		actions?: import('svelte').Snippet;
+		/** Header actions (buttons, controls — only shown when panel=true) */
+		headerActions?: import('svelte').Snippet;
 		/** Table content */
 		children?: import('svelte').Snippet;
 	}
@@ -28,7 +28,7 @@
 		titleText,
 		class: className = '',
 		header,
-		actions,
+		headerActions,
 		children
 	}: Props = $props();
 
@@ -41,7 +41,7 @@
 	});
 
 	// Determine if we should show header (only in panel mode)
-	const hasHeader = $derived(isPanel && (header || titleText || actions));
+	const hasHeader = $derived(isPanel && (header || titleText || headerActions));
 </script>
 
 <div class={classes()}>
@@ -53,9 +53,9 @@
 				{#if titleText}
 					<div class="pa-table-container__title">{titleText}</div>
 				{/if}
-				{#if actions}
+				{#if headerActions}
 					<div class="pa-table-container__actions">
-						{@render actions()}
+						{@render headerActions()}
 					</div>
 				{/if}
 			{/if}

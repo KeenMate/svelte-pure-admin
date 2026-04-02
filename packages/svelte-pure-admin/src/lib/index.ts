@@ -94,6 +94,8 @@ export { default as SmallText } from './forms/SmallText.svelte';
 // Button Components
 export { default as Button } from './buttons/Button.svelte';
 export { default as ButtonGroup } from './buttons/ButtonGroup.svelte';
+export { default as SplitButton } from './buttons/SplitButton.svelte';
+export { default as SplitButtonItem } from './buttons/SplitButtonItem.svelte';
 
 // Feedback Components (Alerts, Callouts, Modals, Toasts, Spinners, Loaders, Tooltips, Popovers, Popconfirm)
 export { default as Alert } from './feedback/Alert.svelte';
@@ -195,6 +197,7 @@ export { default as BarListItem } from './display/BarListItem.svelte';
 export { default as ProgressGroup } from './display/ProgressGroup.svelte';
 
 // Profile Components
+export { default as ProfileButton } from './profile/ProfileButton.svelte';
 export { default as ProfilePanel } from './profile/ProfilePanel.svelte';
 export { default as ProfilePanelNavItem } from './profile/ProfilePanelNavItem.svelte';
 export { default as ProfilePanelFavorites } from './profile/ProfilePanelFavorites.svelte';

@@ -1,6 +1,101 @@
 <script lang="ts">
 	import { Card, Button, ButtonGroup, Table, Badge, Popconfirm, Toast, ToastContainer, Grid, Column, Heading, CodeBlock, Callout } from '@keenmate/svelte-pure-admin';
-											
+	import { onMount } from 'svelte';
+	import '@keenmate/web-grid/css';
+
+	// --- WebGrid integration state ---
+	let gridElement = $state<any>(null);
+	let gridReady = $state(false);
+
+	onMount(async () => {
+		await import('@keenmate/web-grid');
+		gridReady = true;
+	});
+
+	interface GridRow {
+		id: number;
+		name: string;
+		email: string;
+		role: string;
+		status: string;
+	}
+
+	let gridItems = $state<GridRow[]>([
+		{ id: 1, name: 'Alice Johnson', email: 'alice@example.com', role: 'Admin', status: 'Active' },
+		{ id: 2, name: 'Bob Smith', email: 'bob@example.com', role: 'Editor', status: 'Active' },
+		{ id: 3, name: 'Carol White', email: 'carol@example.com', role: 'Viewer', status: 'Pending' },
+		{ id: 4, name: 'Dave Brown', email: 'dave@example.com', role: 'Editor', status: 'Inactive' },
+		{ id: 5, name: 'Eve Davis', email: 'eve@example.com', role: 'Admin', status: 'Active' },
+		{ id: 6, name: 'Frank Miller', email: 'frank@example.com', role: 'Viewer', status: 'Active' },
+		{ id: 7, name: 'Grace Lee', email: 'grace@example.com', role: 'Editor', status: 'Pending' },
+		{ id: 8, name: 'Henry Wilson', email: 'henry@example.com', role: 'Admin', status: 'Inactive' },
+	]);
+
+	const gridColumns = [
+		{ field: 'id', title: 'ID', width: '60px' },
+		{ field: 'name', title: 'Name' },
+		{ field: 'email', title: 'Email' },
+		{ field: 'role', title: 'Role', width: '100px' },
+		{ field: 'status', title: 'Status', width: '100px' },
+	];
+
+	const gridToolbar = [
+		{ id: 'delete', type: 'delete', icon: '🗑️', title: 'Delete', danger: true }
+	];
+
+	// Shared popconfirm for grid
+	let gridConfirmShow = $state(false);
+	let gridConfirmTrigger = $state<HTMLElement | null>(null);
+	let gridConfirmMessage = $state('');
+	let gridConfirmCallback = $state<(() => void) | null>(null);
+
+	function openGridConfirm(trigger: HTMLElement, message: string, callback: () => void) {
+		gridConfirmTrigger = trigger;
+		gridConfirmMessage = message;
+		gridConfirmCallback = callback;
+		gridConfirmShow = true;
+	}
+
+	function handleGridConfirm() {
+		gridConfirmCallback?.();
+		gridConfirmShow = false;
+	}
+
+	function handleToolbarClick(detail: any) {
+		if (detail.item.id === 'delete') {
+			const row = detail.row as GridRow;
+			openGridConfirm(
+				detail.triggerElement,
+				`Delete "${row.name}"? This cannot be undone.`,
+				() => {
+					gridItems = gridItems.filter((r) => r.id !== row.id);
+					if (gridElement) gridElement.items = gridItems;
+					toastMessage = `${row.name} deleted successfully`;
+					showToast = true;
+				}
+			);
+		}
+	}
+
+	function initGrid(el: any) {
+		if (!el) return;
+		el.items = gridItems;
+		el.columns = gridColumns;
+		el.isRowToolbarVisible = true;
+		el.rowToolbar = gridToolbar;
+		el.toolbarPosition = 'inline';
+		el.inlineActionsTitle = 'Actions';
+		el.isHoverable = true;
+		el.isStriped = true;
+		el.ontoolbarclick = handleToolbarClick;
+	}
+
+	$effect(() => {
+		if (gridElement && gridReady) {
+			initGrid(gridElement);
+		}
+	});
+
 	// Popconfirm states and triggers
 	let showDeletePopconfirm = $state(false);
 	let deleteTrigger = $state<HTMLElement | null>(null);
@@ -433,100 +528,16 @@
 	{/each}
 </Card>
 
-<!-- WebGrid + Shadow DOM Integration -->
-<Card titleText="WebGrid Integration (Shadow DOM)" subtitleText="Using a single shared Popconfirm with @keenmate/web-grid inline toolbar — toolbar buttons live inside Shadow DOM, handled transparently since v1.5.1">
+<!-- WebGrid + Shadow DOM Integration (Live Demo) -->
+<Card titleText="WebGrid Integration (Shadow DOM)" subtitleText="Live demo: single shared Popconfirm with @keenmate/web-grid inline toolbar — toolbar buttons live inside Shadow DOM, handled transparently since v1.5.1">
 
 	<Callout variant="info">
-		Since v1.5.1, Popconfirm automatically handles triggers inside Shadow DOM (e.g. web-grid toolbar buttons). No extra code needed — just pass the trigger element from the event detail.
+		Since v1.5.1, Popconfirm automatically handles triggers inside Shadow DOM (e.g. web-grid toolbar buttons). No extra code needed — just pass the trigger element from the event detail. Hover a row below and click the delete button to see it in action.
 	</Callout>
 
-	<Heading level={4} class="mt-4">Pattern: Single Shared Popconfirm</Heading>
-	<p class="mb-2">Instead of creating a Popconfirm per row, use one shared instance with dynamic trigger, message, and callback:</p>
-
-	<CodeBlock language="svelte">{`<script lang="ts">
-  import { Popconfirm, Toast, ToastContainer } from '@keenmate/svelte-pure-admin';
-
-  // Shared popconfirm state
-  let showConfirm = $state(false);
-  let confirmTrigger = $state<HTMLElement | null>(null);
-  let confirmMessage = $state('');
-  let confirmCallback = $state<(() => void) | null>(null);
-
-  // Toast feedback
-  let showToast = $state(false);
-  let toastMessage = $state('');
-
-  // Helper to open popconfirm with dynamic content
-  function confirmDelete(
-    trigger: HTMLElement,
-    message: string,
-    callback: () => void
-  ) {
-    confirmTrigger = trigger;
-    confirmMessage = message;
-    confirmCallback = callback;
-    showConfirm = true;
-  }
-
-  function handleConfirm() {
-    confirmCallback?.();
-    showConfirm = false;
-  }
-
-  // WebGrid toolbar definition
-  const rowToolbar = [
-    {
-      id: 'edit',
-      icon: '<i class="fas fa-pencil"></i>',
-      title: 'Edit'
-    },
-    {
-      id: 'delete',
-      icon: '<i class="fas fa-trash text-danger"></i>',
-      title: 'Delete'
-    }
-  ];
-
-  // Handle toolbar button clicks from web-grid
-  function handleToolbarClick(e: CustomEvent) {
-    const { itemId, toolbarItem, triggerElement } = e.detail;
-
-    if (toolbarItem.id === 'delete') {
-      // triggerElement is inside Shadow DOM — handled automatically!
-      confirmDelete(
-        triggerElement,
-        \`Are you sure you want to delete "\${itemId}"?\`,
-        () => {
-          // your delete logic here
-          toastMessage = \`Item \${itemId} deleted\`;
-          showToast = true;
-        }
-      );
-    }
-  }
-</script>
-
-<!-- Web Grid with inline toolbar -->
-<km-web-grid
-  ontoolbarclick={handleToolbarClick}
-  ...
-/>
-
-<!-- Single shared Popconfirm for the whole page -->
-<Popconfirm
-  bind:show={showConfirm}
-  trigger={confirmTrigger}
-  messageText={confirmMessage}
-  icon="danger"
-  confirmText="Confirm"
-  confirmVariant="danger"
-  onconfirm={handleConfirm}
-/>
-
-<ToastContainer position="top-end">
-  <Toast bind:show={showToast} variant="success"
-    titleText="Success" messageText={toastMessage} />
-</ToastContainer>`}</CodeBlock>
+	<div class="mt-4">
+		<web-grid bind:this={gridElement}></web-grid>
+	</div>
 
 	<Heading level={4} class="mt-4">Key Points</Heading>
 	<ul class="pa-list">
@@ -536,6 +547,17 @@
 		<li><strong>No extra config</strong> — the Shadow DOM proxy (v1.5.1) creates a light-DOM mirror element for Floating UI positioning</li>
 	</ul>
 </Card>
+
+<!-- Shared Popconfirm for WebGrid (outside Card to avoid position: relative issues) -->
+<Popconfirm
+	bind:show={gridConfirmShow}
+	trigger={gridConfirmTrigger}
+	messageText={gridConfirmMessage}
+	icon="danger"
+	confirmText="Delete"
+	confirmVariant="danger"
+	onconfirm={handleGridConfirm}
+/>
 
 <!-- Toast notifications -->
 <ToastContainer position="top-right">

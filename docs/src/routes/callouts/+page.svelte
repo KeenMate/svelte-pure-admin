@@ -229,6 +229,44 @@
 	</Grid>
 </Card>
 
+<!-- Theme Color Slot Callouts -->
+<Card titleText="Theme Color Slot Callouts" subtitleText="Callouts using custom theme color slots (1-9). Colors are defined by the active theme.">
+	<Grid>
+		<Column size="100" md="1-3">
+			<Callout themeColor={1}>
+				<strong>Color 1:</strong> Theme slot callout with left border accent.
+			</Callout>
+		</Column>
+		<Column size="100" md="1-3">
+			<Callout themeColor={2}>
+				<strong>Color 2:</strong> Theme slot callout with left border accent.
+			</Callout>
+		</Column>
+		<Column size="100" md="1-3">
+			<Callout themeColor={3}>
+				<strong>Color 3:</strong> Theme slot callout with left border accent.
+			</Callout>
+		</Column>
+	</Grid>
+	<Grid>
+		<Column size="100" md="1-3">
+			<Callout themeColor={4}>
+				<strong>Color 4:</strong> Theme slot callout.
+			</Callout>
+		</Column>
+		<Column size="100" md="1-3">
+			<Callout themeColor={5}>
+				<strong>Color 5:</strong> Theme slot callout.
+			</Callout>
+		</Column>
+		<Column size="100" md="1-3">
+			<Callout themeColor={6}>
+				<strong>Color 6:</strong> Theme slot callout.
+			</Callout>
+		</Column>
+	</Grid>
+</Card>
+
 <!-- Code Examples -->
 <Card titleText="Code Examples">
 	<Grid>

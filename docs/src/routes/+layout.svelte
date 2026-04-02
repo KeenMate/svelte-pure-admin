@@ -12,6 +12,7 @@
 		PopoverContainer,
 		SettingsPanel,
 		ProfilePanel,
+		ProfileButton,
 		ProfilePanelNavItem,
 		ProfilePanelFavorites,
 		ProfilePanelFavoriteItem,
@@ -38,16 +39,20 @@
 	// injection side-effects that occur with ?url imports of CSS-only packages.
 	// The correct theme is loaded via a blocking <link> in app.html (no FOUC).
 	const availableThemes: ThemeOption[] = [
-		{ id: 'audi', name: 'Audi', cssPath: '/themes/audi.css' },
-		{ id: 'corporate', name: 'Corporate', cssPath: '/themes/corporate.css' },
-		{ id: 'dark', name: 'Dark', cssPath: '/themes/dark.css' },
-		{ id: 'express', name: 'Express', cssPath: '/themes/express.css' },
-		{ id: 'minimal', name: 'Minimal', cssPath: '/themes/minimal.css' }
+		{ id: 'audi', name: 'Audi', cssPath: '/themes/audi/css/audi.css' },
+		{ id: 'cafeindustrial', name: 'Café Industrial', cssPath: '/themes/cafeindustrial/css/cafeindustrial.css' },
+		{ id: 'corporate', name: 'Corporate', cssPath: '/themes/corporate/css/corporate.css' },
+		{ id: 'dark', name: 'Dark', cssPath: '/themes/dark/css/dark.css' },
+		{ id: 'express', name: 'Express', cssPath: '/themes/express/css/express.css' },
+		{ id: 'minimal', name: 'Minimal', cssPath: '/themes/minimal/css/minimal.css' }
 	];
 
 	let { data, children } = $props();
 
-	let sidebarHidden = $state(false);
+	let sidebarHidden = $state(
+		typeof localStorage !== 'undefined' && localStorage.getItem('sidebar-hidden') === 'true'
+	);
+	let sidebarUserToggled = $state(false);
 	let sidebarMobileVisible = $state(false);
 	let showProfilePanel = $state(false);
 	let showNotifications = $state(false);
@@ -73,14 +78,17 @@
 	function toggleSidebar() {
 		if (typeof document !== 'undefined') {
 			const isMobile = window.innerWidth <= 768;
-
 			if (isMobile) {
 				// Mobile: Toggle sidebar visibility (overlay)
 				sidebarMobileVisible = !sidebarMobileVisible;
+				sidebarUserToggled = false;
 				document.body.classList.toggle('sidebar-visible', sidebarMobileVisible);
 			} else {
 				// Desktop: Toggle sidebar hidden state
 				sidebarHidden = !sidebarHidden;
+				sidebarUserToggled = !sidebarUserToggled;
+				sidebarMobileVisible = false;
+				document.body.classList.remove('sidebar-visible');
 				document.body.classList.toggle('sidebar-hidden', sidebarHidden);
 				localStorage.setItem('sidebar-hidden', String(sidebarHidden));
 			}
@@ -132,6 +140,11 @@
 	// are applied in app.html blocking script to prevent FOUC.
 	// This onMount only handles click outside and cleanup.
 	onMount(() => {
+		// Signal page loader that Svelte has hydrated
+		if (typeof window.__pageLoaderReady === 'function') {
+			window.__pageLoaderReady();
+		}
+
 		// Add click outside handler
 		document.addEventListener('click', handleClickOutside);
 
@@ -196,7 +209,9 @@
 		{ id: 'tables-sizing', title: 'Table Sizing', path: '/tables-sizing', icon: '📏' },
 		{ id: 'tables-responsive', title: 'Responsive Tables', path: '/tables-responsive', icon: '📱' },
 		{ id: 'table-filters', title: 'Table Filters', path: '/table-filters', icon: '🔍' },
+		{ id: 'table-multi-select', title: 'Table Multi-Select', path: '/table-multi-select', icon: '☑️' },
 		{ id: 'comparison', title: 'Comparison', path: '/comparison', icon: '⚖️' },
+		{ id: 'pagers', title: 'Pagers', path: '/pagers', icon: '📄' },
 		{ id: 'detail-panel', title: 'Detail Panel', path: '/detail-panel', icon: '📋' },
 		{ id: 'data-display', title: 'Data Display', path: '/data-display', icon: '📄' },
 		{ id: 'data-display-2', title: 'Data Display v2', path: '/data-display-2', icon: '📄' },
@@ -474,7 +489,7 @@
 		onglobalselect={handleGlobalSelect}
 	/>
 
-	<Navbar onburgerclick={toggleSidebar} showBurger={true} burgerActive={sidebarHidden || sidebarMobileVisible}>
+	<Navbar onburgerclick={toggleSidebar} showBurger={true} burgerActive={sidebarMobileVisible || sidebarUserToggled}>
 		{#snippet navStart()}
 			<NavItem href="/">📊 Dashboard</NavItem>
 			<NavItem href="/components" hasDropdown>
@@ -535,10 +550,7 @@
 		{/snippet}
 
 		{#snippet profile()}
-			<button class="pa-header__profile-btn" onclick={toggleProfilePanel} aria-label="User Profile">
-				<span class="pa-btn__icon">👤</span>
-				<span class="pa-header__profile-name">John Doe</span>
-			</button>
+			<ProfileButton name="John Doe" onclick={toggleProfilePanel} />
 		{/snippet}
 	</Navbar>
 
@@ -687,8 +699,14 @@
 						<SidebarItem href="/table-filters" labelText="Filters" active={$page.url.pathname === '/table-filters'}>
 							{#snippet icon()}🔍{/snippet}
 						</SidebarItem>
+						<SidebarItem href="/table-multi-select" labelText="Multi-Select" active={$page.url.pathname === '/table-multi-select'}>
+							{#snippet icon()}☑️{/snippet}
+						</SidebarItem>
 						<SidebarItem href="/comparison" labelText="Comparison" active={$page.url.pathname === '/comparison'}>
 							{#snippet icon()}⚖️{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/pagers" labelText="Pagers" active={$page.url.pathname === '/pagers'}>
+							{#snippet icon()}📄{/snippet}
 						</SidebarItem>
 					{/snippet}
 				</SidebarItem>

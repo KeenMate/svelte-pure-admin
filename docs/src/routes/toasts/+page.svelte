@@ -13,6 +13,9 @@
 		show: boolean;
 		duration?: number;
 		shouldShowProgress?: boolean;
+		isFilled?: boolean;
+		themeColor?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+		progressColor?: string;
 	}
 
 	// Separate toast arrays for each position
@@ -33,18 +36,7 @@
 		info: { title: 'Information', message: 'Here is some useful information for you.' }
 	};
 
-	function getToastsByPosition(position: ToastPosition): ToastData[] {
-		switch (position) {
-			case 'top-end': return topEndToasts;
-			case 'top-center': return topCenterToasts;
-			case 'top-start': return topStartToasts;
-			case 'bottom-end': return bottomEndToasts;
-			case 'bottom-center': return bottomCenterToasts;
-			case 'bottom-start': return bottomStartToasts;
-		}
-	}
-
-	function addToast(position: ToastPosition, variant: ToastVariant, options: { duration?: number; shouldShowProgress?: boolean; title?: string; message?: string } = {}) {
+	function addToast(position: ToastPosition, variant: ToastVariant, options: { duration?: number; shouldShowProgress?: boolean; title?: string; message?: string; isFilled?: boolean; themeColor?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9; progressColor?: string } = {}) {
 		const id = toastId++;
 		const msg = toastMessages[variant];
 		const newToast: ToastData = {
@@ -54,7 +46,10 @@
 			variant,
 			show: true,
 			duration: options.duration ?? 5000,
-			shouldShowProgress: options.shouldShowProgress ?? false
+			shouldShowProgress: options.shouldShowProgress ?? false,
+			isFilled: options.isFilled ?? false,
+			themeColor: options.themeColor,
+			progressColor: options.progressColor
 		};
 
 		switch (position) {
@@ -102,6 +97,12 @@
 		}
 	}
 
+	// Action toast state (need dedicated state since snippets can't be stored in arrays)
+	let showUndoToast = $state(false);
+	let showRetryToast = $state(false);
+	let showUpdateToast = $state(false);
+	let showFilledActionToast = $state(false);
+
 	function showMultipleToasts() {
 		addToast('top-end', 'success', { title: 'First Toast', message: 'This is the first notification' });
 		setTimeout(() => {
@@ -120,14 +121,50 @@
 	{#each topEndToasts as toast (toast.id)}
 		<Toast
 			variant={toast.variant}
+			themeColor={toast.themeColor}
+			isFilled={toast.isFilled}
 			titleText={toast.title}
 			messageText={toast.message}
 			bind:show={toast.show}
 			duration={toast.duration}
 			shouldShowProgress={toast.shouldShowProgress}
+			progressColor={toast.progressColor}
 			onclose={() => removeToast('top-end', toast.id)}
 		/>
 	{/each}
+
+	{#if showUndoToast}
+		<Toast variant="danger" titleText="Item Deleted" messageText="3 items moved to trash." duration={0} bind:show={showUndoToast}>
+			{#snippet actions()}
+				<Button size="xs" variant="danger" onclick={() => { alert('Undo!'); showUndoToast = false; }}>Undo</Button>
+				<Button size="xs" variant="secondary" onclick={() => { showUndoToast = false; }}>Dismiss</Button>
+			{/snippet}
+		</Toast>
+	{/if}
+	{#if showRetryToast}
+		<Toast variant="warning" titleText="Upload Failed" messageText="Failed to upload report.pdf. Check your connection." duration={0} bind:show={showRetryToast}>
+			{#snippet actions()}
+				<Button size="xs" variant="warning" onclick={() => { alert('Retrying...'); showRetryToast = false; }}>Retry</Button>
+				<Button size="xs" variant="secondary" onclick={() => { showRetryToast = false; }}>Cancel</Button>
+			{/snippet}
+		</Toast>
+	{/if}
+	{#if showUpdateToast}
+		<Toast variant="info" titleText="Update Available" messageText="Version 2.4.0 is ready to install." duration={0} bind:show={showUpdateToast}>
+			{#snippet actions()}
+				<Button size="xs" variant="info" onclick={() => { alert('Installing...'); showUpdateToast = false; }}>Install Now</Button>
+				<Button size="xs" variant="secondary" onclick={() => { showUpdateToast = false; }}>Later</Button>
+			{/snippet}
+		</Toast>
+	{/if}
+	{#if showFilledActionToast}
+		<Toast variant="success" isFilled titleText="Feedback Sent" messageText="Thank you for your feedback!" duration={0} bind:show={showFilledActionToast}>
+			{#snippet actions()}
+				<Button size="xs" variant="success" onclick={() => { showFilledActionToast = false; }}>Great</Button>
+				<Button size="xs" variant="secondary" onclick={() => { showFilledActionToast = false; }}>Close</Button>
+			{/snippet}
+		</Toast>
+	{/if}
 </ToastContainer>
 
 <ToastContainer position="top-center">
@@ -200,12 +237,12 @@
 	{/each}
 </ToastContainer>
 
-<!-- Toast Positions -->
+<!-- 1. Toast Positions -->
 <Card titleText="Toast Positions">
 	<Grid>
 		<Column size="100" md="1-3">
-			<Button variant="primary" isBlock onclick={() => addToast('top-end', 'success')}>
-				Top End
+			<Button variant="primary" isBlock onclick={() => addToast('top-start', 'warning')}>
+				Top Start
 			</Button>
 		</Column>
 		<Column size="100" md="1-3">
@@ -214,15 +251,15 @@
 			</Button>
 		</Column>
 		<Column size="100" md="1-3">
-			<Button variant="primary" isBlock onclick={() => addToast('top-start', 'warning')}>
-				Top Start
+			<Button variant="primary" isBlock onclick={() => addToast('top-end', 'success')}>
+				Top End
 			</Button>
 		</Column>
 	</Grid>
 	<Grid class="mt-4">
 		<Column size="100" md="1-3">
-			<Button variant="secondary" isBlock onclick={() => addToast('bottom-end', 'danger')}>
-				Bottom End
+			<Button variant="secondary" isBlock onclick={() => addToast('bottom-start', 'success')}>
+				Bottom Start
 			</Button>
 		</Column>
 		<Column size="100" md="1-3">
@@ -231,14 +268,14 @@
 			</Button>
 		</Column>
 		<Column size="100" md="1-3">
-			<Button variant="secondary" isBlock onclick={() => addToast('bottom-start', 'success')}>
-				Bottom Start
+			<Button variant="secondary" isBlock onclick={() => addToast('bottom-end', 'danger')}>
+				Bottom End
 			</Button>
 		</Column>
 	</Grid>
 </Card>
 
-<!-- Toast Variants -->
+<!-- 2. Toast Variants -->
 <Card titleText="Toast Variants">
 	<ButtonGroup>
 		<Button variant="primary" onclick={() => addToast('top-end', 'primary')}>
@@ -259,17 +296,65 @@
 	</ButtonGroup>
 </Card>
 
-<!-- Toast with Progress Bar -->
+<!-- 3. Toast with Progress Bar -->
 <Card titleText="Toast with Progress Bar">
-	<Button variant="primary" onclick={() => addToast('top-end', 'primary', { shouldShowProgress: true, title: 'Processing', message: 'Your request is being processed...' })}>
-		Show Toast with Progress
-	</Button>
+	<Heading level={4}>Standard</Heading>
+	<ButtonGroup>
+		<Button variant="primary" onclick={() => addToast('top-end', 'primary', { shouldShowProgress: true })}>
+			Primary
+		</Button>
+		<Button variant="success" onclick={() => addToast('top-end', 'success', { shouldShowProgress: true })}>
+			Success
+		</Button>
+		<Button variant="danger" onclick={() => addToast('top-end', 'danger', { shouldShowProgress: true })}>
+			Danger
+		</Button>
+		<Button variant="warning" onclick={() => addToast('top-end', 'warning', { shouldShowProgress: true })}>
+			Warning
+		</Button>
+		<Button variant="info" onclick={() => addToast('top-end', 'info', { shouldShowProgress: true })}>
+			Info
+		</Button>
+	</ButtonGroup>
+
+	<Heading level={4} class="mt-4">Filled</Heading>
+	<ButtonGroup>
+		<Button variant="primary" onclick={() => addToast('top-end', 'primary', { shouldShowProgress: true, isFilled: true })}>
+			Primary
+		</Button>
+		<Button variant="success" onclick={() => addToast('top-end', 'success', { shouldShowProgress: true, isFilled: true })}>
+			Success
+		</Button>
+		<Button variant="danger" onclick={() => addToast('top-end', 'danger', { shouldShowProgress: true, isFilled: true })}>
+			Danger
+		</Button>
+		<Button variant="warning" onclick={() => addToast('top-end', 'warning', { shouldShowProgress: true, isFilled: true })}>
+			Warning
+		</Button>
+		<Button variant="info" onclick={() => addToast('top-end', 'info', { shouldShowProgress: true, isFilled: true })}>
+			Info
+		</Button>
+	</ButtonGroup>
+
+	<Heading level={4} class="mt-4">Custom progress color</Heading>
+	<ButtonGroup>
+		<Button variant="primary" onclick={() => addToast('top-end', 'primary', { shouldShowProgress: true, progressColor: '#e74c3c' })}>
+			Red progress
+		</Button>
+		<Button variant="success" onclick={() => addToast('top-end', 'success', { shouldShowProgress: true, progressColor: '#8b5cf6' })}>
+			Purple progress
+		</Button>
+		<Button variant="info" onclick={() => addToast('top-end', 'info', { shouldShowProgress: true, progressColor: '#14b8a6' })}>
+			Teal progress
+		</Button>
+	</ButtonGroup>
+
 	<Paragraph class="pa-text--secondary mt-4">
 		Progress bar shows time remaining before auto-dismiss (5 seconds)
 	</Paragraph>
 </Card>
 
-<!-- Persistent Toasts -->
+<!-- 4. Persistent Toasts -->
 <Card titleText="Persistent Toasts (Manual Dismiss Only)">
 	<Grid>
 		<Column size="100" md="1-3">
@@ -293,23 +378,25 @@
 	</Paragraph>
 </Card>
 
-<!-- Action Toasts -->
-<Card titleText="Action Toasts">
-	<Grid>
-		<Column size="100" md="50">
-			<Button variant="success" onclick={() => addToast('top-end', 'success', { title: 'Upload Complete', message: 'File uploaded successfully!' })}>
-				Upload Success
-			</Button>
-		</Column>
-		<Column size="100" md="50">
-			<Button variant="danger" onclick={() => addToast('top-end', 'danger', { title: 'Save Failed', message: 'Failed to save changes. Please try again.' })}>
-				Save Error
-			</Button>
-		</Column>
-	</Grid>
+<!-- 5. Action Toasts -->
+<Card titleText="Action Toasts" subtitleText="Toasts with action buttons separated by a horizontal rule. Clicking an action dismisses the toast.">
+	<ButtonGroup>
+		<Button variant="danger" onclick={() => showUndoToast = true}>
+			Undo Delete
+		</Button>
+		<Button variant="warning" onclick={() => showRetryToast = true}>
+			Retry Failed
+		</Button>
+		<Button variant="info" onclick={() => showUpdateToast = true}>
+			Update Available
+		</Button>
+		<Button variant="success" onclick={() => showFilledActionToast = true}>
+			Filled + Actions
+		</Button>
+	</ButtonGroup>
 </Card>
 
-<!-- Multiple Toasts -->
+<!-- 6. Multiple Toasts -->
 <Card titleText="Multiple Toasts (Stacking)">
 	<Button variant="primary" onclick={showMultipleToasts}>
 		Show 3 Toasts
@@ -319,68 +406,81 @@
 	</Paragraph>
 </Card>
 
-<!-- Code Examples -->
-<Card titleText="Code Examples">
-	<Grid>
-		<Column size="100" md="50">
-			<h4 class="mb-2">Basic Setup</h4>
-			<CodeBlock>{`${'<'}script>
-  let toasts = $state([]);
-  let id = 0;
+<!-- 7. Filled Toast Variants -->
+<Card titleText="Filled Toast Variants">
+	<ButtonGroup>
+		<Button variant="primary" onclick={() => addToast('top-end', 'primary', { isFilled: true, title: 'Filled Primary', message: 'Full-color primary toast.' })}>
+			Filled Primary
+		</Button>
+		<Button variant="success" onclick={() => addToast('top-end', 'success', { isFilled: true, title: 'Filled Success', message: 'Full-color success toast.' })}>
+			Filled Success
+		</Button>
+		<Button variant="danger" onclick={() => addToast('top-end', 'danger', { isFilled: true, title: 'Filled Danger', message: 'Full-color danger toast.' })}>
+			Filled Danger
+		</Button>
+		<Button variant="warning" onclick={() => addToast('top-end', 'warning', { isFilled: true, title: 'Filled Warning', message: 'Full-color warning toast.' })}>
+			Filled Warning
+		</Button>
+		<Button variant="info" onclick={() => addToast('top-end', 'info', { isFilled: true, title: 'Filled Info', message: 'Full-color info toast.' })}>
+			Filled Info
+		</Button>
+	</ButtonGroup>
+</Card>
 
-  function addToast(variant, message) {
-    toasts = [...toasts, {
-      id: id++, variant, message, show: true
-    }];
-  }
+<!-- 8. Theme Color Toasts -->
+<Card titleText="Theme Color Toasts" subtitleText="Toasts using custom theme color slots (1-9). Colors are defined by the active theme.">
+	<ButtonGroup>
+		<Button themeColor={1} onclick={() => addToast('top-end', 'primary', { themeColor: 1, title: 'Color 1', message: 'Theme color slot 1 toast.' })}>Color 1</Button>
+		<Button themeColor={2} onclick={() => addToast('top-end', 'primary', { themeColor: 2, title: 'Color 2', message: 'Theme color slot 2 toast.' })}>Color 2</Button>
+		<Button themeColor={3} onclick={() => addToast('top-end', 'primary', { themeColor: 3, title: 'Color 3', message: 'Theme color slot 3 toast.' })}>Color 3</Button>
+		<Button themeColor={4} onclick={() => addToast('top-end', 'primary', { themeColor: 4, title: 'Color 4', message: 'Theme color slot 4 toast.' })}>Color 4</Button>
+		<Button themeColor={5} onclick={() => addToast('top-end', 'primary', { themeColor: 5, title: 'Color 5', message: 'Theme color slot 5 toast.' })}>Color 5</Button>
+		<Button themeColor={6} onclick={() => addToast('top-end', 'primary', { themeColor: 6, title: 'Color 6', message: 'Theme color slot 6 toast.' })}>Color 6</Button>
+		<Button themeColor={7} onclick={() => addToast('top-end', 'primary', { themeColor: 7, title: 'Color 7', message: 'Theme color slot 7 toast.' })}>Color 7</Button>
+		<Button themeColor={8} onclick={() => addToast('top-end', 'primary', { themeColor: 8, title: 'Color 8', message: 'Theme color slot 8 toast.' })}>Color 8</Button>
+		<Button themeColor={9} onclick={() => addToast('top-end', 'primary', { themeColor: 9, title: 'Color 9', message: 'Theme color slot 9 toast.' })}>Color 9</Button>
+	</ButtonGroup>
 
-  function removeToast(toastId) {
-    toasts = toasts.filter(t => t.id !== toastId);
-  }
-${'<'}/script>
+	<Heading level={4} class="mt-4">Filled</Heading>
+	<ButtonGroup>
+		<Button themeColor={1} onclick={() => addToast('top-end', 'primary', { themeColor: 1, isFilled: true, title: 'Filled Color 1', message: 'Filled theme color slot 1 toast.' })}>Color 1</Button>
+		<Button themeColor={2} onclick={() => addToast('top-end', 'primary', { themeColor: 2, isFilled: true, title: 'Filled Color 2', message: 'Filled theme color slot 2 toast.' })}>Color 2</Button>
+		<Button themeColor={3} onclick={() => addToast('top-end', 'primary', { themeColor: 3, isFilled: true, title: 'Filled Color 3', message: 'Filled theme color slot 3 toast.' })}>Color 3</Button>
+		<Button themeColor={4} onclick={() => addToast('top-end', 'primary', { themeColor: 4, isFilled: true, title: 'Filled Color 4', message: 'Filled theme color slot 4 toast.' })}>Color 4</Button>
+		<Button themeColor={5} onclick={() => addToast('top-end', 'primary', { themeColor: 5, isFilled: true, title: 'Filled Color 5', message: 'Filled theme color slot 5 toast.' })}>Color 5</Button>
+		<Button themeColor={6} onclick={() => addToast('top-end', 'primary', { themeColor: 6, isFilled: true, title: 'Filled Color 6', message: 'Filled theme color slot 6 toast.' })}>Color 6</Button>
+		<Button themeColor={7} onclick={() => addToast('top-end', 'primary', { themeColor: 7, isFilled: true, title: 'Filled Color 7', message: 'Filled theme color slot 7 toast.' })}>Color 7</Button>
+		<Button themeColor={8} onclick={() => addToast('top-end', 'primary', { themeColor: 8, isFilled: true, title: 'Filled Color 8', message: 'Filled theme color slot 8 toast.' })}>Color 8</Button>
+		<Button themeColor={9} onclick={() => addToast('top-end', 'primary', { themeColor: 9, isFilled: true, title: 'Filled Color 9', message: 'Filled theme color slot 9 toast.' })}>Color 9</Button>
+	</ButtonGroup>
+</Card>
 
-<!-- Container positions toasts in viewport -->
-<ToastContainer position="top-end">
-  {#each toasts as toast (toast.id)}
-    <Toast
-      variant={toast.variant}
-      titleText={toast.title}
-      messageText={toast.message}
-      bind:show={toast.show}
-      onclose={() => removeToast(toast.id)}
-    />
-  {/each}
-</ToastContainer>`}</CodeBlock>
-		</Column>
-		<Column size="100" md="50">
-			<h4 class="mb-2">Toast Props</h4>
-			<CodeBlock>{`<Toast
-  variant="success"     // primary|success|danger|warning|info
-  titleText="Success!"      // Header text
-  messageText="It worked!"  // Body text
-  duration={5000}       // Auto-dismiss (0 = manual)
-  shouldShowProgress          // Show countdown bar
-  bind:show={visible}   // Control visibility
-  onclose={handleClose} // Called when dismissed
-/>
+<!-- 9. CSS Classes Reference -->
+<Card titleText="CSS Classes Reference">
+	<Heading level={4}>Toast Container</Heading>
+	<CodeBlock>{`pa-toast-container              — Fixed-position wrapper
+pa-toast-container--top-end     — Top end (default)
+pa-toast-container--top-center  — Top center
+pa-toast-container--top-start   — Top start
+pa-toast-container--bottom-end  — Bottom end
+pa-toast-container--bottom-center — Bottom center
+pa-toast-container--bottom-start  — Bottom start`}</CodeBlock>
 
-<!-- Container Positions -->
-<ToastContainer position="top-end" />
-<ToastContainer position="top-center" />
-<ToastContainer position="top-start" />
-<ToastContainer position="bottom-end" />
-<ToastContainer position="bottom-center" />
-<ToastContainer position="bottom-start" />`}</CodeBlock>
-		</Column>
-	</Grid>
+	<Heading level={4} class="mt-4">Toast Item</Heading>
+	<CodeBlock>{`pa-toast                — Base toast element
+pa-toast--show          — Visible state
+pa-toast--hide          — Dismissing state
+pa-toast__icon          — Icon container
+pa-toast__content       — Content wrapper
+pa-toast__title         — Title text
+pa-toast__message       — Message text
+pa-toast__actions       — Action buttons container
+pa-toast__close         — Close button
+pa-toast__progress      — Progress bar`}</CodeBlock>
 
-	<h4 class="mb-2 mt-4">Common Patterns</h4>
-	<CodeBlock>{`// Success notification
-addToast('success', 'Changes saved successfully!');
-
-// Error with no auto-dismiss
-addToast('danger', 'Save failed!', { duration: 0 });
-
-// Info with progress bar
-addToast('info', 'Processing...', { shouldShowProgress: true });`}</CodeBlock>
+	<Heading level={4} class="mt-4">Toast Variants</Heading>
+	<CodeBlock>{`pa-toast--primary / --success / --danger / --warning / --info
+pa-toast--filled-primary / --filled-success / --filled-danger / --filled-warning / --filled-info
+pa-toast--color-1 through --color-9
+pa-toast--filled-color-1 through --filled-color-9`}</CodeBlock>
 </Card>

@@ -20,6 +20,10 @@
 		isLabelEnd?: boolean;
 		/** Center-align labels */
 		isLabelCenter?: boolean;
+		/** Right-align values */
+		isValueEnd?: boolean;
+		/** Center-align values */
+		isValueCenter?: boolean;
 		/** Single-line ellipsis on labels and values */
 		isTruncate?: boolean;
 		/** Wrap in pa-desc-container for CSS container query responsive behavior */
@@ -37,6 +41,8 @@
 		isMiddle = false,
 		isLabelEnd = false,
 		isLabelCenter = false,
+		isValueEnd = false,
+		isValueCenter = false,
 		isTruncate = false,
 		hasContainerQuery = false,
 		class: className = '',
@@ -50,6 +56,8 @@
 		if (isMiddle) base.push('pa-desc-table--middle');
 		if (isLabelEnd) base.push('pa-desc-table--label-end');
 		if (isLabelCenter) base.push('pa-desc-table--label-center');
+		if (isValueEnd) base.push('pa-desc-table--value-end');
+		if (isValueCenter) base.push('pa-desc-table--value-center');
 		if (isTruncate) base.push('pa-desc-table--truncate');
 		if (className) base.push(className);
 		return base.join(' ');

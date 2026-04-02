@@ -53,8 +53,8 @@
 		header?: import('svelte').Snippet;
 		/** Title icon snippet (renders before title text) */
 		titleIcon?: import('svelte').Snippet;
-		/** Header tools snippet (rendered in header toolbar area) */
-		tools?: import('svelte').Snippet;
+		/** Header actions snippet (buttons, controls in header toolbar area) */
+		headerActions?: import('svelte').Snippet;
 		/** Tabs snippet (renders in card header as tabs) */
 		tabs?: import('svelte').Snippet;
 		/** Body snippet (main content) */
@@ -62,7 +62,7 @@
 		/** Footer snippet (for complex footers) */
 		footer?: import('svelte').Snippet;
 		/** Footer actions snippet (rendered on right side of footer) */
-		actions?: import('svelte').Snippet;
+		footerActions?: import('svelte').Snippet;
 	}
 
 	let {
@@ -86,11 +86,11 @@
 		class: className = '',
 		header,
 		titleIcon,
-		tools,
+		headerActions,
 		tabs,
 		children,
 		footer,
-		actions
+		footerActions
 	}: Props = $props();
 
 	// Build class string
@@ -132,9 +132,9 @@
 	});
 
 	// Determine if we should show header
-	const hasHeader = $derived(header || titleText || title || titleIcon || descriptionText || description || subtitleText || subtitle || tools || tabs);
+	const hasHeader = $derived(header || titleText || title || titleIcon || descriptionText || description || subtitleText || subtitle || headerActions || tabs);
 	// Determine if we should show footer
-	const hasFooter = $derived(footer || actions);
+	const hasFooter = $derived(footer || footerActions);
 </script>
 
 <div class={classes()}>
@@ -147,7 +147,7 @@
 			{:else if header}
 				{@render header()}
 			{:else}
-				<!-- Three-part header layout (v1.4.1): Title - Description - Tools/Actions -->
+				<!-- Three-part header layout (v1.4.1): Title - Description - Actions -->
 				{#if titleIcon && (titleText || title)}
 					<div class="pa-card__title">
 						<span class="pa-card__title-icon">
@@ -173,9 +173,9 @@
 					<!-- Legacy subtitleText (shown as secondary text) -->
 					<p class="pa-text pa-text--secondary">{subtitleText}</p>
 				{/if}
-				{#if tools}
-					<div class="pa-card__tools">
-						{@render tools()}
+				{#if headerActions}
+					<div class="pa-card__actions">
+						{@render headerActions()}
 					</div>
 				{/if}
 			{/if}
@@ -190,9 +190,9 @@
 		<div class="pa-card__footer">
 			{#if footer}
 				{@render footer()}
-			{:else if actions}
+			{:else if footerActions}
 				<div class="pa-card__actions">
-					{@render actions()}
+					{@render footerActions()}
 				</div>
 			{/if}
 		</div>

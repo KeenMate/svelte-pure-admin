@@ -20,6 +20,14 @@
 
   const popover = $derived(popoverManager.current);
 
+  // Map logical positions (start/end) to Floating UI physical positions
+  function toFloatingPlacement(pos: string): string {
+    const isRtl = typeof document !== 'undefined' && document.dir === 'rtl';
+    if (pos === 'start') return isRtl ? 'right' : 'left';
+    if (pos === 'end') return isRtl ? 'left' : 'right';
+    return pos;
+  }
+
   // Build wrapper class string (for size and alignment modifiers)
   const wrapperClasses = $derived(() => {
     if (!popover) return "pa-popover";
@@ -67,7 +75,7 @@
       positionTarget,
       contentElement,
       {
-        placement: popover.placement,
+        placement: toFloatingPlacement(popover.placement),
         middleware: [offset(8), flip(), shift({ padding: 8 })],
       }
     );

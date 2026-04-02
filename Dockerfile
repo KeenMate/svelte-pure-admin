@@ -7,40 +7,32 @@
 
 FROM node:lts-alpine AS build
 
+# Theme source URL (override with --build-arg)
+ARG THEMES_URL=https://pureadmin.io/api/bundle
+
 WORKDIR /app
 
-# Copy pure-admin packages (dependency)
-COPY pure-admin/packages/core/package.json ./pure-admin/packages/core/
-COPY pure-admin/packages/theme-audi/package.json ./pure-admin/packages/theme-audi/
-COPY pure-admin/packages/theme-corporate/package.json ./pure-admin/packages/theme-corporate/
-COPY pure-admin/packages/theme-dark/package.json ./pure-admin/packages/theme-dark/
-COPY pure-admin/packages/theme-express/package.json ./pure-admin/packages/theme-express/
-COPY pure-admin/packages/theme-minimal/package.json ./pure-admin/packages/theme-minimal/
-COPY pure-admin/package.json pure-admin/package-lock.json ./pure-admin/
+# Copy workspace package files
+COPY package.json package-lock.json ./
+COPY packages/svelte-pure-admin/package.json ./packages/svelte-pure-admin/
+COPY docs/package.json ./docs/
 
-# Copy svelte-pure-admin workspace package files
-COPY svelte-pure-admin/package.json svelte-pure-admin/package-lock.json ./svelte-pure-admin/
-COPY svelte-pure-admin/packages/svelte-pure-admin/package.json ./svelte-pure-admin/packages/svelte-pure-admin/
-COPY svelte-pure-admin/docs/package.json ./svelte-pure-admin/docs/
+# Install dependencies
+RUN npm ci --ignore-scripts
 
-# Install pure-admin dependencies and build
-WORKDIR /app/pure-admin
-RUN npm ci
-COPY pure-admin/packages/ ./packages/
-RUN npm run build -w @keenmate/pure-admin-core && \
-    npm run build -w @keenmate/pure-admin-theme-audi && \
-    npm run build -w @keenmate/pure-admin-theme-corporate && \
-    npm run build -w @keenmate/pure-admin-theme-dark && \
-    npm run build -w @keenmate/pure-admin-theme-express && \
-    npm run build -w @keenmate/pure-admin-theme-minimal
+# Download and extract theme bundle from pureadmin.io
+RUN apk add --no-cache curl unzip && \
+    curl -fsSL -o /tmp/themes.zip "${THEMES_URL}" && \
+    mkdir -p themes && \
+    unzip -o /tmp/themes.zip -d themes/ && \
+    rm /tmp/themes.zip
 
-# Install svelte-pure-admin dependencies
-WORKDIR /app/svelte-pure-admin
-RUN npm ci
+# Copy source files
+COPY packages/ ./packages/
+COPY docs/ ./docs/
 
-# Copy svelte-pure-admin source files
-COPY svelte-pure-admin/packages/ ./packages/
-COPY svelte-pure-admin/docs/ ./docs/
+# Copy themes runs via the script (picks up themes/ directory)
+RUN node docs/scripts/copy-themes.js
 
 # Build the library first, then the docs
 RUN npm run build && npm run build:docs
@@ -55,10 +47,10 @@ RUN npm run build && npm run build:docs
 FROM caddy:alpine AS runtime
 
 # Copy built static files
-COPY --from=build /app/svelte-pure-admin/docs/build /srv
+COPY --from=build /app/docs/build /srv
 
 # Copy Caddyfile
-COPY svelte-pure-admin/Caddyfile /etc/caddy/Caddyfile
+COPY Caddyfile /etc/caddy/Caddyfile
 
 EXPOSE 80
 

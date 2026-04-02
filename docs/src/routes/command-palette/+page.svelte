@@ -7,6 +7,7 @@
 		Table,
 		Button,
 		ButtonGroup,
+		Paragraph,
 		BasicList,
 		OrderedList,
 		CommandPalette,
@@ -16,161 +17,221 @@
 	import type { Command, SearchContext, SearchResult } from '@keenmate/svelte-pure-admin';
 
 	let showPalette = $state(false);
+	let displayStyle = $state<'inline' | 'tokens'>('inline');
 
 	// =========================================================================
-	// SAMPLE DATA
+	// SAMPLE DATA (matches pure-admin demo)
 	// =========================================================================
 
 	const products = [
-		{ id: 1, name: 'MacBook Pro 16"', price: '$2,499', sku: 'MBP-16' },
-		{ id: 2, name: 'MacBook Air M2', price: '$1,199', sku: 'MBA-M2' },
-		{ id: 3, name: 'iPhone 15 Pro', price: '$999', sku: 'IP15P' },
-		{ id: 4, name: 'iPad Pro 12.9"', price: '$1,099', sku: 'IPAD-PRO' },
-		{ id: 5, name: 'AirPods Pro', price: '$249', sku: 'APP-2' }
+		{ id: 1, name: 'MacBook Pro 16"', sku: 'MBP-16-001', price: '$2,499.00', icon: '💻', status: 'In Stock' },
+		{ id: 2, name: 'iPhone 15 Pro', sku: 'IP15P-256', price: '$999.00', icon: '📱', status: 'New' },
+		{ id: 3, name: 'AirPods Pro', sku: 'APP-GEN2', price: '$249.00', icon: '🎧', status: 'Popular' },
+		{ id: 4, name: 'iPad Air', sku: 'IPAD-AIR-5', price: '$599.00', icon: '📱', status: 'In Stock' },
+		{ id: 5, name: 'Apple Watch Ultra', sku: 'AW-ULTRA', price: '$799.00', icon: '⌚', status: 'Limited' },
+		{ id: 6, name: 'Magic Keyboard', sku: 'MK-US', price: '$99.00', icon: '⌨️', status: 'In Stock' },
+		{ id: 7, name: 'Magic Mouse', sku: 'MM-BLK', price: '$79.00', icon: '🖱️', status: 'In Stock' },
+		{ id: 8, name: 'HomePod mini', sku: 'HPM-WHT', price: '$99.00', icon: '🔊', status: 'New' },
+		{ id: 9, name: 'Apple TV 4K', sku: 'ATV-4K-128', price: '$149.00', icon: '📺', status: 'In Stock' },
+		{ id: 10, name: 'AirTag 4 Pack', sku: 'AT-4PK', price: '$99.00', icon: '📍', status: 'Popular' },
+		{ id: 11, name: 'Studio Display', sku: 'SD-27-STD', price: '$1,599.00', icon: '🖥️', status: 'Premium' },
+		{ id: 12, name: 'Mac Studio', sku: 'MS-M2-MAX', price: '$1,999.00', icon: '💻', status: 'Pro' }
 	];
 
 	const users = [
-		{ id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin' },
-		{ id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'User' },
-		{ id: 3, name: 'Bob Wilson', email: 'bob@example.com', role: 'Manager' },
-		{ id: 4, name: 'Sarah Chen', email: 'sarah@example.com', role: 'User' }
+		{ id: 1, name: 'John Doe', email: 'john.doe@example.com', role: 'Customer', status: 'Active' },
+		{ id: 2, name: 'Jane Smith', email: 'jane.smith@example.com', role: 'Admin', status: 'Active' },
+		{ id: 3, name: 'Bob Johnson', email: 'bob.johnson@example.com', role: 'Customer', status: 'Inactive' },
+		{ id: 4, name: 'Alice Williams', email: 'alice.w@example.com', role: 'Manager', status: 'Active' },
+		{ id: 5, name: 'Charlie Brown', email: 'charlie.b@example.com', role: 'Customer', status: 'Active' },
+		{ id: 6, name: 'Diana Prince', email: 'diana.p@example.com', role: 'VIP', status: 'Premium' },
+		{ id: 7, name: 'Eve Davis', email: 'eve.davis@example.com', role: 'Customer', status: 'Active' },
+		{ id: 8, name: 'Frank Miller', email: 'frank.m@example.com', role: 'Support', status: 'Active' },
+		{ id: 9, name: 'Grace Lee', email: 'grace.lee@example.com', role: 'Customer', status: 'New' },
+		{ id: 10, name: 'Henry Ford', email: 'henry.f@example.com', role: 'Customer', status: 'Active' }
 	];
 
-	const reports = [
-		{ id: 'product-sales', name: 'Product Sales', needsTimeRange: true },
-		{ id: 'product-stock', name: 'Product Stock', needsTimeRange: false },
-		{ id: 'user-activity', name: 'User Activity', needsTimeRange: true },
-		{ id: 'revenue', name: 'Revenue Report', needsTimeRange: true }
+	const orders = [
+		{ id: 1001, customer: 'John Doe', total: '$1,234.56', items: 2, status: 'Shipped' },
+		{ id: 1002, customer: 'Jane Smith', total: '$567.89', items: 1, status: 'Processing' },
+		{ id: 1003, customer: 'Bob Johnson', total: '$2,345.67', items: 5, status: 'Delivered' },
+		{ id: 1004, customer: 'Alice Williams', total: '$890.12', items: 3, status: 'Pending' },
+		{ id: 1005, customer: 'Charlie Brown', total: '$456.78', items: 2, status: 'Shipped' },
+		{ id: 1006, customer: 'Diana Prince', total: '$3,456.89', items: 7, status: 'Processing' },
+		{ id: 1007, customer: 'Eve Davis', total: '$123.45', items: 1, status: 'Cancelled' },
+		{ id: 1008, customer: 'Frank Miller', total: '$678.90', items: 4, status: 'Delivered' }
 	];
 
+	const badgeVariants: Record<string, string> = {
+		'Active': 'success', 'In Stock': 'success', 'Delivered': 'success', 'Paid': 'success',
+		'New': 'info', 'Shipped': 'info', 'Popular': 'info',
+		'Premium': 'primary', 'Pro': 'primary',
+		'Processing': 'warning', 'Limited': 'warning', 'Inactive': 'warning', 'Unpaid': 'warning', 'Pending': 'warning',
+		'Cancelled': 'danger', 'Overdue': 'danger', 'Void': 'danger'
+	};
+
 	// =========================================================================
-	// COMMANDS (/prefix)
+	// COMMANDS (/prefix) — matches pure-admin demo exactly
 	// =========================================================================
+
+	const filterOpts = (opts: any[], query: string) => {
+		if (!query) return opts;
+		const q = query.toLowerCase();
+		return opts.filter((o: any) =>
+			(o.label || '').toLowerCase().includes(q) ||
+			(o.description || '').toLowerCase().includes(q) ||
+			(o.code || '') === q
+		);
+	};
 
 	const commands: Command[] = [
-		// Multi-step report command
 		{
-			shortcut: '/r',
-			aliases: ['/report', '/reports'],
-			name: 'Reports',
-			description: 'Open a report with optional filters',
-			icon: '📊',
+			shortcut: '/deploy',
+			aliases: ['/d'],
+			hotkey: 'Alt+D',
+			name: 'Deploy to Environment',
+			description: 'Deploy a branch to an environment',
+			icon: '🚀',
 			steps: [
 				{
-					id: 'report',
-					placeholder: 'Select a report...',
-					getOptions: (query) => {
-						return reports
-							.filter((r) => r.name.toLowerCase().includes(query.toLowerCase()))
-							.map((r) => ({
-								id: r.id,
-								label: r.name,
-								description: r.needsTimeRange ? 'Supports time range' : 'No time range',
-								icon: '📈',
-								value: r
-							}));
-					}
-				},
-				{
-					id: 'timeRange',
+					id: 'environment',
 					prompt: ' in ',
-					placeholder: 'Enter time range (e.g., 30 days)',
-					freeText: true,
-					shouldShow: (prev) => prev[0]?.option?.value?.needsTimeRange === true,
-					getOptions: () => [
-						{ id: '7d', label: '7 days', description: 'Last week', value: 7 },
-						{ id: '30d', label: '30 days', description: 'Last month', value: 30 },
-						{ id: '90d', label: '90 days', description: 'Last quarter', value: 90 },
-						{ id: '365d', label: '1 year', description: 'Last year', value: 365 }
-					]
-				}
-			],
-			getPreview: (selections) => {
-				const report = selections[0]?.option?.label || 'Unknown';
-				const time = selections[1]?.option?.label || selections[1]?.freeText;
-				if (time) {
-					return `Open "${report}" for ${time}`;
-				}
-				return `Open "${report}"`;
-			},
-			onComplete: (selections) => {
-				const report = selections[0]?.option?.value;
-				const timeRange = selections[1]?.option?.value || selections[1]?.freeText;
-				console.log('Opening report:', report?.id, 'Time range:', timeRange);
-				alert(`Would navigate to: /reports/${report?.id}${timeRange ? `?range=${timeRange}` : ''}`);
-			}
-		},
-
-		// Instant settings command
-		{
-			shortcut: '/settings',
-			aliases: ['/config', '/preferences'],
-			name: 'Settings',
-			description: 'Open application settings',
-			icon: '⚙️',
-			steps: [],
-			onComplete: () => {
-				console.log('Opening settings');
-				alert('Would navigate to: /settings');
-			}
-		},
-
-		// Export command with format selection
-		{
-			shortcut: '/export',
-			name: 'Export Data',
-			description: 'Export data to file',
-			icon: '📤',
-			steps: [
-				{
-					id: 'type',
-					placeholder: 'What to export?',
-					getOptions: () => [
-						{ id: 'products', label: 'Products', icon: '📦', value: 'products' },
-						{ id: 'users', label: 'Users', icon: '👤', value: 'users' },
-						{ id: 'orders', label: 'Orders', icon: '📋', value: 'orders' }
-					]
+					placeholder: 'Select environment...',
+					getOptions: (query) => filterOpts([
+						{ id: 'prod', label: 'Production', description: 'Live servers', icon: '🔴', value: 'production' },
+						{ id: 'staging', label: 'Staging', description: 'Pre-production', icon: '🟡', value: 'staging' },
+						{ id: 'dev', label: 'Development', description: 'Dev servers', icon: '🟢', value: 'development' }
+					], query)
 				},
 				{
-					id: 'format',
-					prompt: ' as ',
-					placeholder: 'Select format',
-					getOptions: () => [
-						{ id: 'csv', label: 'CSV', description: 'Comma-separated values', value: 'csv' },
-						{ id: 'json', label: 'JSON', description: 'JavaScript Object Notation', value: 'json' },
-						{ id: 'xlsx', label: 'Excel', description: 'Microsoft Excel format', value: 'xlsx' }
-					]
+					id: 'branch',
+					prompt: ' branch ',
+					placeholder: 'Select or type branch...',
+					freeText: true,
+					getOptions: (query) => filterOpts([
+						{ id: 'main', label: 'main', description: 'Default branch', icon: '🌿', value: 'main' },
+						{ id: 'develop', label: 'develop', description: 'Development branch', icon: '🌱', value: 'develop' },
+						{ id: 'feature', label: 'feature/new-ui', description: 'Feature branch', icon: '🔧', value: 'feature/new-ui' }
+					], query)
 				}
 			],
-			getPreview: (selections) => {
-				const type = selections[0]?.option?.label || '?';
-				const format = selections[1]?.option?.label || '?';
-				return `Export ${type} as ${format}`;
+			getPreview: (sel) => {
+				const env = sel[0]?.option?.label || '...';
+				const branch = sel[1]?.option?.label || sel[1]?.freeText;
+				return branch ? `Deploy ${branch} to ${env}` : `Deploy to ${env}`;
 			},
-			onComplete: (selections) => {
-				const type = selections[0]?.option?.value;
-				const format = selections[1]?.option?.value;
-				console.log('Exporting:', type, 'as', format);
-				alert(`Would export ${type} as ${format}`);
+			onComplete: (sel) => {
+				const env = sel[0]?.option?.value;
+				const branch = sel[1]?.option?.value || sel[1]?.freeText;
+				alert(`Deploying ${branch} to ${env}`);
 			}
 		},
-
-		// Help command
 		{
-			shortcut: '/help',
-			aliases: ['/h', '/?'],
-			name: 'Help',
-			description: 'Show help and documentation',
-			icon: '❓',
-			steps: [],
-			onComplete: () => {
-				alert('Would open help documentation');
+			shortcut: '/assign',
+			aliases: ['/a'],
+			hotkey: 'Alt+A',
+			name: 'Assign to User',
+			description: 'Assign an item to a team member',
+			icon: '👤',
+			steps: [
+				{
+					id: 'item',
+					placeholder: 'Select item...',
+					getOptions: (query) => filterOpts(
+						products.map((p) => ({ id: 'p-' + p.id, label: p.name, description: `SKU: ${p.sku}`, icon: p.icon, value: p })),
+						query
+					)
+				},
+				{
+					id: 'user',
+					prompt: ' to ',
+					placeholder: 'Select user...',
+					getOptions: (query) => filterOpts(
+						users.map((u) => ({ id: 'u-' + u.id, label: u.name, description: u.email, icon: '👤', value: u })),
+						query
+					)
+				}
+			],
+			getPreview: (sel) => {
+				const item = sel[0]?.option?.label || '...';
+				const user = sel[1]?.option?.label;
+				return user ? `Assign "${item}" to ${user}` : `Assign "${item}"`;
+			},
+			onComplete: (sel) => {
+				const item = sel[0]?.option?.label;
+				const user = sel[1]?.option?.label;
+				alert(`Assigned "${item}" to ${user}`);
+			}
+		},
+		{
+			shortcut: '/go',
+			aliases: ['/g', '/nav'],
+			hotkey: 'Alt+G',
+			name: 'Go to Page',
+			description: 'Navigate to a page',
+			icon: '🧭',
+			steps: [
+				{
+					id: 'page',
+					placeholder: 'Type page name...',
+					freeText: true,
+					getOptions: (query) => filterOpts([
+						{ id: 'dashboard', label: 'Dashboard', code: '01', icon: '📊', value: '/' },
+						{ id: 'changelog', label: 'Changelog', code: '02', icon: '📋', value: '/changelog' },
+						{ id: 'forms', label: 'Forms', code: '10', icon: '📝', value: '/forms' },
+						{ id: 'theme-vars', label: 'Theme Variables', code: '11', icon: '🎨', value: '/theme-variables' },
+						{ id: 'colors', label: 'Colors', code: '12', icon: '🌈', value: '/colors' },
+						{ id: 'helpers', label: 'Helpers', code: '13', icon: '🔧', value: '/helpers' },
+						{ id: 'buttons', label: 'Buttons', code: '20', icon: '🔘', value: '/buttons' },
+						{ id: 'inputs', label: 'Inputs', code: '21', icon: '✏️', value: '/inputs' },
+						{ id: 'cards', label: 'Cards', code: '22', icon: '🃏', value: '/cards' },
+						{ id: 'tables', label: 'Tables', code: '23', icon: '📊', value: '/tables' },
+						{ id: 'alerts', label: 'Alerts', code: '24', icon: '⚠️', value: '/alerts' },
+						{ id: 'toasts', label: 'Toasts', code: '25', icon: '🔔', value: '/toasts' },
+						{ id: 'modals', label: 'Modals', code: '26', icon: '🔳', value: '/modals' },
+						{ id: 'tabs', label: 'Tabs', code: '27', icon: '📑', value: '/tabs' },
+						{ id: 'badges', label: 'Badges', code: '28', icon: '🏷️', value: '/badges' },
+						{ id: 'tooltips', label: 'Tooltips', code: '29', icon: '💬', value: '/tooltips' },
+						{ id: 'command-palette', label: 'Command Palette', code: '30', icon: '🔍', value: '/command-palette' }
+					], query)
+				}
+			],
+			onComplete: (sel) => {
+				const page = sel[0]?.option?.value || sel[0]?.freeText || '/';
+				alert(`Would navigate to: ${page}`);
+			}
+		},
+		{
+			shortcut: '/theme',
+			aliases: ['/t'],
+			hotkey: 'Alt+T',
+			name: 'Switch Theme',
+			description: 'Change the visual theme',
+			icon: '🎨',
+			steps: [
+				{
+					id: 'theme',
+					placeholder: 'Select theme...',
+					getOptions: (query) => filterOpts([
+						{ id: 'audi', label: 'Audi', description: 'Premium dark theme', icon: '🔴', value: 'audi' },
+						{ id: 'dark', label: 'Dark', description: 'Clean dark theme', icon: '🌑', value: 'dark' },
+						{ id: 'corporate', label: 'Corporate', description: 'Business theme', icon: '🏢', value: 'corporate' },
+						{ id: 'dracula', label: 'Dracula', description: 'Purple accents', icon: '🧛', value: 'dracula' },
+						{ id: 'tokyo-night', label: 'Tokyo Night', description: 'VS Code inspired', icon: '🌃', value: 'tokyo-night' },
+						{ id: 'minimal', label: 'Minimal', description: 'Clean minimal', icon: '⚪', value: 'minimal' },
+						{ id: 'gruvbox', label: 'Gruvbox', description: 'Retro groove', icon: '🟤', value: 'gruvbox' }
+					], query)
+				}
+			],
+			onComplete: (sel) => {
+				const t = sel[0]?.option?.value;
+				if (t) alert(`Would switch to theme: ${t}`);
 			}
 		}
 	];
 
 	// =========================================================================
-	// SEARCH CONTEXTS (:prefix)
+	// SEARCH CONTEXTS (:prefix) — matches pure-admin demo exactly
 	// =========================================================================
 
 	const contexts: SearchContext[] = [
@@ -181,26 +242,20 @@
 			description: 'Search products by name or SKU',
 			icon: '📦',
 			onSearch: (query) => {
-				const lowerQuery = query.toLowerCase();
+				const q = query.toLowerCase();
 				return products
-					.filter(
-						(p) =>
-							p.name.toLowerCase().includes(lowerQuery) ||
-							p.sku.toLowerCase().includes(lowerQuery)
-					)
+					.filter((p) => p.name.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q))
 					.map((p) => ({
 						id: `product-${p.id}`,
 						title: p.name,
 						subtitle: `SKU: ${p.sku} • ${p.price}`,
-						icon: '📦',
-						badge: p.price,
+						icon: p.icon,
+						badge: p.status,
+						badgeVariant: badgeVariants[p.status] || 'secondary',
 						data: p
 					}));
 			},
-			onSelect: (result) => {
-				console.log('Selected product:', result.data);
-				alert(`Would navigate to: /products/${result.data.id}`);
-			}
+			onSelect: (result) => alert(`Navigate to: /products/${result.data.id}`)
 		},
 		{
 			shortcut: ':u',
@@ -209,27 +264,42 @@
 			description: 'Search users by name or email',
 			icon: '👤',
 			onSearch: (query) => {
-				const lowerQuery = query.toLowerCase();
+				const q = query.toLowerCase();
 				return users
-					.filter(
-						(u) =>
-							u.name.toLowerCase().includes(lowerQuery) ||
-							u.email.toLowerCase().includes(lowerQuery) ||
-							u.role.toLowerCase().includes(lowerQuery)
-					)
+					.filter((u) => u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q))
 					.map((u) => ({
 						id: `user-${u.id}`,
 						title: u.name,
-						subtitle: u.email,
+						subtitle: `${u.email} • ${u.role}`,
 						icon: '👤',
-						badge: u.role,
+						badge: u.status,
+						badgeVariant: badgeVariants[u.status] || 'secondary',
 						data: u
 					}));
 			},
-			onSelect: (result) => {
-				console.log('Selected user:', result.data);
-				alert(`Would navigate to: /users/${result.data.id}`);
-			}
+			onSelect: (result) => alert(`Navigate to: /users/${result.data.id}`)
+		},
+		{
+			shortcut: ':o',
+			aliases: [':orders', ':order'],
+			name: 'Orders',
+			description: 'Search orders by number or customer',
+			icon: '📦',
+			onSearch: (query) => {
+				const q = query.toLowerCase();
+				return orders
+					.filter((o) => o.customer.toLowerCase().includes(q) || String(o.id).includes(q))
+					.map((o) => ({
+						id: `order-${o.id}`,
+						title: `Order #${o.id}`,
+						subtitle: `${o.customer} • ${o.total} • ${o.items} items`,
+						icon: '📦',
+						badge: o.status,
+						badgeVariant: badgeVariants[o.status] || 'secondary',
+						data: o
+					}));
+			},
+			onSelect: (result) => alert(`Navigate to: /orders/${result.data.id}`)
 		}
 	];
 
@@ -239,44 +309,68 @@
 
 	function globalSearch(query: string): SearchResult[] {
 		const results: SearchResult[] = [];
-		const lowerQuery = query.toLowerCase();
+		const q = query.toLowerCase();
 
-		// Search products
+		// Commands matching query
+		commands
+			.filter((c) => c.name.toLowerCase().includes(q) || c.shortcut.toLowerCase().includes(q) ||
+				(c.aliases || []).some((a) => a.toLowerCase().includes(q)))
+			.forEach((c) => results.push({
+				id: 'cmd-' + c.shortcut, title: c.name,
+				subtitle: c.description, icon: c.icon || '',
+				badge: c.shortcut,
+				_type: 'command', _command: c
+			}));
+
+		// Contexts matching query
+		contexts
+			.filter((c) => c.name.toLowerCase().includes(q) || c.shortcut.toLowerCase().includes(q) ||
+				(c.aliases || []).some((a) => a.toLowerCase().includes(q)))
+			.forEach((c) => results.push({
+				id: 'ctx-' + c.shortcut, title: c.name,
+				subtitle: c.description, icon: c.icon || '',
+				badge: c.shortcut,
+				_type: 'context', _context: c
+			}));
+
+		// Products (max 3)
 		products
-			.filter((p) => p.name.toLowerCase().includes(lowerQuery))
+			.filter((p) => p.name.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q))
 			.slice(0, 3)
-			.forEach((p) => {
-				results.push({
-					id: `product-${p.id}`,
-					title: p.name,
-					subtitle: p.price,
-					icon: '📦',
-					badge: 'Product',
-					data: { type: 'product', ...p }
-				});
-			});
+			.forEach((p) => results.push({
+				id: `product-${p.id}`, title: p.name,
+				subtitle: `SKU: ${p.sku} • ${p.price}`,
+				icon: p.icon, badge: 'Product',
+				_type: 'product', data: p
+			}));
 
-		// Search users
+		// Users (max 3)
 		users
-			.filter((u) => u.name.toLowerCase().includes(lowerQuery))
+			.filter((u) => u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q))
 			.slice(0, 3)
-			.forEach((u) => {
-				results.push({
-					id: `user-${u.id}`,
-					title: u.name,
-					subtitle: u.email,
-					icon: '👤',
-					badge: 'User',
-					data: { type: 'user', ...u }
-				});
-			});
+			.forEach((u) => results.push({
+				id: `user-${u.id}`, title: u.name,
+				subtitle: `${u.email} • ${u.role}`,
+				icon: '👤', badge: 'User',
+				_type: 'user', data: u
+			}));
+
+		// Orders (max 3)
+		orders
+			.filter((o) => o.customer.toLowerCase().includes(q) || String(o.id).includes(q))
+			.slice(0, 3)
+			.forEach((o) => results.push({
+				id: `order-${o.id}`, title: `Order #${o.id}`,
+				subtitle: `${o.customer} • ${o.total}`,
+				icon: '📦', badge: 'Order',
+				_type: 'order', data: o
+			}));
 
 		return results;
 	}
 
 	function handleGlobalSelect(result: SearchResult) {
-		console.log('Global select:', result);
-		alert(`Selected: ${result.title} (${result.data?.type})`);
+		alert(`Selected: ${result.title} (${result._type})`);
 	}
 </script>
 
@@ -346,6 +440,14 @@
 					</Button>
 				</div>
 
+				<div class="mb-4">
+					<Paragraph class="mb-2"><strong>Display Style:</strong></Paragraph>
+					<ButtonGroup>
+						<Button size="sm" variant={displayStyle === 'inline' ? 'primary' : 'secondary'} onclick={() => displayStyle = 'inline'}>Inline</Button>
+						<Button size="sm" variant={displayStyle === 'tokens' ? 'primary' : 'secondary'} onclick={() => displayStyle = 'tokens'}>Tokens</Button>
+					</ButtonGroup>
+				</div>
+
 				<Alert variant="primary" class="mb-4">
 					<strong>Try it!</strong> Type <code>/</code> for commands or <code>:</code> for search contexts.
 				</Alert>
@@ -354,17 +456,19 @@
 				<Table isCompact>
 					<thead>
 						<tr>
-							<th>Shortcut</th>
-							<th>Name</th>
+							<th>Command</th>
+							<th>Aliases</th>
 							<th>Description</th>
+							<th>Steps</th>
 						</tr>
 					</thead>
 					<tbody>
 						{#each commands as cmd}
 							<tr>
 								<td><code>{cmd.shortcut}</code></td>
-								<td>{cmd.name}</td>
+								<td>{#if cmd.aliases}{#each cmd.aliases as alias}<code>{alias}</code> {/each}{:else}—{/if}</td>
 								<td>{cmd.description}</td>
+								<td>{cmd.steps.map(s => s.id).join(' → ')}</td>
 							</tr>
 						{/each}
 					</tbody>
@@ -415,24 +519,33 @@
 				<p class="mb-3">Commands can have multiple steps with conditional logic:</p>
 
 				<div class="mb-3">
-					<h4 class="mb-2">Example: /r (Reports)</h4>
+					<h4 class="mb-2">Example: /deploy (2 steps)</h4>
 					<OrderedList>
-						<li>Type <code>/r</code> and press Space</li>
-						<li>Select a report (e.g., "Product Sales")</li>
-						<li>If report needs time range, " in " is auto-added</li>
-						<li>Select or type a time range (e.g., "30 days")</li>
+						<li>Type <code>/deploy</code> and press Space</li>
+						<li>Select environment (Development, Staging, Production)</li>
+						<li>" branch " is auto-added</li>
+						<li>Select or type a branch name</li>
 						<li>Press Enter to execute</li>
 					</OrderedList>
 				</div>
 
 				<div class="mb-3">
-					<h4 class="mb-2">Example: /export</h4>
+					<h4 class="mb-2">Example: /assign (2 steps)</h4>
 					<OrderedList>
-						<li>Type <code>/export</code> and press Space</li>
-						<li>Select what to export (Products, Users, Orders)</li>
-						<li>" as " is auto-added</li>
-						<li>Select format (CSV, JSON, Excel)</li>
+						<li>Type <code>/assign</code> and press Space</li>
+						<li>Select an item (bug, feature, task)</li>
+						<li>" to " is auto-added</li>
+						<li>Select a team member</li>
 						<li>Press Enter to execute</li>
+					</OrderedList>
+				</div>
+
+				<div class="mb-3">
+					<h4 class="mb-2">Example: /go (free text)</h4>
+					<OrderedList>
+						<li>Type <code>/go</code> and press Space</li>
+						<li>Select a page or type a custom path</li>
+						<li>Press Enter to navigate</li>
 					</OrderedList>
 				</div>
 			</Card>
@@ -491,30 +604,30 @@
 				<div class="mb-3">
 					<h4 class="mb-2">Commands</h4>
 					<ButtonGroup class="mb-2">
-						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>/r</Button>
-						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>/export</Button>
-						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}
-							>/settings</Button
-						>
+						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>/</Button>
+						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>/deploy</Button>
+						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>/assign</Button>
+						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>/go</Button>
+						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>/theme</Button>
 					</ButtonGroup>
 				</div>
 
 				<div class="mb-3">
-					<h4 class="mb-2">Search</h4>
+					<h4 class="mb-2">Context Search</h4>
 					<ButtonGroup class="mb-2">
-						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>:p mac</Button>
-						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}
-							>:u john</Button
-						>
+						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>:</Button>
+						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>:p macbook</Button>
+						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>:u john</Button>
+						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>:o 1001</Button>
 					</ButtonGroup>
 				</div>
 
 				<div class="mb-3">
 					<h4 class="mb-2">Global Search</h4>
 					<ButtonGroup class="mb-2">
-						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>macbook</Button
-						>
+						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>macbook</Button>
 						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>john</Button>
+						<Button size="sm" variant="secondary" onclick={() => (showPalette = true)}>1001</Button>
 					</ButtonGroup>
 				</div>
 			</Card>
@@ -527,5 +640,6 @@
 	{commands}
 	{contexts}
 	{globalSearch}
+	{displayStyle}
 	onglobalselect={handleGlobalSelect}
 />

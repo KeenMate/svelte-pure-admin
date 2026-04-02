@@ -4,6 +4,18 @@ Svelte 5 component library for Pure Admin CSS framework — 100+ ready-to-use co
 
 **Ships with AI reference files** — 14 plain-text docs in `ai/` optimized for LLM-assisted development (Claude, ChatGPT, Copilot). Point your AI assistant at `node_modules/@keenmate/svelte-pure-admin/ai/INDEX.txt` for instant component knowledge.
 
+## What's New in 1.6.1
+
+- **No more sidebar flash** — Submenu expansion state loads synchronously from localStorage, eliminating the collapsed-then-expanded flash on page load
+- **Page loader waits for hydration** — Spinner overlay stays visible until both fonts and Svelte components are ready (documented pattern for consumer apps)
+
+## What's New in 1.6.0
+
+- **Command palette home screen & hotkeys** — Opens with categorized commands and search contexts. `hotkey` prop on commands enables Alt+key shortcuts (e.g., Alt+D for /deploy). Global search returns matching commands and contexts alongside data. `code` on step options for quick `/go 24` navigation. Inline/tokens display style prop.
+- **Toast actions, maxWidth, progressColor** — `actions` snippet for action buttons in toasts. `maxWidth` prop per toast. `progressColor` for custom progress bar colors. Container width ratchet prevents shimmer.
+- **Split button rework** — `icon` snippet on main button. `__menu-inner` wrapper (core v2.3.2). Menu items with `icon` and `action` snippets for inline action buttons. Chevron points up for `top-end` placement.
+- **Command palette badges** — Item badges now use standard `pa-badge pa-badge--{variant}` with `badgeVariant` on search results.
+
 ## Installation
 
 ```bash
@@ -301,6 +313,80 @@ Or use a theme package:
   import '@keenmate/pure-admin-theme-minimal';   // Minimal theme
 </script>
 ```
+
+## Page Loader (Prevent FOUC)
+
+SvelteKit apps can show a flash of unstyled/unhydrated content before Svelte components mount (~1s on typical loads). Add a page loader to `src/app.html` that waits for both fonts and Svelte hydration:
+
+**1. Add loader HTML + script to `app.html` `<body>`** (before `%sveltekit.body%`):
+
+```html
+<div class="page-loader" id="pageLoader">
+  <div class="page-loader__spinner"></div>
+</div>
+<script>
+  (function() {
+    var loader = document.getElementById('pageLoader');
+    var fontsReady = false, appReady = false;
+    function hide() {
+      if (!fontsReady || !appReady) return;
+      requestAnimationFrame(function() {
+        loader.classList.add('loaded');
+        setTimeout(function() { loader.remove(); }, 80);
+      });
+    }
+    if (document.fonts && document.fonts.ready) {
+      Promise.race([
+        document.fonts.ready,
+        new Promise(function(r) { setTimeout(r, 1000); })
+      ]).then(function() { fontsReady = true; hide(); });
+    } else {
+      window.addEventListener('load', function() { fontsReady = true; hide(); });
+    }
+    window.__pageLoaderReady = function() { appReady = true; hide(); };
+    setTimeout(function() { fontsReady = appReady = true; hide(); }, 3000);
+  })();
+</script>
+```
+
+**2. Add critical CSS to `<head>`** (inline):
+
+```html
+<style>
+  .page-loader {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--page-loader-bg, rgba(26, 26, 26, 0.95));
+    backdrop-filter: blur(10px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 99999;
+    transition: opacity 0.15s ease, visibility 0.15s ease;
+  }
+  .page-loader.loaded { opacity: 0; visibility: hidden; }
+  .page-loader__spinner {
+    width: 50px; height: 50px;
+    border: 4px solid var(--page-loader-spinner-border, #333);
+    border-top-color: var(--page-loader-spinner-accent, #0066cc);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+```
+
+**3. Signal from your root layout** (`+layout.svelte`):
+
+```svelte
+<script>
+  import { onMount } from 'svelte';
+  onMount(() => {
+    if (typeof window.__pageLoaderReady === 'function') {
+      window.__pageLoaderReady();
+    }
+  });
+</script>
+```
+
+Themeable via CSS variables: `--page-loader-bg`, `--page-loader-spinner-border`, `--page-loader-spinner-accent`. 3s safety timeout ensures it never blocks indefinitely.
 
 ## Documentation Site
 

@@ -795,11 +795,11 @@
 </TableContainer>
 
 <Card titleText="Panel Table with Header" class="mt-4">
-	<Paragraph>Use the <code>title</code> and <code>actions</code> props to add a header.</Paragraph>
+	<Paragraph>Use the <code>title</code> and <code>headerActions</code> props to add a header.</Paragraph>
 </Card>
 
 <TableContainer isPanel titleText="Recent Orders">
-	{#snippet actions()}
+	{#snippet headerActions()}
 		<Button variant="secondary" size="sm">Export</Button>
 		<Button variant="primary" size="sm">Add Order</Button>
 	{/snippet}
@@ -921,10 +921,10 @@
 <Paragraph>The TableCard component is a card specifically designed for tables. It includes header, body (for the table), footer, and color variants like regular cards.</Paragraph>
 
 <!-- Basic TableCard -->
-<Heading level={3} class="mt-6">Basic Table Card with Actions</Heading>
+<Heading level={3} class="mt-6">Basic Table Card with Header Actions</Heading>
 
 <TableCard titleText="Recent Orders">
-	{#snippet actions()}
+	{#snippet headerActions()}
 		<Button variant="secondary" size="sm">Export</Button>
 		<Button variant="primary" size="sm">Add Order</Button>
 	{/snippet}
@@ -979,7 +979,7 @@
 <Grid>
 	<Column md="50">
 		<TableCard titleText="Primary Table Card" variant="primary">
-			{#snippet actions()}
+			{#snippet headerActions()}
 				<Button variant="light" size="sm">Refresh</Button>
 			{/snippet}
 
@@ -1010,7 +1010,7 @@
 	</Column>
 	<Column md="50">
 		<TableCard titleText="Success Table Card" variant="success">
-			{#snippet actions()}
+			{#snippet headerActions()}
 				<Button variant="light" size="sm">Export</Button>
 			{/snippet}
 
@@ -1246,7 +1246,7 @@
 
 <!-- Plain Table with Pagers -->
 <TableCard titleText="Plain Table with Pagers" isPlain class="mt-4">
-	{#snippet actions()}
+	{#snippet headerActions()}
 		<div class="pa-pager pa-pager--right">
 			<div class="pa-pager__container">
 				<span class="pa-pager__text">Showing 1-10 of 156</span>
@@ -1403,7 +1403,7 @@
 <Paragraph>Use the <code>isScrollable</code> prop on TableCard to enable horizontal scrolling for wide tables.</Paragraph>
 
 <TableCard titleText="Wide Data Table" isScrollable>
-	{#snippet actions()}
+	{#snippet headerActions()}
 		<Button variant="secondary" size="sm">Download CSV</Button>
 	{/snippet}
 

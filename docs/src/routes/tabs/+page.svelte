@@ -1056,7 +1056,7 @@
 	</Column>
 	<Column size="100" md="1-2">
 		<Card titleText="Summary Stats">
-			{#snippet tools()}
+			{#snippet headerActions()}
 				<Button variant="secondary" size="sm" isIconOnly>
 					<i class="fa-solid fa-refresh"></i>
 				</Button>

@@ -137,7 +137,7 @@
 
 <!-- Table Card with Detail Panel -->
 <TableCard isPlain class="minhr-100" titleText="Movies Database">
-	{#snippet actions()}
+	{#snippet headerActions()}
 		<span class="text-secondary text-sm">{filtered.length} movies</span>
 	{/snippet}
 

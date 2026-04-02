@@ -4,6 +4,8 @@
 	 * Based on @keenmate/pure-admin-core snippets/buttons.html
 	 */
 
+	import type { ThemeColor } from '../types';
+
 	type ButtonVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark';
 	type ButtonSize = 'xs' | 'sm' | 'lg' | 'xl';
 	type ButtonAlign = 'start' | 'end' | 'center' | 'justify';
@@ -15,6 +17,8 @@
 	interface Props {
 		/** Button variant */
 		variant?: ButtonVariant;
+		/** Theme color slot variant (1-9) — overrides variant with pa-btn--color-N */
+		themeColor?: ThemeColor;
 		/** Button size */
 		size?: ButtonSize;
 		/** Outline style */
@@ -57,6 +61,7 @@
 
 	let {
 		variant = 'primary',
+		themeColor,
 		size,
 		isOutline = false,
 		isBlock = false,
@@ -82,8 +87,14 @@
 	const classes = $derived(() => {
 		const base = ['pa-btn'];
 
-		// Variant
-		if (isOutline) {
+		// Variant (theme color slot takes priority over named variant)
+		if (themeColor) {
+			if (isOutline) {
+				base.push(`pa-btn--outline-color-${themeColor}`);
+			} else {
+				base.push(`pa-btn--color-${themeColor}`);
+			}
+		} else if (isOutline) {
 			base.push(`pa-btn--outline-${variant}`);
 		} else {
 			base.push(`pa-btn--${variant}`);

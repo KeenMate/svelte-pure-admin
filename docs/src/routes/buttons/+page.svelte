@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Heading, Paragraph, Button, ButtonGroup, Card, Grid, Column, BasicList, Tooltip } from '@keenmate/svelte-pure-admin';
+	import { Heading, Paragraph, Button, ButtonGroup, Card, Grid, Column, BasicList, Tooltip, SplitButton, SplitButtonItem } from '@keenmate/svelte-pure-admin';
 	import { onMount } from 'svelte';
 		
 	onMount(() => {
@@ -62,9 +62,8 @@
 
 <Paragraph>Various button styles and sizes for actions and navigation.</Paragraph>
 
-<!-- Button Variants and Sizes Grid -->
+<!-- 1. Button Variants and Sizes Grid -->
 <Grid>
-	<!-- Basic Buttons -->
 	<Column size="100" lg="1-2">
 		<Card titleText="Button Variants">
 			<ButtonGroup>
@@ -79,8 +78,6 @@
 			</ButtonGroup>
 		</Card>
 	</Column>
-
-	<!-- Button Sizes -->
 	<Column size="100" lg="1-2">
 		<Card titleText="Button Sizes">
 			<ButtonGroup>
@@ -94,9 +91,42 @@
 	</Column>
 </Grid>
 
-<!-- Outline and States Grid -->
+<!-- 2. Theme Color Buttons -->
 <Grid>
-	<!-- Outline Buttons -->
+	<Column size="100" lg="1-2">
+		<Card titleText="Theme Color Buttons">
+			<ButtonGroup>
+				<Button themeColor={1}>Color 1</Button>
+				<Button themeColor={2}>Color 2</Button>
+				<Button themeColor={3}>Color 3</Button>
+				<Button themeColor={4}>Color 4</Button>
+				<Button themeColor={5}>Color 5</Button>
+				<Button themeColor={6}>Color 6</Button>
+				<Button themeColor={7}>Color 7</Button>
+				<Button themeColor={8}>Color 8</Button>
+				<Button themeColor={9}>Color 9</Button>
+			</ButtonGroup>
+		</Card>
+	</Column>
+	<Column size="100" lg="1-2">
+		<Card titleText="Theme Color Outline Buttons">
+			<ButtonGroup>
+				<Button themeColor={1} isOutline>Color 1</Button>
+				<Button themeColor={2} isOutline>Color 2</Button>
+				<Button themeColor={3} isOutline>Color 3</Button>
+				<Button themeColor={4} isOutline>Color 4</Button>
+				<Button themeColor={5} isOutline>Color 5</Button>
+				<Button themeColor={6} isOutline>Color 6</Button>
+				<Button themeColor={7} isOutline>Color 7</Button>
+				<Button themeColor={8} isOutline>Color 8</Button>
+				<Button themeColor={9} isOutline>Color 9</Button>
+			</ButtonGroup>
+		</Card>
+	</Column>
+</Grid>
+
+<!-- 3. Outline and States Grid -->
+<Grid>
 	<Column size="100" lg="1-2">
 		<Card titleText="Outline Buttons">
 			<ButtonGroup>
@@ -109,8 +139,6 @@
 			</ButtonGroup>
 		</Card>
 	</Column>
-
-	<!-- Button States -->
 	<Column size="100" lg="1-2">
 		<Card titleText="Button States">
 			<ButtonGroup>
@@ -122,7 +150,7 @@
 	</Column>
 </Grid>
 
-<!-- Block Buttons -->
+<!-- 4. Block Buttons -->
 <Card titleText="Block Buttons">
 	<ButtonGroup vertical>
 		<Button variant="primary" isBlock>Block Level Button</Button>
@@ -130,7 +158,7 @@
 	</ButtonGroup>
 </Card>
 
-<!-- Button Groups -->
+<!-- 5. Button Groups -->
 <Grid>
 	<!-- Basic Button Groups -->
 	<Column size="100" lg="1-2">
@@ -210,7 +238,7 @@
 	</Column>
 </Grid>
 
-<!-- Vertical Alignment & Responsive -->
+<!-- 6. Vertical Alignment & Responsive -->
 <Grid>
 	<!-- Vertical Alignment -->
 	<Column size="100" lg="1-2">
@@ -282,6 +310,243 @@
 		</Card>
 	</Column>
 </Grid>
+
+<!-- 7. Split Buttons -->
+<Card titleText="Split Buttons" subtitleText="Primary action + dropdown toggle combined into a single control.">
+	<!-- Primary examples (Save, Delete, Export) -->
+	<div class="pa-btn-group gap-lg">
+		<SplitButton variant="primary" onclick={() => alert('Save clicked')}>
+			Save
+			{#snippet menu()}
+				<SplitButtonItem onclick={() => alert('Save as Draft')}>
+					{#snippet icon()}<i class="fas fa-file"></i>{/snippet}
+					Save as Draft
+				</SplitButtonItem>
+				<SplitButtonItem onclick={() => alert('Save & Close')}>
+					{#snippet icon()}<i class="fas fa-door-closed"></i>{/snippet}
+					Save & Close
+				</SplitButtonItem>
+				<SplitButtonItem onclick={() => alert('Save & New')}>
+					{#snippet icon()}<i class="fas fa-plus"></i>{/snippet}
+					Save & New
+				</SplitButtonItem>
+			{/snippet}
+		</SplitButton>
+
+		<SplitButton variant="danger" onclick={() => alert('Delete clicked')}>
+			Delete
+			{#snippet menu()}
+				<SplitButtonItem isDanger onclick={() => alert('Delete All')}>Delete All</SplitButtonItem>
+				<SplitButtonItem onclick={() => alert('Archive Instead')}>Archive Instead</SplitButtonItem>
+			{/snippet}
+		</SplitButton>
+
+		<SplitButton variant="secondary" onclick={() => alert('Export')}>
+			{#snippet icon()}<i class="fas fa-download"></i>{/snippet}
+			Export
+			{#snippet menu()}
+				<SplitButtonItem onclick={() => alert('CSV')}>
+					{#snippet icon()}<i class="fas fa-file-csv"></i>{/snippet}
+					Export as CSV
+				</SplitButtonItem>
+				<SplitButtonItem onclick={() => alert('Excel')}>
+					{#snippet icon()}<i class="fas fa-file-excel"></i>{/snippet}
+					Export as Excel
+				</SplitButtonItem>
+				<SplitButtonItem onclick={() => alert('PDF')}>
+					{#snippet icon()}<i class="fas fa-file-pdf"></i>{/snippet}
+					Export as PDF
+				</SplitButtonItem>
+			{/snippet}
+		</SplitButton>
+	</div>
+
+	<!-- Sizes -->
+	<Heading level={4} class="mt-4">Sizes</Heading>
+	<div class="pa-btn-group gap-lg">
+		<SplitButton variant="primary" size="xs" onclick={() => {}}>
+			XS Action
+			{#snippet menu()}
+				<SplitButtonItem>Option A</SplitButtonItem>
+				<SplitButtonItem>Option B</SplitButtonItem>
+			{/snippet}
+		</SplitButton>
+		<SplitButton variant="primary" size="sm" onclick={() => {}}>
+			SM Action
+			{#snippet menu()}
+				<SplitButtonItem>Option A</SplitButtonItem>
+				<SplitButtonItem>Option B</SplitButtonItem>
+			{/snippet}
+		</SplitButton>
+		<SplitButton variant="primary" onclick={() => {}}>
+			Default
+			{#snippet menu()}
+				<SplitButtonItem>Option A</SplitButtonItem>
+				<SplitButtonItem>Option B</SplitButtonItem>
+			{/snippet}
+		</SplitButton>
+		<SplitButton variant="primary" size="lg" onclick={() => {}}>
+			LG Action
+			{#snippet menu()}
+				<SplitButtonItem>Option A</SplitButtonItem>
+				<SplitButtonItem>Option B</SplitButtonItem>
+			{/snippet}
+		</SplitButton>
+	</div>
+
+	<!-- Upward Placement -->
+	<Heading level={4} class="mt-4">Upward Placement</Heading>
+	<Paragraph class="text-muted mb-2">Use <code>data-placement="top-end"</code> to open the menu upward. Floating UI will auto-flip if there's not enough space.</Paragraph>
+	<div class="pa-btn-group gap-lg">
+		<SplitButton variant="primary" placement="top-end" onclick={() => {}}>
+			Upload
+			{#snippet menu()}
+				<SplitButtonItem>Upload File</SplitButtonItem>
+				<SplitButtonItem>Upload Folder</SplitButtonItem>
+				<SplitButtonItem>Import from URL</SplitButtonItem>
+			{/snippet}
+		</SplitButton>
+		<SplitButton variant="secondary" placement="top-end" onclick={() => {}}>
+			{#snippet icon()}<i class="fas fa-plus"></i>{/snippet}
+			New
+			{#snippet menu()}
+				<SplitButtonItem>New Document</SplitButtonItem>
+				<SplitButtonItem>New Spreadsheet</SplitButtonItem>
+				<SplitButtonItem>New Presentation</SplitButtonItem>
+			{/snippet}
+		</SplitButton>
+	</div>
+
+	<!-- Custom Icons -->
+	<Heading level={4} class="mt-4">Custom Icons (no rotation)</Heading>
+	<Paragraph class="text-muted mb-2">Omit <code>pa-btn-split__chevron</code> from the icon for static icons that don't rotate on open.</Paragraph>
+	<div class="pa-btn-group gap-lg">
+		<SplitButton variant="primary" onclick={() => alert('Share')}>
+			Share
+			{#snippet toggleIcon()}<i class="fas fa-share-nodes text-2xs"></i>{/snippet}
+			{#snippet menu()}
+				<SplitButtonItem>Share via Email</SplitButtonItem>
+				<SplitButtonItem>Share via Link</SplitButtonItem>
+				<SplitButtonItem>Copy to Clipboard</SplitButtonItem>
+			{/snippet}
+		</SplitButton>
+		<SplitButton variant="secondary" onclick={() => alert('Settings')}>
+			Settings
+			{#snippet toggleIcon()}<i class="fas fa-bars text-2xs"></i>{/snippet}
+			{#snippet menu()}
+				<SplitButtonItem>General</SplitButtonItem>
+				<SplitButtonItem>Advanced</SplitButtonItem>
+				<SplitButtonItem isDanger>Reset All</SplitButtonItem>
+			{/snippet}
+		</SplitButton>
+		<SplitButton variant="danger" onclick={() => alert('Delete')}>
+			Delete
+			{#snippet toggleIcon()}<i class="fas fa-trash text-2xs"></i>{/snippet}
+			{#snippet menu()}
+				<SplitButtonItem isDanger>Delete Permanently</SplitButtonItem>
+				<SplitButtonItem>Move to Trash</SplitButtonItem>
+			{/snippet}
+		</SplitButton>
+	</div>
+
+	<!-- Items with Actions -->
+	<Heading level={4} class="mt-4">Items with Actions</Heading>
+	<Paragraph class="text-muted mb-2">Menu items can include inline action buttons for quick operations like delete.</Paragraph>
+	<div class="pa-btn-group gap-lg">
+		<SplitButton variant="primary" onclick={() => {}}>
+			{#snippet icon()}<i class="fas fa-bookmark"></i>{/snippet}
+			Bookmarks
+			{#snippet menu()}
+				<SplitButtonItem>
+					{#snippet icon()}<i class="fas fa-home"></i>{/snippet}
+					Dashboard
+					{#snippet action()}
+						<Button size="xs" variant="danger" isIconOnly onclick={(e) => { e.stopPropagation(); alert('Remove Dashboard'); }}>
+							{#snippet icon()}<i class="fas fa-trash"></i>{/snippet}
+						</Button>
+					{/snippet}
+				</SplitButtonItem>
+				<SplitButtonItem>
+					{#snippet icon()}<i class="fas fa-chart-line"></i>{/snippet}
+					Analytics
+					{#snippet action()}
+						<Button size="xs" variant="danger" isIconOnly onclick={(e) => { e.stopPropagation(); alert('Remove Analytics'); }}>
+							{#snippet icon()}<i class="fas fa-trash"></i>{/snippet}
+						</Button>
+					{/snippet}
+				</SplitButtonItem>
+				<SplitButtonItem>
+					{#snippet icon()}<i class="fas fa-users"></i>{/snippet}
+					Team Members
+					{#snippet action()}
+						<Button size="xs" variant="danger" isIconOnly onclick={(e) => { e.stopPropagation(); alert('Remove Team Members'); }}>
+							{#snippet icon()}<i class="fas fa-trash"></i>{/snippet}
+						</Button>
+					{/snippet}
+				</SplitButtonItem>
+			{/snippet}
+		</SplitButton>
+
+		<SplitButton variant="secondary" onclick={() => {}}>
+			{#snippet icon()}<i class="fas fa-clock-rotate-left"></i>{/snippet}
+			Recent
+			{#snippet menu()}
+				<SplitButtonItem>
+					{#snippet icon()}<i class="fas fa-file"></i>{/snippet}
+					Report Q4.pdf
+					{#snippet action()}
+						<Button size="xs" variant="secondary" isIconOnly onclick={(e) => { e.stopPropagation(); alert('Remove Report'); }}>
+							{#snippet icon()}<i class="fas fa-xmark"></i>{/snippet}
+						</Button>
+					{/snippet}
+				</SplitButtonItem>
+				<SplitButtonItem>
+					{#snippet icon()}<i class="fas fa-file-code"></i>{/snippet}
+					schema.sql
+					{#snippet action()}
+						<Button size="xs" variant="secondary" isIconOnly onclick={(e) => { e.stopPropagation(); alert('Remove schema'); }}>
+							{#snippet icon()}<i class="fas fa-xmark"></i>{/snippet}
+						</Button>
+					{/snippet}
+				</SplitButtonItem>
+			{/snippet}
+		</SplitButton>
+
+		<SplitButton variant="danger" onclick={() => {}}>
+			{#snippet icon()}<i class="fas fa-user-plus"></i>{/snippet}
+			Members
+			{#snippet menu()}
+				<SplitButtonItem>
+					{#snippet icon()}<i class="fas fa-user"></i>{/snippet}
+					Alice Cooper
+					{#snippet action()}
+						<Button size="xs" variant="danger" isIconOnly onclick={(e) => { e.stopPropagation(); alert('Remove Alice'); }}>
+							{#snippet icon()}<i class="fas fa-trash"></i>{/snippet}
+						</Button>
+					{/snippet}
+				</SplitButtonItem>
+				<SplitButtonItem>
+					{#snippet icon()}<i class="fas fa-user"></i>{/snippet}
+					Bob Dylan
+					{#snippet action()}
+						<Button size="xs" variant="danger" isIconOnly onclick={(e) => { e.stopPropagation(); alert('Remove Bob'); }}>
+							{#snippet icon()}<i class="fas fa-trash"></i>{/snippet}
+						</Button>
+					{/snippet}
+				</SplitButtonItem>
+				<SplitButtonItem>
+					{#snippet icon()}<i class="fas fa-user"></i>{/snippet}
+					Charlie Parker
+					{#snippet action()}
+						<Button size="xs" variant="danger" isIconOnly onclick={(e) => { e.stopPropagation(); alert('Remove Charlie'); }}>
+							{#snippet icon()}<i class="fas fa-trash"></i>{/snippet}
+						</Button>
+					{/snippet}
+				</SplitButtonItem>
+			{/snippet}
+		</SplitButton>
+	</div>
+</Card>
 
 <!-- Text Truncation -->
 <Card titleText="Text Truncation">

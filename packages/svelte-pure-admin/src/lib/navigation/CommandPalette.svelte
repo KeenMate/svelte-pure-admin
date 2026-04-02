@@ -40,6 +40,8 @@
 		onglobalselect?: (result: SearchResult) => void;
 		/** Placeholder text */
 		placeholder?: string;
+		/** Display style for multi-step commands: 'inline' shows full path in input, 'tokens' shows selections as badges */
+		displayStyle?: 'inline' | 'tokens';
 		/** Additional CSS classes */
 		class?: string;
 		/** Custom error display snippet */
@@ -53,6 +55,7 @@
 		globalSearch,
 		onglobalselect,
 		placeholder,
+		displayStyle = 'inline',
 		class: className = '',
 		errorSnippet
 	}: Props = $props();
@@ -219,7 +222,14 @@
 
 		const value = inputValue.trim();
 
-		// Empty input - show idle state
+		// In command-step mode, always handle as step input (don't reset on empty)
+		if (mode === 'command-step' && activeCommand) {
+			const query = getQueryFromInput();
+			loadStepOptions(query);
+			return;
+		}
+
+		// Empty input - show idle/home state
 		if (!value) {
 			mode = 'idle';
 			displayItems = [];
@@ -290,6 +300,11 @@
 			return;
 		}
 
+		// In tokens mode, clear input for clean search
+		if (displayStyle === 'tokens') {
+			inputValue = '';
+		}
+
 		// Load options for first step
 		loadStepOptions(initialQuery);
 	}
@@ -303,11 +318,7 @@
 			const options = await step.getOptions(query, selections);
 			displayItems = options;
 			activeIndex = options.length > 0 ? 0 : -1;
-
-			// Update preview if available
-			if (activeCommand?.getPreview) {
-				preview = activeCommand.getPreview(selections);
-			}
+			preview = undefined;
 		} catch (err) {
 			console.error('Failed to load step options:', err);
 			error = $_('pureAdmin.commandPalette.loadOptionsFailed');
@@ -472,8 +483,13 @@
 		} else {
 			currentStepIndex = nextIndex;
 
-			// Update input - selectionsDisplay() already includes the current step's prompt
-			inputValue = selectionsDisplay();
+			if (displayStyle === 'tokens') {
+				// Tokens mode: clear input, badges show selections
+				inputValue = '';
+			} else {
+				// Inline mode: build full path in input
+				inputValue = selectionsDisplay();
+			}
 
 			// Load options for new step
 			loadStepOptions('');
@@ -484,13 +500,6 @@
 
 	function executeCommand() {
 		if (!activeCommand) return;
-
-		// Update preview one last time
-		if (activeCommand.getPreview) {
-			preview = activeCommand.getPreview(selections);
-		}
-
-		// Execute
 		activeCommand.onComplete(selections);
 		close();
 	}
@@ -508,7 +517,46 @@
 		close();
 	}
 
+	function rewindToStep(index: number) {
+		// Remove selections from this step onwards and reload options
+		selections = selections.slice(0, index);
+		currentStepIndex = index;
+
+		// Find the correct step index (accounting for shouldShow skips)
+		if (activeCommand) {
+			let actualIndex = 0;
+			let visibleCount = 0;
+			while (actualIndex < activeCommand.steps.length && visibleCount < index) {
+				const step = activeCommand.steps[actualIndex];
+				if (!step.shouldShow || step.shouldShow(selections)) {
+					visibleCount++;
+				}
+				actualIndex++;
+			}
+			currentStepIndex = actualIndex;
+		}
+
+		if (displayStyle === 'tokens') {
+			inputValue = '';
+		} else {
+			inputValue = selectionsDisplay();
+		}
+		loadStepOptions('');
+		inputRef?.focus();
+	}
+
 	function selectGlobalResult(result: SearchResult) {
+		// Route based on result type (commands/contexts enter their mode, others notify consumer)
+		if (result._type === 'command' && result._command) {
+			inputValue = result._command.shortcut + ' ';
+			enterCommandMode(result._command);
+			return;
+		}
+		if (result._type === 'context' && result._context) {
+			inputValue = result._context.shortcut + ' ';
+			enterContextSearchMode(result._context);
+			return;
+		}
 		if (onglobalselect) {
 			onglobalselect(result);
 		}
@@ -519,7 +567,31 @@
 	// KEYBOARD HANDLING
 	// =========================================================================
 
+	function findCommandByHotkey(key: string): Command | undefined {
+		return commands.find((c) => {
+			if (!c.hotkey) return false;
+			const parts = c.hotkey.toLowerCase().split('+');
+			return key.toLowerCase() === parts[parts.length - 1];
+		});
+	}
+
 	function handleKeyDown(event: KeyboardEvent) {
+		// Alt+key hotkeys — work globally (open palette + enter command)
+		if (event.altKey && !event.ctrlKey && !event.metaKey && event.key !== 'Alt') {
+			const cmd = findCommandByHotkey(event.key);
+			if (cmd) {
+				event.preventDefault();
+				if (show) reset();
+				if (!show) show = true;
+				// Wait for focus then enter command
+				setTimeout(() => {
+					inputValue = cmd.shortcut + ' ';
+					enterCommandMode(cmd);
+				}, 0);
+				return;
+			}
+		}
+
 		if (!show) return;
 
 		switch (event.key) {
@@ -586,6 +658,11 @@
 		const value = inputValue;
 
 		if (mode === 'command-step') {
+			if (displayStyle === 'tokens') {
+				// Tokens mode: input only contains current step query
+				return value.trim();
+			}
+			// Inline mode: extract portion after selections
 			const prefix = selectionsDisplay();
 			return value.substring(prefix.length).trim();
 		}
@@ -621,26 +698,17 @@
 		error = undefined;
 	}
 
-	// Focus input when shown
+	// Focus input and lock scroll when shown
 	$effect(() => {
 		if (show && inputRef) {
 			setTimeout(() => inputRef?.focus(), 0);
+			document.body.style.overflow = 'hidden';
+		} else {
+			document.body.style.overflow = '';
 		}
 	});
 
-	// Watch input changes for context/command step modes
-	$effect(() => {
-		if (mode === 'command-step') {
-			const query = getQueryFromInput();
-			loadStepOptions(query);
-		} else if (mode === 'context-search' && activeContext) {
-			const query = getQueryFromInput();
-			if (query) {
-				if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
-				searchDebounceTimer = setTimeout(() => performContextSearch(query), 150);
-			}
-		}
-	});
+	// Note: Input changes for command-step and context-search are handled by processInput()
 
 	// Register global keyboard shortcut via registry
 	onMount(() => {
@@ -672,15 +740,20 @@
 	}
 
 	function getItemSubtitle(item: Command | SearchContext | StepOption | SearchResult): string {
-		if ('subtitle' in item) return item.subtitle || '';
-		if ('description' in item) return item.description || '';
-		return '';
+		const sub = ('subtitle' in item) ? (item.subtitle || '') : (('description' in item) ? (item.description || '') : '');
+		if ('code' in item && item.code) return sub ? `[${item.code}] ${sub}` : `[${item.code}]`;
+		return sub;
 	}
 
 	function getItemBadge(item: Command | SearchContext | StepOption | SearchResult): string {
 		if ('badge' in item) return item.badge || '';
 		if ('shortcut' in item) return item.shortcut;
 		return '';
+	}
+
+	function getItemBadgeVariant(item: Command | SearchContext | StepOption | SearchResult): string {
+		if ('badgeVariant' in item) return (item as SearchResult).badgeVariant || 'secondary';
+		return 'secondary';
 	}
 
 	function getModeLabel(): string {
@@ -731,27 +804,94 @@
 	<div class="pa-command-palette__container">
 		<!-- Search input -->
 		<div class="pa-command-palette__search">
-			<input
-				bind:this={inputRef}
-				type="text"
-				class="pa-command-palette__input"
-				placeholder={resolvedPlaceholder}
-				autocomplete="off"
-				spellcheck="false"
-				bind:value={inputValue}
-				oninput={handleInput}
-			/>
-			<!-- Mode label -->
-			{#if mode !== 'idle'}
-				<div class="pa-command-palette__context pa-command-palette__context--visible">
-					{getModeLabel()}
+			{#if displayStyle === 'tokens' && mode === 'command-step' && selections.length > 0}
+				<div class="pa-command-palette__tokens">
+					<span class="pa-badge pa-badge--primary">{activeCommand?.shortcut}</span>
+					{#each selections as sel, i}
+						{#if activeCommand?.steps[i]?.prompt}
+							<span class="pa-command-palette__token-prompt">{activeCommand.steps[i].prompt.trim()}</span>
+						{/if}
+						<span class="pa-badge">
+							<span>{sel.option?.label || sel.freeText}</span>
+							<!-- svelte-ignore a11y_click_events_have_key_events -->
+							<!-- svelte-ignore a11y_no_static_element_interactions -->
+							<span class="pa-badge__remove" onclick={() => rewindToStep(i)}>&times;</span>
+						</span>
+					{/each}
+					{#if currentStep()?.prompt && selections.length === currentStepIndex}
+						<span class="pa-command-palette__token-prompt">{currentStep()?.prompt?.trim()}</span>
+					{/if}
 				</div>
 			{/if}
+			<div class="pa-command-palette__input-wrapper">
+				<input
+					bind:this={inputRef}
+					type="text"
+					class="pa-command-palette__input"
+					placeholder={resolvedPlaceholder}
+					autocomplete="off"
+					spellcheck="false"
+					bind:value={inputValue}
+					oninput={handleInput}
+				/>
+				<!-- Mode label -->
+				{#if mode !== 'idle'}
+					<div class="pa-command-palette__context pa-command-palette__context--visible">
+						{getModeLabel()}
+					</div>
+				{/if}
+			</div>
 		</div>
 
 		<!-- Results container -->
 		<div class="pa-command-palette__results" class:pa-command-palette__results--loading={loading}>
-			{#if loading}
+			{#if mode === 'idle'}
+				<!-- Home screen with commands and contexts -->
+				<div class="pa-command-palette__home">
+					<div class="pa-command-palette__home-section">
+						<div class="pa-command-palette__home-heading">{$_('pureAdmin.commandPalette.commands')}</div>
+						{#each commands as cmd}
+							<!-- svelte-ignore a11y_click_events_have_key_events -->
+							<!-- svelte-ignore a11y_no_static_element_interactions -->
+							<div class="pa-command-palette__item" onclick={() => { inputValue = cmd.shortcut + ' '; enterCommandMode(cmd); }}>
+								{#if cmd.icon}
+									<div class="pa-command-palette__item-icon">{cmd.icon}</div>
+								{/if}
+								<div class="pa-command-palette__item-content">
+									<div class="pa-command-palette__item-title">{cmd.name}</div>
+									<div class="pa-command-palette__item-meta">{cmd.description}</div>
+								</div>
+								{#if cmd.hotkey}
+									<div class="pa-command-palette__shortcut">
+										{#each cmd.hotkey.split('+') as key, i}
+											<span class="pa-command-palette__key">{key}</span>
+										{/each}
+									</div>
+								{:else}
+									<span class="pa-command-palette__key">{cmd.shortcut}</span>
+								{/if}
+							</div>
+						{/each}
+					</div>
+					<div class="pa-command-palette__home-section">
+						<div class="pa-command-palette__home-heading">{$_('pureAdmin.commandPalette.searchIn')}</div>
+						{#each contexts as ctx}
+							<!-- svelte-ignore a11y_click_events_have_key_events -->
+							<!-- svelte-ignore a11y_no_static_element_interactions -->
+							<div class="pa-command-palette__item" onclick={() => { inputValue = ctx.shortcut + ' '; enterContextSearchMode(ctx); }}>
+								{#if ctx.icon}
+									<div class="pa-command-palette__item-icon">{ctx.icon}</div>
+								{/if}
+								<div class="pa-command-palette__item-content">
+									<div class="pa-command-palette__item-title">{ctx.name}</div>
+									<div class="pa-command-palette__item-meta">{ctx.description}</div>
+								</div>
+								<span class="pa-command-palette__key">{ctx.shortcut}</span>
+							</div>
+						{/each}
+					</div>
+				</div>
+			{:else if loading}
 				<div class="pa-command-palette__loader">
 					<div class="pa-spinner pa-spinner--sm pa-spinner--primary"></div>
 					<span>{$_('pureAdmin.commandPalette.loading')}</span>
@@ -788,18 +928,10 @@
 							{/if}
 						</div>
 						{#if getItemBadge(item)}
-							<div class="pa-command-palette__item-badge">{getItemBadge(item)}</div>
+							<span class="pa-badge pa-badge--{getItemBadgeVariant(item)}">{getItemBadge(item)}</span>
 						{/if}
 					</div>
 				{/each}
-			{/if}
-
-			<!-- Preview (for commands) -->
-			{#if preview && mode === 'command-step'}
-				<div class="pa-command-palette__preview">
-					<span class="pa-command-palette__preview-label">{$_('pureAdmin.commandPalette.preview')}</span>
-					{preview}
-				</div>
 			{/if}
 		</div>
 
@@ -826,20 +958,6 @@
 </div>
 
 <style>
-	/* Preview styling */
-	.pa-command-palette__preview {
-		padding: 0.75rem 1rem;
-		background: rgba(var(--pa-primary-rgb, 59, 130, 246), 0.1);
-		border-top: 1px solid var(--pa-border-color, #e5e7eb);
-		font-size: 0.875rem;
-		color: var(--pa-text-color-2, #6b7280);
-	}
-
-	.pa-command-palette__preview-label {
-		font-weight: 600;
-		margin-right: 0.5rem;
-	}
-
 	/* Token highlighting */
 	:global(.pa-command-palette__token) {
 		border-radius: 0.25rem;

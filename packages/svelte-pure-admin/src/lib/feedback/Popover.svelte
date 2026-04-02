@@ -13,7 +13,7 @@
 
 	import { popoverManager } from './popover-manager.svelte';
 
-	type PopoverPlacement = 'top' | 'right' | 'bottom' | 'left';
+	type PopoverPlacement = 'top' | 'end' | 'bottom' | 'start';
 	type PopoverSize = 'sm' | 'lg';
 	type PopoverAlignment = 'center' | 'end';
 

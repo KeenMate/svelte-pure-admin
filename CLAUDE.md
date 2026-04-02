@@ -652,7 +652,7 @@ npm publish --access public
 6. **Reactive with runes** - Use `$props()`, `$state()`, `$derived()`
 7. **Class prop pattern** - Always accept `class?: string` for custom classes
 8. **Test against original** - Compare with pure-admin-visual visually
-9. **Use logical directions** - Always use `start`/`end` instead of `left`/`right` for RTL support (since v1.4.0/v1.5.0). Exception: Tooltip and Popconfirm keep physical `left`/`right` for arrow positioning
+9. **Use logical directions** - Always use `start`/`end` instead of `left`/`right` for RTL support (since v1.4.0/v1.5.0). Tooltip uses logical `start`/`end` (since core v2.1.0). Popconfirm SCSS still uses physical `--left`/`--right` classes — the Svelte component maps logical props to physical CSS classes internally
 
 ## Snippet Reference Quick Links
 
@@ -748,7 +748,8 @@ Done! ✅
 - All directional CSS classes renamed to logical equivalents
 - Components already using `start`/`end`: Button, Navbar, Footer, Pager, LoadMore, TabsScrollable
 - Components updated: Heading, Paragraph (via HorizontalAlignment type change)
-- Kept physical: Tooltip (`pa-tooltip--left/--right`), Popconfirm (`pa-popconfirm--left/--right`)
+- Tooltip now uses logical `pa-tooltip--start/--end` (since core v2.1.0)
+- Popconfirm SCSS still uses physical `pa-popconfirm--left/--right` — Svelte component maps `start`/`end` props to physical classes internally
 
 ### v1.4.0: Toast positions
 - Removed deprecated physical positions (`top-right`, `top-left`, `bottom-right`, `bottom-left`)
@@ -762,9 +763,39 @@ Done! ✅
 - Added `valueVariant` to Field (for chips color variants)
 - New components: DescTable, DotLeaders, PropCard, Banded, AccentGrid (+ sub-components)
 
+### v2.0.0: Grid container queries (core breaking change)
+- `pa-col-{bp}-*` classes use `@container` instead of `@media` — columns respond to container width, not viewport
+- Requires `.pa-layout__main` (automatic) or `.pa-cq` ancestor for containment context
+- No Svelte component API changes needed
+
+### v2.0.0+: Card enhancements
+- `pa-card__tools` renamed to `pa-card__actions` — Svelte uses `headerActions` / `footerActions` snippets
+- `liveState` prop: `'up' | 'down' | 'neutral'` for real-time dashboard card tinting
+- `isHeaderUnderlined` + `headerUnderlineColor` + `headerUnderlineThemeColor` for accent borders
+- Copyable fields extended to Banded, PropCard, DescTable, AccentGrid
+
+### v2.0.1: Loading button
+- `isLoading` prop on Button adds `pa-btn--loading` class + `<span class="pa-btn__spinner">` element
+- CSS handles text hiding via `-webkit-text-fill-color: transparent`, preserving button dimensions
+
+### v2.1.0: New components and RTL
+- **SplitButton** (`pa-btn-split`): Split button with Floating UI dropdown menu
+- **FilterCard** (`pa-filter-card`): Expandable filter card with inline filters + collapsible advanced section
+- Tooltip `--left`/`--right` renamed to `--start`/`--end` (CSS now uses logical properties)
+- Badge `--ellipsis-left` renamed to `--ellipsis-start`
+- DescTable/Banded: alignment modifiers (`--value-end`, `--value-center`, `--label-end`, `--label-center`)
+
+### v2.2.0: Theme color slot variants
+- `themeColor?: ThemeColor` (1-9) prop added to Alert, Button, Callout, Toast
+- Alert: `pa-alert--color-{N}` / `pa-alert--outline-color-{N}` (respects `isOutline`)
+- Button: `pa-btn--color-{N}` / `pa-btn--outline-color-{N}` (respects `isOutline`)
+- Callout: `pa-callout--color-{N}` (no outline variant)
+- Toast: `pa-toast--color-{N}` / `pa-toast--filled-color-{N}` (respects `isFilled`)
+- Toast `isFilled` prop: `pa-toast--filled-{variant}` for full-color background toasts
+
 ---
 
-**Last Updated:** 2026-02-14
+**Last Updated:** 2026-03-25
 **Svelte Version:** 5.x
 **SvelteKit Version:** 2.x
-**Pure Admin Core Version:** 1.5.0+ (synced with unreleased)
+**Pure Admin Core Version:** 2.2.0 (synced)

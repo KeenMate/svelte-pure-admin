@@ -138,6 +138,65 @@
 	</Alert>
 </Card>
 
+<!-- Theme Color Slot Alerts -->
+<Card titleText="Theme Color Slot Alerts" subtitleText="Alerts using custom theme color slots (1-9). Colors are defined by the active theme — invisible in base theme.">
+	<Grid>
+		<Column size="100" md="1-3">
+			<Alert themeColor={1}>
+				<strong>Color 1</strong> — Theme slot alert
+			</Alert>
+		</Column>
+		<Column size="100" md="1-3">
+			<Alert themeColor={2}>
+				<strong>Color 2</strong> — Theme slot alert
+			</Alert>
+		</Column>
+		<Column size="100" md="1-3">
+			<Alert themeColor={3}>
+				<strong>Color 3</strong> — Theme slot alert
+			</Alert>
+		</Column>
+	</Grid>
+	<Grid>
+		<Column size="100" md="1-3">
+			<Alert themeColor={4}>
+				<strong>Color 4</strong> — Theme slot alert
+			</Alert>
+		</Column>
+		<Column size="100" md="1-3">
+			<Alert themeColor={5}>
+				<strong>Color 5</strong> — Theme slot alert
+			</Alert>
+		</Column>
+		<Column size="100" md="1-3">
+			<Alert themeColor={6}>
+				<strong>Color 6</strong> — Theme slot alert
+			</Alert>
+		</Column>
+	</Grid>
+</Card>
+
+<!-- Outline Theme Color Slot Alerts -->
+<Card titleText="Outline Theme Color Slot Alerts">
+	<Grid>
+		<Column size="100" md="1-3">
+			<Alert themeColor={1} isOutline>
+				<strong>Color 1 Outline</strong>
+			</Alert>
+		</Column>
+		<Column size="100" md="1-3">
+			<Alert themeColor={2} isOutline>
+				<strong>Color 2 Outline</strong>
+			</Alert>
+		</Column>
+		<Column size="100" md="1-3">
+			<Alert themeColor={3} isOutline>
+				<strong>Color 3 Outline</strong>
+			</Alert>
+		</Column>
+	</Grid>
+</Card>
+
 <!-- Compact Alerts Grid -->
 <Card titleText="Compact Alerts in Grid">
 	<Grid>

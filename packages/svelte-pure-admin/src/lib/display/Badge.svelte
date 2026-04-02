@@ -34,7 +34,7 @@
 		if (variant) base.push(`pa-badge--${variant}`);
 		if (size) base.push(`pa-badge--${size}`);
 		if (isPill) base.push('pa-badge--pill');
-		if (isEllipsisStart) base.push('pa-badge--ellipsis-left');
+		if (isEllipsisStart) base.push('pa-badge--ellipsis-start');
 		if (themeColor) base.push(`pa-bg-color-${themeColor}`);
 		if (className) base.push(className);
 		return base.join(' ');

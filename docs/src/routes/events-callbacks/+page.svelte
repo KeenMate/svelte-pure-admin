@@ -496,7 +496,7 @@
 	<Column size="1-2">
 		<div class="position-sticky overflow-y-auto max-h-screen">
 			<TableCard titleText="Event Log ({logEntries.length})">
-				{#snippet actions()}
+				{#snippet headerActions()}
 					<Button variant="secondary" size="sm" onclick={clearLog}>Clear</Button>
 				{/snippet}
 

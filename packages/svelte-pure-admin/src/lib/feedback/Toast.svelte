@@ -6,12 +6,17 @@
 
 	import { onMount } from 'svelte';
 	import { _ } from '../i18n';
+	import type { ThemeColor } from '../types';
 
 	type ToastVariant = 'primary' | 'success' | 'danger' | 'warning' | 'info';
 
 	interface Props {
 		/** Toast variant */
 		variant?: ToastVariant;
+		/** Theme color slot variant (1-9) — overrides variant with pa-toast--color-N */
+		themeColor?: ThemeColor;
+		/** Filled style — full-color background with contrast text */
+		isFilled?: boolean;
 		/** Toast title text */
 		titleText: string;
 		/** Toast message text */
@@ -22,8 +27,14 @@
 		duration?: number;
 		/** Show progress bar */
 		shouldShowProgress?: boolean;
+		/** Custom progress bar color */
+		progressColor?: string;
+		/** Custom max-width for the toast (e.g., '50rem', '500px') */
+		maxWidth?: string;
 		/** Icon snippet */
 		icon?: import('svelte').Snippet;
+		/** Action buttons snippet — renders inside pa-toast__actions */
+		actions?: import('svelte').Snippet;
 		/** Close callback */
 		onclose?: () => void;
 		/** Additional CSS classes */
@@ -32,12 +43,17 @@
 
 	let {
 		variant = 'primary',
+		themeColor,
+		isFilled = false,
 		titleText,
 		messageText,
 		show = $bindable(true),
 		duration = 5000,
 		shouldShowProgress = false,
+		progressColor,
+		maxWidth,
 		icon,
+		actions,
 		onclose,
 		class: className = ''
 	}: Props = $props();
@@ -47,7 +63,15 @@
 
 	// Build class string
 	const classes = $derived(() => {
-		const base = ['pa-toast', `pa-toast--${variant}`];
+		const base = ['pa-toast'];
+
+		// Variant: theme color slot > named variant, with optional filled modifier
+		if (themeColor) {
+			base.push(isFilled ? `pa-toast--filled-color-${themeColor}` : `pa-toast--color-${themeColor}`);
+		} else {
+			base.push(isFilled ? `pa-toast--filled-${variant}` : `pa-toast--${variant}`);
+		}
+
 		if (visible) base.push('pa-toast--show');
 		if (className) base.push(className);
 		return base.join(' ');
@@ -90,7 +114,7 @@
 	});
 </script>
 
-<div class={classes()}>
+<div class={classes()} style:max-width={maxWidth}>
 	{#if icon}
 		<div class="pa-toast__icon">
 			{@render icon()}
@@ -100,6 +124,11 @@
 	<div class="pa-toast__content">
 		<div class="pa-toast__title">{titleText}</div>
 		<div class="pa-toast__message">{messageText}</div>
+		{#if actions}
+			<div class="pa-toast__actions">
+				{@render actions()}
+			</div>
+		{/if}
 	</div>
 
 	<button class="pa-toast__close" onclick={handleClose} aria-label={$_('pureAdmin.buttons.close')}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
@@ -107,7 +136,7 @@
 	{#if shouldShowProgress && duration > 0}
 		<div
 			class="pa-toast__progress"
-			style="width: {progressWidth}%; transition: width {duration}ms linear;"
+			style="width: {progressWidth}%; transition: width {duration}ms linear;{progressColor ? ` color: ${progressColor};` : ''}"
 		></div>
 	{/if}
 </div>

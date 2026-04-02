@@ -16,6 +16,10 @@
 		isLabelEnd?: boolean;
 		/** Center-align labels */
 		isLabelCenter?: boolean;
+		/** Right-align values */
+		isValueEnd?: boolean;
+		/** Center-align values */
+		isValueCenter?: boolean;
 		/** Single-line ellipsis on labels and values */
 		isTruncate?: boolean;
 		/** Wrap in pa-banded-container for CSS container query responsive behavior */
@@ -31,6 +35,8 @@
 		isMiddle = false,
 		isLabelEnd = false,
 		isLabelCenter = false,
+		isValueEnd = false,
+		isValueCenter = false,
 		isTruncate = false,
 		hasContainerQuery = false,
 		class: className = '',
@@ -43,6 +49,8 @@
 		if (isMiddle) base.push('pa-banded--middle');
 		if (isLabelEnd) base.push('pa-banded--label-end');
 		if (isLabelCenter) base.push('pa-banded--label-center');
+		if (isValueEnd) base.push('pa-banded--value-end');
+		if (isValueCenter) base.push('pa-banded--value-center');
 		if (isTruncate) base.push('pa-banded--truncate');
 		if (className) base.push(className);
 		return base.join(' ');

@@ -20,6 +20,8 @@ export interface StepOption {
 	label: string;
 	/** Optional description shown below label */
 	description?: string;
+	/** Optional short code for quick lookup (e.g., '24' for Alerts page) */
+	code?: string;
 	/** Optional icon (emoji or icon class) */
 	icon?: string;
 	/** Value passed to onComplete - can be any data */
@@ -90,6 +92,9 @@ export interface Command {
 	/** Icon (emoji or icon class) */
 	icon?: string;
 
+	/** Keyboard hotkey (e.g., 'Alt+D') — displayed on home screen and usable globally */
+	hotkey?: string;
+
 	/** Steps in this command wizard (empty array for instant commands) */
 	steps: CommandStep[];
 
@@ -125,6 +130,14 @@ export interface SearchResult {
 	icon?: string;
 	/** Badge text (e.g., status, category) */
 	badge?: string;
+	/** Badge variant for styling (e.g., 'success', 'warning', 'danger', 'info', 'primary') */
+	badgeVariant?: string;
+	/** Result type for global search routing (e.g., 'command', 'context', 'product') */
+	_type?: string;
+	/** Reference to original Command (when _type === 'command') */
+	_command?: Command;
+	/** Reference to original SearchContext (when _type === 'context') */
+	_context?: SearchContext;
 	/** Additional data passed to onSelect */
 	data?: any;
 }

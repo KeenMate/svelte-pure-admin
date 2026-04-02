@@ -27,8 +27,8 @@
 		class?: string;
 		/** Custom header content (replaces title) */
 		header?: import('svelte').Snippet;
-		/** Actions in header (buttons, etc.) */
-		actions?: import('svelte').Snippet;
+		/** Header actions (buttons, controls) */
+		headerActions?: import('svelte').Snippet;
 		/** Table content */
 		children?: import('svelte').Snippet;
 		/** Footer content (pagination, summary) */
@@ -43,7 +43,7 @@
 		isPlain = false,
 		class: className = '',
 		header,
-		actions,
+		headerActions,
 		children,
 		footer
 	}: Props = $props();
@@ -66,7 +66,7 @@
 	});
 
 	// Determine if we should show header
-	const hasHeader = $derived(header || titleText || actions);
+	const hasHeader = $derived(header || titleText || headerActions);
 </script>
 
 <div class={classes()}>
@@ -80,9 +80,9 @@
 						<h4 class="pa-table-card__title-text">{titleText}</h4>
 					</div>
 				{/if}
-				{#if actions}
+				{#if headerActions}
 					<div class="pa-table-card__actions">
-						{@render actions()}
+						{@render headerActions()}
 					</div>
 				{/if}
 			{/if}

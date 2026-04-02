@@ -1,0 +1,10 @@
+{
+  "themes": {
+    "audi": "../pure-admin-themes/audi",
+    "corporate": "../pure-admin-themes/corporate",
+    "dark": "../pure-admin-themes/dark",
+    "express": "../pure-admin-themes/express",
+    "minimal": "../pure-admin-themes/minimal",
+    "cafeindustrial": "../pure-admin-cafeindustrial-theme"
+  }
+}

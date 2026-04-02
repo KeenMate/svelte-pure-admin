@@ -16,7 +16,7 @@
 		variant?: AlertVariant;
 		/** Alert size */
 		size?: AlertSize;
-		/** Theme color variant (1-9) — applies pa-bg-color-N */
+		/** Theme color slot variant (1-9) — applies pa-alert--color-N or pa-alert--outline-color-N */
 		themeColor?: ThemeColor;
 		/** Dismissible alert */
 		isDismissible?: boolean;
@@ -59,8 +59,14 @@
 	const classes = $derived(() => {
 		const base = ['pa-alert'];
 
-		// Variant
-		if (isOutline) {
+		// Variant (theme color slot takes priority over named variant)
+		if (themeColor) {
+			if (isOutline) {
+				base.push(`pa-alert--outline-color-${themeColor}`);
+			} else {
+				base.push(`pa-alert--color-${themeColor}`);
+			}
+		} else if (isOutline) {
 			base.push(`pa-alert--outline-${variant}`);
 		} else {
 			base.push(`pa-alert--${variant}`);
@@ -71,9 +77,6 @@
 
 		// Modifiers
 		if (isDismissible) base.push('pa-alert--dismissible');
-
-		// Theme color
-		if (themeColor) base.push(`pa-bg-color-${themeColor}`);
 
 		// Custom classes
 		if (className) base.push(className);

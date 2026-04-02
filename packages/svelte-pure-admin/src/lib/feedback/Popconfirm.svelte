@@ -11,9 +11,8 @@
 
 	import { onMount } from 'svelte';
 	import { _ } from '../i18n';
-	import { createShadowDOMProxy } from './shadow-dom-proxy';
 
-	type Position = 'top' | 'bottom' | 'left' | 'right';
+	type Position = 'top' | 'bottom' | 'start' | 'end';
 	type IconVariant = 'danger' | 'warning' | 'info';
 
 	interface Props {
@@ -65,7 +64,15 @@
 	let popconfirmEl: HTMLDivElement;
 	let actualPosition = $state<Position>('bottom');
 	let isPositioned = $state(false);
-	const shadowProxy = createShadowDOMProxy();
+	let isFixedPositioning = $state(false);
+
+	// Map logical positions (start/end) to Floating UI physical positions
+	function toFloatingPlacement(pos: Position): string {
+		const isRtl = typeof document !== 'undefined' && document.dir === 'rtl';
+		if (pos === 'start') return isRtl ? 'right' : 'left';
+		if (pos === 'end') return isRtl ? 'left' : 'right';
+		return pos;
+	}
 
 	// Sync actualPosition with position prop (before Floating UI adjusts it)
 	$effect(() => {
@@ -73,8 +80,16 @@
 	});
 
 	// Build class string
+	// Map logical position to physical CSS class (SCSS only defines --left/--right, not --start/--end)
+	function toPhysicalCssPosition(pos: Position): string {
+		const isRtl = typeof document !== 'undefined' && document.dir === 'rtl';
+		if (pos === 'start') return isRtl ? 'right' : 'left';
+		if (pos === 'end') return isRtl ? 'left' : 'right';
+		return pos;
+	}
+
 	const classes = $derived(() => {
-		const base = ['pa-popconfirm', `pa-popconfirm--${actualPosition}`];
+		const base = ['pa-popconfirm', `pa-popconfirm--${toPhysicalCssPosition(actualPosition)}`];
 		if (isCompact) base.push('pa-popconfirm--compact');
 		if (show) base.push('is-open');
 		if (className) base.push(className);
@@ -94,7 +109,62 @@
 	async function updatePosition() {
 		if (!show || !trigger || !popconfirmEl || typeof window === 'undefined') return;
 
-		// Check if Floating UI is available
+		const rootNode = trigger.getRootNode();
+		const isShadowDOM = rootNode instanceof ShadowRoot;
+		isFixedPositioning = isShadowDOM;
+
+		if (isShadowDOM) {
+			// Shadow DOM: Floating UI can't reach the trigger, so position manually
+			// using getBoundingClientRect() + position: fixed (both in viewport coords)
+			const rect = trigger.getBoundingClientRect();
+			const popRect = popconfirmEl.getBoundingClientRect();
+			const gap = 8;
+
+			let top: number;
+			let left: number;
+
+			if (position === 'top') {
+				top = rect.top - popRect.height - gap;
+				left = rect.left + rect.width / 2 - popRect.width / 2;
+				actualPosition = 'top';
+			} else if (position === 'start') {
+				top = rect.top + rect.height / 2 - popRect.height / 2;
+				left = rect.left - popRect.width - gap;
+				actualPosition = 'start';
+			} else if (position === 'end') {
+				top = rect.top + rect.height / 2 - popRect.height / 2;
+				left = rect.right + gap;
+				actualPosition = 'end';
+			} else {
+				// bottom (default) — flip to top if not enough space below
+				const bottomTop = rect.bottom + gap;
+				const topTop = rect.top - popRect.height - gap;
+
+				if (bottomTop + popRect.height > window.innerHeight - 10 && topTop >= 10) {
+					top = topTop;
+					actualPosition = 'top';
+				} else {
+					top = bottomTop;
+					actualPosition = 'bottom';
+				}
+				left = rect.left + rect.width / 2 - popRect.width / 2;
+			}
+
+			// Clamp to viewport
+			left = Math.max(10, Math.min(left, window.innerWidth - popRect.width - 10));
+			top = Math.max(10, Math.min(top, window.innerHeight - popRect.height - 10));
+
+			Object.assign(popconfirmEl.style, {
+				position: 'fixed',
+				left: `${left}px`,
+				top: `${top}px`
+			});
+
+			isPositioned = true;
+			return;
+		}
+
+		// Light DOM: use Floating UI for positioning (position: absolute)
 		if (!window.FloatingUIDOM) {
 			console.warn('Floating UI not loaded. Popconfirm positioning may be incorrect.');
 			return;
@@ -102,12 +172,9 @@
 
 		const { computePosition, flip, shift, offset } = window.FloatingUIDOM;
 
-		// Use proxy if trigger is inside Shadow DOM (Floating UI can't reach it directly)
-		const positionTarget = shadowProxy.getTarget(trigger);
-
 		try {
-			const { x, y, placement } = await computePosition(positionTarget, popconfirmEl, {
-				placement: position,
+			const { x, y, placement: resultPlacement } = await computePosition(trigger, popconfirmEl, {
+				placement: toFloatingPlacement(position),
 				middleware: [
 					offset(8),
 					flip(),
@@ -115,9 +182,15 @@
 				]
 			});
 
-			actualPosition = placement.split('-')[0] as Position;
+			// Map Floating UI physical placement back to logical position
+			const physicalPos = resultPlacement.split('-')[0];
+			const isRtl = document.dir === 'rtl';
+			if (physicalPos === 'left') actualPosition = isRtl ? 'end' : 'start';
+			else if (physicalPos === 'right') actualPosition = isRtl ? 'start' : 'end';
+			else actualPosition = physicalPos as Position;
 
 			Object.assign(popconfirmEl.style, {
+				position: 'absolute',
 				left: `${x}px`,
 				top: `${y}px`
 			});
@@ -157,7 +230,6 @@
 
 		return () => {
 			document.removeEventListener('click', handleClickOutside);
-			shadowProxy.destroy();
 		};
 	});
 

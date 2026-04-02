@@ -5,6 +5,122 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.1] - 2026-03-31
+
+### Fixed
+
+- **SidebarItem**: Submenu expansion state now reads from localStorage synchronously during initialization instead of waiting for `onMount` — eliminates the visible flash of collapsed-then-expanded submenus on page load
+- **Docs**: Page loader now waits for both fonts AND Svelte hydration before hiding — prevents FOUC during the ~1s gap between CSS render and component mount
+
+---
+
+## [1.6.0] - 2026-03-31
+
+Syncs with `@keenmate/pure-admin-core` v2.3.4 — command palette home screen & hotkeys, toast actions, split button rework, themeable border-radius.
+
+### Breaking Changes
+
+- **CommandPalette**: Item badges now render as standard `pa-badge pa-badge--{variant}` instead of custom `pa-command-palette__item-badge` class (follows core v2.3.3 change)
+
+### Added
+
+- **Alert/Button/Callout/Toast**: `themeColor` prop (1-9) — theme color slot variants using `pa-*--color-{N}` CSS classes. Supports `isOutline` on Alert and Button. Driven by CSS custom properties (`--pa-color-{N}`) defined by theme packages
+- **Toast**: `isFilled` prop — full-color background toasts with contrast text (`pa-toast--filled-{variant}` and `pa-toast--filled-color-{N}`). Works with both named variants and theme color slots
+- **Toast**: `actions` snippet — renders action buttons inside `pa-toast__actions` container with border-top separator
+- **Toast**: `maxWidth` prop — custom max-width per toast (e.g., `'50rem'`, `'500px'`) to prevent indefinite growth
+- **Toast**: `progressColor` prop — custom progress bar color via inline `color` style
+- **ToastContainer**: Width ratchet — container `min-width` increases to match the widest toast shown, preventing width shimmer. Resets when container becomes empty
+- **SplitButton**: `icon` snippet — renders inside `pa-btn__icon` on the main button, consistent with Button component pattern
+- **SplitButton**: `pa-btn-split__menu-inner` wrapper — required structural change from core v2.3.2 (border-radius moved to container)
+- **SplitButton**: Floating UI offset changed from 4px to 6px to match core demo
+- **SplitButton**: Chevron automatically points up (`fa-chevron-up`) for `placement="top-end"`
+- **SplitButtonItem**: `icon` snippet — renders inside `pa-btn-split__item-icon`
+- **SplitButtonItem**: `action` snippet — wraps item in `pa-btn-split__item-row` with inline action button alongside
+- **CommandPalette**: `pa-command-palette__input-wrapper` wraps input + context label
+- **CommandPalette**: `pa-command-palette__tokens` + `pa-command-palette__token-prompt` for multi-step wizard token display with rewind support
+- **CommandPalette**: Home screen — idle state shows categorized commands (with hotkey badges) and search contexts, clickable to enter each mode (new classes: `__home`, `__home-section`, `__home-heading`, `__shortcut`)
+- **CommandPalette**: `hotkey` prop on `Command` type — global Alt+key shortcuts open palette and enter command directly (e.g., Alt+D for /deploy)
+- **CommandPalette**: `code` prop on `StepOption` type — short codes displayed as `[code]` prefix in subtitles, exact-match filterable (e.g., `/go 24` finds Alerts)
+- **CommandPalette**: Global search now includes matching commands and contexts in results, with `_type`/`_command`/`_context` routing on selection
+- **CommandPalette**: `displayStyle` prop (`'inline' | 'tokens'`) — inline shows full path in input, tokens shows selections as badge chips with remove buttons above a clean input field
+- **CommandPalette**: `badgeVariant` on `SearchResult` type — badges render with colored `pa-badge--{variant}` classes
+- **CommandPalette**: Preview removed — `updatePreview()` now returns undefined (matches pure-admin v2.3.4 behavior)
+- **SplitButton**: `themeColor` prop for theme color slot button variants
+
+### Fixed
+
+- **Alert**: `themeColor` prop was emitting `pa-bg-color-N` (generic utility class) instead of `pa-alert--color-N` / `pa-alert--outline-color-N` (alert-specific color slot classes)
+- **Popconfirm**: Arrow CSS class mismatch — component emitted `pa-popconfirm--start`/`pa-popconfirm--end` but SCSS only defines `pa-popconfirm--left`/`pa-popconfirm--right`. Now maps logical `start`/`end` props to physical CSS classes internally
+- **SplitButton**: Menu not disappearing — `closeMenu()` now clears Floating UI inline styles and removes `--open` class before returning menu to original parent
+- **SplitButton**: Global instance tracking cleared on close to prevent stale references
+
+### Docs
+
+- **Buttons page**: Reordered sections to match pure-admin demo 1:1 (Theme Colors moved to #2, Split Buttons after Button Groups). Split Buttons section now mirrors all pure-admin subsections: primary examples, sizes, upward placement, custom icons, items with actions
+- **Toasts page**: Rewritten to match pure-admin demo — Progress Bar section now has Standard/Filled/Custom color subsections, Action Toasts use real action snippets, Theme Color Toasts show all 9 slots, CSS Classes Reference section added
+- **Command Palette page**: Search results now include `badgeVariant` for colored badge rendering
+
+---
+
+## [2.2.0] - 2026-03-25
+
+Syncs with `@keenmate/pure-admin-core` v2.1.1 — unified `__actions` naming.
+
+### Breaking Changes
+
+#### Card/TableCard/TableContainer: Snippet Renaming
+
+Unified header and footer action snippet names across all card-like components to match pure-admin-core's unified `pa-card__actions` class:
+
+- **Card**: `tools` → `headerActions`, `actions` → `footerActions`
+- **TableCard**: `actions` → `headerActions`
+- **TableContainer**: `actions` → `headerActions`
+
+The CSS class is now `pa-card__actions` in both header and footer (removed `pa-card__tools`).
+
+### Added
+
+- **Docs**: New `/table-multi-select` demo page — multi-select across different filters with persistent selection state, tri-state select-all checkbox, expandable selection details, SplitButton bulk actions (export/delete/clear)
+- **Docs**: New `/popconfirm` WebGrid live demo — real `@keenmate/web-grid` integration with inline toolbar delete buttons and shared Popconfirm anchored to Shadow DOM triggers
+
+### Fixed
+
+- **Popconfirm**: Shadow DOM flip — when the trigger is near the bottom of the viewport, the popconfirm now flips to `top` placement instead of blindly clamping to viewport (which caused the arrow to point at the wrong element)
+
+## [2.1.0] - 2026-03-20
+
+Syncs with `@keenmate/pure-admin-core` v2.1.0.
+
+### Breaking Changes
+
+#### Tooltip/Popover/Popconfirm: Physical → Logical Positions (RTL)
+
+All positioning props now use logical directions instead of physical. This completes the RTL migration started in v1.5.0 — tooltips, popovers, and popconfirms were the last holdouts using physical `left`/`right`.
+
+- **Tooltip**: `position` type changed from `'top' | 'right' | 'bottom' | 'left'` to `'top' | 'end' | 'bottom' | 'start'`
+- **Popconfirm**: `position` type changed from `'top' | 'bottom' | 'left' | 'right'` to `'top' | 'bottom' | 'start' | 'end'`
+- **Popover**: `placement` type changed from `'top' | 'right' | 'bottom' | 'left'` to `'top' | 'end' | 'bottom' | 'start'`
+
+Floating UI integration updated to map logical positions to physical internally, so positioning still works correctly in both LTR and RTL layouts.
+
+#### Badge: `pa-badge--ellipsis-left` → `pa-badge--ellipsis-start`
+
+The `isEllipsisStart` prop now correctly outputs `pa-badge--ellipsis-start` (was incorrectly outputting `pa-badge--ellipsis-left`).
+
+### Added
+
+- **SplitButton**: New split button component (`pa-btn-split`) — primary action button + dropdown toggle with menu items. Supports all button variants/sizes, outline style, bindable `isOpen` state, `placement` prop for upward menus, click-outside-to-close, and custom toggle icon snippet
+- **SplitButtonItem**: Menu item component for SplitButton with `isDanger` variant for destructive actions
+- **Tooltip**: Added `isKeyword` prop — dotted underline + help cursor for inline term explanations (`pa-tooltip--keyword`)
+- **DescTable**: Added `isValueEnd` and `isValueCenter` props for horizontal value alignment (`pa-desc-table--value-end`, `pa-desc-table--value-center`)
+- **Banded**: Added `isValueEnd` and `isValueCenter` props for horizontal value alignment (`pa-banded--value-end`, `pa-banded--value-center`)
+
+## [1.5.3] - 2026-03-16
+
+### Added
+
+- **Docs**: New `/pagers` demo page — standalone showcase for Pager and LoadMore components with interactive examples (alignment variants, first/last buttons, custom info text, paginated table, custom controls snippet, load-more states), plus full props reference tables
+
 ## [1.5.2] - 2026-03-14
 
 ### Added

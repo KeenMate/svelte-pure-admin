@@ -5,12 +5,16 @@
 	 * Documentation-style callouts with left border accent for tips, notes, warnings
 	 */
 
+	import type { ThemeColor } from '../types';
+
 	type CalloutVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
 	type CalloutSize = 'sm' | 'lg';
 
 	interface Props {
 		/** Callout variant */
 		variant?: CalloutVariant;
+		/** Theme color slot variant (1-9) — overrides variant with pa-callout--color-N */
+		themeColor?: ThemeColor;
 		/** Callout size */
 		size?: CalloutSize;
 		/** Callout heading text */
@@ -25,6 +29,7 @@
 
 	let {
 		variant = 'info',
+		themeColor,
 		size,
 		headingText,
 		class: className = '',
@@ -36,8 +41,12 @@
 	const classes = $derived(() => {
 		const base = ['pa-callout'];
 
-		// Variant
-		base.push(`pa-callout--${variant}`);
+		// Variant (theme color slot takes priority over named variant)
+		if (themeColor) {
+			base.push(`pa-callout--color-${themeColor}`);
+		} else {
+			base.push(`pa-callout--${variant}`);
+		}
 
 		// Size
 		if (size) base.push(`pa-callout--${size}`);

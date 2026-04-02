@@ -14,7 +14,6 @@
 	 * <SidebarItem href="/users" label="Users" active={$page.url.pathname.startsWith('/users')} />
 	 */
 
-	import { onMount } from 'svelte';
 
 	interface Props {
 		/** Item href (for links) */
@@ -49,7 +48,9 @@
 		shouldKeepIconSpace = true
 	}: Props = $props();
 
-	let isOpen = $state(false);
+	const submenuId = hasSubmenu ? `submenu-${labelText.toLowerCase().replace(/\s+/g, '-')}` : '';
+	const savedState = hasSubmenu && typeof localStorage !== 'undefined' ? localStorage.getItem(submenuId) : null;
+	let isOpen = $state(savedState === 'open');
 
 	// Build class string for item
 	const itemClasses = $derived(() => {
@@ -77,16 +78,6 @@
 		if (onclick) onclick(event);
 	}
 
-	// Restore submenu state from localStorage
-	onMount(() => {
-		if (hasSubmenu) {
-			const submenuId = labelText.toLowerCase().replace(/\s+/g, '-');
-			const savedState = localStorage.getItem(`submenu-${submenuId}`);
-			if (savedState === 'open') {
-				isOpen = true;
-			}
-		}
-	});
 
 	// Build submenu class
 	const submenuClasses = $derived(() => {

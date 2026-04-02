@@ -91,7 +91,7 @@
 		<!-- Full Card -->
 		<Column size="100" md="1-2">
 			<Card titleText="Complete Card">
-				{#snippet tools()}
+				{#snippet headerActions()}
 					<Button variant="secondary" size="xs">⚙</Button>
 				{/snippet}
 				<Paragraph>A complete card with header, body, and footer sections.</Paragraph>
@@ -115,7 +115,7 @@
 		<!-- Full three-part layout -->
 		<Column size="100" lg="1-2">
 			<Card titleText="User Management" descriptionText="Manage user accounts, permissions, and access controls for your organization">
-				{#snippet tools()}
+				{#snippet headerActions()}
 					<Button variant="primary" size="sm">Add User</Button>
 				{/snippet}
 				<Paragraph>Full three-part layout: title stays fixed, description fills available space and truncates with ellipsis, action button stays fixed on the right.</Paragraph>
@@ -125,7 +125,7 @@
 		<!-- Multiple action buttons -->
 		<Column size="100" lg="1-2">
 			<Card titleText="Reports" descriptionText="Generate and download analytics reports for your dashboard metrics">
-				{#snippet tools()}
+				{#snippet headerActions()}
 					<ButtonGroup>
 						<Button variant="secondary" size="sm">Export</Button>
 						<Button variant="primary" size="sm">Generate</Button>
@@ -145,7 +145,7 @@
 		<!-- Title + Actions only -->
 		<Column size="100" lg="1-2">
 			<Card titleText="Notifications">
-				{#snippet tools()}
+				{#snippet headerActions()}
 					<ButtonGroup>
 						<Button variant="secondary" size="sm">Mark All Read</Button>
 						<Button variant="outline-danger" size="sm">Clear</Button>
@@ -162,7 +162,7 @@
 	<Grid>
 		<Column size="100" lg="1-2">
 			<Card titleText="Analytics" descriptionText="This is a very long description that explains the analytics dashboard features including real-time metrics, historical data analysis, custom reports, and export functionality for enterprise users">
-				{#snippet tools()}
+				{#snippet headerActions()}
 					<Button variant="primary" size="sm">View</Button>
 				{/snippet}
 				<Paragraph>The description truncates with ellipsis when it exceeds the available space. Hover or resize to see the effect.</Paragraph>
@@ -171,7 +171,7 @@
 
 		<Column size="100" lg="1-2">
 			<Card titleText="Inventory" descriptionText="Track stock levels, manage suppliers, process purchase orders, and monitor warehouse capacity across multiple locations">
-				{#snippet tools()}
+				{#snippet headerActions()}
 					<ButtonGroup>
 						<Button variant="secondary" size="sm">Import</Button>
 						<Button variant="secondary" size="sm">Export</Button>
@@ -221,7 +221,7 @@
 	<Grid>
 		<Column size="100" lg="1-2">
 			<Card headerWrap titleText="Project Overview" descriptionText="This card uses the wrap modifier so the description appears on its own line below the title and actions. This is useful when the full description text needs to be visible.">
-				{#snippet tools()}
+				{#snippet headerActions()}
 					<ButtonGroup>
 						<Button variant="secondary" size="sm">Edit</Button>
 						<Button variant="primary" size="sm">View</Button>
@@ -233,7 +233,7 @@
 
 		<Column size="100" lg="1-2">
 			<Card headerWrap titleText="Documentation" descriptionText="Complete API reference and integration guides for developers. Includes code samples, authentication flows, and best practices for building with our platform.">
-				{#snippet tools()}
+				{#snippet headerActions()}
 					<Button variant="primary" size="sm">Open Docs</Button>
 				{/snippet}
 				<Paragraph>The wrap modifier is ideal for mobile layouts or when description content is essential to display in full.</Paragraph>
@@ -484,7 +484,7 @@
 		<!-- Collapsible Card -->
 		<Column size="100" md="1-2">
 			<Card titleText="Collapsible Card">
-				{#snippet tools()}
+				{#snippet headerActions()}
 					<Button variant="secondary" size="xs" onclick={toggleCard}>−</Button>
 				{/snippet}
 				<Paragraph>
@@ -526,7 +526,7 @@
 		<Column size="100" md="1-2">
 			<Card titleText="Analytics Dashboard Overview">
 				{#snippet titleIcon()}📊{/snippet}
-				{#snippet tools()}
+				{#snippet headerActions()}
 					<Button variant="secondary" size="xs" titleText="Refresh">↻</Button>
 					<Button variant="secondary" size="xs" titleText="Settings">⚙</Button>
 					<Button variant="secondary" size="xs" titleText="More options">⋯</Button>
@@ -544,7 +544,7 @@
 				titleText="This is a Very Long Card Title That Should Be Truncated With Ellipsis When It Exceeds Available Space"
 			>
 				{#snippet titleIcon()}🔒{/snippet}
-				{#snippet tools()}
+				{#snippet headerActions()}
 					<Button variant="secondary" size="xs" titleText="Edit">✏️</Button>
 					<Button variant="secondary" size="xs" titleText="Delete">🗑️</Button>
 					<Button variant="secondary" size="xs" titleText="Export">⬇️</Button>
@@ -561,7 +561,7 @@
 		<Column size="100" md="1-2">
 			<Card titleText="Project Management">
 				{#snippet titleIcon()}💼{/snippet}
-				{#snippet tools()}
+				{#snippet headerActions()}
 					<Button variant="primary" size="xs">+ Add</Button>
 					<Button variant="secondary" size="xs" titleText="Filter">🔍</Button>
 				{/snippet}
@@ -573,7 +573,7 @@
 		<Column size="100" md="1-2">
 			<Card titleText="Revenue Metrics and KPI Tracking System">
 				{#snippet titleIcon()}📈{/snippet}
-				{#snippet tools()}
+				{#snippet headerActions()}
 					<Button variant="secondary" size="xs" titleText="Maximize">⛶</Button>
 				{/snippet}
 				<Paragraph>Even with fewer tools, the title still truncates appropriately to maintain layout.</Paragraph>
@@ -588,7 +588,7 @@
 		<!-- Table Card -->
 		<Column size="100" lg="1-2">
 			<Card titleText="Recent Orders" hasPadding={false}>
-				{#snippet tools()}
+				{#snippet headerActions()}
 					<Button variant="secondary" size="sm">View All</Button>
 				{/snippet}
 				<Table>

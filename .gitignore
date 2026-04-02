@@ -20,6 +20,11 @@ packages/svelte-pure-admin/README.md
 .svelte-kit/
 package/
 
+# Theme config and downloaded themes
+.themes.json
+themes/
+docs/static/themes/
+
 # Environment variables
 .env
 .env.local
