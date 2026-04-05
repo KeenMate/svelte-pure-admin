@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- **Makefile**: Replaced Docker with Podman for all container commands (`podman-build`, `podman-run`, `podman-stop`, etc.)
+- **Dockerfile**: Fixed build context — now builds from repo root instead of parent directory; added missing `COPY` for `ai/` and `README.md`
+- **Docs**: `@keenmate/web-grid` dependency changed from local `file:` link to npm registry (`^1.0.4`) — fixes container builds where the sibling repo is unavailable
+- **Docs**: Added `ssr.noExternal` for `@keenmate/web-grid` in Vite config to resolve SSR build
+
+---
+
 ## [1.6.1] - 2026-03-31
 
 ### Fixed
