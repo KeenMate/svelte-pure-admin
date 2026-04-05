@@ -1,6 +1,6 @@
 # Makefile for @keenmate/svelte-pure-admin Monorepo
 
-.PHONY: help setup install dev dev-lib build build-docs build-all package check check-lib check-docs publish publish-dry clean sync-snippets sync-snippets-update verify docker-build docker-run docker-stop docker-restart docker-logs docker-clean docker-deploy docker-push
+.PHONY: help setup install dev dev-lib build build-docs build-all package check check-lib check-docs publish publish-dry clean sync-snippets sync-snippets-update verify podman-build podman-run podman-stop podman-restart podman-logs podman-clean podman-deploy podman-push
 
 # === Shell Configuration (cross-platform) ===
 # Use sh on Unix, cmd on Windows
@@ -55,14 +55,14 @@ help:
 	@echo "    make publish-dry TAG=rc   - Dry run publish"
 	@echo ""
 	@echo "  Docker (docs site):"
-	@echo "    make docker-build         - Build Docker image"
-	@echo "    make docker-run           - Run Docker container"
-	@echo "    make docker-stop          - Stop Docker container"
-	@echo "    make docker-restart       - Restart Docker container"
-	@echo "    make docker-logs          - Show Docker container logs"
-	@echo "    make docker-clean         - Remove Docker container and image"
-	@echo "    make docker-deploy        - Build and run Docker container"
-	@echo "    make docker-push          - Tag and push image to registry"
+	@echo "    make podman-build         - Build Podman image"
+	@echo "    make podman-run           - Run Podman container"
+	@echo "    make podman-stop          - Stop Podman container"
+	@echo "    make podman-restart       - Restart Podman container"
+	@echo "    make podman-logs          - Show Podman container logs"
+	@echo "    make podman-clean         - Remove Podman container and image"
+	@echo "    make podman-deploy        - Build and run Podman container"
+	@echo "    make podman-push          - Tag and push image to registry"
 	@echo ""
 
 # Initial project setup
@@ -144,61 +144,60 @@ else
 endif
 	@echo "Clean complete!"
 
-# === Docker Commands (for docs site) ===
+# === Podman Commands (for docs site) ===
 
-docker-build:
-	@echo "Building Docker image: $(DOCKER_IMAGE_NAME):$(DOCKER_TAG)"
-	@echo "Note: Building from parent directory to include pure-admin dependencies"
-	cd .. && docker build -f svelte-pure-admin/Dockerfile -t $(DOCKER_IMAGE_NAME):$(DOCKER_TAG) .
-	@echo "Docker image built successfully!"
+podman-build:
+	@echo "Building Podman image: $(DOCKER_IMAGE_NAME):$(DOCKER_TAG)"
+	podman build -t $(DOCKER_IMAGE_NAME):$(DOCKER_TAG) .
+	@echo "Podman image built successfully!"
 
-docker-run:
-	@echo "Starting Docker container on port $(DOCKER_PORT)"
-	@if [ $$(docker ps -q -f name=$(DOCKER_CONTAINER_NAME)) ]; then \
+podman-run:
+	@echo "Starting Podman container on port $(DOCKER_PORT)"
+	@if [ $$(podman ps -q -f name=$(DOCKER_CONTAINER_NAME)) ]; then \
 		echo "Container is already running at http://localhost:$(DOCKER_PORT)"; \
-	elif [ $$(docker ps -aq -f name=$(DOCKER_CONTAINER_NAME)) ]; then \
+	elif [ $$(podman ps -aq -f name=$(DOCKER_CONTAINER_NAME)) ]; then \
 		echo "Starting existing container"; \
-		docker start $(DOCKER_CONTAINER_NAME); \
+		podman start $(DOCKER_CONTAINER_NAME); \
 		echo "Application is running at: http://localhost:$(DOCKER_PORT)"; \
 	else \
 		echo "Creating and starting new container"; \
-		docker run -d --name $(DOCKER_CONTAINER_NAME) -p $(DOCKER_PORT):80 $(DOCKER_IMAGE_NAME):$(DOCKER_TAG); \
+		podman run -d --name $(DOCKER_CONTAINER_NAME) -p $(DOCKER_PORT):80 $(DOCKER_IMAGE_NAME):$(DOCKER_TAG); \
 		echo "Application is running at: http://localhost:$(DOCKER_PORT)"; \
 	fi
 
-docker-stop:
-	@echo "Stopping Docker container"
-	@if [ $$(docker ps -q -f name=$(DOCKER_CONTAINER_NAME)) ]; then \
-		docker stop $(DOCKER_CONTAINER_NAME); \
+podman-stop:
+	@echo "Stopping Podman container"
+	@if [ $$(podman ps -q -f name=$(DOCKER_CONTAINER_NAME)) ]; then \
+		podman stop $(DOCKER_CONTAINER_NAME); \
 		echo "Container stopped successfully"; \
 	else \
 		echo "Container is not running"; \
 	fi
 
-docker-restart: docker-stop docker-run
+podman-restart: podman-stop podman-run
 
-docker-logs:
-	@if [ $$(docker ps -aq -f name=$(DOCKER_CONTAINER_NAME)) ]; then \
-		docker logs -f $(DOCKER_CONTAINER_NAME); \
+podman-logs:
+	@if [ $$(podman ps -aq -f name=$(DOCKER_CONTAINER_NAME)) ]; then \
+		podman logs -f $(DOCKER_CONTAINER_NAME); \
 	else \
 		echo "Container does not exist"; \
 	fi
 
-docker-clean: docker-stop
-	@echo "Cleaning up Docker resources"
-	@if [ $$(docker ps -aq -f name=$(DOCKER_CONTAINER_NAME)) ]; then \
-		docker rm $(DOCKER_CONTAINER_NAME); \
+podman-clean: podman-stop
+	@echo "Cleaning up Podman resources"
+	@if [ $$(podman ps -aq -f name=$(DOCKER_CONTAINER_NAME)) ]; then \
+		podman rm $(DOCKER_CONTAINER_NAME); \
 		echo "Container removed"; \
 	fi
-	@if [ $$(docker images -q $(DOCKER_IMAGE_NAME):$(DOCKER_TAG)) ]; then \
-		docker rmi $(DOCKER_IMAGE_NAME):$(DOCKER_TAG); \
+	@if [ $$(podman images -q $(DOCKER_IMAGE_NAME):$(DOCKER_TAG)) ]; then \
+		podman rmi $(DOCKER_IMAGE_NAME):$(DOCKER_TAG); \
 		echo "Image removed"; \
 	fi
 
-docker-deploy: docker-build docker-run
+podman-deploy: podman-build podman-run
 
-docker-push:
+podman-push:
 	@echo "Tagging and pushing image to $(DOCKER_REGISTRY)"
-	docker tag $(DOCKER_IMAGE_NAME):$(DOCKER_TAG) $(DOCKER_REGISTRY)/$(DOCKER_IMAGE_NAME):$(DOCKER_TAG)
-	docker push $(DOCKER_REGISTRY)/$(DOCKER_IMAGE_NAME):$(DOCKER_TAG)
+	podman tag $(DOCKER_IMAGE_NAME):$(DOCKER_TAG) $(DOCKER_REGISTRY)/$(DOCKER_IMAGE_NAME):$(DOCKER_TAG)
+	podman push $(DOCKER_REGISTRY)/$(DOCKER_IMAGE_NAME):$(DOCKER_TAG)
 	@echo "Image pushed to $(DOCKER_REGISTRY)/$(DOCKER_IMAGE_NAME):$(DOCKER_TAG)"

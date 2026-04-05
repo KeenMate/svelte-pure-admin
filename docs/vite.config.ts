@@ -8,5 +8,8 @@ export default defineConfig({
 			// Allow serving files from the library package
 			allow: ['..']
 		}
+	},
+	ssr: {
+		noExternal: ['@keenmate/web-grid']
 	}
 });

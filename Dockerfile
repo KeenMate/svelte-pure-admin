@@ -28,8 +28,10 @@ RUN apk add --no-cache curl unzip && \
     rm /tmp/themes.zip
 
 # Copy source files
+COPY ai/ ./ai/
 COPY packages/ ./packages/
 COPY docs/ ./docs/
+COPY README.md ./
 
 # Copy themes runs via the script (picks up themes/ directory)
 RUN node docs/scripts/copy-themes.js
