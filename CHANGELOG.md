@@ -7,8 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+---
+
+## [1.6.2] - 2026-04-19
+
+### Added
+
+- **Timeline**: `alignment?: 'start' | 'end'` prop — forces all items to one side (`pa-timeline--start` / `pa-timeline--end`) instead of zig-zagging
+- **Timeline**: `shouldKeepLayout?: boolean` prop — preserves alternating layout on mobile (`pa-timeline--keep-layout`) instead of collapsing to single column
+
 ### Changed
 
+- **Docs: Timeline Block page**: Rewritten to mirror pure-admin's `/timeline/block` 1:1 — added working Load More (reactive `$state`), working Virtual Scroll with `IntersectionObserver` + proper `pa-timeline__scroll-container`/`__loader`, Layout Modifiers section (Start/End/Keep Layout), and Combination examples (Start+Keep, End+Keep)
+- **Docs: Dashboard (`/`)**: Replaced `ActivityFeed`/`ActivityFeedItem` in "Recent Activity" with `Timeline variant="simple"` using color variants + filled markers — the orphan `pa-activity-feed` classes don't exist in pure-admin-core
+- **Docs: Dashboard (`/`)**: Replaced `MetricList`/`MetricListItem` in "Traffic Sources" and "Top Products" with compact `Table` inside `Card hasPadding={false}` — matches pure-admin's dashboard pattern; the orphan `pa-metric-list` classes don't exist in pure-admin-core
+- **Docs: Dashboard (`/`)**: Replaced `StatusList`/`StatusListItem` in "System Status" with `List`/`ListItem` + inline `Badge` inside `Card hasPadding={false}` — matches pure-admin's `pa-list` + badge pattern; the orphan `pa-status-list` classes don't exist in pure-admin-core
+- **Docs: Dashboard (`/`)**: Replaced `QuickActions` in "Quick Actions" with `ButtonGroup vertical` — matches pure-admin's `pa-btn-group pa-btn-group--vertical` pattern; the orphan `pa-quick-actions` class doesn't exist in pure-admin-core
 - **Makefile**: Replaced Docker with Podman for all container commands (`podman-build`, `podman-run`, `podman-stop`, etc.)
 - **Dockerfile**: Fixed build context — now builds from repo root instead of parent directory; added missing `COPY` for `ai/` and `README.md`
 - **Docs**: `@keenmate/web-grid` dependency changed from local `file:` link to npm registry (`^1.0.4`) — fixes container builds where the sibling repo is unavailable

@@ -21,6 +21,10 @@
 		// TIMELINE CONFIGURATION
 		/** Timeline variant */
 		variant?: TimelineVariant;
+		/** Force all items to start or end side (alternating variant). When omitted, items zig-zag. */
+		alignment?: 'start' | 'end';
+		/** Keep desktop layout on mobile (alternating variant) — disables single-column collapse below the breakpoint */
+		shouldKeepLayout?: boolean;
 
 		// MEMBER MAPPINGS (property names in data objects)
 		/** Property name for color variant (e.g., 'variant', 'status', 'type') */
@@ -100,6 +104,8 @@
 
 		// Timeline config
 		variant = 'simple',
+		alignment,
+		shouldKeepLayout = false,
 
 		// Member mappings
 		variantMember = 'variant',
@@ -227,6 +233,12 @@
 
 		// Variant (always add variant class)
 		base.push(`pa-timeline--${variant}`);
+
+		// Alignment modifier (alternating variant only)
+		if (alignment) base.push(`pa-timeline--${alignment}`);
+
+		// Keep-layout modifier (alternating variant only)
+		if (shouldKeepLayout) base.push('pa-timeline--keep-layout');
 
 		// Custom classes
 		if (className) base.push(className);

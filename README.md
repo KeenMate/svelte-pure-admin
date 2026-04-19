@@ -4,17 +4,16 @@ Svelte 5 component library for Pure Admin CSS framework — 100+ ready-to-use co
 
 **Ships with AI reference files** — 14 plain-text docs in `ai/` optimized for LLM-assisted development (Claude, ChatGPT, Copilot). Point your AI assistant at `node_modules/@keenmate/svelte-pure-admin/ai/INDEX.txt` for instant component knowledge.
 
+## What's New in 1.6.2
+
+- **Timeline layout modifiers** — `alignment="start" | "end"` forces all items to one side; `shouldKeepLayout` preserves the alternating zig-zag on mobile instead of collapsing to a single column
+- **Docs: Timeline Block page rewritten** — working Load More (reactive `$state`), working Virtual Scroll with `IntersectionObserver`, plus Start/End/Keep-Layout and combination examples — mirrors pure-admin's `/timeline/block` 1:1
+- **Docs: Dashboard cleanup** — dropped orphan components (`ActivityFeed`, `MetricList`, `StatusList`, `QuickActions`) whose CSS classes weren't in pure-admin-core; the dashboard now uses `Timeline` for Recent Activity, compact `Table` for Traffic Sources / Top Products, `List` + `Badge` for System Status, and `ButtonGroup vertical` for Quick Actions
+
 ## What's New in 1.6.1
 
 - **No more sidebar flash** — Submenu expansion state loads synchronously from localStorage, eliminating the collapsed-then-expanded flash on page load
 - **Page loader waits for hydration** — Spinner overlay stays visible until both fonts and Svelte components are ready (documented pattern for consumer apps)
-
-## What's New in 1.6.0
-
-- **Command palette home screen & hotkeys** — Opens with categorized commands and search contexts. `hotkey` prop on commands enables Alt+key shortcuts (e.g., Alt+D for /deploy). Global search returns matching commands and contexts alongside data. `code` on step options for quick `/go 24` navigation. Inline/tokens display style prop.
-- **Toast actions, maxWidth, progressColor** — `actions` snippet for action buttons in toasts. `maxWidth` prop per toast. `progressColor` for custom progress bar colors. Container width ratchet prevents shimmer.
-- **Split button rework** — `icon` snippet on main button. `__menu-inner` wrapper (core v2.3.2). Menu items with `icon` and `action` snippets for inline action buttons. Chevron points up for `top-end` placement.
-- **Command palette badges** — Item badges now use standard `pa-badge pa-badge--{variant}` with `badgeVariant` on search results.
 
 ## Installation
 
@@ -182,7 +181,7 @@ npm install @keenmate/svelte-pure-admin @keenmate/pure-admin-core
 | `DefinitionList` | Definition list (dt/dd) |
 | `DetailView` | Detail panel wrapper with overlay/inline split-view modes |
 | `DetailPanel` | Detail panel content shell (header, tabs, body, footer) |
-| `Timeline` | Timeline container with start/end positioning |
+| `Timeline` | Timeline container — simple/alternating/feed variants, `alignment` (start/end), `shouldKeepLayout` |
 | `TimelineItem` | Timeline entry with avatar, time, content |
 | `Code` | Inline code |
 | `CodeBlock` | Code block with optional compact mode |

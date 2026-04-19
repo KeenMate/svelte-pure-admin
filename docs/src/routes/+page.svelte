@@ -8,13 +8,11 @@
 		Table,
 		TableResponsive,
 		Stat,
-		MetricList,
-		MetricListItem,
-		StatusList,
-		StatusListItem,
-		ActivityFeed,
-		ActivityFeedItem,
-		QuickActions,
+		List,
+		ListItem,
+		Timeline,
+		TimelineItem,
+		ButtonGroup,
 		Paragraph
 	} from '@keenmate/svelte-pure-admin';
 	import ConfigDisplay from './ConfigDisplay.svelte';
@@ -125,14 +123,16 @@
 		</Card>
 	</Column>
 	<Column size="100" md="1-3">
-		<Card titleText="Traffic Sources">
-			<MetricList>
-				<MetricListItem labelText="Organic Search" valueText="42.3%" />
-				<MetricListItem labelText="Direct" valueText="28.7%" />
-				<MetricListItem labelText="Social Media" valueText="15.8%" />
-				<MetricListItem labelText="Referral" valueText="9.4%" />
-				<MetricListItem labelText="Email" valueText="3.8%" />
-			</MetricList>
+		<Card titleText="Traffic Sources" hasPadding={false}>
+			<Table isCompact>
+				<tbody>
+					<tr><td>Organic Search</td><td class="text-end"><strong>42.3%</strong></td></tr>
+					<tr><td>Direct</td><td class="text-end"><strong>28.7%</strong></td></tr>
+					<tr><td>Social Media</td><td class="text-end"><strong>15.8%</strong></td></tr>
+					<tr><td>Referral</td><td class="text-end"><strong>9.4%</strong></td></tr>
+					<tr><td>Email</td><td class="text-end"><strong>3.8%</strong></td></tr>
+				</tbody>
+			</Table>
 		</Card>
 	</Column>
 </Grid>
@@ -141,28 +141,23 @@
 <Grid>
 	<Column size="100" md="50">
 		<Card titleText="Recent Activity">
-			<ActivityFeed>
-				<ActivityFeedItem timeText="2 minutes ago">
-					{#snippet icon()}👤{/snippet}
+			<Timeline variant="simple">
+				<TimelineItem variant="primary" isFilled timeText="2 minutes ago">
 					New user registration: <strong>john.smith@example.com</strong>
-				</ActivityFeedItem>
-				<ActivityFeedItem timeText="8 minutes ago">
-					{#snippet icon()}🛒{/snippet}
-					Order #4892 completed - <strong>$234.50</strong>
-				</ActivityFeedItem>
-				<ActivityFeedItem timeText="15 minutes ago">
-					{#snippet icon()}⚠{/snippet}
+				</TimelineItem>
+				<TimelineItem variant="success" isFilled timeText="8 minutes ago">
+					Order #4892 completed — <strong>$234.50</strong>
+				</TimelineItem>
+				<TimelineItem variant="warning" isFilled timeText="15 minutes ago">
 					Low stock alert: <strong>Product A-123</strong>
-				</ActivityFeedItem>
-				<ActivityFeedItem timeText="23 minutes ago">
-					{#snippet icon()}💳{/snippet}
+				</TimelineItem>
+				<TimelineItem variant="success" timeText="23 minutes ago">
 					Payment received: <strong>Invoice #2847</strong>
-				</ActivityFeedItem>
-				<ActivityFeedItem timeText="1 hour ago">
-					{#snippet icon()}📊{/snippet}
+				</TimelineItem>
+				<TimelineItem variant="info" timeText="1 hour ago">
 					Monthly report generated
-				</ActivityFeedItem>
-			</ActivityFeed>
+				</TimelineItem>
+			</Timeline>
 			{#snippet footer()}
 				<Button variant="secondary" size="sm">View All Activity</Button>
 			{/snippet}
@@ -224,33 +219,55 @@
 <!-- Bottom Row - Performance Metrics -->
 <Grid>
 	<Column size="100" md="1-3">
-		<Card titleText="Top Products">
-			<MetricList>
-				<MetricListItem labelText="Product Alpha" valueText="$24,532" />
-				<MetricListItem labelText="Product Beta" valueText="$18,940" />
-				<MetricListItem labelText="Product Gamma" valueText="$15,677" />
-				<MetricListItem labelText="Product Delta" valueText="$12,234" />
-			</MetricList>
+		<Card titleText="Top Products" hasPadding={false}>
+			<Table isCompact>
+				<tbody>
+					<tr><td>Product Alpha</td><td class="text-end"><strong>$24,532</strong></td></tr>
+					<tr><td>Product Beta</td><td class="text-end"><strong>$18,940</strong></td></tr>
+					<tr><td>Product Gamma</td><td class="text-end"><strong>$15,677</strong></td></tr>
+					<tr><td>Product Delta</td><td class="text-end"><strong>$12,234</strong></td></tr>
+				</tbody>
+			</Table>
 		</Card>
 	</Column>
 	<Column size="100" md="1-3">
-		<Card titleText="System Status">
-			<StatusList>
-				<StatusListItem labelText="API Services" valueText="Operational" status="success" />
-				<StatusListItem labelText="Database" valueText="Operational" status="success" />
-				<StatusListItem labelText="Payment Gateway" valueText="Degraded" status="warning" />
-				<StatusListItem labelText="Email Service" valueText="Operational" status="success" />
-			</StatusList>
+		<Card titleText="System Status" hasPadding={false}>
+			<List>
+				<ListItem>
+					<div class="pa-list__content">
+						<div class="pa-list__title">API Services</div>
+					</div>
+					<Badge variant="success">Operational</Badge>
+				</ListItem>
+				<ListItem>
+					<div class="pa-list__content">
+						<div class="pa-list__title">Database</div>
+					</div>
+					<Badge variant="success">Operational</Badge>
+				</ListItem>
+				<ListItem>
+					<div class="pa-list__content">
+						<div class="pa-list__title">Payment Gateway</div>
+					</div>
+					<Badge variant="warning">Degraded</Badge>
+				</ListItem>
+				<ListItem>
+					<div class="pa-list__content">
+						<div class="pa-list__title">Email Service</div>
+					</div>
+					<Badge variant="success">Operational</Badge>
+				</ListItem>
+			</List>
 		</Card>
 	</Column>
 	<Column size="100" md="1-3">
 		<Card titleText="Quick Actions">
-			<QuickActions>
+			<ButtonGroup vertical>
 				<Button variant="primary" isBlock>New Order</Button>
 				<Button variant="secondary" isBlock>Add Customer</Button>
 				<Button variant="secondary" isBlock>Generate Report</Button>
 				<Button variant="secondary" isBlock>Export Data</Button>
-			</QuickActions>
+			</ButtonGroup>
 		</Card>
 	</Column>
 </Grid>

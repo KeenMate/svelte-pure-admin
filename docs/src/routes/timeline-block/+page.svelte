@@ -1,160 +1,352 @@
 <script lang="ts">
-			import { Heading, Paragraph, Card, Timeline, TimelineItem, Button, BasicList } from '@keenmate/svelte-pure-admin';
+	import { onMount, onDestroy } from 'svelte';
+	import {
+		Heading,
+		Paragraph,
+		Card,
+		Timeline,
+		TimelineItem,
+		Button,
+		BasicList,
+		Grid,
+		Column,
+		Spinner
+	} from '@keenmate/svelte-pure-admin';
+
+	type BlockItem = { date: string; iconText: string; title: string; content: string };
+
+	// ===== Load More =====
+	const loadMoreInitial: BlockItem[] = [
+		{ date: 'Jan 1', iconText: '🎉', title: 'New Year Launch', content: 'Started the year with ambitious goals and fresh energy.' },
+		{ date: 'Jan 15', iconText: '💡', title: 'Innovation Workshop', content: 'Team brainstorming session generated 20+ new feature ideas.' },
+		{ date: 'Feb 1', iconText: '🔧', title: 'Infrastructure Update', content: 'Migrated to containerized deployment for better scalability.' }
+	];
+
+	const loadMorePages: BlockItem[][] = [
+		[
+			{ date: 'Feb 14', iconText: '💝', title: 'Valentine Release', content: "Launched special themed UI update for Valentine's Day." },
+			{ date: 'Mar 1', iconText: '🌱', title: 'Spring Refresh', content: 'Major UI refresh with new color palette and design system.' },
+			{ date: 'Mar 15', iconText: '🚀', title: 'Performance Boost', content: 'Reduced page load time by 40% through optimization efforts.' }
+		],
+		[
+			{ date: 'Apr 1', iconText: '🎭', title: 'April Update', content: 'Added new customization options and theme variants.' },
+			{ date: 'Apr 22', iconText: '🌍', title: 'Earth Day', content: 'Implemented green hosting and carbon-neutral deployment.' },
+			{ date: 'May 1', iconText: '🎯', title: 'Milestone Reached', content: 'Achieved 10,000 active users and celebrated with the team.' }
+		],
+		[
+			{ date: 'Jun 1', iconText: '☀️', title: 'Summer Features', content: 'Released beach-themed components and seasonal updates.' },
+			{ date: 'End', iconText: '✨', title: 'No More Entries', content: 'You have reached the end of the timeline.' }
+		]
+	];
+
+	let loadMoreItems = $state<BlockItem[]>([...loadMoreInitial]);
+	let loadMorePage = $state(0);
+	const isLoadMoreDone = $derived(loadMorePage >= loadMorePages.length);
+
+	function handleLoadMore() {
+		if (isLoadMoreDone) {
+			alert('No more entries to load!');
+			return;
+		}
+		loadMoreItems = [...loadMoreItems, ...loadMorePages[loadMorePage]];
+		loadMorePage++;
+	}
+
+	// ===== Virtual Scroll =====
+	const virtualScrollInitial: BlockItem[] = [
+		{ date: 'Week 1', iconText: '📝', title: 'Requirements Gathering', content: 'Met with stakeholders to understand project requirements and constraints.' },
+		{ date: 'Week 2', iconText: '🎨', title: 'Design Phase', content: 'Created wireframes and mockups for all major application screens.' },
+		{ date: 'Week 3', iconText: '⚡', title: 'Prototype Development', content: 'Built interactive prototype to validate design decisions.' }
+	];
+
+	const virtualScrollPages: BlockItem[][] = [
+		[
+			{ date: 'Week 4', iconText: '🔍', title: 'User Testing', content: 'Conducted usability tests with focus groups.' },
+			{ date: 'Week 5', iconText: '📊', title: 'Analytics Setup', content: 'Implemented comprehensive analytics and tracking.' },
+			{ date: 'Week 6', iconText: '🛠️', title: 'Bug Fixes', content: 'Resolved critical issues found during testing phase.' }
+		],
+		[
+			{ date: 'Week 7', iconText: '🎓', title: 'Training', content: 'Conducted team training on new features and systems.' },
+			{ date: 'Week 8', iconText: '📱', title: 'Mobile Optimization', content: 'Optimized responsive design for mobile devices.' },
+			{ date: 'Week 9', iconText: '🔒', title: 'Security Audit', content: 'Completed security review and penetration testing.' }
+		],
+		[
+			{ date: 'Week 10', iconText: '🚢', title: 'Deployment', content: 'Successfully deployed to production environment.' },
+			{ date: 'Week 11', iconText: '📈', title: 'Monitoring', content: 'Set up monitoring and alerting systems.' },
+			{ date: 'Week 12', iconText: '🎊', title: 'Project Complete', content: 'Celebrated successful project completion!' }
+		]
+	];
+
+	let virtualScrollItems = $state<BlockItem[]>([...virtualScrollInitial]);
+	let virtualScrollPage = $state(0);
+	let isVirtualScrollLoading = $state(false);
+	const isVirtualScrollDone = $derived(virtualScrollPage >= virtualScrollPages.length);
+
+	let scrollContainerEl = $state<HTMLDivElement | undefined>(undefined);
+	let loaderEl = $state<HTMLDivElement | undefined>(undefined);
+	let observer: IntersectionObserver | undefined;
+
+	function loadVirtualScrollPage() {
+		if (isVirtualScrollDone || isVirtualScrollLoading) return;
+		isVirtualScrollLoading = true;
+		setTimeout(() => {
+			virtualScrollItems = [...virtualScrollItems, ...virtualScrollPages[virtualScrollPage]];
+			virtualScrollPage++;
+			isVirtualScrollLoading = false;
+			if (virtualScrollPage >= virtualScrollPages.length) observer?.disconnect();
+		}, 800);
+	}
+
+	onMount(() => {
+		if (!scrollContainerEl || !loaderEl) return;
+		observer = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) loadVirtualScrollPage();
+				}
+			},
+			{ root: scrollContainerEl, rootMargin: '50px', threshold: 0.1 }
+		);
+		observer.observe(loaderEl);
+	});
+
+	onDestroy(() => observer?.disconnect());
+
+	// ===== Static layout-modifier data =====
+	const modifierItems: BlockItem[] = [
+		{ date: 'Jan', iconText: '📝', title: 'Planning', content: 'Initial project planning phase.' },
+		{ date: 'Feb', iconText: '🚀', title: 'Launch', content: 'Product launch and rollout.' },
+		{ date: 'Mar', iconText: '✅', title: 'Complete', content: 'Project successfully delivered.' }
+	];
+
+	const combinationItems: BlockItem[] = [
+		{ date: 'Q1', iconText: '📊', title: 'Analysis', content: 'Market research and competitive analysis completed.' },
+		{ date: 'Q2', iconText: '🎨', title: 'Design', content: 'UI/UX design and prototyping phase.' },
+		{ date: 'Q3', iconText: '💻', title: 'Development', content: 'Implementation and testing phase.' }
+	];
 </script>
 
-<!-- Centered Alternating Layout -->
-<Card titleText="Centered Alternating Layout">
+<!-- Variant 1: Basic alternating layouts side-by-side -->
+<Grid>
+	<Column size="100" md="50">
+		<Card titleText="Timeline Block" subtitleText="Centered alternating layout">
+			<Timeline variant="alternating">
+				<TimelineItem date="15 Dec" iconText="🏠">
+					<Heading level={4}>Project Started</Heading>
+					<Paragraph>New project "Pure Admin Dashboard" has been initialized with base configuration and team setup.</Paragraph>
+				</TimelineItem>
+				<TimelineItem date="22 Oct" iconText="🎁">
+					<Heading level={4}>First Release</Heading>
+					<Paragraph>Version 1.0 released to production with core features and documentation.</Paragraph>
+				</TimelineItem>
+				<TimelineItem date="10 Jul" iconText="👤">
+					<Heading level={4}>Team Expansion</Heading>
+					<Paragraph>Added three new developers to the team to accelerate development.</Paragraph>
+				</TimelineItem>
+				<TimelineItem date="18 May" iconText="🏃">
+					<Heading level={4}>Sprint Milestone</Heading>
+					<Paragraph>Completed major refactoring sprint, improving code quality and performance.</Paragraph>
+				</TimelineItem>
+				<TimelineItem date="10 Feb" iconText="⚙️">
+					<Heading level={4}>System Upgrade</Heading>
+					<Paragraph>Migrated to new infrastructure with improved scalability and reliability.</Paragraph>
+				</TimelineItem>
+				<TimelineItem date="01 Jan" iconText="🏆">
+					<Heading level={4}>Award Recognition</Heading>
+					<Paragraph>Received "Best Admin Framework" award from the developer community.</Paragraph>
+				</TimelineItem>
+			</Timeline>
+		</Card>
+	</Column>
 
+	<Column size="100" md="50">
+		<Card titleText="Timeline Block" subtitleText="Another example with different content">
+			<Timeline variant="alternating">
+				<TimelineItem date="Q1 2024" iconText="📋">
+					<Heading level={4}>Planning Phase</Heading>
+					<Paragraph>Strategic planning and goal setting for the year ahead.</Paragraph>
+				</TimelineItem>
+				<TimelineItem date="Q2 2024" iconText="🚀">
+					<Heading level={4}>Launch Preparation</Heading>
+					<Paragraph>Final testing and deployment preparation phase.</Paragraph>
+				</TimelineItem>
+				<TimelineItem date="Q3 2024" iconText="📈">
+					<Heading level={4}>Growth Period</Heading>
+					<Paragraph>User acquisition and feature expansion phase.</Paragraph>
+				</TimelineItem>
+				<TimelineItem date="Q4 2024" iconText="🎯">
+					<Heading level={4}>Optimization</Heading>
+					<Paragraph>Performance improvements and user feedback implementation.</Paragraph>
+				</TimelineItem>
+			</Timeline>
+		</Card>
+	</Column>
+</Grid>
+
+<!-- Variant 2: Load More -->
+<Card titleText="Timeline Block - Load More" subtitleText="Click button to load additional timeline entries">
 	<Timeline variant="alternating">
-		<TimelineItem date="15 Dec" iconText="🏠">
-			<Heading level={4}>Project Started</Heading>
-			<Paragraph>New project initialized with core team members and initial planning phase completed.</Paragraph>
-		</TimelineItem>
-
-		<TimelineItem date="22 Oct" iconText="🎁">
-			<Heading level={4}>First Release</Heading>
-			<Paragraph>Version 1.0 deployed to production with all major features implemented and tested.</Paragraph>
-		</TimelineItem>
-
-		<TimelineItem date="10 Jul" iconText="👤">
-			<Heading level={4}>Team Expansion</Heading>
-			<Paragraph>Added three new developers to the team to accelerate development timeline.</Paragraph>
-		</TimelineItem>
-
-		<TimelineItem date="18 May" iconText="🏃">
-			<Heading level={4}>Sprint Milestone</Heading>
-			<Paragraph>Major refactoring completed, improving code quality and maintainability significantly.</Paragraph>
-		</TimelineItem>
-
-		<TimelineItem date="10 Feb" iconText="⚙️">
-			<Heading level={4}>System Upgrade</Heading>
-			<Paragraph>Infrastructure migration to cloud platform completed with zero downtime.</Paragraph>
-		</TimelineItem>
-
-		<TimelineItem date="01 Jan" iconText="🏆">
-			<Heading level={4}>Award Recognition</Heading>
-			<Paragraph>Received "Best Admin Framework" award at the Annual Developer Conference.</Paragraph>
-		</TimelineItem>
+		{#each loadMoreItems as item (item.title)}
+			<TimelineItem date={item.date} iconText={item.iconText}>
+				<Heading level={4}>{item.title}</Heading>
+				<Paragraph>{item.content}</Paragraph>
+			</TimelineItem>
+		{/each}
 	</Timeline>
-</Card>
-
-<!-- Future Planning -->
-<Card titleText="Future Planning">
-
-	<Timeline variant="alternating">
-		<TimelineItem date="Q1 2024" iconText="📋">
-			<Heading level={4}>Planning Phase</Heading>
-			<Paragraph>Strategic planning and roadmap definition with stakeholder alignment.</Paragraph>
-		</TimelineItem>
-
-		<TimelineItem date="Q2 2024" iconText="🚀">
-			<Heading level={4}>Launch Preparation</Heading>
-			<Paragraph>Final testing, deployment preparation, and go-to-market strategy execution.</Paragraph>
-		</TimelineItem>
-
-		<TimelineItem date="Q3 2024" iconText="📈">
-			<Heading level={4}>Growth Period</Heading>
-			<Paragraph>User acquisition campaigns and feature expansion based on feedback.</Paragraph>
-		</TimelineItem>
-
-		<TimelineItem date="Q4 2024" iconText="🎯">
-			<Heading level={4}>Optimization</Heading>
-			<Paragraph>Performance improvements and infrastructure scaling for increased load.</Paragraph>
-		</TimelineItem>
-	</Timeline>
-</Card>
-
-<!-- Load More Example -->
-<Card titleText="Timeline with Load More">
-
-	<Timeline variant="alternating">
-		<TimelineItem date="Jan 1" iconText="🎉">
-			<Heading level={4}>New Year Launch</Heading>
-			<Paragraph>Kicked off the year with ambitious goals and a clear vision for the project.</Paragraph>
-		</TimelineItem>
-
-		<TimelineItem date="Jan 15" iconText="💡">
-			<Heading level={4}>Innovation Workshop</Heading>
-			<Paragraph>Conducted brainstorming session that generated 20+ innovative feature ideas.</Paragraph>
-		</TimelineItem>
-
-		<TimelineItem date="Feb 1" iconText="🔧">
-			<Heading level={4}>Infrastructure Update</Heading>
-			<Paragraph>Migrated to containerized deployment with Docker and Kubernetes orchestration.</Paragraph>
-		</TimelineItem>
-	</Timeline>
-
-	<div class="mt-4 text-center">
-		<Button variant="secondary" size="sm">
-			Load more milestones
+	<div class="pa-timeline__load-more-wrapper">
+		<Button variant="primary" onclick={handleLoadMore} disabled={isLoadMoreDone}>
+			<span class="pa-btn__icon">↓</span>
+			{isLoadMoreDone ? 'No more entries' : 'Load More'}
 		</Button>
 	</div>
 </Card>
 
-<!-- Virtual Scroll Example -->
-<Card titleText="Virtual Scroll (Large Dataset)">
-
-	<Paragraph class="mb-4">For project timelines with many milestones, virtual scrolling optimizes rendering performance.</Paragraph>
-
-	<!-- NOTE: Virtual scroll requires pa-virtual-scroll component which doesn't exist yet -->
-	<div class="max-h-50x overflow-y-auto border rounded p-4">
+<!-- Variant 3: Virtual Scroll -->
+<Card titleText="Timeline Block - Virtual Scroll" subtitleText="Automatically loads more entries as you scroll down">
+	<div class="pa-timeline__scroll-container" bind:this={scrollContainerEl}>
 		<Timeline variant="alternating">
-			<TimelineItem date="Week 1" iconText="📝">
-				<Heading level={4}>Requirements Gathering</Heading>
-				<Paragraph>Conducted stakeholder meetings to define project scope and objectives.</Paragraph>
-			</TimelineItem>
-
-			<TimelineItem date="Week 2" iconText="🎨">
-				<Heading level={4}>Design Phase</Heading>
-				<Paragraph>Created wireframes, mockups, and design system documentation.</Paragraph>
-			</TimelineItem>
-
-			<TimelineItem date="Week 3" iconText="⚡">
-				<Heading level={4}>Prototype Development</Heading>
-				<Paragraph>Built isInteractive prototype for user testing and feedback collection.</Paragraph>
-			</TimelineItem>
-
-			{#each Array.from({ length: 20 }, (_, i) => i) as index}
-				<TimelineItem
-					date={`Week ${index + 4}`}
-					iconText={['🚀', '💻', '✅', '📊', '⚠️'][index % 5]}
-				>
-					<Heading level={4}>Sprint #{index + 1}</Heading>
-					<Paragraph>Development sprint completed with feature implementation and testing.</Paragraph>
+			{#each virtualScrollItems as item (item.title)}
+				<TimelineItem date={item.date} iconText={item.iconText}>
+					<Heading level={4}>{item.title}</Heading>
+					<Paragraph>{item.content}</Paragraph>
 				</TimelineItem>
 			{/each}
 		</Timeline>
+		{#if !isVirtualScrollDone}
+			<div class="pa-timeline__loader" bind:this={loaderEl}>
+				{#if isVirtualScrollLoading}
+					<Spinner size="sm" />
+					<div class="pa-timeline__loader-text">Loading more entries...</div>
+				{/if}
+			</div>
+		{/if}
 	</div>
-
-	<Paragraph class="mt-4 text-secondary text-sm">
-		<strong>Note:</strong> True virtual scrolling with <code>pa-virtual-scroll</code> component is not yet implemented.
-		This example uses regular scrolling with overflow.
-	</Paragraph>
 </Card>
 
-<!-- Usage Examples -->
-<Card titleText="Usage Examples">
+<!-- Variant 4: Layout Modifiers -->
+<Heading level={2} class="mt-12">Layout Modifiers</Heading>
+<Paragraph class="text-secondary mb-6">Control alignment (start/center/end) and responsive behavior independently</Paragraph>
 
+<Grid>
+	<Column size="100" lg="1-3">
+		<Card titleText="Start Aligned">
+			{#snippet headerActions()}
+				<code>--start</code>
+			{/snippet}
+			<Timeline variant="alternating" alignment="start">
+				{#each modifierItems as item (item.title)}
+					<TimelineItem date={item.date} iconText={item.iconText}>
+						<Heading level={4}>{item.title}</Heading>
+						<Paragraph>{item.content}</Paragraph>
+					</TimelineItem>
+				{/each}
+			</Timeline>
+		</Card>
+	</Column>
+
+	<Column size="100" lg="1-3">
+		<Card titleText="End Aligned">
+			{#snippet headerActions()}
+				<code>--end</code>
+			{/snippet}
+			<Timeline variant="alternating" alignment="end">
+				{#each modifierItems as item (item.title)}
+					<TimelineItem date={item.date} iconText={item.iconText}>
+						<Heading level={4}>{item.title}</Heading>
+						<Paragraph>{item.content}</Paragraph>
+					</TimelineItem>
+				{/each}
+			</Timeline>
+		</Card>
+	</Column>
+
+	<Column size="100" lg="1-3">
+		<Card titleText="Keep Layout">
+			{#snippet headerActions()}
+				<code>--keep-layout</code>
+			{/snippet}
+			<Timeline variant="alternating" shouldKeepLayout>
+				<TimelineItem date="Jan" iconText="📝">
+					<Heading level={4}>Planning</Heading>
+					<Paragraph>Stays alternating on mobile.</Paragraph>
+				</TimelineItem>
+				<TimelineItem date="Feb" iconText="🚀">
+					<Heading level={4}>Launch</Heading>
+					<Paragraph>Zig-zag preserved on small screens.</Paragraph>
+				</TimelineItem>
+				<TimelineItem date="Mar" iconText="✅">
+					<Heading level={4}>Complete</Heading>
+					<Paragraph>Layout maintained at all widths.</Paragraph>
+				</TimelineItem>
+			</Timeline>
+		</Card>
+	</Column>
+</Grid>
+
+<!-- Combination Examples -->
+<Grid class="mt-6">
+	<Column size="100" lg="50">
+		<Card titleText="Start + Keep Layout">
+			{#snippet headerActions()}
+				<code>--start --keep-layout</code>
+			{/snippet}
+			<Timeline variant="alternating" alignment="start" shouldKeepLayout>
+				{#each combinationItems as item (item.title)}
+					<TimelineItem date={item.date} iconText={item.iconText}>
+						<Heading level={4}>{item.title}</Heading>
+						<Paragraph>{item.content}</Paragraph>
+					</TimelineItem>
+				{/each}
+			</Timeline>
+		</Card>
+	</Column>
+
+	<Column size="100" lg="50">
+		<Card titleText="End + Keep Layout">
+			{#snippet headerActions()}
+				<code>--end --keep-layout</code>
+			{/snippet}
+			<Timeline variant="alternating" alignment="end" shouldKeepLayout>
+				{#each combinationItems as item (item.title)}
+					<TimelineItem date={item.date} iconText={item.iconText}>
+						<Heading level={4}>{item.title}</Heading>
+						<Paragraph>{item.content}</Paragraph>
+					</TimelineItem>
+				{/each}
+			</Timeline>
+		</Card>
+	</Column>
+</Grid>
+
+<!-- Usage Examples -->
+<Card titleText="Usage Examples" class="mt-12">
 	<Heading level={4}>Basic Alternating Timeline</Heading>
 	<pre class="mb-4"><code>&lt;Timeline variant="alternating"&gt;
   &lt;TimelineItem date="15 Dec" iconText="🏠"&gt;
-    &lt;h4&gt;Project Started&lt;/h4&gt;
-    &lt;p&gt;Description here&lt;/p&gt;
+    &lt;Heading level=&#123;4&#125;&gt;Project Started&lt;/Heading&gt;
+    &lt;Paragraph&gt;Description here&lt;/Paragraph&gt;
   &lt;/TimelineItem&gt;
 &lt;/Timeline&gt;</code></pre>
 
-	<Heading level={4}>Filled Markers</Heading>
-	<pre class="mb-4"><code>&lt;TimelineItem date="Q1 2024" iconText="📋" filled&gt;
-  &lt;h4&gt;Milestone&lt;/h4&gt;
-  &lt;p&gt;Details&lt;/p&gt;
-&lt;/TimelineItem&gt;</code></pre>
+	<Heading level={4}>Layout Modifiers</Heading>
+	<pre class="mb-4"><code>&lt;!-- Force all items to start side --&gt;
+&lt;Timeline variant="alternating" alignment="start"&gt;...&lt;/Timeline&gt;
+
+&lt;!-- Force all items to end side --&gt;
+&lt;Timeline variant="alternating" alignment="end"&gt;...&lt;/Timeline&gt;
+
+&lt;!-- Preserve zig-zag layout on mobile --&gt;
+&lt;Timeline variant="alternating" shouldKeepLayout&gt;...&lt;/Timeline&gt;
+
+&lt;!-- Combination --&gt;
+&lt;Timeline variant="alternating" alignment="start" shouldKeepLayout&gt;...&lt;/Timeline&gt;</code></pre>
 
 	<Heading level={4}>Best Practices</Heading>
 	<BasicList>
 		<li>Use <code>variant="alternating"</code> for project roadmaps and milestone timelines</li>
 		<li>Add emojis or icons to timeline headers for visual interest</li>
-		<li>Use isFilled markers for future/planned events vs. regular markers for completed events</li>
-		<li>Keep descriptions concise - one or two sentences maximum</li>
-		<li>Use consistent time formats (dates, quarters, weeks, etc.)</li>
+		<li>Use <code>alignment="start"</code>/<code>"end"</code> for narrow cards where zig-zag would feel cramped</li>
+		<li>Use <code>shouldKeepLayout</code> when the design must hold its alternating shape across breakpoints</li>
+		<li>For long lists, pair <code>pa-timeline__scroll-container</code> with an IntersectionObserver for lazy loading</li>
 	</BasicList>
 </Card>
