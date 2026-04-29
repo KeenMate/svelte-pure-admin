@@ -4,7 +4,8 @@
 	 * Based on @keenmate/pure-admin-core snippets/loaders.html
 	 */
 
-	type SpinnerSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+	// Only --xs exists in core SCSS; the larger sizes were never defined and rendered at the default size.
+	type SpinnerSize = 'xs';
 	type SpinnerVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
 
 	interface Props {

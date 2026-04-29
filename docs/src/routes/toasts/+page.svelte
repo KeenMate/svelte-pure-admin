@@ -1,463 +1,341 @@
 <script lang="ts">
-	import { Heading, Paragraph, Card, Grid, Column, Button, ButtonGroup, Toast, ToastContainer, CodeBlock } from '@keenmate/svelte-pure-admin';
+	import {
+		Heading,
+		Paragraph,
+		Card,
+		Grid,
+		Column,
+		Button,
+		ButtonGroup,
+		ToastContainer,
+		CodeBlock,
+		toastService
+	} from '@keenmate/svelte-pure-admin';
 
-	// Toast state management
-	type ToastVariant = 'primary' | 'success' | 'danger' | 'warning' | 'info';
-	type ToastPosition = 'top-end' | 'top-center' | 'top-start' | 'bottom-end' | 'bottom-center' | 'bottom-start';
+	type Variant = 'primary' | 'success' | 'danger' | 'warning' | 'info';
 
-	interface ToastData {
-		id: number;
-		title: string;
-		message: string;
-		variant: ToastVariant;
-		show: boolean;
-		duration?: number;
-		shouldShowProgress?: boolean;
-		isFilled?: boolean;
-		themeColor?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
-		progressColor?: string;
-	}
-
-	// Separate toast arrays for each position
-	let topEndToasts = $state<ToastData[]>([]);
-	let topCenterToasts = $state<ToastData[]>([]);
-	let topStartToasts = $state<ToastData[]>([]);
-	let bottomEndToasts = $state<ToastData[]>([]);
-	let bottomCenterToasts = $state<ToastData[]>([]);
-	let bottomStartToasts = $state<ToastData[]>([]);
-
-	let toastId = $state(0);
-
-	const toastMessages: Record<ToastVariant, { title: string; message: string }> = {
-		primary: { title: 'Primary', message: 'This is a primary toast notification.' },
-		success: { title: 'Success!', message: 'Your action was completed successfully.' },
-		danger: { title: 'Error', message: 'An error occurred. Please try again.' },
-		warning: { title: 'Warning', message: 'Please review this warning message.' },
-		info: { title: 'Information', message: 'Here is some useful information for you.' }
+	const variantSampleText: Record<Variant, { titleText: string; messageText: string }> = {
+		primary: { titleText: 'Primary', messageText: 'This is a primary toast notification.' },
+		success: { titleText: 'Success!', messageText: 'Your action was completed successfully.' },
+		danger:  { titleText: 'Error',   messageText: 'An error occurred. Please try again.' },
+		warning: { titleText: 'Warning', messageText: 'Please review this warning message.' },
+		info:    { titleText: 'Information', messageText: 'Here is some useful information for you.' }
 	};
 
-	function addToast(position: ToastPosition, variant: ToastVariant, options: { duration?: number; shouldShowProgress?: boolean; title?: string; message?: string; isFilled?: boolean; themeColor?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9; progressColor?: string } = {}) {
-		const id = toastId++;
-		const msg = toastMessages[variant];
-		const newToast: ToastData = {
-			id,
-			title: options.title || msg.title,
-			message: options.message || msg.message,
+	function fire(variant: Variant, opts: Partial<Parameters<typeof toastService.show>[0]> = {}) {
+		const sample = variantSampleText[variant];
+		toastService.show({
 			variant,
-			show: true,
-			duration: options.duration ?? 5000,
-			shouldShowProgress: options.shouldShowProgress ?? false,
-			isFilled: options.isFilled ?? false,
-			themeColor: options.themeColor,
-			progressColor: options.progressColor
-		};
-
-		switch (position) {
-			case 'top-end':
-				topEndToasts = [...topEndToasts, newToast];
-				break;
-			case 'top-center':
-				topCenterToasts = [...topCenterToasts, newToast];
-				break;
-			case 'top-start':
-				topStartToasts = [...topStartToasts, newToast];
-				break;
-			case 'bottom-end':
-				bottomEndToasts = [...bottomEndToasts, newToast];
-				break;
-			case 'bottom-center':
-				bottomCenterToasts = [...bottomCenterToasts, newToast];
-				break;
-			case 'bottom-start':
-				bottomStartToasts = [...bottomStartToasts, newToast];
-				break;
-		}
+			titleText: sample.titleText,
+			messageText: sample.messageText,
+			...opts
+		});
 	}
 
-	function removeToast(position: ToastPosition, id: number) {
-		switch (position) {
-			case 'top-end':
-				topEndToasts = topEndToasts.filter(t => t.id !== id);
-				break;
-			case 'top-center':
-				topCenterToasts = topCenterToasts.filter(t => t.id !== id);
-				break;
-			case 'top-start':
-				topStartToasts = topStartToasts.filter(t => t.id !== id);
-				break;
-			case 'bottom-end':
-				bottomEndToasts = bottomEndToasts.filter(t => t.id !== id);
-				break;
-			case 'bottom-center':
-				bottomCenterToasts = bottomCenterToasts.filter(t => t.id !== id);
-				break;
-			case 'bottom-start':
-				bottomStartToasts = bottomStartToasts.filter(t => t.id !== id);
-				break;
-		}
+	function showStackingDemo() {
+		toastService.success({ titleText: 'First Toast',  messageText: 'This is the first notification' });
+		setTimeout(() => toastService.warning({ titleText: 'Second Toast', messageText: 'This is the second notification' }), 300);
+		setTimeout(() => toastService.info({ titleText: 'Third Toast', messageText: 'This is the third notification' }),    600);
 	}
 
-	// Action toast state (need dedicated state since snippets can't be stored in arrays)
-	let showUndoToast = $state(false);
-	let showRetryToast = $state(false);
-	let showUpdateToast = $state(false);
-	let showFilledActionToast = $state(false);
+	function fireUndoToast() {
+		toastService.show({
+			variant: 'danger',
+			titleText: 'Item Deleted',
+			messageText: '3 items moved to trash.',
+			duration: 0,
+			actions: [
+				{ label: 'Undo',    variant: 'danger',    onclick: () => alert('Undo!') },
+				{ label: 'Dismiss', variant: 'secondary' }
+			]
+		});
+	}
 
-	function showMultipleToasts() {
-		addToast('top-end', 'success', { title: 'First Toast', message: 'This is the first notification' });
-		setTimeout(() => {
-			addToast('top-end', 'warning', { title: 'Second Toast', message: 'This is the second notification' });
-		}, 300);
-		setTimeout(() => {
-			addToast('top-end', 'info', { title: 'Third Toast', message: 'This is the third notification' });
-		}, 600);
+	function fireRetryToast() {
+		toastService.show({
+			variant: 'warning',
+			titleText: 'Upload Failed',
+			messageText: 'Failed to upload report.pdf. Check your connection.',
+			duration: 0,
+			actions: [
+				{ label: 'Retry',  variant: 'warning',   onclick: () => alert('Retrying...') },
+				{ label: 'Cancel', variant: 'secondary' }
+			]
+		});
+	}
+
+	function fireUpdateToast() {
+		toastService.show({
+			variant: 'info',
+			titleText: 'Update Available',
+			messageText: 'Version 2.4.0 is ready to install.',
+			duration: 0,
+			actions: [
+				{ label: 'Install Now', variant: 'info',      onclick: () => alert('Installing...') },
+				{ label: 'Later',       variant: 'secondary' }
+			]
+		});
+	}
+
+	function fireFilledActionToast() {
+		toastService.show({
+			variant: 'success',
+			isFilled: true,
+			titleText: 'Feedback Sent',
+			messageText: 'Thank you for your feedback!',
+			duration: 0,
+			actions: [
+				{ label: 'Great', variant: 'success' },
+				{ label: 'Close', variant: 'secondary' }
+			]
+		});
+	}
+
+	function firePersistentDismissibleToast() {
+		const id = toastService.warning({
+			titleText: 'Long-running task',
+			messageText: 'This toast will dismiss itself in 8 seconds, or you can close it now.',
+			duration: 0
+		});
+		setTimeout(() => toastService.dismiss(id), 8000);
 	}
 </script>
 
-<Paragraph>Temporary notification messages that auto-dismiss with smooth animations.</Paragraph>
+<!-- One container per position so the demo can show all 6 simultaneously.
+     In a real app you typically mount only one. -->
+<ToastContainer position="top-end" />
+<ToastContainer position="top-center" />
+<ToastContainer position="top-start" />
+<ToastContainer position="bottom-end" />
+<ToastContainer position="bottom-center" />
+<ToastContainer position="bottom-start" />
 
-<!-- Toast Container Positions -->
-<ToastContainer position="top-end">
-	{#each topEndToasts as toast (toast.id)}
-		<Toast
-			variant={toast.variant}
-			themeColor={toast.themeColor}
-			isFilled={toast.isFilled}
-			titleText={toast.title}
-			messageText={toast.message}
-			bind:show={toast.show}
-			duration={toast.duration}
-			shouldShowProgress={toast.shouldShowProgress}
-			progressColor={toast.progressColor}
-			onclose={() => removeToast('top-end', toast.id)}
-		/>
-	{/each}
+<Paragraph>
+	Temporary notification messages with auto-dismiss and smooth animations. Drive them
+	imperatively via <code>toastService</code> — mount one <code>&lt;ToastContainer /&gt;</code>
+	in your layout and call <code>toastService.show({'{ ... }'})</code> from anywhere.
+</Paragraph>
 
-	{#if showUndoToast}
-		<Toast variant="danger" titleText="Item Deleted" messageText="3 items moved to trash." duration={0} bind:show={showUndoToast}>
-			{#snippet actions()}
-				<Button size="xs" variant="danger" onclick={() => { alert('Undo!'); showUndoToast = false; }}>Undo</Button>
-				<Button size="xs" variant="secondary" onclick={() => { showUndoToast = false; }}>Dismiss</Button>
-			{/snippet}
-		</Toast>
-	{/if}
-	{#if showRetryToast}
-		<Toast variant="warning" titleText="Upload Failed" messageText="Failed to upload report.pdf. Check your connection." duration={0} bind:show={showRetryToast}>
-			{#snippet actions()}
-				<Button size="xs" variant="warning" onclick={() => { alert('Retrying...'); showRetryToast = false; }}>Retry</Button>
-				<Button size="xs" variant="secondary" onclick={() => { showRetryToast = false; }}>Cancel</Button>
-			{/snippet}
-		</Toast>
-	{/if}
-	{#if showUpdateToast}
-		<Toast variant="info" titleText="Update Available" messageText="Version 2.4.0 is ready to install." duration={0} bind:show={showUpdateToast}>
-			{#snippet actions()}
-				<Button size="xs" variant="info" onclick={() => { alert('Installing...'); showUpdateToast = false; }}>Install Now</Button>
-				<Button size="xs" variant="secondary" onclick={() => { showUpdateToast = false; }}>Later</Button>
-			{/snippet}
-		</Toast>
-	{/if}
-	{#if showFilledActionToast}
-		<Toast variant="success" isFilled titleText="Feedback Sent" messageText="Thank you for your feedback!" duration={0} bind:show={showFilledActionToast}>
-			{#snippet actions()}
-				<Button size="xs" variant="success" onclick={() => { showFilledActionToast = false; }}>Great</Button>
-				<Button size="xs" variant="secondary" onclick={() => { showFilledActionToast = false; }}>Close</Button>
-			{/snippet}
-		</Toast>
-	{/if}
-</ToastContainer>
+<!-- 1. The basics -->
+<Card titleText="Quick start">
+	<CodeBlock language="typescript">{`import { toastService, ToastContainer } from '@keenmate/svelte-pure-admin';
 
-<ToastContainer position="top-center">
-	{#each topCenterToasts as toast (toast.id)}
-		<Toast
-			variant={toast.variant}
-			titleText={toast.title}
-			messageText={toast.message}
-			bind:show={toast.show}
-			duration={toast.duration}
-			shouldShowProgress={toast.shouldShowProgress}
-			onclose={() => removeToast('top-center', toast.id)}
-		/>
-	{/each}
-</ToastContainer>
+// Mount once in your root layout:
+//   <ToastContainer position="top-end" />
 
-<ToastContainer position="top-start">
-	{#each topStartToasts as toast (toast.id)}
-		<Toast
-			variant={toast.variant}
-			titleText={toast.title}
-			messageText={toast.message}
-			bind:show={toast.show}
-			duration={toast.duration}
-			shouldShowProgress={toast.shouldShowProgress}
-			onclose={() => removeToast('top-start', toast.id)}
-		/>
-	{/each}
-</ToastContainer>
+// Anywhere in your app:
+toastService.success('Saved!');
+toastService.danger({ titleText: 'Failed', messageText: 'Could not save record' });
 
-<ToastContainer position="bottom-end">
-	{#each bottomEndToasts as toast (toast.id)}
-		<Toast
-			variant={toast.variant}
-			titleText={toast.title}
-			messageText={toast.message}
-			bind:show={toast.show}
-			duration={toast.duration}
-			shouldShowProgress={toast.shouldShowProgress}
-			onclose={() => removeToast('bottom-end', toast.id)}
-		/>
-	{/each}
-</ToastContainer>
+// Full control:
+const id = toastService.show({
+	variant: 'info',
+	titleText: 'Processing',
+	messageText: 'Please wait...',
+	duration: 0,             // 0 = persistent until user dismisses
+	maxWidth: '40rem',
+	actions: [
+		{ label: 'Cancel', variant: 'secondary', onclick: () => abort() }
+	]
+});
 
-<ToastContainer position="bottom-center">
-	{#each bottomCenterToasts as toast (toast.id)}
-		<Toast
-			variant={toast.variant}
-			titleText={toast.title}
-			messageText={toast.message}
-			bind:show={toast.show}
-			duration={toast.duration}
-			shouldShowProgress={toast.shouldShowProgress}
-			onclose={() => removeToast('bottom-center', toast.id)}
-		/>
-	{/each}
-</ToastContainer>
+// Dismiss programmatically when done:
+toastService.dismiss(id);
 
-<ToastContainer position="bottom-start">
-	{#each bottomStartToasts as toast (toast.id)}
-		<Toast
-			variant={toast.variant}
-			titleText={toast.title}
-			messageText={toast.message}
-			bind:show={toast.show}
-			duration={toast.duration}
-			shouldShowProgress={toast.shouldShowProgress}
-			onclose={() => removeToast('bottom-start', toast.id)}
-		/>
-	{/each}
-</ToastContainer>
+// Or dismiss everything:
+toastService.dismissAll();`}</CodeBlock>
 
-<!-- 1. Toast Positions -->
-<Card titleText="Toast Positions">
-	<Grid>
+	<Paragraph class="mt-4">
+		Sugar methods (<code>success</code>, <code>danger</code>, <code>warning</code>,
+		<code>info</code>, <code>primary</code>) accept either a string (just the message) or
+		a partial options object.
+	</Paragraph>
+</Card>
+
+<!-- 2. Toast Positions -->
+<Card titleText="Positions">
+	<Paragraph>
+		Each toast can target a position via the <code>position</code> option. Mount a
+		<code>&lt;ToastContainer position="..." /&gt;</code> for every position you intend to use.
+	</Paragraph>
+	<Grid class="mt-4">
 		<Column size="100" md="1-3">
-			<Button variant="primary" isBlock onclick={() => addToast('top-start', 'warning')}>
+			<Button variant="primary" isBlock onclick={() => fire('warning', { position: 'top-start' })}>
 				Top Start
 			</Button>
 		</Column>
 		<Column size="100" md="1-3">
-			<Button variant="primary" isBlock onclick={() => addToast('top-center', 'info')}>
+			<Button variant="primary" isBlock onclick={() => fire('info',    { position: 'top-center' })}>
 				Top Center
 			</Button>
 		</Column>
 		<Column size="100" md="1-3">
-			<Button variant="primary" isBlock onclick={() => addToast('top-end', 'success')}>
-				Top End
+			<Button variant="primary" isBlock onclick={() => fire('success', { position: 'top-end' })}>
+				Top End (default)
 			</Button>
 		</Column>
 	</Grid>
 	<Grid class="mt-4">
 		<Column size="100" md="1-3">
-			<Button variant="secondary" isBlock onclick={() => addToast('bottom-start', 'success')}>
+			<Button variant="secondary" isBlock onclick={() => fire('success', { position: 'bottom-start' })}>
 				Bottom Start
 			</Button>
 		</Column>
 		<Column size="100" md="1-3">
-			<Button variant="secondary" isBlock onclick={() => addToast('bottom-center', 'primary')}>
+			<Button variant="secondary" isBlock onclick={() => fire('primary', { position: 'bottom-center' })}>
 				Bottom Center
 			</Button>
 		</Column>
 		<Column size="100" md="1-3">
-			<Button variant="secondary" isBlock onclick={() => addToast('bottom-end', 'danger')}>
+			<Button variant="secondary" isBlock onclick={() => fire('danger',  { position: 'bottom-end' })}>
 				Bottom End
 			</Button>
 		</Column>
 	</Grid>
 </Card>
 
-<!-- 2. Toast Variants -->
-<Card titleText="Toast Variants">
+<!-- 3. Variants -->
+<Card titleText="Variants">
 	<ButtonGroup>
-		<Button variant="primary" onclick={() => addToast('top-end', 'primary')}>
-			Primary
-		</Button>
-		<Button variant="success" onclick={() => addToast('top-end', 'success')}>
-			Success
-		</Button>
-		<Button variant="danger" onclick={() => addToast('top-end', 'danger')}>
-			Danger
-		</Button>
-		<Button variant="warning" onclick={() => addToast('top-end', 'warning')}>
-			Warning
-		</Button>
-		<Button variant="info" onclick={() => addToast('top-end', 'info')}>
-			Info
-		</Button>
+		<Button variant="primary" onclick={() => toastService.primary('A primary notification.')}>Primary</Button>
+		<Button variant="success" onclick={() => toastService.success('Operation completed successfully.')}>Success</Button>
+		<Button variant="danger"  onclick={() => toastService.danger('Something went wrong.')}>Danger</Button>
+		<Button variant="warning" onclick={() => toastService.warning('Heads up — review this.')}>Warning</Button>
+		<Button variant="info"    onclick={() => toastService.info('Just so you know...')}>Info</Button>
 	</ButtonGroup>
 </Card>
 
-<!-- 3. Toast with Progress Bar -->
-<Card titleText="Toast with Progress Bar">
+<!-- 4. Progress bar -->
+<Card titleText="Progress bar">
 	<Heading level={4}>Standard</Heading>
 	<ButtonGroup>
-		<Button variant="primary" onclick={() => addToast('top-end', 'primary', { shouldShowProgress: true })}>
-			Primary
-		</Button>
-		<Button variant="success" onclick={() => addToast('top-end', 'success', { shouldShowProgress: true })}>
-			Success
-		</Button>
-		<Button variant="danger" onclick={() => addToast('top-end', 'danger', { shouldShowProgress: true })}>
-			Danger
-		</Button>
-		<Button variant="warning" onclick={() => addToast('top-end', 'warning', { shouldShowProgress: true })}>
-			Warning
-		</Button>
-		<Button variant="info" onclick={() => addToast('top-end', 'info', { shouldShowProgress: true })}>
-			Info
-		</Button>
+		<Button variant="primary" onclick={() => fire('primary', { shouldShowProgress: true })}>Primary</Button>
+		<Button variant="success" onclick={() => fire('success', { shouldShowProgress: true })}>Success</Button>
+		<Button variant="danger"  onclick={() => fire('danger',  { shouldShowProgress: true })}>Danger</Button>
+		<Button variant="warning" onclick={() => fire('warning', { shouldShowProgress: true })}>Warning</Button>
+		<Button variant="info"    onclick={() => fire('info',    { shouldShowProgress: true })}>Info</Button>
 	</ButtonGroup>
 
 	<Heading level={4} class="mt-4">Filled</Heading>
 	<ButtonGroup>
-		<Button variant="primary" onclick={() => addToast('top-end', 'primary', { shouldShowProgress: true, isFilled: true })}>
-			Primary
-		</Button>
-		<Button variant="success" onclick={() => addToast('top-end', 'success', { shouldShowProgress: true, isFilled: true })}>
-			Success
-		</Button>
-		<Button variant="danger" onclick={() => addToast('top-end', 'danger', { shouldShowProgress: true, isFilled: true })}>
-			Danger
-		</Button>
-		<Button variant="warning" onclick={() => addToast('top-end', 'warning', { shouldShowProgress: true, isFilled: true })}>
-			Warning
-		</Button>
-		<Button variant="info" onclick={() => addToast('top-end', 'info', { shouldShowProgress: true, isFilled: true })}>
-			Info
-		</Button>
+		<Button variant="primary" onclick={() => fire('primary', { shouldShowProgress: true, isFilled: true })}>Primary</Button>
+		<Button variant="success" onclick={() => fire('success', { shouldShowProgress: true, isFilled: true })}>Success</Button>
+		<Button variant="danger"  onclick={() => fire('danger',  { shouldShowProgress: true, isFilled: true })}>Danger</Button>
+		<Button variant="warning" onclick={() => fire('warning', { shouldShowProgress: true, isFilled: true })}>Warning</Button>
+		<Button variant="info"    onclick={() => fire('info',    { shouldShowProgress: true, isFilled: true })}>Info</Button>
 	</ButtonGroup>
 
 	<Heading level={4} class="mt-4">Custom progress color</Heading>
 	<ButtonGroup>
-		<Button variant="primary" onclick={() => addToast('top-end', 'primary', { shouldShowProgress: true, progressColor: '#e74c3c' })}>
-			Red progress
-		</Button>
-		<Button variant="success" onclick={() => addToast('top-end', 'success', { shouldShowProgress: true, progressColor: '#8b5cf6' })}>
-			Purple progress
-		</Button>
-		<Button variant="info" onclick={() => addToast('top-end', 'info', { shouldShowProgress: true, progressColor: '#14b8a6' })}>
-			Teal progress
-		</Button>
+		<Button variant="primary" onclick={() => fire('primary', { shouldShowProgress: true, progressColor: '#e74c3c' })}>Red progress</Button>
+		<Button variant="success" onclick={() => fire('success', { shouldShowProgress: true, progressColor: '#8b5cf6' })}>Purple progress</Button>
+		<Button variant="info"    onclick={() => fire('info',    { shouldShowProgress: true, progressColor: '#14b8a6' })}>Teal progress</Button>
 	</ButtonGroup>
 
 	<Paragraph class="pa-text--secondary mt-4">
-		Progress bar shows time remaining before auto-dismiss (5 seconds)
+		Progress bar shows time remaining before auto-dismiss (default 5s — pass <code>duration</code> to change it).
 	</Paragraph>
 </Card>
 
-<!-- 4. Persistent Toasts -->
-<Card titleText="Persistent Toasts (Manual Dismiss Only)">
+<!-- 5. Persistent toasts -->
+<Card titleText="Persistent toasts (manual or programmatic dismiss)">
 	<Grid>
 		<Column size="100" md="1-3">
-			<Button variant="warning" isBlock onclick={() => addToast('top-end', 'warning', { duration: 0, title: 'Important Warning', message: 'This is an important warning that requires your attention. Click the close button to dismiss.' })}>
+			<Button variant="warning" isBlock onclick={() => fire('warning', { duration: 0, titleText: 'Important Warning', messageText: 'This is an important warning. Click the close button to dismiss.' })}>
 				Important Warning
 			</Button>
 		</Column>
 		<Column size="100" md="1-3">
-			<Button variant="danger" isBlock onclick={() => addToast('top-end', 'danger', { duration: 0, title: 'Critical Error', message: 'Critical error detected! This message will remain until you acknowledge it.' })}>
+			<Button variant="danger" isBlock onclick={() => fire('danger', { duration: 0, titleText: 'Critical Error', messageText: 'Critical error detected! This message will remain until you acknowledge it.' })}>
 				Critical Error
 			</Button>
 		</Column>
 		<Column size="100" md="1-3">
-			<Button variant="info" isBlock onclick={() => addToast('top-end', 'info', { duration: 0, title: 'Important Info', message: 'Important information that you should read carefully before dismissing.' })}>
-				Important Info
+			<Button variant="info" isBlock onclick={firePersistentDismissibleToast}>
+				Programmatic 8s dismiss
 			</Button>
 		</Column>
 	</Grid>
 	<Paragraph class="pa-text--secondary mt-4">
-		These toasts stay visible until manually dismissed by clicking the close button
+		<code>duration: 0</code> stays until manually closed. Capture the id from
+		<code>show()</code> to dismiss programmatically (<code>toastService.dismiss(id)</code>).
 	</Paragraph>
 </Card>
 
-<!-- 5. Action Toasts -->
-<Card titleText="Action Toasts" subtitleText="Toasts with action buttons separated by a horizontal rule. Clicking an action dismisses the toast.">
+<!-- 6. Action toasts -->
+<Card
+	titleText="Action toasts"
+	subtitleText="Buttons separated from the body by a horizontal rule. Clicking an action dismisses the toast unless keepOpen is true."
+>
 	<ButtonGroup>
-		<Button variant="danger" onclick={() => showUndoToast = true}>
-			Undo Delete
-		</Button>
-		<Button variant="warning" onclick={() => showRetryToast = true}>
-			Retry Failed
-		</Button>
-		<Button variant="info" onclick={() => showUpdateToast = true}>
-			Update Available
-		</Button>
-		<Button variant="success" onclick={() => showFilledActionToast = true}>
-			Filled + Actions
-		</Button>
+		<Button variant="danger"  onclick={fireUndoToast}>Undo Delete</Button>
+		<Button variant="warning" onclick={fireRetryToast}>Retry Failed</Button>
+		<Button variant="info"    onclick={fireUpdateToast}>Update Available</Button>
+		<Button variant="success" onclick={fireFilledActionToast}>Filled + Actions</Button>
 	</ButtonGroup>
+
+	<CodeBlock language="typescript" class="mt-4">{`toastService.show({
+	variant: 'danger',
+	titleText: 'Item Deleted',
+	messageText: '3 items moved to trash.',
+	duration: 0,
+	actions: [
+		{ label: 'Undo',    variant: 'danger',    onclick: id => restore() },
+		{ label: 'Dismiss', variant: 'secondary' }
+	]
+});`}</CodeBlock>
 </Card>
 
-<!-- 6. Multiple Toasts -->
-<Card titleText="Multiple Toasts (Stacking)">
-	<Button variant="primary" onclick={showMultipleToasts}>
-		Show 3 Toasts
-	</Button>
+<!-- 7. Stacking -->
+<Card titleText="Multiple toasts (stacking)">
+	<Button variant="primary" onclick={showStackingDemo}>Show 3 Toasts</Button>
 	<Paragraph class="pa-text--secondary mt-4">
-		Toasts automatically stack vertically in the container
+		Toasts automatically stack vertically in the container. Container width ratchets up
+		to the widest toast and resets when empty.
 	</Paragraph>
 </Card>
 
-<!-- 7. Filled Toast Variants -->
-<Card titleText="Filled Toast Variants">
+<!-- 8. Filled variants -->
+<Card titleText="Filled variants">
 	<ButtonGroup>
-		<Button variant="primary" onclick={() => addToast('top-end', 'primary', { isFilled: true, title: 'Filled Primary', message: 'Full-color primary toast.' })}>
-			Filled Primary
-		</Button>
-		<Button variant="success" onclick={() => addToast('top-end', 'success', { isFilled: true, title: 'Filled Success', message: 'Full-color success toast.' })}>
-			Filled Success
-		</Button>
-		<Button variant="danger" onclick={() => addToast('top-end', 'danger', { isFilled: true, title: 'Filled Danger', message: 'Full-color danger toast.' })}>
-			Filled Danger
-		</Button>
-		<Button variant="warning" onclick={() => addToast('top-end', 'warning', { isFilled: true, title: 'Filled Warning', message: 'Full-color warning toast.' })}>
-			Filled Warning
-		</Button>
-		<Button variant="info" onclick={() => addToast('top-end', 'info', { isFilled: true, title: 'Filled Info', message: 'Full-color info toast.' })}>
-			Filled Info
-		</Button>
+		<Button variant="primary" onclick={() => fire('primary', { isFilled: true, titleText: 'Filled Primary', messageText: 'Full-color primary toast.' })}>Filled Primary</Button>
+		<Button variant="success" onclick={() => fire('success', { isFilled: true, titleText: 'Filled Success', messageText: 'Full-color success toast.' })}>Filled Success</Button>
+		<Button variant="danger"  onclick={() => fire('danger',  { isFilled: true, titleText: 'Filled Danger',  messageText: 'Full-color danger toast.' })}>Filled Danger</Button>
+		<Button variant="warning" onclick={() => fire('warning', { isFilled: true, titleText: 'Filled Warning', messageText: 'Full-color warning toast.' })}>Filled Warning</Button>
+		<Button variant="info"    onclick={() => fire('info',    { isFilled: true, titleText: 'Filled Info',    messageText: 'Full-color info toast.' })}>Filled Info</Button>
 	</ButtonGroup>
 </Card>
 
-<!-- 8. Theme Color Toasts -->
-<Card titleText="Theme Color Toasts" subtitleText="Toasts using custom theme color slots (1-9). Colors are defined by the active theme.">
+<!-- 9. Theme color toasts -->
+<Card
+	titleText="Theme color toasts"
+	subtitleText="Use custom theme color slots (1-9). Colors are defined by the active theme."
+>
 	<ButtonGroup>
-		<Button themeColor={1} onclick={() => addToast('top-end', 'primary', { themeColor: 1, title: 'Color 1', message: 'Theme color slot 1 toast.' })}>Color 1</Button>
-		<Button themeColor={2} onclick={() => addToast('top-end', 'primary', { themeColor: 2, title: 'Color 2', message: 'Theme color slot 2 toast.' })}>Color 2</Button>
-		<Button themeColor={3} onclick={() => addToast('top-end', 'primary', { themeColor: 3, title: 'Color 3', message: 'Theme color slot 3 toast.' })}>Color 3</Button>
-		<Button themeColor={4} onclick={() => addToast('top-end', 'primary', { themeColor: 4, title: 'Color 4', message: 'Theme color slot 4 toast.' })}>Color 4</Button>
-		<Button themeColor={5} onclick={() => addToast('top-end', 'primary', { themeColor: 5, title: 'Color 5', message: 'Theme color slot 5 toast.' })}>Color 5</Button>
-		<Button themeColor={6} onclick={() => addToast('top-end', 'primary', { themeColor: 6, title: 'Color 6', message: 'Theme color slot 6 toast.' })}>Color 6</Button>
-		<Button themeColor={7} onclick={() => addToast('top-end', 'primary', { themeColor: 7, title: 'Color 7', message: 'Theme color slot 7 toast.' })}>Color 7</Button>
-		<Button themeColor={8} onclick={() => addToast('top-end', 'primary', { themeColor: 8, title: 'Color 8', message: 'Theme color slot 8 toast.' })}>Color 8</Button>
-		<Button themeColor={9} onclick={() => addToast('top-end', 'primary', { themeColor: 9, title: 'Color 9', message: 'Theme color slot 9 toast.' })}>Color 9</Button>
+		{#each [1, 2, 3, 4, 5, 6, 7, 8, 9] as n}
+			<Button themeColor={n as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9} onclick={() => fire('primary', { themeColor: n as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9, titleText: `Color ${n}`, messageText: `Theme color slot ${n} toast.` })}>Color {n}</Button>
+		{/each}
 	</ButtonGroup>
 
 	<Heading level={4} class="mt-4">Filled</Heading>
 	<ButtonGroup>
-		<Button themeColor={1} onclick={() => addToast('top-end', 'primary', { themeColor: 1, isFilled: true, title: 'Filled Color 1', message: 'Filled theme color slot 1 toast.' })}>Color 1</Button>
-		<Button themeColor={2} onclick={() => addToast('top-end', 'primary', { themeColor: 2, isFilled: true, title: 'Filled Color 2', message: 'Filled theme color slot 2 toast.' })}>Color 2</Button>
-		<Button themeColor={3} onclick={() => addToast('top-end', 'primary', { themeColor: 3, isFilled: true, title: 'Filled Color 3', message: 'Filled theme color slot 3 toast.' })}>Color 3</Button>
-		<Button themeColor={4} onclick={() => addToast('top-end', 'primary', { themeColor: 4, isFilled: true, title: 'Filled Color 4', message: 'Filled theme color slot 4 toast.' })}>Color 4</Button>
-		<Button themeColor={5} onclick={() => addToast('top-end', 'primary', { themeColor: 5, isFilled: true, title: 'Filled Color 5', message: 'Filled theme color slot 5 toast.' })}>Color 5</Button>
-		<Button themeColor={6} onclick={() => addToast('top-end', 'primary', { themeColor: 6, isFilled: true, title: 'Filled Color 6', message: 'Filled theme color slot 6 toast.' })}>Color 6</Button>
-		<Button themeColor={7} onclick={() => addToast('top-end', 'primary', { themeColor: 7, isFilled: true, title: 'Filled Color 7', message: 'Filled theme color slot 7 toast.' })}>Color 7</Button>
-		<Button themeColor={8} onclick={() => addToast('top-end', 'primary', { themeColor: 8, isFilled: true, title: 'Filled Color 8', message: 'Filled theme color slot 8 toast.' })}>Color 8</Button>
-		<Button themeColor={9} onclick={() => addToast('top-end', 'primary', { themeColor: 9, isFilled: true, title: 'Filled Color 9', message: 'Filled theme color slot 9 toast.' })}>Color 9</Button>
+		{#each [1, 2, 3, 4, 5, 6, 7, 8, 9] as n}
+			<Button themeColor={n as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9} onclick={() => fire('primary', { themeColor: n as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9, isFilled: true, titleText: `Filled Color ${n}`, messageText: `Filled theme color slot ${n} toast.` })}>Color {n}</Button>
+		{/each}
 	</ButtonGroup>
 </Card>
 
-<!-- 9. CSS Classes Reference -->
-<Card titleText="CSS Classes Reference">
-	<Heading level={4}>Toast Container</Heading>
+<!-- 10. Bulk dismiss -->
+<Card titleText="Bulk dismiss">
+	<ButtonGroup>
+		<Button variant="primary" onclick={showStackingDemo}>Spawn 3 toasts</Button>
+		<Button variant="danger" isOutline onclick={() => toastService.dismissAll()}>Dismiss all</Button>
+	</ButtonGroup>
+</Card>
+
+<!-- 11. CSS Classes Reference -->
+<Card titleText="CSS classes reference">
+	<Heading level={4}>Toast container</Heading>
 	<CodeBlock>{`pa-toast-container              — Fixed-position wrapper
 pa-toast-container--top-end     — Top end (default)
 pa-toast-container--top-center  — Top center
@@ -466,7 +344,7 @@ pa-toast-container--bottom-end  — Bottom end
 pa-toast-container--bottom-center — Bottom center
 pa-toast-container--bottom-start  — Bottom start`}</CodeBlock>
 
-	<Heading level={4} class="mt-4">Toast Item</Heading>
+	<Heading level={4} class="mt-4">Toast item</Heading>
 	<CodeBlock>{`pa-toast                — Base toast element
 pa-toast--show          — Visible state
 pa-toast--hide          — Dismissing state
@@ -474,13 +352,53 @@ pa-toast__icon          — Icon container
 pa-toast__content       — Content wrapper
 pa-toast__title         — Title text
 pa-toast__message       — Message text
-pa-toast__actions       — Action buttons container
+pa-toast__actions       — Action buttons container (border-top separator)
 pa-toast__close         — Close button
 pa-toast__progress      — Progress bar`}</CodeBlock>
 
-	<Heading level={4} class="mt-4">Toast Variants</Heading>
+	<Heading level={4} class="mt-4">Toast variants</Heading>
 	<CodeBlock>{`pa-toast--primary / --success / --danger / --warning / --info
 pa-toast--filled-primary / --filled-success / --filled-danger / --filled-warning / --filled-info
 pa-toast--color-1 through --color-9
 pa-toast--filled-color-1 through --filled-color-9`}</CodeBlock>
+</Card>
+
+<!-- 12. Service API -->
+<Card titleText="Service API">
+	<CodeBlock language="typescript">{`type ToastVariant  = 'primary' | 'success' | 'danger' | 'warning' | 'info';
+type ToastPosition = 'top-end' | 'top-center' | 'top-start'
+                   | 'bottom-end' | 'bottom-center' | 'bottom-start';
+
+interface ToastAction {
+	label: string;
+	variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark';
+	isOutline?: boolean;
+	onclick?: (id: string) => void;
+	keepOpen?: boolean;        // default false — toast auto-dismisses after action fires
+}
+
+interface ToastOptions {
+	titleText: string;
+	messageText: string;
+	variant?: ToastVariant;
+	themeColor?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+	isFilled?: boolean;
+	duration?: number;          // ms; 0 = persistent
+	shouldShowProgress?: boolean;
+	progressColor?: string;
+	maxWidth?: string;          // CSS width (e.g. '50rem')
+	actions?: ToastAction[];
+	iconClass?: string;         // FontAwesome class
+	class?: string;
+	position?: ToastPosition;   // default 'top-end'
+}
+
+toastService.show(options): string         // returns toast id
+toastService.success(input): string        // input: string | Partial<ToastOptions>
+toastService.danger(input): string
+toastService.warning(input): string
+toastService.info(input): string
+toastService.primary(input): string
+toastService.dismiss(id): void
+toastService.dismissAll(): void`}</CodeBlock>
 </Card>

@@ -399,7 +399,7 @@
 	<Popconfirm
 		bind:show={showLeftPopconfirm}
 		trigger={leftTrigger}
-		position="left"
+		position="start"
 		messageText="Confirm this action?"
 		confirmText="Yes"
 		cancelText="No"
@@ -408,7 +408,7 @@
 	<Popconfirm
 		bind:show={showRightPopconfirm}
 		trigger={rightTrigger}
-		position="right"
+		position="end"
 		messageText="Confirm this action?"
 		confirmText="Yes"
 		cancelText="No"
@@ -560,6 +560,6 @@
 />
 
 <!-- Toast notifications -->
-<ToastContainer position="top-right">
+<ToastContainer position="top-end">
 	<Toast bind:show={showToast} variant="success" titleText="Success" messageText={toastMessage} />
 </ToastContainer>

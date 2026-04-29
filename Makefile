@@ -75,6 +75,7 @@ install:
 
 # Start docs development server (main dev workflow)
 dev:
+	npx @keenmate/pureadmin themes download
 	npm run dev
 
 # Start library dev server (for library-only development)

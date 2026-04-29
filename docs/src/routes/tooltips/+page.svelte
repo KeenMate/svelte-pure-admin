@@ -21,13 +21,13 @@
 						<Tooltip text="Tooltip on top">Top</Tooltip>
 					</Column>
 					<Column size="1-2" md="1-4" class="text-center mb-3 p-4">
-						<Tooltip text="Tooltip on right" position="right">Right</Tooltip>
+						<Tooltip text="Tooltip on right" position="end">Right</Tooltip>
 					</Column>
 					<Column size="1-2" md="1-4" class="text-center mb-3 p-4">
 						<Tooltip text="Tooltip on bottom" position="bottom">Bottom</Tooltip>
 					</Column>
 					<Column size="1-2" md="1-4" class="text-center mb-3 p-4">
-						<Tooltip text="Tooltip on left" position="left">Left</Tooltip>
+						<Tooltip text="Tooltip on left" position="start">Left</Tooltip>
 					</Column>
 				</Grid>
 				<hr class="my-3" />
@@ -86,7 +86,7 @@
 				<Paragraph class="mb-3 text-sm">Regular buttons:</Paragraph>
 				<div class="text-center mb-4">
 					<ButtonGroup>
-						<Tooltip text="Save your changes" position="left">
+						<Tooltip text="Save your changes" position="start">
 							<Button variant="primary" size="sm">
 								<i class="fa-solid fa-floppy-disk"></i> Save
 							</Button>
@@ -287,7 +287,7 @@
 					</Column>
 					<Column size="1-2" md="1-4" class="text-center mb-3 p-4">
 						<span class="text-sm">Right </span>
-					<Popover titleText="Right" placement="right">
+					<Popover titleText="Right" placement="end">
 						<Paragraph>Appears to the right.</Paragraph>
 					</Popover>
 					</Column>
@@ -299,7 +299,7 @@
 					</Column>
 					<Column size="1-2" md="1-4" class="text-center mb-3 p-4">
 						<span class="text-sm">Left </span>
-					<Popover titleText="Left" placement="left">
+					<Popover titleText="Left" placement="start">
 						<Paragraph>Appears to the left.</Paragraph>
 					</Popover>
 					</Column>

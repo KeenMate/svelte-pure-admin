@@ -793,9 +793,74 @@ Done! ✅
 - Toast: `pa-toast--color-{N}` / `pa-toast--filled-color-{N}` (respects `isFilled`)
 - Toast `isFilled` prop: `pa-toast--filled-{variant}` for full-color background toasts
 
+### v2.3.0: Toast actions + width
+- `pa-toast__actions` element with border-top separator (consumed via Toast `actions` snippet)
+- Toast container `min-width` ratchet (already implemented in `ToastContainer.svelte`)
+- Toast `maxWidth` prop, `progressColor` prop
+
+### v2.3.2: Border-radius CSS vars + button polish
+- New CSS variables: `--pa-border-radius-sm`, `--pa-border-radius`, `--pa-border-radius-lg`
+- New CSS variable: `--pa-btn-secondary-outline-color`
+- Removed `translateY(-1px)` hover lift from `.pa-btn` (clipped inside `overflow: hidden` containers)
+- Button `vertical-align: middle` for mixed-size rows
+- SplitButton `__menu-inner` two-container clip pattern (already in `SplitButton.svelte`)
+
+### v2.3.3 / v2.3.4: Command palette rewrite + home/hotkeys
+- Multi-step wizards (`/deploy`, `/assign`, `/go`, `/theme`), context search (`:p`, `:u`, `:o`)
+- New BEM elements: `__home`, `__home-section`, `__home-heading`, `__shortcut`, `__input-wrapper`, `__token-prompt`, `__menu-inner`
+- `pa-shortcut-help` standalone help component (matches our `ShortcutHelpDialog.svelte`)
+- Hotkeys: `Alt+D` Deploy, `Alt+A` Assign, `Alt+G` Go to Page, `Alt+T` Switch Theme
+- New CSS vars: `--pa-command-palette-key-bg/key-text/key-font-size/key-font-weight`
+- Dropdown z-index 1000 → 7500
+
+### v2.3.5: Layout fixes
+- Navbar `__end` alignment fix (`margin-inline-start: auto`)
+- `pa-scroll-lock` uses `overflow-y: scroll` instead of `overflow: hidden` to prevent layout shift when ProfilePanel/modals open
+
+### v2.3.6: Responsive font sizing
+- Utility classes on `<html>` for FOUC-free declarative font scaling: `pa-font-responsive` (10px desktop / 12px mobile shorthand), `pa-font-base-{9-12}`, `pa-font-mobile-{9-12}`
+- CSS-only — no Svelte component needed; document in app setup guide
+
+### v2.4.0: Theme-aware demo charts
+- D3 SVG charts: must set `font-family` explicitly on every `<text>` element (Chrome doesn't reliably propagate `font-family: inherit` from `<svg>` to text nodes)
+- Bar fills should use `--pa-accent`, labels `--pa-text-color-1/2`, axis lines `--pa-border-color`
+
+### v2.5.0: Alerts + popconfirm BREAKING
+
+**Alert (BREAKING):**
+- `pa-alert__heading` no longer hardcoded to large size — defaults to body size + semibold. New `pa-alert__heading--lg` modifier for the deliberate-read variant.
+- New `pa-alert--multiline` modifier (default `align-items` is now `center`; opt back to `flex-start` for icon + multi-line content)
+- Padding/font-size scale finally distinct across `--sm` / default / `--lg`. Default V went `1.2rem → 0.75rem` (tighter), H went `1rem → 1.25rem` (looser). New SCSS vars: `$alert-padding-{sm,lg}-{v,h}`, `$alert-font-size-{sm,lg}`.
+- `pa-alert__actions` now renders with toast-style border-top separator
+- Structural children (`__heading`, `__list`, `__actions`, top-level `<p>`, `<hr>`) get `flex-basis: 100%` so they stack instead of inline-flexing
+
+**Svelte Alert.svelte additions:**
+- `isHeadingLarge?: boolean` — applies `pa-alert__heading--lg` (set this to preserve pre-v2.5.0 heading appearance)
+- `isMultiline?: boolean` — applies `pa-alert--multiline`
+
+**Popconfirm (BREAKING):**
+- `pa-popconfirm--right`/`--left` renamed to `--end`/`--start`
+- SCSS now uses `inset-inline-*` and `margin-inline-*` for proper RTL
+- Svelte `Popconfirm.svelte` no longer maps logical→physical class names internally; emits `pa-popconfirm--start/--end` directly
+
+**Other v2.5.0:**
+- Pager/load-more deduplication — load-more spinner now uses `var(--pa-accent)` (live theme response)
+
+### svelte-pure-admin v1.7.0 additions
+- New `display/KpiGrid.svelte` — wraps `pa-stat--square` grids with `.pa-kpi-grid` (negative-margin negation)
+- New `feedback/toast-service.svelte.ts` — programmatic `toastService.show({...})` paired with `<ToastContainer />`. Supports `actions: [{label, variant, onclick, isOutline, keepOpen}]`, `maxWidth`, `iconClass`, sugar methods (`success`, `danger`, `warning`, `info`, `primary`).
+- `NotificationsPanel.svelte` rewritten as data-driven: `items: NotificationItem[]`, `isPageView` prop, per-item `itemActions` snippet, optional bulk-select checkboxes (`shouldShowCheckboxes`). Old hardcoded sample-data version is gone — this is a breaking change for any consumer that relied on the demo content (none expected since the previous shape was unusable in production).
+- `Spinner.svelte` size type narrowed from `'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'` to `'xs'` only — the larger modifiers were never defined in SCSS and silently rendered at default size. **Type-level breaking change.**
+
+## Known upstream gaps (from pure-admin AUDIT.md)
+- **Composite badge missing `--btn-danger` variant.** All other button-section colour overrides exist but not `--btn-danger`. Base styles default to danger colours so adding it would be a no-op, but the gap is inconsistent.
+- **Timeline `--alternating` uses physical `left/right`.** `--simple` and `--feed` mirror correctly in RTL; `--alternating` and its modifiers (`--start`, `--end`, `--keep-layout`, `--single-column`) do not — items stay on the same physical sides under `dir="rtl"`. Document in component docs; full fix is upstream-scope.
+- **`.pa-spinner` only has `--xs`.** Larger sizes (`--sm/md/lg/xl/2xl`) shown in pure-admin demo do not exist in SCSS — they all rendered at the default size. Our Svelte type now reflects this.
+- **Deferred upstream components — do not wrap yet:** `file-selector`, `logic-tree`, `smart-filters` (aka `query-editor`). APIs unstable.
+
 ---
 
-**Last Updated:** 2026-03-25
+**Last Updated:** 2026-04-25
 **Svelte Version:** 5.x
 **SvelteKit Version:** 2.x
-**Pure Admin Core Version:** 2.2.0 (synced)
+**Pure Admin Core Version:** 2.5.0 (synced)

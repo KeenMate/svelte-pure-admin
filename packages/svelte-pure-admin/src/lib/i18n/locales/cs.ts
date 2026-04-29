@@ -17,6 +17,11 @@ export const cs: Record<string, string> = {
 	'pureAdmin.popconfirm.confirm': 'Potvrdit',
 	'pureAdmin.popconfirm.cancel': 'Zrušit',
 
+	// Notifications
+	'pureAdmin.notifications.title': 'Oznámení',
+	'pureAdmin.notifications.markAllRead': 'Označit vše jako přečtené',
+	'pureAdmin.notifications.viewAll': 'Zobrazit všechna oznámení',
+
 	// Shortcuts
 	'pureAdmin.shortcuts.title': 'Klávesové zkratky',
 	'pureAdmin.shortcuts.noShortcuts': 'Žádné zkratky nejsou registrovány.',

@@ -148,7 +148,7 @@
 				{#snippet headerActions()}
 					<ButtonGroup>
 						<Button variant="secondary" size="sm">Mark All Read</Button>
-						<Button variant="outline-danger" size="sm">Clear</Button>
+						<Button variant="danger" isOutline size="sm">Clear</Button>
 					</ButtonGroup>
 				{/snippet}
 				<Paragraph>Title + actions without description. The gap keeps them separated, and <code>justify-content: space-between</code> pushes actions to the right.</Paragraph>

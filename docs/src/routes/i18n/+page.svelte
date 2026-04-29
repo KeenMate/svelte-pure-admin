@@ -343,7 +343,7 @@ import type {
 					{/each}
 				</Select>
 				{#if demoLoading || i18n.isLoading}
-					<Spinner size="sm" />
+					<Spinner size="xs" />
 				{/if}
 			</div>
 

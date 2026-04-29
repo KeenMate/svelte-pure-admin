@@ -113,6 +113,7 @@ export { default as Popover } from './feedback/Popover.svelte';
 export { default as PopoverContainer } from './feedback/PopoverContainer.svelte';
 export { default as Popconfirm } from './feedback/Popconfirm.svelte';
 export { default as NotificationsPanel } from './feedback/NotificationsPanel.svelte';
+export type { NotificationItem } from './feedback/NotificationsPanel.svelte';
 
 // Display Components (Cards, Badges, Tables, Stats, Lists, Code, Timeline)
 export { default as Card } from './display/Card.svelte';
@@ -138,6 +139,7 @@ export { default as TableResponsive } from './display/TableResponsive.svelte';
 export { default as Pager } from './display/Pager.svelte';
 export { default as LoadMore } from './display/LoadMore.svelte';
 export { default as Stat } from './display/Stat.svelte';
+export { default as KpiGrid } from './display/KpiGrid.svelte';
 export { default as MetricList } from './display/MetricList.svelte';
 export { default as MetricListItem } from './display/MetricListItem.svelte';
 export { default as StatusList } from './display/StatusList.svelte';
@@ -246,6 +248,16 @@ export type {
 	CustomDialogOptions,
 	DialogButton
 } from './feedback/dialog-service.svelte';
+
+// Toast service — pairs with <ToastContainer />
+export { toastService, toastStore, DEFAULT_TOAST_POSITION } from './feedback/toast-service.svelte';
+export type {
+	ToastVariant,
+	ToastPosition,
+	ToastAction,
+	ToastOptions,
+	ToastState
+} from './feedback/toast-service.svelte';
 
 // Shortcut Registry (Global keyboard shortcuts)
 export { shortcutRegistry, formatShortcut } from './services/shortcut-registry.svelte';

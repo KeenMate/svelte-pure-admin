@@ -570,14 +570,14 @@ const transport = createPhoenixTransport(channel, {
 			<ButtonGroup>
 				<Button variant="primary" onclick={runBatchDemo} disabled={loading}>
 					{#if loading}
-						<Spinner size="sm" class="me-2" /> Running...
+						<Spinner size="xs" class="me-2" /> Running...
 					{:else}
 						Run Batched (1 request)
 					{/if}
 				</Button>
 				<Button variant="secondary" onclick={runSequentialDemo} disabled={loading}>
 					{#if loading}
-						<Spinner size="sm" class="me-2" /> Running...
+						<Spinner size="xs" class="me-2" /> Running...
 					{:else}
 						Run Sequential (5 requests)
 					{/if}
@@ -691,7 +691,7 @@ const transport = createPhoenixTransport(channel, {
 
 	<Button variant="primary" onclick={runErrorDemo} disabled={demo2Loading} class="mb-4">
 		{#if demo2Loading}
-			<Spinner size="sm" class="me-2" /> Running...
+			<Spinner size="xs" class="me-2" /> Running...
 		{:else}
 			Run Mixed Calls (2 valid, 2 invalid)
 		{/if}

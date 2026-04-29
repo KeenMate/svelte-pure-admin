@@ -129,7 +129,7 @@
 		disableNext={basicPage >= basicTotalPages}
 	/>
 
-	<Alert variant="info" isCompact>
+	<Alert variant="info" size="sm">
 		Current page: <strong>{basicPage}</strong> of {basicTotalPages}
 	</Alert>
 </Card>
@@ -166,7 +166,7 @@
 		disableNext={infoPage >= infoTotalPages}
 	/>
 
-	<Alert variant="info" isCompact>
+	<Alert variant="info" size="sm">
 		Start pager: page <strong>{fullPage}</strong> of {fullTotalPages} | End pager: page <strong>{infoPage}</strong> of {infoTotalPages}
 	</Alert>
 </Card>
@@ -233,8 +233,8 @@
 <Card titleText="Minimal Pager (No Page Input)">
 	<Paragraph>Pager without the page input field — just navigation buttons and optional info text.</Paragraph>
 
-	<Grid cols={2}>
-		<Column>
+	<Grid>
+		<Column md="1-2">
 			<Heading level={4}>Buttons Only</Heading>
 			<Pager
 				currentPage={1}
@@ -243,7 +243,7 @@
 				showInfo={false}
 			/>
 		</Column>
-		<Column>
+		<Column md="1-2">
 			<Heading level={4}>With Info Text</Heading>
 			<Pager
 				currentPage={1}
@@ -289,16 +289,16 @@
 <Card titleText="Load More Alignment">
 	<Paragraph>Load More buttons support <code>start</code>, <code>center</code> (default), and <code>end</code> alignment.</Paragraph>
 
-	<Grid cols={3}>
-		<Column>
+	<Grid>
+		<Column md="1-3">
 			<Heading level={4}>Start</Heading>
 			<LoadMore align="start" text="Load more" />
 		</Column>
-		<Column>
+		<Column md="1-3">
 			<Heading level={4}>Center (Default)</Heading>
 			<LoadMore align="center" text="Load more" />
 		</Column>
-		<Column>
+		<Column md="1-3">
 			<Heading level={4}>End</Heading>
 			<LoadMore align="end" text="Load more" />
 		</Column>
@@ -309,16 +309,16 @@
 <Card titleText="Load More States">
 	<Paragraph>Load More supports a loading spinner state, count display, and custom text.</Paragraph>
 
-	<Grid cols={3}>
-		<Column>
+	<Grid>
+		<Column md="1-3">
 			<Heading level={4}>With Count</Heading>
 			<LoadMore text="Show more items" count="25 of 250" shouldShowCount={true} />
 		</Column>
-		<Column>
+		<Column md="1-3">
 			<Heading level={4}>Loading State</Heading>
 			<LoadMore isLoading={true} />
 		</Column>
-		<Column>
+		<Column md="1-3">
 			<Heading level={4}>Custom Text</Heading>
 			<LoadMore text="Fetch older messages" />
 		</Column>
@@ -364,7 +364,7 @@
 			onclick={loadMoreProducts}
 		/>
 	{:else}
-		<Alert variant="success" isCompact>
+		<Alert variant="success" size="sm">
 			All {allProducts.length} products loaded. <button class="pa-btn pa-btn--sm pa-btn--secondary" onclick={resetProducts}>Reset</button>
 		</Alert>
 	{/if}

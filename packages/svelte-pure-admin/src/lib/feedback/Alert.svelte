@@ -22,6 +22,16 @@
 		isDismissible?: boolean;
 		/** Outline style */
 		isOutline?: boolean;
+		/**
+		 * Use the punchy/large heading variant (pa-alert__heading--lg).
+		 * Pre-v2.5.0 default; opt-in since core v2.5.0 made the body-sized heading the default.
+		 */
+		isHeadingLarge?: boolean;
+		/**
+		 * Stack icon at the top of multi-line content (pa-alert--multiline).
+		 * Default alignment is centred; flip this on when icon + heading + body sit beside each other.
+		 */
+		isMultiline?: boolean;
 		/** Alert heading text */
 		headingText?: string;
 		/** Additional CSS classes */
@@ -44,6 +54,8 @@
 		themeColor,
 		isDismissible = false,
 		isOutline = false,
+		isHeadingLarge = false,
+		isMultiline = false,
 		headingText,
 		class: className = '',
 		icon,
@@ -77,6 +89,7 @@
 
 		// Modifiers
 		if (isDismissible) base.push('pa-alert--dismissible');
+		if (isMultiline) base.push('pa-alert--multiline');
 
 		// Custom classes
 		if (className) base.push(className);
@@ -90,50 +103,42 @@
 	}
 </script>
 
+{#snippet body()}
+	{#if headingText}
+		<h4 class={isHeadingLarge ? 'pa-alert__heading pa-alert__heading--lg' : 'pa-alert__heading'}>{headingText}</h4>
+	{/if}
+	{@render children?.()}
+	{#if list}
+		<ul class="pa-alert__list">
+			{@render list()}
+		</ul>
+	{/if}
+	{#if actions}
+		<div class="pa-alert__actions">
+			{@render actions()}
+		</div>
+	{/if}
+{/snippet}
+
 {#if visible}
 	<div class={classes()} role="alert">
 		{#if icon}
-			<!-- Complex alert with icon -->
 			<span class="pa-alert__icon">
 				{@render icon()}
 			</span>
+		{/if}
+
+		{#if icon || isDismissible}
 			<div class="pa-alert__content">
-				{#if headingText}
-					<h4 class="pa-alert__heading">{headingText}</h4>
-				{/if}
-				{@render children?.()}
-				{#if list}
-					<ul class="pa-alert__list">
-						{@render list()}
-					</ul>
-				{/if}
-				{#if actions}
-					<div class="pa-alert__actions">
-						{@render actions()}
-					</div>
-				{/if}
+				{@render body()}
 			</div>
 		{:else}
-			<!-- Simple alert -->
-			{#if headingText}
-				<h4 class="pa-alert__heading">{headingText}</h4>
-			{/if}
-			{@render children?.()}
-			{#if list}
-				<ul class="pa-alert__list">
-					{@render list()}
-				</ul>
-			{/if}
-			{#if actions}
-				<div class="pa-alert__actions">
-					{@render actions()}
-				</div>
-			{/if}
+			{@render body()}
 		{/if}
 
 		{#if isDismissible}
-			<button class="pa-alert__close" onclick={dismiss} aria-label={$_('pureAdmin.common.buttons.close')}>
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+			<button type="button" class="pa-alert__close" onclick={dismiss} aria-label={$_('pureAdmin.common.buttons.close')}>
+				<span aria-hidden="true">×</span>
 			</button>
 		{/if}
 	</div>

@@ -21,11 +21,11 @@
   const popover = $derived(popoverManager.current);
 
   // Map logical positions (start/end) to Floating UI physical positions
-  function toFloatingPlacement(pos: string): string {
+  function toFloatingPlacement(pos: string): import('@floating-ui/dom').Placement {
     const isRtl = typeof document !== 'undefined' && document.dir === 'rtl';
     if (pos === 'start') return isRtl ? 'right' : 'left';
     if (pos === 'end') return isRtl ? 'left' : 'right';
-    return pos;
+    return pos as import('@floating-ui/dom').Placement;
   }
 
   // Build wrapper class string (for size and alignment modifiers)

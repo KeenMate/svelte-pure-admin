@@ -215,7 +215,7 @@
 		{#if !isVirtualScrollDone}
 			<div class="pa-timeline__loader" bind:this={loaderEl}>
 				{#if isVirtualScrollLoading}
-					<Spinner size="sm" />
+					<Spinner size="xs" />
 					<div class="pa-timeline__loader-text">Loading more entries...</div>
 				{/if}
 			</div>

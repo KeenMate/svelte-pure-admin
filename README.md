@@ -258,6 +258,8 @@ npm install @keenmate/svelte-pure-admin @keenmate/pure-admin-core
 
 Built on [svelte-i18n](https://github.com/kaisermann/svelte-i18n). All internal component strings (close buttons, aria labels, etc.) are translatable.
 
+See [**TRANSLATIONS.md**](./TRANSLATIONS.md) for the full guide: setup, local locale files, runtime switching, overriding library strings, and the complete list of built-in translation keys.
+
 ### Batch RPC
 | Export | Description |
 |--------|-------------|

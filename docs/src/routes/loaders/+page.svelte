@@ -15,61 +15,50 @@
 
 <!-- Spinner Sizes -->
 <Card titleText="Spinner Sizes" class="mb-6">
-
+	<Paragraph class="mb-4 text-secondary">
+		Pure Admin's <code>.pa-spinner</code> only ships two sizes: the default and <code>--xs</code>.
+		Earlier versions of these docs advertised <code>sm</code>, <code>md</code>, <code>lg</code>,
+		<code>xl</code> and <code>2xl</code> modifiers — those CSS rules don't exist in core,
+		so they all rendered at the default size. Use <code>&lt;Loader type="ring" size="lg" /&gt;</code>
+		(or one of the other animated loaders below) when you need a bigger indicator.
+	</Paragraph>
 	<Grid>
-		<Column size="100" md="1-4" class="text-center mb-4">
+		<Column size="100" md="1-2" class="text-center mb-4">
+			<Spinner />
+			<Paragraph class="mt-2 text-secondary">.pa-spinner<br />default (1rem)</Paragraph>
+		</Column>
+		<Column size="100" md="1-2" class="text-center mb-4">
 			<Spinner size="xs" />
 			<Paragraph class="mt-2 text-secondary">.pa-spinner--xs<br />0.75rem</Paragraph>
-		</Column>
-		<Column size="100" md="1-4" class="text-center mb-4">
-			<Spinner size="sm" />
-			<Paragraph class="mt-2 text-secondary">.pa-spinner--sm<br />1rem (default)</Paragraph>
-		</Column>
-		<Column size="100" md="1-4" class="text-center mb-4">
-			<Spinner size="md" />
-			<Paragraph class="mt-2 text-secondary">.pa-spinner--md<br />1.5rem</Paragraph>
-		</Column>
-		<Column size="100" md="1-4" class="text-center mb-4">
-			<Spinner size="lg" />
-			<Paragraph class="mt-2 text-secondary">.pa-spinner--lg<br />2rem</Paragraph>
-		</Column>
-		<Column size="100" md="1-4" class="text-center mb-4">
-			<Spinner size="xl" />
-			<Paragraph class="mt-2 text-secondary">.pa-spinner--xl<br />3rem</Paragraph>
-		</Column>
-		<Column size="100" md="1-4" class="text-center mb-4">
-			<Spinner size="2xl" />
-			<Paragraph class="mt-2 text-secondary">.pa-spinner--2xl<br />4rem</Paragraph>
 		</Column>
 	</Grid>
 </Card>
 
 <!-- Spinner Colors -->
 <Card titleText="Spinner Colors" class="mb-6">
-
 	<Grid>
 		<Column size="100" md="1-4" class="text-center mb-4">
-			<Spinner size="lg" variant="primary" />
+			<Spinner variant="primary" />
 			<Paragraph class="mt-2 text-secondary">.pa-spinner--primary</Paragraph>
 		</Column>
 		<Column size="100" md="1-4" class="text-center mb-4">
-			<Spinner size="lg" variant="secondary" />
+			<Spinner variant="secondary" />
 			<Paragraph class="mt-2 text-secondary">.pa-spinner--secondary</Paragraph>
 		</Column>
 		<Column size="100" md="1-4" class="text-center mb-4">
-			<Spinner size="lg" variant="success" />
+			<Spinner variant="success" />
 			<Paragraph class="mt-2 text-secondary">.pa-spinner--success</Paragraph>
 		</Column>
 		<Column size="100" md="1-4" class="text-center mb-4">
-			<Spinner size="lg" variant="danger" />
+			<Spinner variant="danger" />
 			<Paragraph class="mt-2 text-secondary">.pa-spinner--danger</Paragraph>
 		</Column>
 		<Column size="100" md="1-4" class="text-center mb-4">
-			<Spinner size="lg" variant="warning" />
+			<Spinner variant="warning" />
 			<Paragraph class="mt-2 text-secondary">.pa-spinner--warning</Paragraph>
 		</Column>
 		<Column size="100" md="1-4" class="text-center mb-4">
-			<Spinner size="lg" variant="info" />
+			<Spinner variant="info" />
 			<Paragraph class="mt-2 text-secondary">.pa-spinner--info</Paragraph>
 		</Column>
 	</Grid>
@@ -80,14 +69,14 @@
 
 	<Paragraph class="mb-4">
 		<Spinner size="xs" variant="primary" class="d-inline-block mr-2" />
-		Loading isInline content...
+		Loading inline content...
 	</Paragraph>
 	<Paragraph class="mb-4">
-		<Spinner size="sm" variant="success" class="d-inline-block mr-2" />
+		<Spinner variant="success" class="d-inline-block mr-2" />
 		Processing your request...
 	</Paragraph>
 	<Paragraph>
-		<Spinner size="sm" variant="info" class="d-inline-block mr-2" />
+		<Spinner variant="info" class="d-inline-block mr-2" />
 		Fetching data from server...
 	</Paragraph>
 </Card>
@@ -97,7 +86,7 @@
 
 	<div class="h-20x position-relative border border-dashed rounded">
 		<LoaderOverlay>
-			<Spinner size="xl" variant="primary" />
+			<Loader type="ring" size="lg" color="primary" />
 		</LoaderOverlay>
 	</div>
 </Card>
@@ -108,13 +97,13 @@
 	<Grid>
 		<Column size="100" md="1-2" class="mb-4">
 			<LoaderCenter class="h-15x border border-dashed rounded">
-				<Spinner size="lg" variant="primary" />
+				<Loader type="ring" size="lg" color="primary" />
 				<Paragraph class="mt-4 text-secondary">Loading data...</Paragraph>
 			</LoaderCenter>
 		</Column>
 		<Column size="100" md="1-2" class="mb-4">
 			<LoaderCenter class="h-15x border border-dashed rounded">
-				<Spinner size="lg" variant="success" />
+				<Loader type="ring" size="lg" color="success" />
 				<Paragraph class="mt-4 text-secondary">Processing...</Paragraph>
 			</LoaderCenter>
 		</Column>
@@ -132,7 +121,7 @@
 				{/snippet}
 				<div class="pa-card__body h-15x position-relative">
 					<LoaderOverlay>
-						<Spinner size="lg" variant="primary" />
+						<Loader type="ring" size="lg" color="primary" />
 					</LoaderOverlay>
 				</div>
 			</Card>
@@ -143,7 +132,7 @@
 					<Heading level={4}>Loading with Text</Heading>
 				{/snippet}
 				<div class="pa-card__body pa-loader-center h-15x">
-					<Spinner size="lg" variant="info" />
+					<Loader type="ring" size="lg" color="info" />
 					<Paragraph class="mt-4 text-secondary">Fetching data...</Paragraph>
 				</div>
 			</Card>
@@ -201,7 +190,7 @@
 
 		<!-- Spinner (existing) -->
 		<Column size="100" md="1-3" class="text-center mb-4">
-			<Spinner size="xl" class="text-secondary" />
+			<Spinner class="text-secondary" />
 			<Paragraph class="mt-2 text-secondary"><strong>Spinner (Default)</strong></Paragraph>
 			<Paragraph class="mt-2"><code>.pa-spinner</code></Paragraph>
 		</Column>
@@ -214,20 +203,20 @@
 	<Heading level={4} class="mb-2">Basic Spinner</Heading>
 	<CodeBlock class="mb-4">{`<Spinner />`}</CodeBlock>
 
-	<Heading level={4} class="mb-2">Sized Spinner</Heading>
-	<CodeBlock class="mb-4">{`<Spinner size="lg" />`}</CodeBlock>
+	<Heading level={4} class="mb-2">Smaller Spinner</Heading>
+	<CodeBlock class="mb-4">{`<Spinner size="xs" />`}</CodeBlock>
 
 	<Heading level={4} class="mb-2">Colored Spinner</Heading>
-	<CodeBlock class="mb-4">{`<Spinner size="lg" variant="primary" />`}</CodeBlock>
+	<CodeBlock class="mb-4">{`<Spinner variant="primary" />`}</CodeBlock>
 
 	<Heading level={4} class="mb-2">Centered Loader with Overlay</Heading>
 	<CodeBlock class="mb-4">{`<LoaderOverlay>
-  <Spinner size="xl" variant="primary" />
+  <Loader type="ring" size="lg" color="primary" />
 </LoaderOverlay>`}</CodeBlock>
 
 	<Heading level={4} class="mb-2">Centered Loader with Text</Heading>
 	<CodeBlock class="mb-4">{`<LoaderCenter>
-  <Spinner size="lg" />
+  <Loader type="ring" size="lg" color="primary" />
   <Paragraph class="mt-4">Loading...</Paragraph>
 </LoaderCenter>`}</CodeBlock>
 

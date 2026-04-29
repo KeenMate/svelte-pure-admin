@@ -139,9 +139,9 @@
 	<Grid>
 		<Column size="100" md="1-2">
 			<Heading level={4}>Basic Modal (show/hide)</Heading>
-			<CodeBlock>{`<script lang="ts">
+			<CodeBlock>{`<` + `script lang="ts">`}{`
   let showModal = $state(false);
-</script>
+`}{`<` + `/script>`}{`
 
 <Button onclick={() => showModal = true}>
   Open Modal
@@ -201,7 +201,7 @@
 	<Grid class="mt-4">
 		<Column size="100" md="1-2">
 			<Heading level={4}>Prevent Close (beforeCloseCallback)</Heading>
-			<CodeBlock>{`<script lang="ts">
+			<CodeBlock>{`<` + `script lang="ts">`}{`
   let showModal = $state(false);
   let hasUnsavedChanges = $state(false);
 
@@ -211,7 +211,7 @@
     }
     return true; // Allow closing
   }
-</script>
+`}{`<` + `/script>`}{`
 
 <Modal bind:show={showModal}
   titleText="Edit Document"

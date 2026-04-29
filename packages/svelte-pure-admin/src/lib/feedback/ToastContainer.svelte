@@ -3,29 +3,44 @@
 	 * Pure Admin ToastContainer Component (Svelte 5)
 	 * Based on @keenmate/pure-admin-core snippets/toasts.html
 	 *
+	 * Renders both:
+	 *   1. Toasts from the toast service (toastStore.toasts)
+	 *   2. Declarative children passed via the children snippet
+	 *
 	 * Width ratchet: min-width increases to match the widest toast shown,
 	 * preventing width shimmer when toasts of different widths appear.
 	 * Resets when the container becomes empty.
+	 *
+	 * Mount once in your app root for the service API:
+	 *   <ToastContainer position="top-end" />
 	 */
 
-	type ToastPosition =
-		| 'top-end'
-		| 'top-center'
-		| 'top-start'
-		| 'bottom-end'
-		| 'bottom-center'
-		| 'bottom-start';
+	import Toast from './Toast.svelte';
+	import { toastStore, DEFAULT_TOAST_POSITION, type ToastPosition } from './toast-service.svelte';
 
 	interface Props {
 		/** Container position (logical, RTL-aware). Default: 'top-end' */
 		position?: ToastPosition;
 		/** Additional CSS classes */
 		class?: string;
-		/** Children content */
+		/** Children content (declarative toasts) */
 		children?: import('svelte').Snippet;
 	}
 
-	let { position = 'top-end', class: className = '', children }: Props = $props();
+	let { position = DEFAULT_TOAST_POSITION, class: className = '', children }: Props = $props();
+
+	// Service toasts are routed to the container whose `position` matches
+	// the toast's `position` (defaults to DEFAULT_TOAST_POSITION when unset).
+	const serviceToasts = $derived(
+		toastStore.toasts.filter(t => (t.position ?? DEFAULT_TOAST_POSITION) === position)
+	);
+
+	function runAction(toastId: string, action: { onclick?: (id: string) => void; keepOpen?: boolean }) {
+		action.onclick?.(toastId);
+		if (!action.keepOpen) {
+			toastStore.dismiss(toastId);
+		}
+	}
 
 	let containerRef = $state<HTMLDivElement>();
 	let peakWidth = 0;
@@ -70,5 +85,41 @@
 </script>
 
 <div bind:this={containerRef} class={classes()}>
+	{#each serviceToasts as toast (toast.id)}
+		{@const iconClass = toast.iconClass}
+		{@const actions = toast.actions}
+
+		{#snippet iconSnippet()}
+			{#if iconClass}<i class={iconClass}></i>{/if}
+		{/snippet}
+
+		{#snippet actionsSnippet()}
+			{#each actions ?? [] as action}
+				<button
+					type="button"
+					class={`pa-btn pa-btn--xs ${action.isOutline ? `pa-btn--outline-${action.variant ?? 'secondary'}` : `pa-btn--${action.variant ?? 'secondary'}`}`}
+					onclick={() => runAction(toast.id, action)}
+				>
+					{action.label}
+				</button>
+			{/each}
+		{/snippet}
+
+		<Toast
+			variant={toast.variant ?? 'primary'}
+			themeColor={toast.themeColor}
+			isFilled={toast.isFilled}
+			titleText={toast.titleText}
+			messageText={toast.messageText}
+			duration={toast.duration ?? 5000}
+			shouldShowProgress={toast.shouldShowProgress}
+			progressColor={toast.progressColor}
+			maxWidth={toast.maxWidth}
+			class={toast.class}
+			icon={iconClass ? iconSnippet : undefined}
+			actions={actions && actions.length > 0 ? actionsSnippet : undefined}
+			onclose={() => toastStore.dismiss(toast.id)}
+		/>
+	{/each}
 	{@render children?.()}
 </div>

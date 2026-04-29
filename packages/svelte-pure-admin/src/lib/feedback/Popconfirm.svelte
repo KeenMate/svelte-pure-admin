@@ -67,7 +67,7 @@
 	let isFixedPositioning = $state(false);
 
 	// Map logical positions (start/end) to Floating UI physical positions
-	function toFloatingPlacement(pos: Position): string {
+	function toFloatingPlacement(pos: Position): import('@floating-ui/dom').Placement {
 		const isRtl = typeof document !== 'undefined' && document.dir === 'rtl';
 		if (pos === 'start') return isRtl ? 'right' : 'left';
 		if (pos === 'end') return isRtl ? 'left' : 'right';
@@ -80,16 +80,10 @@
 	});
 
 	// Build class string
-	// Map logical position to physical CSS class (SCSS only defines --left/--right, not --start/--end)
-	function toPhysicalCssPosition(pos: Position): string {
-		const isRtl = typeof document !== 'undefined' && document.dir === 'rtl';
-		if (pos === 'start') return isRtl ? 'right' : 'left';
-		if (pos === 'end') return isRtl ? 'left' : 'right';
-		return pos;
-	}
-
+	// SCSS uses logical class names (pa-popconfirm--start/--end) since core v2.5.0,
+	// so emit them directly — no physical mapping needed.
 	const classes = $derived(() => {
-		const base = ['pa-popconfirm', `pa-popconfirm--${toPhysicalCssPosition(actualPosition)}`];
+		const base = ['pa-popconfirm', `pa-popconfirm--${actualPosition}`];
 		if (isCompact) base.push('pa-popconfirm--compact');
 		if (show) base.push('is-open');
 		if (className) base.push(className);

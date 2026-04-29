@@ -60,7 +60,7 @@
 	let cleanupAutoUpdate: (() => void) | null = null;
 
 	// Map logical positions (start/end) to Floating UI physical positions
-	function toFloatingPlacement(pos: TooltipPosition): string {
+	function toFloatingPlacement(pos: TooltipPosition): import('@floating-ui/dom').Placement {
 		const isRtl = typeof document !== 'undefined' && document.dir === 'rtl';
 		if (pos === 'start') return isRtl ? 'right' : 'left';
 		if (pos === 'end') return isRtl ? 'left' : 'right';

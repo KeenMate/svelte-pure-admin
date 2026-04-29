@@ -141,8 +141,9 @@
 	// This onMount only handles click outside and cleanup.
 	onMount(() => {
 		// Signal page loader that Svelte has hydrated
-		if (typeof window.__pageLoaderReady === 'function') {
-			window.__pageLoaderReady();
+		const w = window as Window & { __pageLoaderReady?: () => void };
+		if (typeof w.__pageLoaderReady === 'function') {
+			w.__pageLoaderReady();
 		}
 
 		// Add click outside handler
@@ -588,6 +589,9 @@
 					{#snippet submenu()}
 						<SidebarItem href="/validation" labelText="Validation" active={$page.url.pathname === '/validation'}>
 							{#snippet icon()}✓{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/form-demo" labelText="Form Demo" active={$page.url.pathname === '/form-demo'}>
+							{#snippet icon()}📝{/snippet}
 						</SidebarItem>
 						<SidebarItem href="/batch-rpc" labelText="Batch RPC" active={$page.url.pathname === '/batch-rpc'}>
 							{#snippet icon()}📡{/snippet}

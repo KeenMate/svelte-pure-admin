@@ -17,6 +17,11 @@ export const en: Record<string, string> = {
 	'pureAdmin.popconfirm.confirm': 'Confirm',
 	'pureAdmin.popconfirm.cancel': 'Cancel',
 
+	// Notifications
+	'pureAdmin.notifications.title': 'Notifications',
+	'pureAdmin.notifications.markAllRead': 'Mark all as read',
+	'pureAdmin.notifications.viewAll': 'View all notifications',
+
 	// Shortcuts
 	'pureAdmin.shortcuts.title': 'Keyboard Shortcuts',
 	'pureAdmin.shortcuts.noShortcuts': 'No shortcuts registered.',
