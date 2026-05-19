@@ -7,6 +7,62 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+Sync with `@keenmate/pure-admin-core` **v2.5.0 → v2.7.2** — alerts rewrite, programmatic toast service, data-driven notifications panel, full migration to the new `@keenmate/pureadmin` CLI v1.3.x for theme management — **plus a 7-component KPI showcase suite** mirroring the dashboard layouts promoted to core in v2.7.x.
+
+### Added — KPI showcase suite (pure-admin-core v2.7.x sync)
+
+Seven dashboard layouts wrapped as composable Svelte 5 components, each mirroring a `pa-kpi-*` showcase in pure-admin-core. Shared helpers `kpi-actions.ts` (Floating-UI cursor-anchored popovers + sparkline-dot conversion action) and `kpi-detail.ts` (typed auto-row builder) keep popover/detail behaviour consistent across all 7. Every tile/row component supports `detailTitleText` (auto-generated rows: Current → Previous → Δ absolute → Δ percent → Target), `detailRows` typed override, or a `detail` snippet for fully-custom popover markup. New `/kpi-*` demo routes in the docs site mirror upstream's mustache views 1:1.
+
+- **`KpiStrip` + `KpiStripRow`** — numeric strip with composable `noPreviousValue` / `noDeltaPercent` / `noTargetBar` toggles (2–5 cols), auto-generated table header from visible columns
+- **`KpiSparklineList` + `KpiSparklineRow`** — Bloomberg-y row-per-KPI list with sparkline cell. List-level modifiers: `isChartFirst` (rotate narrow layout), `noDelta` (drop Δ% column, composes with `isChartFirst`). Action-driven `kpiSparklineDots` converts SVG `<circle>` endpoints into CSS-pixel-sized spans so the trailing dot stays round under `preserveAspectRatio="none"`
+- **`KpiGaugeList` + `KpiGauge`** — goal-oriented progress bars vs target with target tick. Cell-min-driven `auto-fit` grid by default (`cellMinWidth` CSS-var override); `gridLayout` modifier accepts `'2col'` deterministic or `'max-2'..'max-6'` cap-at-N. `tickPosition` knob for "0 → max scale" bars where target sits inside the bar
+- **`KpiHeroList` + `KpiHeroMain` + `KpiHeroSide`** — marketing/exec hero with one headline metric on the left, vertical rail of supporting tiles on the right. `heroSplit` accepts `'2-3'` (hero 2/3, rail 1/3) or `'3-4'` (rail thin sidebar); default is 1:1. `@container 700px` collapses to single column regardless of split
+- **`KpiBento` + `KpiBentoTile`** — varied tile sizes in a single bento grid; tile `size` accepts `'xl'` (hero) / `'lg'` / `'md'` / `'sm'`
+- **`KpiEditorial` + `KpiEditorialTile`** — minimal "even-weight" editorial grid (cell-min-driven `auto-fit` like gauges); for scanning many KPIs without per-tile chrome
+- **`KpiTerminal` + `KpiTerminalPane` + `KpiTerminalTile`** — Bloomberg-style dense panel. Optional tab strip switches independent panes (`hasTabs` + `KpiTerminalPane` children, each carrying its own grid and tile count). Panes register via context (`KPI_TERMINAL_CONTEXT`) so the host builds the tab strip from registered metadata. Single-pane shape (no `hasTabs`) wraps tile children in `pa-kpi-terminal__grid--2col`. Tile `variant` drives sparkline trend colour (`up-strong` / `up` / `flat` / `down` / `down-strong`); status pills (`good` / `warn` / `neutral`) sit on a separate "action urgency" axis from sentiment
+- **Shared `KpiDetailPopover`** component + `kpi-actions.ts` (`kpiPopover`, `kpiSparklineDots` actions) + `kpi-detail.ts` helpers (`KpiDetailRow`, `KpiDetailSentiment`, `buildAutoDetailRows`, `deltaToSentiment`) — exported for advanced custom-popover layouts
+
+### Added — library
+
+- **Toast service** (`feedback/toast-service.svelte.ts`) — programmatic `toastService.show({...})` paired with `<ToastContainer />`. Supports `actions: [{label, variant, onclick, isOutline, keepOpen}]`, `maxWidth`, `iconClass`, `progressColor`, plus sugar methods (`success`, `danger`, `warning`, `info`, `primary`). Mirrors the Promise-based pattern of `dialogService`. Exports `toastService`, `toastStore`, `DEFAULT_TOAST_POSITION`, and types `ToastVariant`, `ToastPosition`, `ToastAction`, `ToastOptions`, `ToastState`
+- **`KpiGrid`** (`display/KpiGrid.svelte`) — wraps `<Stat variant="square">` tiles in `.pa-kpi-grid` (negative-margin negation so square tile grids align flush with surrounding content)
+- **`Gauge`**: `gaugeSize?: string` — overrides `--pa-gauge-size` (default `12rem`). Height auto-derives 2:1. Since core v2.7.0
+- **`Stat`**: `isSymbolPrefix?: boolean` — render symbol BEFORE number for prefix currencies (`$847K`, `¥12.4M`). Default false (suffix: `87%`, `23°C`). Since core v2.6.0
+- **`Stat`**: 5-step `changeDirection` scale — `very-positive` / `positive` / `neutral` / `negative` / `very-negative`. The two extra stops alias the sentiment scale promoted to core in v2.6.0/2.7.0
+- **Alert**: `isHeadingLarge?: boolean` — opt into the pre-v2.5.0 large heading style (`pa-alert__heading--lg`). Default is now body size + semibold per core v2.5.0
+- **Alert**: `isMultiline?: boolean` — applies `pa-alert--multiline` for icon + multi-line content (default `align-items` is now `center` since v2.5.0)
+- **`NotificationItem`** type exported alongside the rewritten `NotificationsPanel`
+
+### Changed — library (BREAKING)
+
+- **`NotificationsPanel`** rewritten as data-driven: takes `items: NotificationItem[]`, `isPageView`, `shouldShowCheckboxes`, per-item `itemActions` snippet, `customItems` snippet, `onmarkallread` / `onitemclick` / `onitemtoggle` callbacks. The previous hardcoded sample-data version is gone. No expected migration impact (the previous shape was unusable in production)
+- **`Spinner`** size type narrowed from `'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'` to `'xs'` only — the larger modifiers were never defined in core SCSS and silently rendered at the default size. Use `<Loader type="ring" size="lg">` for visibly larger spinners
+- **`Popconfirm`** SCSS now uses logical `--start`/`--end` modifiers natively (since core v2.5.0); the Svelte component no longer maps logical→physical class names internally
+- Peer dependency: `@keenmate/pure-admin-core` bumped from `^2.3.5` to `^2.5.0`
+
+### Added — docs site infrastructure
+
+- **`@keenmate/pureadmin` CLI integration** — adopted the new three-file project config (`pureadmin.json` declarations, `pureadmin.lock.json` resolutions, `.pureadmin.json` per-developer overrides). All 15 themes now declared once in `pureadmin.json` and resolved to a committed lockfile for byte-identical reproduction across machines. `make dev` runs `npx @keenmate/pureadmin themes install`; Docker uses `npx @keenmate/pureadmin themes ci` (strict reproduce, ignores `.pureadmin.json`, fails fast on lock drift)
+- **`docs/src/routes/+layout.server.ts`** — derives the theme list from `docs/static/themes/*/theme.json` at prerender time. Probes both `css/<id>.css` (registry layout) and `dist/<id>.css` (local-build layout) so heterogeneous sources work side-by-side. Themes added via `pureadmin.json` now appear in the settings panel automatically — no manual sync required
+- **Demo pages**: complete rewrite of `/toasts` (uses `toastService` with positions, variants, persistent toasts, action toasts, bulk dismiss, theme color slots, service API reference); complete parity rewrite of `/alerts` against pure-admin's `alerts.mustache` (heading size comparison, custom actions, sizes, multi-line, CSS classes reference, all 9 theme color slots)
+- **7 KPI demo routes** (`/kpi-numeric-strip`, `/kpi-sparkline-list`, `/kpi-comparison-gauges`, `/kpi-hero-supporting`, `/kpi-bento`, `/kpi-editorial-minimal`, `/kpi-terminal-grid`) — each mirrors the corresponding upstream `kpi-*.mustache` 1:1, including layout-test sections (1×3 page-grid, 25/45 asymmetric) and the new v2.7.x modifier showcases (tabs+panes for terminal grid, split-ratio variants for hero, cell-min auto-fit grids for gauges/editorial, composable `no-*` toggles for numeric strip and sparkline list)
+- **KPI submenu in sidebar** — items listed in upstream pure-admin order (Terminal grid → Sparkline list → Comparison gauges → Hero + supporting → Bento layout → Numeric strip → Editorial minimal)
+- **CLAUDE.md slimmed to an index** — guide details moved to `docs/guides/svelte5-patterns.md`, `naming-conventions.md`, `typescript-types.md`. Source comments in each KPI component supplement the guides with per-component pattern notes
+
+### Changed — docs site infrastructure (BREAKING for local setup)
+
+- **Removed `docs/scripts/copy-themes.js`** — replaced by the CLI. Previous `.themes.json` workflow no longer recognised; configure themes via `pureadmin.json` instead
+- **Removed `docs/package.json` postinstall hook** — themes are now installed explicitly by `make dev` (`themes install`) or Docker (`themes ci`)
+- **`docs/src/routes/+layout.svelte`**: 17-line hardcoded `availableThemes` array replaced by `data.themes` from the server load
+- **`docs/src/app.html`**: dropped the hardcoded `validThemes` allow-list; FOUC `<link>` trusts localStorage with a default fallback (stale theme ids 404 cleanly and the SettingsPanel overwrites them on first interaction)
+- **`Dockerfile`**: replaced the broken hardcoded 6-theme fetch (`npx pureadmin themes audi dark ... --dir`) with `npx @keenmate/pureadmin themes ci`. Layer ordering preserved so theme install only re-runs when `pureadmin.lock.json` actually changes
+
+### Fixed
+
+- **Alert** `themeColor` handling for outline variants now correctly applies `pa-alert--outline-color-{N}` (previously only the filled `pa-alert--color-{N}` slot was emitted)
+- **Modals demo page** parse error — literal `</script>` text inside `CodeBlock` template literals was terminating the page's real `<script>` block. Escaped via string concat
+- All 27 type-check errors across docs and library packages resolved (`npm run check` reports 0 errors)
+
 ---
 
 ## [1.6.2] - 2026-04-19

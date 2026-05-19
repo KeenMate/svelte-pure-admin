@@ -140,6 +140,40 @@ export { default as Pager } from './display/Pager.svelte';
 export { default as LoadMore } from './display/LoadMore.svelte';
 export { default as Stat } from './display/Stat.svelte';
 export { default as KpiGrid } from './display/KpiGrid.svelte';
+export { kpiPopover, kpiSparklineDots } from './display/kpi-actions';
+export { default as KpiStrip } from './display/KpiStrip.svelte';
+export { default as KpiStripRow } from './display/KpiStripRow.svelte';
+export type { KpiStripColumn } from './display/KpiStrip.svelte';
+export type { KpiDeltaVariant } from './display/KpiStripRow.svelte';
+export type { KpiDetailSentiment, KpiDetailRow, KpiAnyDeltaVariant } from './display/kpi-detail';
+export { default as KpiEditorial } from './display/KpiEditorial.svelte';
+export { default as KpiEditorialTile } from './display/KpiEditorialTile.svelte';
+export { default as KpiGaugeList } from './display/KpiGaugeList.svelte';
+export type { KpiGaugeListGridLayout } from './display/KpiGaugeList.svelte';
+export { default as KpiGauge } from './display/KpiGauge.svelte';
+export type { KpiGaugeVariant } from './display/KpiGauge.svelte';
+export { default as KpiSparklineList } from './display/KpiSparklineList.svelte';
+export { default as KpiSparklineRow } from './display/KpiSparklineRow.svelte';
+export type {
+	KpiSparklineTrendVariant,
+	KpiSparklineDeltaVariant
+} from './display/KpiSparklineRow.svelte';
+export { default as KpiBento } from './display/KpiBento.svelte';
+export { default as KpiBentoTile } from './display/KpiBentoTile.svelte';
+export { default as KpiHeroList } from './display/KpiHeroList.svelte';
+export type { KpiHeroSplit } from './display/KpiHeroList.svelte';
+export { default as KpiHeroMain } from './display/KpiHeroMain.svelte';
+export { default as KpiHeroSide } from './display/KpiHeroSide.svelte';
+export type { KpiHeroVariant } from './display/KpiHeroMain.svelte';
+export { default as KpiTerminal } from './display/KpiTerminal.svelte';
+export { default as KpiTerminalPane } from './display/KpiTerminalPane.svelte';
+export { default as KpiTerminalTile } from './display/KpiTerminalTile.svelte';
+export type {
+	KpiTerminalContext,
+	KpiTerminalPaneInfo
+} from './display/KpiTerminal.svelte';
+export { KPI_TERMINAL_CONTEXT } from './display/KpiTerminal.svelte';
+export type { KpiTerminalStatus } from './display/KpiTerminalTile.svelte';
 export { default as MetricList } from './display/MetricList.svelte';
 export { default as MetricListItem } from './display/MetricListItem.svelte';
 export { default as StatusList } from './display/StatusList.svelte';

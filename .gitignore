@@ -20,10 +20,14 @@ packages/svelte-pure-admin/README.md
 .svelte-kit/
 package/
 
-# Theme config and downloaded themes
-.themes.json
-themes/
+# Downloaded themes (managed by `npx @keenmate/pureadmin themes install` — see pureadmin.json/pureadmin.lock.json)
 docs/static/themes/
+
+# Per-developer pureadmin overrides (see .pureadmin.json.example for the template)
+.pureadmin.json
+
+# Claude Code tooling (commands, settings, transcripts) — per-developer
+.claude/
 
 # Environment variables
 .env

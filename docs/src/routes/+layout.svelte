@@ -35,19 +35,14 @@
 	import { page } from '$app/stores';
 	import '../app.css';
 
+	let { data, children } = $props();
+
 	// Theme CSS files are served from static/themes/ to avoid Vite's CSS
 	// injection side-effects that occur with ?url imports of CSS-only packages.
 	// The correct theme is loaded via a blocking <link> in app.html (no FOUC).
-	const availableThemes: ThemeOption[] = [
-		{ id: 'audi', name: 'Audi', cssPath: '/themes/audi/css/audi.css' },
-		{ id: 'cafeindustrial', name: 'Café Industrial', cssPath: '/themes/cafeindustrial/css/cafeindustrial.css' },
-		{ id: 'corporate', name: 'Corporate', cssPath: '/themes/corporate/css/corporate.css' },
-		{ id: 'dark', name: 'Dark', cssPath: '/themes/dark/css/dark.css' },
-		{ id: 'express', name: 'Express', cssPath: '/themes/express/css/express.css' },
-		{ id: 'minimal', name: 'Minimal', cssPath: '/themes/minimal/css/minimal.css' }
-	];
-
-	let { data, children } = $props();
+	// Theme list is derived from docs/static/themes/*/theme.json by +layout.server.ts —
+	// install themes via `npx @keenmate/pureadmin themes install` and they appear here.
+	const availableThemes: ThemeOption[] = data.themes;
 
 	let sidebarHidden = $state(
 		typeof localStorage !== 'undefined' && localStorage.getItem('sidebar-hidden') === 'true'
@@ -227,6 +222,14 @@
 		{ id: 'i18n', title: 'Internationalization (i18n)', path: '/i18n', icon: '🌐' },
 		{ id: 'auto-theme', title: 'Auto Theme', path: '/auto-theme', icon: '🌓' },
 		{ id: 'kpi-dashboard', title: 'KPI Dashboard', path: '/kpi-dashboard', icon: '📊' },
+		// KPI showcases — order matches pure-admin sidebar
+		{ id: 'kpi-terminal-grid', title: 'KPI · Terminal grid', path: '/kpi-terminal-grid', icon: '📊' },
+		{ id: 'kpi-sparkline-list', title: 'KPI · Sparkline list', path: '/kpi-sparkline-list', icon: '📊' },
+		{ id: 'kpi-comparison-gauges', title: 'KPI · Comparison gauges', path: '/kpi-comparison-gauges', icon: '📊' },
+		{ id: 'kpi-hero-supporting', title: 'KPI · Hero + supporting', path: '/kpi-hero-supporting', icon: '📊' },
+		{ id: 'kpi-bento', title: 'KPI · Bento layout', path: '/kpi-bento', icon: '📊' },
+		{ id: 'kpi-numeric-strip', title: 'KPI · Numeric strip', path: '/kpi-numeric-strip', icon: '📊' },
+		{ id: 'kpi-editorial-minimal', title: 'KPI · Editorial minimal', path: '/kpi-editorial-minimal', icon: '📊' },
 		{ id: 'movies', title: 'Movies', path: '/movies', icon: '🎬' },
 		{ id: 'movie-detail', title: 'Movie Detail', path: '/movies/detail?id=1', icon: '🎬' },
 		{ id: 'movies-panel', title: 'Movies + Panel', path: '/movies-panel', icon: '🎬' }
@@ -736,6 +739,34 @@
 					{#snippet icon()}📐{/snippet}
 					{#snippet submenu()}
 						<SidebarItem href="/layouts" labelText="Page Layouts" active={$page.url.pathname === '/layouts'}>
+							{#snippet icon()}•{/snippet}
+						</SidebarItem>
+					{/snippet}
+				</SidebarItem>
+
+				<!-- KPI showcases (order matches pure-admin sidebar) -->
+				<SidebarItem labelText="KPI" hasSubmenu={true}>
+					{#snippet icon()}📊{/snippet}
+					{#snippet submenu()}
+						<SidebarItem href="/kpi-terminal-grid" labelText="Terminal grid" active={$page.url.pathname === '/kpi-terminal-grid'}>
+							{#snippet icon()}•{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/kpi-sparkline-list" labelText="Sparkline list" active={$page.url.pathname === '/kpi-sparkline-list'}>
+							{#snippet icon()}•{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/kpi-comparison-gauges" labelText="Comparison gauges" active={$page.url.pathname === '/kpi-comparison-gauges'}>
+							{#snippet icon()}•{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/kpi-hero-supporting" labelText="Hero + supporting" active={$page.url.pathname === '/kpi-hero-supporting'}>
+							{#snippet icon()}•{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/kpi-bento" labelText="Bento layout" active={$page.url.pathname === '/kpi-bento'}>
+							{#snippet icon()}•{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/kpi-numeric-strip" labelText="Numeric strip" active={$page.url.pathname === '/kpi-numeric-strip'}>
+							{#snippet icon()}•{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/kpi-editorial-minimal" labelText="Editorial minimal" active={$page.url.pathname === '/kpi-editorial-minimal'}>
 							{#snippet icon()}•{/snippet}
 						</SidebarItem>
 					{/snippet}

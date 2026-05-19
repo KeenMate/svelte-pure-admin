@@ -4,16 +4,26 @@ Svelte 5 component library for Pure Admin CSS framework — 100+ ready-to-use co
 
 **Ships with AI reference files** — 14 plain-text docs in `ai/` optimized for LLM-assisted development (Claude, ChatGPT, Copilot). Point your AI assistant at `node_modules/@keenmate/svelte-pure-admin/ai/INDEX.txt` for instant component knowledge.
 
+## What's New in 1.7.0
+
+Sync with `@keenmate/pure-admin-core` **v2.5.0 → v2.7.2**.
+
+- **7-component KPI showcase suite** — seven dashboard layouts ready to drop in: `KpiStrip` (numeric strip), `KpiSparklineList`, `KpiGaugeList` (comparison gauges), `KpiHeroList` + `KpiHeroMain` + `KpiHeroSide`, `KpiBento`, `KpiEditorial`, `KpiTerminal` (with optional tabs+panes). Every layout ships with a shared cursor-anchored hover popover (Floating UI), an auto-row "detail" builder (Current → Previous → Δ absolute → Δ percent → Target), and composable layout modifiers (`noPreviousValue` / `noDeltaPercent` / `noTargetBar` for the strip; `isChartFirst` / `noDelta` for sparkline; `gridLayout` / `cellMinWidth` for gauges; `heroSplit` for hero). See the `/kpi-*` demo routes
+- **Toast service** — programmatic `toastService.show({...})` with action buttons, custom progress colors, max-width, and sugar methods (`success`, `danger`, `warning`, `info`, `primary`). Pair with a single `<ToastContainer />` to drive toasts from anywhere in your app. See `/toasts` demo
+- **Alert** — new `isHeadingLarge` opts into the pre-v2.5.0 large heading style; `isMultiline` correctly stacks an icon at the top of multi-line content. Default heading size is now smaller per core v2.5.0 — set `isHeadingLarge` if you want the punchier look
+- **`Stat`** — symbol-prefix mode for currencies (`isSymbolPrefix` renders `$847K` / `¥12.4M` instead of suffix). 5-step `changeDirection` scale (`very-positive` / `positive` / `neutral` / `negative` / `very-negative`) per core v2.6.0/2.7.0
+- **`Gauge`** — `gaugeSize` prop overrides `--pa-gauge-size` (default `12rem`); height auto-derives 2:1
+- **`NotificationsPanel` (BREAKING)** — rewritten as data-driven (`items: NotificationItem[]`, per-item `itemActions` snippet, optional bulk-select checkboxes, `isPageView`). The previous hardcoded sample-data version is gone
+- **`Spinner` (BREAKING type)** — size narrowed to `'xs'` only. Larger modifiers were never defined in core SCSS and silently rendered at the default size. Use `<Loader type="ring" size="lg">` for visibly larger spinners
+- **Docs site theme management** — migrated to the new `@keenmate/pureadmin` CLI (declarations in `pureadmin.json`, resolutions in `pureadmin.lock.json`, per-developer overrides in `.pureadmin.json`). Adding a theme is now a single `pureadmin themes add <id>` away; the settings panel and FOUC-prevention pick it up automatically — no source-code changes needed
+
+See [CHANGELOG.md](./CHANGELOG.md#unreleased) for the full list and BREAKING-change migration notes.
+
 ## What's New in 1.6.2
 
 - **Timeline layout modifiers** — `alignment="start" | "end"` forces all items to one side; `shouldKeepLayout` preserves the alternating zig-zag on mobile instead of collapsing to a single column
 - **Docs: Timeline Block page rewritten** — working Load More (reactive `$state`), working Virtual Scroll with `IntersectionObserver`, plus Start/End/Keep-Layout and combination examples — mirrors pure-admin's `/timeline/block` 1:1
 - **Docs: Dashboard cleanup** — dropped orphan components (`ActivityFeed`, `MetricList`, `StatusList`, `QuickActions`) whose CSS classes weren't in pure-admin-core; the dashboard now uses `Timeline` for Recent Activity, compact `Table` for Traffic Sources / Top Products, `List` + `Badge` for System Status, and `ButtonGroup vertical` for Quick Actions
-
-## What's New in 1.6.1
-
-- **No more sidebar flash** — Submenu expansion state loads synchronously from localStorage, eliminating the collapsed-then-expanded flash on page load
-- **Page loader waits for hydration** — Spinner overlay stays visible until both fonts and Svelte components are ready (documented pattern for consumer apps)
 
 ## Installation
 
@@ -394,9 +404,25 @@ Themeable via CSS variables: `--page-loader-bg`, `--page-loader-spinner-border`,
 The `docs/` folder contains a full documentation site showcasing all components with interactive examples.
 
 ```bash
-cd docs
-npm install
-npm run dev       # Start docs site (http://localhost:5173)
+npm install       # Install workspace dependencies
+make dev          # Install themes via pureadmin CLI + start docs site (http://localhost:5173)
+```
+
+`make dev` runs `npx @keenmate/pureadmin themes install` against the project's `pureadmin.json` / `pureadmin.lock.json` to populate `docs/static/themes/`, then starts the SvelteKit dev server. To add or remove a theme, edit `pureadmin.json` (or use `npx @keenmate/pureadmin themes add <id>` / `themes remove <id>`) and re-run `make dev` — the settings panel picks it up automatically because the theme list is derived from `docs/static/themes/*/theme.json` at prerender, not hardcoded.
+
+For local theme iteration (working against a sibling `pure-admin-themes/<id>` repo without publishing):
+
+```bash
+npx @keenmate/pureadmin themes add audi --path ../pure-admin-themes/audi
+# → writes to .pureadmin.json (gitignored). pureadmin.lock.json stays clean.
+```
+
+CI / Docker builds use the strict-reproduce verb instead:
+
+```bash
+npx @keenmate/pureadmin themes ci
+# → fails fast if pureadmin.json and pureadmin.lock.json are out of sync.
+#   Ignores .pureadmin.json overrides. Writes nothing.
 ```
 
 The docs site includes:

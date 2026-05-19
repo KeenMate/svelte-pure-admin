@@ -20,9 +20,11 @@
 		variant?: DataVizVariant;
 		/** Multi-zone gauge (green/yellow/red bands) — overrides variant */
 		isZones?: boolean;
+		/** Override `--pa-gauge-size` (default `12rem`). Height auto-derives 2:1. Since core v2.7.0. */
+		gaugeSize?: string;
 		/** Additional CSS classes */
 		class?: string;
-		/** Children content (rendered inside the inner area) */
+		/** Children content (rendered inside the inner area — replaces `valueText` rendering only) */
 		children?: import('svelte').Snippet;
 	}
 
@@ -34,9 +36,14 @@
 		maxText,
 		variant,
 		isZones = false,
+		gaugeSize,
 		class: className = '',
 		children
 	}: Props = $props();
+
+	const styleAttr = $derived(
+		gaugeSize ? `--value: ${value}; --pa-gauge-size: ${gaugeSize}` : `--value: ${value}`
+	);
 
 	const classes = $derived(() => {
 		const base = ['pa-gauge'];
@@ -50,19 +57,17 @@
 	});
 </script>
 
-<div class={classes()} style="--value: {value}">
+<div class={classes()} style={styleAttr}>
 	<div class="pa-gauge__inner">
 		{#if children}
 			{@render children()}
-		{:else}
-			{#if valueText}
-				<span class="pa-gauge__value">{valueText}</span>
-			{/if}
-			{#if labelText}
-				<span class="pa-gauge__label">{labelText}</span>
-			{/if}
+		{:else if valueText}
+			<span class="pa-gauge__value">{valueText}</span>
 		{/if}
 	</div>
+	{#if labelText}
+		<span class="pa-gauge__label">{labelText}</span>
+	{/if}
 	{#if minText}
 		<span class="pa-gauge__min">{minText}</span>
 	{/if}

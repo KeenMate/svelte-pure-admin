@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -9,12 +9,13 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const config = {
 	preprocess: vitePreprocess(),
 	kit: {
+		// Node adapter — produces a self-contained Node server in build/.
+		// Required so that on-demand theme installation (themes/[slug]/[...path]/+server.ts)
+		// can run at runtime. Most pages are still SSR'd cheaply per-request from disk.
 		adapter: adapter({
-			pages: 'build',
-			assets: 'build',
-			fallback: 'index.html',
+			out: 'build',
 			precompress: false,
-			strict: true
+			envPrefix: 'PA_'
 		}),
 		alias: {
 			// Point to library source for HMR during development

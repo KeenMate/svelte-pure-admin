@@ -13,19 +13,23 @@
 		<script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.3"></script>
 		<!-- Load theme CSS before render (render-blocking <link> prevents FOUC).
 		     Reads theme from localStorage (SettingsPanel) → cookie (server) → default.
-		     SettingsPanel updates this <link>'s href at runtime when theme changes. -->
+		     SettingsPanel updates this <link>'s href at runtime when theme changes.
+		     The valid theme list is derived from docs/static/themes/*/theme.json at
+		     prerender time (see +layout.server.ts). If localStorage holds a stale
+		     theme id (uninstalled), the <link> 404s and the SettingsPanel will
+		     overwrite it with a valid one on first interaction. -->
 		<script>
 			(function() {
-				var validThemes = ['audi', 'cafeindustrial', 'corporate', 'dark', 'express', 'minimal'];
 				var theme = localStorage.getItem('theme');
-				if (!theme || validThemes.indexOf(theme) === -1) {
+				if (!theme) {
 					var match = document.cookie.match(/(^| )theme=([^;]+)/);
 					theme = match ? match[2] : 'audi';
 				}
-				if (validThemes.indexOf(theme) === -1) theme = 'audi';
 				var link = document.createElement('link');
 				link.id = 'pa-theme-css';
 				link.rel = 'stylesheet';
+				// Registry-extracted layout: themes/<id>/css/<id>.css
+				// (manifest currently mis-declares dist/ — see +layout.server.ts probe)
 				link.href = '/themes/' + theme + '/css/' + theme + '.css';
 				document.currentScript.parentNode.insertBefore(link, document.currentScript);
 			})();

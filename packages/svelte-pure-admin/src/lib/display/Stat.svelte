@@ -6,7 +6,9 @@
 
 	type StatVariant = 'hero' | 'hero-compact' | 'square';
 	type StatColor = 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger';
-	type ChangeDirection = 'positive' | 'negative' | 'neutral';
+	// 5-step sentiment scale since core v2.6.0/2.7.0.
+	// `positive` / `negative` alias `--pa-success` / `--pa-danger`; `--very-*` are explicit darker stops.
+	type ChangeDirection = 'very-positive' | 'positive' | 'neutral' | 'negative' | 'very-negative';
 
 	interface Props {
 		/** Stat variant */
@@ -25,6 +27,8 @@
 		changeDirection?: ChangeDirection;
 		/** Symbol text (for square variant) */
 		symbolText?: string;
+		/** Render symbol BEFORE number (prefix currencies: `$847K`, `¥12.4M`). Default false (suffix: `87%`, `23°C`). Since core v2.6.0. */
+		isSymbolPrefix?: boolean;
 		/** Additional CSS classes */
 		class?: string;
 		/** Icon snippet (for default variant) */
@@ -42,6 +46,7 @@
 		changeText,
 		changeDirection,
 		symbolText,
+		isSymbolPrefix = false,
 		class: className = '',
 		icon,
 		children
@@ -71,9 +76,14 @@
 	</div>
 {:else if variant === 'square'}
 	<div class={classes()}>
-		<div class="pa-stat__number">{number}</div>
-		{#if symbolText}
+		{#if isSymbolPrefix && symbolText}
 			<div class="pa-stat__symbol">{symbolText}</div>
+			<div class="pa-stat__number">{number}</div>
+		{:else}
+			<div class="pa-stat__number">{number}</div>
+			{#if symbolText}
+				<div class="pa-stat__symbol">{symbolText}</div>
+			{/if}
 		{/if}
 		<div class="pa-stat__label">{labelText}</div>
 	</div>

@@ -4,13 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node scripts/copy-themes.js && vite dev",
+    "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "clean": "rm -rf build .svelte-kit",
-    "postinstall": "node scripts/copy-themes.js"
+    "clean": "rm -rf build .svelte-kit"
   },
   "dependencies": {
     "@felte/validator-zod": "^1.0.18",
@@ -22,10 +21,13 @@
   },
   "devDependencies": {
     "@keenmate/pure-admin-core": "^2.0.0",
+    "@sveltejs/adapter-node": "^5.5.4",
     "@sveltejs/adapter-static": "^3.0.0",
     "@sveltejs/kit": "^2.50.0",
     "@sveltejs/vite-plugin-svelte": "^6.2.4",
+    "@types/adm-zip": "^0.5.8",
     "@types/node": "^20.0.0",
+    "adm-zip": "^0.5.17",
     "svelte": "^5.0.0",
     "svelte-check": "^4.0.0",
     "typescript": "^5.0.0",

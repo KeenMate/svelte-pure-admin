@@ -15,60 +15,60 @@
 
 ### Visual regression check (v2.5.0 CSS bump changes defaults)
 
-- [ ] **Default alert padding looks tighter vertically, looser horizontally** than before — that's correct (V `1.2 → 0.75rem`, H `1 → 1.25rem`)
-- [ ] **Heading + icon + single-line content** centres vertically (was top-aligned)
-- [ ] **`pa-alert__actions` divider** — there's now a thin border-top above action button rows (matches toast style)
+- [X] **Default alert padding looks tighter vertically, looser horizontally** than before — that's correct (V `1.2 → 0.75rem`, H `1 → 1.25rem`)
+- [X] **Heading + icon + single-line content** centres vertically (was top-aligned)
+- [X] **`pa-alert__actions` divider** — there's now a thin border-top above action button rows (matches toast style)
 
 ### "Basic Alerts" — 8 variants
 
-- [ ] All 8 variants render (primary, secondary, success, danger, warning, info, light, dark)
-- [ ] No empty `pa-alert__icon` wrapper visible (would show as a gap on the inline-start)
+- [X] All 8 variants render (primary, secondary, success, danger, warning, info, light, dark)
+- [X] No empty `pa-alert__icon` wrapper visible (would show as a gap on the inline-start)
 
 ### "Alerts with Icons" — 4 variants
 
-- [ ] Icons (✓ ⚠ ! ⓘ) render on the inline-start
-- [ ] Icon + single-line content **centred vertically** in each one
+- [X] Icons (✓ ⚠ ! ⓘ) render on the inline-start
+- [X] Icon + single-line content **centred vertically** in each one
 
 ### "Dismissible Alerts"
 
-- [ ] Close button (×) on the inline-end of each
-- [ ] Clicking × hides the alert
-- [ ] Other alerts are unaffected when one is dismissed
+- [X] Close button (×) on the inline-end of each
+- [X] Clicking × hides the alert
+- [X] Other alerts are unaffected when one is dismissed
 
 ### "Alerts with Additional Content"
 
-- [ ] **Headings render LARGE** (Success! / Storage running low) — because `isHeadingLarge` is set
-- [ ] If you toggle `isHeadingLarge` off in DevTools, headings should shrink to body size
-- [ ] Bullet list inside Storage running low alert renders correctly with `pa-alert__list` styling
-- [ ] `<hr>` divider in Success alert renders with alert-tinted top border
+- [X] **Headings render LARGE** (Success! / Storage running low) — because `isHeadingLarge` is set
+- [X] If you toggle `isHeadingLarge` off in DevTools, headings should shrink to body size
+- [X] Bullet list inside Storage running low alert renders correctly with `pa-alert__list` styling
+- [X] `<hr>` divider in Success alert renders with alert-tinted top border
 
 ### "Heading size: default vs `isHeadingLarge`" — NEW SECTION
 
-- [ ] Left column shows two SMALL headings ("Validation failed" / "Saved") at body font-size
-- [ ] Right column shows the SAME two as LARGER headings
-- [ ] Body text below each heading is identical in both columns
+- [X] Left column shows two SMALL headings ("Validation failed" / "Saved") at body font-size
+- [X] Right column shows the SAME two as LARGER headings
+- [X] Body text below each heading is identical in both columns
 
 ### "Alerts with custom actions" — NEW SECTION
 
-- [ ] System update / Sync failed / Cookies disabled all render with the divider above the action row
-- [ ] Cookies disabled alert (single button, no `isHeadingLarge`) — heading is small, action divider still present
-- [ ] Buttons are inert (no onclick handlers — pure visual showcase, intentional)
+- [X] System update / Sync failed / Cookies disabled all render with the divider above the action row
+- [X] Cookies disabled alert (single button, no `isHeadingLarge`) — heading is small, action divider still present
+- [X] Buttons are inert (no onclick handlers — pure visual showcase, intentional)
 
 ### "Sizes" — NEW SECTION
 
-- [ ] Three alerts (sm / default / lg) are **visibly different sizes**
-- [ ] sm: smallest font + tightest padding
-- [ ] lg: largest font + most padding
-- [ ] Default sits in the middle
+- [X] Three alerts (sm / default / lg) are **visibly different sizes**
+- [X] sm: smallest font + tightest padding
+- [X] lg: largest font + most padding
+- [X] Default sits in the middle
 
 ### "Outline Alerts"
 
-- [ ] All 5 outline variants render with transparent fill + colored border
+- [X] All 5 outline variants render with transparent fill + colored border
 
 ### "Theme Color Slot Alerts" + "Outline Theme Color Slot Alerts"
 
-- [ ] **All 9 colors render** (not just 6 like before) — even if invisible in base theme, they should at least have visible padding
-- [ ] Try switching theme (`/auto-theme` if available) — colors 1-9 should change appearance
+- [X] **All 9 colors render** (not just 6 like before) — even if invisible in base theme, they should at least have visible padding
+- [X] Try switching theme (`/auto-theme` if available) — colors 1-9 should change appearance
 
 ### "Icon + multi-line content" — NEW SECTION
 

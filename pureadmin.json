@@ -1,65 +1,20 @@
 {
-  "themesDir": "static/themes",
+  "themesDir": "docs/static/themes",
   "themes": {
-    "audi": {
-      "path": "../pure-admin-themes/audi",
-      "version": "2.3.4"
-    },
-    "ayu": {
-      "path": "../pure-admin-themes/ayu",
-      "version": "2.3.4"
-    },
-    "cobalt2": {
-      "path": "../pure-admin-themes/cobalt2",
-      "version": "2.3.4"
-    },
-    "darkmatter": {
-      "path": "../pure-admin-themes/darkmatter",
-      "version": "2.3.4"
-    },
-    "dracula": {
-      "path": "../pure-admin-themes/dracula",
-      "version": "2.3.4"
-    },
-    "gruvbox": {
-      "path": "../pure-admin-themes/gruvbox",
-      "version": "2.3.4"
-    },
-    "night-owl": {
-      "path": "../pure-admin-themes/night-owl",
-      "version": "2.3.4"
-    },
-    "one-dark": {
-      "path": "../pure-admin-themes/one-dark",
-      "version": "2.3.4"
-    },
-    "tokyo-night": {
-      "path": "../pure-admin-themes/tokyo-night",
-      "version": "2.3.4"
-    },
-    "dark": {
-      "path": "../pure-admin-themes/dark",
-      "version": "2.3.4"
-    },
-    "corporate": {
-      "path": "../pure-admin-themes/corporate",
-      "version": "2.3.4"
-    },
-    "express": {
-      "path": "../pure-admin-themes/express",
-      "version": "2.3.4"
-    },
-    "minimal": {
-      "path": "../pure-admin-themes/minimal",
-      "version": "2.3.4"
-    },
-    "cafeindustrial": {
-      "path": "../pure-admin-themes/cafeindustrial",
-      "version": "2.3.4"
-    },
-    "nato": {
-      "path": "../pure-admin-themes/nato",
-      "version": "2.3.4"
-    }
+    "audi": {},
+    "ayu": {},
+    "cafeindustrial": {},
+    "cobalt2": {},
+    "corporate": {},
+    "dark": {},
+    "darkmatter": {},
+    "dracula": {},
+    "express": {},
+    "gruvbox": {},
+    "minimal": {},
+    "nato": {},
+    "night-owl": {},
+    "one-dark": {},
+    "tokyo-night": {}
   }
 }

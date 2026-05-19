@@ -19,6 +19,8 @@
 		variant?: ModalVariant;
 		/** Header variant (for header theming only) */
 		headerVariant?: ModalVariant;
+		/** Banded variant — header AND footer wear the role colour as filled bands. Compose with `variant` for the colour (success/warning/danger/info). Since core v2.7.0. */
+		isBanded?: boolean;
 		/** Modal position */
 		position?: ModalPosition;
 		/** Scrollable body content */
@@ -54,6 +56,7 @@
 		size = 'md',
 		variant,
 		headerVariant,
+		isBanded = false,
 		position = 'center',
 		isScrollable = false,
 		isStatic = false,
@@ -75,6 +78,7 @@
 		const base = ['pa-modal'];
 		if (show) base.push('pa-modal--show');
 		if (variant) base.push(`pa-modal--${variant}`);
+		if (isBanded) base.push('pa-modal--banded');
 		if (position === 'top') base.push('pa-modal--top');
 		if (isStatic) base.push('pa-modal--static');
 		if (className) base.push(className);
