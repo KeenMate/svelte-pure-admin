@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-05-19
+
 Sync with `@keenmate/pure-admin-core` **v2.5.0 → v2.7.2** — alerts rewrite, programmatic toast service, data-driven notifications panel, full migration to the new `@keenmate/pureadmin` CLI v1.3.x for theme management — **plus a 7-component KPI showcase suite** mirroring the dashboard layouts promoted to core in v2.7.x.
 
 ### Added — KPI showcase suite (pure-admin-core v2.7.x sync)
