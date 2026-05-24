@@ -14,8 +14,7 @@ const config = {
 		// can run at runtime. Most pages are still SSR'd cheaply per-request from disk.
 		adapter: adapter({
 			out: 'build',
-			precompress: false,
-			envPrefix: 'PA_'
+			precompress: false
 		}),
 		alias: {
 			// Point to library source for HMR during development
