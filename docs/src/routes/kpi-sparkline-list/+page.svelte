@@ -10,39 +10,17 @@
 		KpiSparklineList,
 		KpiSparklineRow
 	} from '@keenmate/svelte-pure-admin';
+	import Sparkline from '$lib/charts/Sparkline.svelte';
 
-	// SVG sparkline shapes (one per KPI) — keep markup repetition out of the template
+	// Sparkline data per KPI — values are "higher = more" (Chart.js draws bigger y higher).
+	// errorRate trends DOWN (good news on an error metric).
 	const sparklines = {
-		completion: {
-			polygon: '0,18 12,16 24,17 36,12 48,15 60,9 72,11 84,7 96,5 100,24 0,24',
-			polyline: '0,18 12,16 24,17 36,12 48,15 60,9 72,11 84,7 96,5',
-			endX: 96, endY: 5
-		},
-		revenue: {
-			polygon: '0,20 12,19 24,17 36,14 48,11 60,9 72,7 84,5 96,4 100,24 0,24',
-			polyline: '0,20 12,19 24,17 36,14 48,11 60,9 72,7 84,5 96,4',
-			endX: 96, endY: 4
-		},
-		serverTemp: {
-			polygon: '0,17 12,16 24,15 36,13 48,12 60,10 72,9 84,7 96,6 100,24 0,24',
-			polyline: '0,17 12,16 24,15 36,13 48,12 60,10 72,9 84,7 96,6',
-			endX: 96, endY: 6
-		},
-		capacity: {
-			polygon: '0,15 12,12 24,16 36,9 48,13 60,7 72,11 84,5 96,9 100,24 0,24',
-			polyline: '0,15 12,12 24,16 36,9 48,13 60,7 72,11 84,5 96,9',
-			endX: 96, endY: 9
-		},
-		errorRate: {
-			polygon: '0,7 12,9 24,8 36,11 48,10 60,12 72,11 84,13 96,15 100,24 0,24',
-			polyline: '0,7 12,9 24,8 36,11 48,10 60,12 72,11 84,13 96,15',
-			endX: 96, endY: 15
-		},
-		tokyo: {
-			polygon: '0,14 12,11 24,15 36,9 48,13 60,8 72,12 84,10 96,9 100,24 0,24',
-			polyline: '0,14 12,11 24,15 36,9 48,13 60,8 72,12 84,10 96,9',
-			endX: 96, endY: 9
-		}
+		completion: [6, 8, 7, 12, 9, 15, 13, 17, 19],
+		revenue:    [4, 5, 7, 10, 13, 15, 17, 19, 20],
+		serverTemp: [7, 8, 9, 11, 12, 14, 15, 17, 18],
+		capacity:   [9, 12, 8, 15, 11, 17, 13, 19, 15],
+		errorRate:  [17, 15, 16, 13, 14, 12, 13, 11, 9],
+		tokyo:      [10, 13, 9, 15, 11, 16, 12, 14, 15]
 	};
 </script>
 
@@ -78,11 +56,7 @@
 		targetText="90.0%"
 	>
 		{#snippet chart()}
-			<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-				<polygon points={sparklines.completion.polygon} />
-				<polyline points={sparklines.completion.polyline} />
-				<circle cx={sparklines.completion.endX} cy={sparklines.completion.endY} r="2" />
-			</svg>
+			<Sparkline data={sparklines.completion} type="area" showEndDot />
 		{/snippet}
 	</KpiSparklineRow>
 
@@ -100,11 +74,7 @@
 		targetText="$900K"
 	>
 		{#snippet chart()}
-			<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-				<polygon points={sparklines.revenue.polygon} />
-				<polyline points={sparklines.revenue.polyline} />
-				<circle cx={sparklines.revenue.endX} cy={sparklines.revenue.endY} r="2" />
-			</svg>
+			<Sparkline data={sparklines.revenue} type="area" showEndDot />
 		{/snippet}
 	</KpiSparklineRow>
 
@@ -121,11 +91,7 @@
 		targetText="≤ 23°C"
 	>
 		{#snippet chart()}
-			<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-				<polygon points={sparklines.serverTemp.polygon} />
-				<polyline points={sparklines.serverTemp.polyline} />
-				<circle cx={sparklines.serverTemp.endX} cy={sparklines.serverTemp.endY} r="2" />
-			</svg>
+			<Sparkline data={sparklines.serverTemp} type="area" showEndDot />
 		{/snippet}
 	</KpiSparklineRow>
 
@@ -142,11 +108,7 @@
 		targetText="≤ 75%"
 	>
 		{#snippet chart()}
-			<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-				<polygon points={sparklines.capacity.polygon} />
-				<polyline points={sparklines.capacity.polyline} />
-				<circle cx={sparklines.capacity.endX} cy={sparklines.capacity.endY} r="2" />
-			</svg>
+			<Sparkline data={sparklines.capacity} type="area" showEndDot />
 		{/snippet}
 	</KpiSparklineRow>
 
@@ -163,11 +125,7 @@
 		targetText="≤ 0.50%"
 	>
 		{#snippet chart()}
-			<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-				<polygon points={sparklines.errorRate.polygon} />
-				<polyline points={sparklines.errorRate.polyline} />
-				<circle cx={sparklines.errorRate.endX} cy={sparklines.errorRate.endY} r="2" />
-			</svg>
+			<Sparkline data={sparklines.errorRate} type="area" showEndDot />
 		{/snippet}
 	</KpiSparklineRow>
 
@@ -185,11 +143,7 @@
 		targetText="¥13.0M"
 	>
 		{#snippet chart()}
-			<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-				<polygon points={sparklines.tokyo.polygon} />
-				<polyline points={sparklines.tokyo.polyline} />
-				<circle cx={sparklines.tokyo.endX} cy={sparklines.tokyo.endY} r="2" />
-			</svg>
+			<Sparkline data={sparklines.tokyo} type="area" showEndDot />
 		{/snippet}
 	</KpiSparklineRow>
 
@@ -233,11 +187,7 @@
 		targetText="90.0%"
 	>
 		{#snippet chart()}
-			<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-				<polygon points={sparklines.completion.polygon} />
-				<polyline points={sparklines.completion.polyline} />
-				<circle cx={sparklines.completion.endX} cy={sparklines.completion.endY} r="2" />
-			</svg>
+			<Sparkline data={sparklines.completion} type="area" showEndDot />
 		{/snippet}
 	</KpiSparklineRow>
 
@@ -255,11 +205,7 @@
 		targetText="$900K"
 	>
 		{#snippet chart()}
-			<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-				<polygon points={sparklines.revenue.polygon} />
-				<polyline points={sparklines.revenue.polyline} />
-				<circle cx={sparklines.revenue.endX} cy={sparklines.revenue.endY} r="2" />
-			</svg>
+			<Sparkline data={sparklines.revenue} type="area" showEndDot />
 		{/snippet}
 	</KpiSparklineRow>
 
@@ -276,11 +222,7 @@
 		targetText="≤ 23°C"
 	>
 		{#snippet chart()}
-			<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-				<polygon points={sparklines.serverTemp.polygon} />
-				<polyline points={sparklines.serverTemp.polyline} />
-				<circle cx={sparklines.serverTemp.endX} cy={sparklines.serverTemp.endY} r="2" />
-			</svg>
+			<Sparkline data={sparklines.serverTemp} type="area" showEndDot />
 		{/snippet}
 	</KpiSparklineRow>
 
@@ -297,11 +239,7 @@
 		targetText="≤ 0.50%"
 	>
 		{#snippet chart()}
-			<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-				<polygon points={sparklines.errorRate.polygon} />
-				<polyline points={sparklines.errorRate.polyline} />
-				<circle cx={sparklines.errorRate.endX} cy={sparklines.errorRate.endY} r="2" />
-			</svg>
+			<Sparkline data={sparklines.errorRate} type="area" showEndDot />
 		{/snippet}
 	</KpiSparklineRow>
 
@@ -325,20 +263,12 @@
 		<KpiSparklineList>
 			<KpiSparklineRow variant="up" labelText="Completion Rate" valueText="87.9" unit="%" deltaText="+4.4%" deltaVariant="positive" detailTitleText="Completion Rate · 30D" previousValueText="84.2%" targetText="90.0%">
 				{#snippet chart()}
-					<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-						<polygon points={sparklines.completion.polygon} />
-						<polyline points={sparklines.completion.polyline} />
-						<circle cx={sparklines.completion.endX} cy={sparklines.completion.endY} r="2" />
-					</svg>
+					<Sparkline data={sparklines.completion} type="area" showEndDot />
 				{/snippet}
 			</KpiSparklineRow>
 			<KpiSparklineRow variant="up" labelText="Monthly Revenue" prefix="$" valueText="862" unit="K" deltaText="+14.7%" deltaVariant="positive" detailTitleText="Monthly Revenue · 12MO" previousValueText="$752K" targetText="$900K">
 				{#snippet chart()}
-					<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-						<polygon points={sparklines.revenue.polygon} />
-						<polyline points={sparklines.revenue.polyline} />
-						<circle cx={sparklines.revenue.endX} cy={sparklines.revenue.endY} r="2" />
-					</svg>
+					<Sparkline data={sparklines.revenue} type="area" showEndDot />
 				{/snippet}
 			</KpiSparklineRow>
 		</KpiSparklineList>
@@ -348,20 +278,12 @@
 		<KpiSparklineList isChartFirst>
 			<KpiSparklineRow variant="down" labelText="Server Temp" valueText="23.8" unit="°C" deltaText="-2.7%" deltaVariant="negative" detailTitleText="Server Temp · 24H" previousValueText="24.5°C">
 				{#snippet chart()}
-					<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-						<polygon points={sparklines.serverTemp.polygon} />
-						<polyline points={sparklines.serverTemp.polyline} />
-						<circle cx={sparklines.serverTemp.endX} cy={sparklines.serverTemp.endY} r="2" />
-					</svg>
+					<Sparkline data={sparklines.serverTemp} type="area" showEndDot />
 				{/snippet}
 			</KpiSparklineRow>
 			<KpiSparklineRow variant="up" labelText="Server Capacity" valueText="83.1" unit="%" deltaText="+17.1%" deltaVariant="positive" detailTitleText="Server Capacity · 7D">
 				{#snippet chart()}
-					<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-						<polygon points={sparklines.capacity.polygon} />
-						<polyline points={sparklines.capacity.polyline} />
-						<circle cx={sparklines.capacity.endX} cy={sparklines.capacity.endY} r="2" />
-					</svg>
+					<Sparkline data={sparklines.capacity} type="area" showEndDot />
 				{/snippet}
 			</KpiSparklineRow>
 		</KpiSparklineList>
@@ -371,20 +293,12 @@
 		<KpiSparklineList>
 			<KpiSparklineRow variant="up-strong" labelText="Error Rate" valueText="0.25" unit="%" deltaText="-38.1%" deltaVariant="very-positive" detailTitleText="Error Rate · 24H">
 				{#snippet chart()}
-					<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-						<polygon points={sparklines.errorRate.polygon} />
-						<polyline points={sparklines.errorRate.polyline} />
-						<circle cx={sparklines.errorRate.endX} cy={sparklines.errorRate.endY} r="2" />
-					</svg>
+					<Sparkline data={sparklines.errorRate} type="area" showEndDot />
 				{/snippet}
 			</KpiSparklineRow>
 			<KpiSparklineRow variant="up" labelText="Tokyo Office" prefix="¥" valueText="11.6" unit="M" deltaText="+3.6%" deltaVariant="positive" detailTitleText="Tokyo Office · 12MO">
 				{#snippet chart()}
-					<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-						<polygon points={sparklines.tokyo.polygon} />
-						<polyline points={sparklines.tokyo.polyline} />
-						<circle cx={sparklines.tokyo.endX} cy={sparklines.tokyo.endY} r="2" />
-					</svg>
+					<Sparkline data={sparklines.tokyo} type="area" showEndDot />
 				{/snippet}
 			</KpiSparklineRow>
 		</KpiSparklineList>

@@ -13,9 +13,26 @@
 		Timeline,
 		TimelineItem,
 		ButtonGroup,
-		Paragraph
+		Paragraph,
+		KpiSparklineList,
+		KpiSparklineRow,
+		KpiHeroList,
+		KpiHeroMain,
+		KpiHeroSide
 	} from '@keenmate/svelte-pure-admin';
+	import Sparkline from '$lib/charts/Sparkline.svelte';
 	import ConfigDisplay from './ConfigDisplay.svelte';
+
+	// Sparkline data — values are "higher = more / better" (Chart.js draws bigger y higher).
+	const productSparks = {
+		alpha:   [21800, 22300, 22700, 22000, 23200, 23500, 24000, 24532],
+		beta:    [17900, 18000, 18100, 18200, 18400, 18500, 18700, 18940],
+		gamma:   [16400, 16300, 16200, 16100, 16000, 15900, 15800, 15677],
+		delta:   [11200, 11400, 11500, 11700, 11800, 11900, 12100, 12234],
+		epsilon: [8200, 8400, 8700, 9000, 9200, 9500, 9700, 9847]
+	};
+
+	const revenueTrend = [720, 730, 745, 755, 770, 780, 795, 810, 820, 830, 838, 845, 847];
 </script>
 
 <ConfigDisplay />
@@ -51,24 +68,147 @@
 	</Column>
 </Grid>
 
-<!-- Top Sales Products & KPIs -->
+<!-- Top Sales Products + Revenue Trend (left column) & KPI tiles + Traffic Sources (right column) -->
 <Grid>
 	<Column size="100" md="2-3">
-		<Card titleText="Top Sales Products">
-			<div class="pa-chart-placeholder">
-				<Paragraph horizontalAlignment="center" mode="muted">Chart placeholder - integrate with Chart.js, D3.js, or similar</Paragraph>
-				<div class="pa-chart-mockup">
-					<svg width="100%" height="200" viewBox="0 0 600 200" preserveAspectRatio="none">
-						<rect x="20" y="20" width="280" height="25" fill="currentColor" opacity="0.6" rx="4" />
-						<rect x="20" y="55" width="220" height="25" fill="currentColor" opacity="0.5" rx="4" />
-						<rect x="20" y="90" width="180" height="25" fill="currentColor" opacity="0.4" rx="4" />
-						<rect x="20" y="125" width="140" height="25" fill="currentColor" opacity="0.3" rx="4" />
-						<rect x="20" y="160" width="100" height="25" fill="currentColor" opacity="0.2" rx="4" />
-					</svg>
-				</div>
-			</div>
-		</Card>
+		<KpiSparklineList titleText="Top Sales Products" isLive>
+			<KpiSparklineRow
+				variant="up-strong"
+				labelText="Product Epsilon"
+				prefix="$"
+				valueText="9,847"
+				deltaText="+15.2%"
+				deltaVariant="very-positive"
+				detailTitleText="Product Epsilon · 30D"
+				previousValueText="$8,547"
+				deltaAbsoluteText="+$1,300"
+			>
+				{#snippet chart()}
+					<Sparkline data={productSparks.epsilon} type="area" showEndDot />
+				{/snippet}
+			</KpiSparklineRow>
+
+			<KpiSparklineRow
+				variant="up"
+				labelText="Product Alpha"
+				prefix="$"
+				valueText="24,532"
+				deltaText="+12.1%"
+				deltaVariant="positive"
+				detailTitleText="Product Alpha · 30D"
+				previousValueText="$21,884"
+				deltaAbsoluteText="+$2,648"
+			>
+				{#snippet chart()}
+					<Sparkline data={productSparks.alpha} type="area" showEndDot />
+				{/snippet}
+			</KpiSparklineRow>
+
+			<KpiSparklineRow
+				variant="up"
+				labelText="Product Delta"
+				prefix="$"
+				valueText="12,234"
+				deltaText="+8.3%"
+				deltaVariant="positive"
+				detailTitleText="Product Delta · 30D"
+				previousValueText="$11,294"
+				deltaAbsoluteText="+$940"
+			>
+				{#snippet chart()}
+					<Sparkline data={productSparks.delta} type="area" showEndDot />
+				{/snippet}
+			</KpiSparklineRow>
+
+			<KpiSparklineRow
+				variant="up"
+				labelText="Product Beta"
+				prefix="$"
+				valueText="18,940"
+				deltaText="+5.4%"
+				deltaVariant="positive"
+				detailTitleText="Product Beta · 30D"
+				previousValueText="$17,970"
+				deltaAbsoluteText="+$970"
+			>
+				{#snippet chart()}
+					<Sparkline data={productSparks.beta} type="area" showEndDot />
+				{/snippet}
+			</KpiSparklineRow>
+
+			<KpiSparklineRow
+				variant="down"
+				labelText="Product Gamma"
+				prefix="$"
+				valueText="15,677"
+				deltaText="-3.1%"
+				deltaVariant="negative"
+				detailTitleText="Product Gamma · 30D"
+				previousValueText="$16,178"
+				deltaAbsoluteText="−$501"
+			>
+				{#snippet chart()}
+					<Sparkline data={productSparks.gamma} type="area" showEndDot />
+				{/snippet}
+			</KpiSparklineRow>
+		</KpiSparklineList>
+
+		<KpiHeroList titleText="Revenue Trend" isLive heroSplit="2-3">
+			<KpiHeroMain
+				variant="up-strong"
+				labelText="Monthly Revenue"
+				prefix="$"
+				valueText="847"
+				unit="K"
+				deltaText="+12.5%"
+				periodText="vs last month"
+				targetText="tgt $900K"
+				detailTitleText="Monthly Revenue · 12MO"
+				previousValueText="$753K"
+				deltaAbsoluteText="+$94K"
+			>
+				{#snippet chart()}
+					<div class="pa-kpi-hero-main__chart-svg">
+						<Sparkline data={revenueTrend} type="area" showEndDot height="100%" />
+					</div>
+				{/snippet}
+			</KpiHeroMain>
+
+			{#snippet rail()}
+				<KpiHeroSide
+					variant="positive"
+					labelText="YTD Revenue"
+					prefix="$"
+					valueText="9.2"
+					unit="M"
+					deltaText="+18.4% vs LY"
+					detailTitleText="YTD Revenue"
+					targetText="$11.1M"
+				/>
+				<KpiHeroSide
+					variant="positive"
+					labelText="Q4 Actual"
+					prefix="$"
+					valueText="2.4"
+					unit="M"
+					deltaText="+9.1% vs Q3"
+					detailTitleText="Q4 Revenue"
+					targetText="$2.7M"
+				/>
+				<KpiHeroSide
+					variant="neutral"
+					labelText="Forecast EOY"
+					prefix="$"
+					valueText="11.1"
+					unit="M"
+					deltaText="on track"
+					detailTitleText="Forecast EOY"
+					targetText="$11.0M"
+				/>
+			{/snippet}
+		</KpiHeroList>
 	</Column>
+
 	<Column size="100" md="1-3">
 		<Card titleText="Key Performance Indicators">
 			<Grid class="pa-kpi-grid">
@@ -92,37 +232,7 @@
 				</Column>
 			</Grid>
 		</Card>
-	</Column>
-</Grid>
 
-<!-- Charts Section -->
-<Grid>
-	<Column size="100" md="2-3">
-		<Card titleText="Revenue Trend">
-			<div class="pa-chart-placeholder">
-				<Paragraph horizontalAlignment="center" mode="muted">Chart placeholder - integrate with Chart.js, D3.js, or similar</Paragraph>
-				<div class="pa-chart-mockup">
-					<svg width="100%" height="200" viewBox="0 0 600 200" preserveAspectRatio="none">
-						<polyline
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							points="0,150 60,140 120,120 180,110 240,100 300,90 360,85 420,75 480,70 540,60 600,50"
-							opacity="0.6"
-						/>
-						<polyline
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							points="0,180 60,170 120,165 180,160 240,155 300,150 360,145 420,140 480,135 540,130 600,125"
-							opacity="0.3"
-						/>
-					</svg>
-				</div>
-			</div>
-		</Card>
-	</Column>
-	<Column size="100" md="1-3">
 		<Card titleText="Traffic Sources" hasPadding={false}>
 			<Table isCompact>
 				<tbody>

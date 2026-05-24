@@ -9,12 +9,14 @@
 		KpiHeroMain,
 		KpiHeroSide
 	} from '@keenmate/svelte-pure-admin';
+	import Sparkline from '$lib/charts/Sparkline.svelte';
 
-	const revenueLine = '0,20 12,19 24,17 36,14 48,11 60,9 72,7 84,5 96,4';
-	const revenuePolygon = '0,20 12,19 24,17 36,14 48,11 60,9 72,7 84,5 96,4 100,24 0,24';
+	// Strong upward trend — used in the canonical hero.
+	const revenueTrend = [4, 5, 7, 10, 13, 15, 17, 19, 20];
 
-	const heroAltLine = '0,16 8,12 16,9 24,7 32,8 40,10 48,9 56,11 64,14 72,18 80,15 88,17 96,13';
-	const heroAltPolygon = '0,16 8,12 16,9 24,7 32,8 40,10 48,9 56,11 64,14 72,18 80,15 88,17 96,13 100,24 0,24';
+	// Choppier shape used in the heroSplit variant cards — climbs then dips
+	// back, so the area fill highlights the volatility.
+	const revenueChoppy = [8, 12, 15, 17, 16, 14, 15, 13, 10, 6, 9, 7, 11];
 </script>
 
 <Paragraph>
@@ -48,11 +50,7 @@
 	>
 		{#snippet chart()}
 			<div class="pa-kpi-hero-main__chart-svg">
-				<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polygon points={revenuePolygon} />
-					<polyline points={revenueLine} />
-					<circle cx="96" cy="4" r="2" />
-				</svg>
+				<Sparkline data={revenueTrend} type="area" showEndDot height="100%" />
 			</div>
 		{/snippet}
 	</KpiHeroMain>
@@ -138,11 +136,7 @@
 	>
 		{#snippet chart()}
 			<div class="pa-kpi-hero-main__chart-svg">
-				<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polygon points={heroAltPolygon} />
-					<polyline points={heroAltLine} />
-					<circle cx="96" cy="13" r="2" />
-				</svg>
+				<Sparkline data={revenueChoppy} type="area" showEndDot height="100%" />
 			</div>
 		{/snippet}
 	</KpiHeroMain>
@@ -216,11 +210,7 @@
 	>
 		{#snippet chart()}
 			<div class="pa-kpi-hero-main__chart-svg">
-				<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polygon points={heroAltPolygon} />
-					<polyline points={heroAltLine} />
-					<circle cx="96" cy="13" r="2" />
-				</svg>
+				<Sparkline data={revenueChoppy} type="area" showEndDot height="100%" />
 			</div>
 		{/snippet}
 	</KpiHeroMain>

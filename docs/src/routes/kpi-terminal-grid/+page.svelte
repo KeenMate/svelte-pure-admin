@@ -11,22 +11,17 @@
 		KpiTerminalPane,
 		KpiTerminalTile
 	} from '@keenmate/svelte-pure-admin';
+	import Sparkline from '$lib/charts/Sparkline.svelte';
 
+	// Sparkline data per KPI — Chart.js draws bigger y higher.
+	// errorRate trends DOWN over time (good news on an error metric).
 	const sparks = {
-		completion: '0,18 12,16 24,17 36,12 48,15 60,9 72,11 84,7 96,5',
-		revenue:    '0,16 12,15 24,14 36,15 48,13 60,14 72,12 84,13 96,11',
-		serverTemp: '0,18 12,17 24,15 36,14 48,12 60,11 72,10 84,9 96,11',
-		capacity:   '0,17 12,15 24,12 36,10 48,8 60,9 72,11 84,13 96,12',
-		errorRate:  '0,8 12,10 24,9 36,12 48,11 60,14 72,12 84,15 96,17',
-		tokyo:      '0,15 12,16 24,14 36,13 48,15 60,12 72,13 84,11 96,10'
-	};
-	const sparkEnds = {
-		completion: { x: 96, y: 5 },
-		revenue:    { x: 96, y: 11 },
-		serverTemp: { x: 96, y: 11 },
-		capacity:   { x: 96, y: 12 },
-		errorRate:  { x: 96, y: 17 },
-		tokyo:      { x: 96, y: 10 }
+		completion: [6, 8, 7, 12, 9, 15, 13, 17, 19],
+		revenue:    [8, 9, 10, 9, 11, 10, 12, 11, 13],
+		serverTemp: [6, 7, 9, 10, 12, 13, 14, 15, 13],
+		capacity:   [7, 9, 12, 14, 16, 15, 13, 11, 12],
+		errorRate:  [16, 14, 15, 12, 13, 10, 12, 9, 7],
+		tokyo:      [9, 8, 10, 11, 9, 12, 11, 13, 14]
 	};
 </script>
 
@@ -71,10 +66,7 @@
 			deltaAbsoluteText="+4.4pp"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.completion} />
-					<circle cx={sparkEnds.completion.x} cy={sparkEnds.completion.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.completion} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 
@@ -95,10 +87,7 @@
 			deltaAbsoluteText="+$83K"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.revenue} />
-					<circle cx={sparkEnds.revenue.x} cy={sparkEnds.revenue.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.revenue} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 
@@ -118,10 +107,7 @@
 			deltaAbsoluteText="−1.6°C"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.serverTemp} />
-					<circle cx={sparkEnds.serverTemp.x} cy={sparkEnds.serverTemp.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.serverTemp} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 
@@ -141,10 +127,7 @@
 			deltaAbsoluteText="+10.6pp"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.capacity} />
-					<circle cx={sparkEnds.capacity.x} cy={sparkEnds.capacity.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.capacity} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 
@@ -164,10 +147,7 @@
 			deltaAbsoluteText="−0.17pp"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.errorRate} />
-					<circle cx={sparkEnds.errorRate.x} cy={sparkEnds.errorRate.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.errorRate} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 
@@ -188,10 +168,7 @@
 			deltaAbsoluteText="+0.39M"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.tokyo} />
-					<circle cx={sparkEnds.tokyo.x} cy={sparkEnds.tokyo.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.tokyo} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 	</KpiTerminalPane>
@@ -214,10 +191,7 @@
 			deltaAbsoluteText="+$83K"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.revenue} />
-					<circle cx={sparkEnds.revenue.x} cy={sparkEnds.revenue.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.revenue} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 
@@ -238,10 +212,7 @@
 			deltaAbsoluteText="+0.39M"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.tokyo} />
-					<circle cx={sparkEnds.tokyo.x} cy={sparkEnds.tokyo.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.tokyo} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 	</KpiTerminalPane>
@@ -263,10 +234,7 @@
 			deltaAbsoluteText="+4.4pp"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.completion} />
-					<circle cx={sparkEnds.completion.x} cy={sparkEnds.completion.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.completion} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 
@@ -286,10 +254,7 @@
 			deltaAbsoluteText="−1.6°C"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.serverTemp} />
-					<circle cx={sparkEnds.serverTemp.x} cy={sparkEnds.serverTemp.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.serverTemp} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 
@@ -309,10 +274,7 @@
 			deltaAbsoluteText="+10.6pp"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.capacity} />
-					<circle cx={sparkEnds.capacity.x} cy={sparkEnds.capacity.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.capacity} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 
@@ -332,10 +294,7 @@
 			deltaAbsoluteText="−0.17pp"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.errorRate} />
-					<circle cx={sparkEnds.errorRate.x} cy={sparkEnds.errorRate.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.errorRate} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 	</KpiTerminalPane>
@@ -381,10 +340,7 @@
 			deltaAbsoluteText="+4.4pp"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.completion} />
-					<circle cx={sparkEnds.completion.x} cy={sparkEnds.completion.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.completion} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 	</Column>
@@ -408,10 +364,7 @@
 			deltaAbsoluteText="+$83K"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.revenue} />
-					<circle cx={sparkEnds.revenue.x} cy={sparkEnds.revenue.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.revenue} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 	</Column>
@@ -435,10 +388,7 @@
 			deltaAbsoluteText="+0.39M"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.tokyo} />
-					<circle cx={sparkEnds.tokyo.x} cy={sparkEnds.tokyo.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.tokyo} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 	</Column>
@@ -477,10 +427,7 @@
 			deltaAbsoluteText="+4.4pp"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.completion} />
-					<circle cx={sparkEnds.completion.x} cy={sparkEnds.completion.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.completion} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 
@@ -502,10 +449,7 @@
 			deltaAbsoluteText="+$83K"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.revenue} />
-					<circle cx={sparkEnds.revenue.x} cy={sparkEnds.revenue.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.revenue} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 
@@ -526,10 +470,7 @@
 			deltaAbsoluteText="−1.6°C"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.serverTemp} />
-					<circle cx={sparkEnds.serverTemp.x} cy={sparkEnds.serverTemp.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.serverTemp} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 	</Column>
@@ -552,10 +493,7 @@
 			deltaAbsoluteText="+10.6pp"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.capacity} />
-					<circle cx={sparkEnds.capacity.x} cy={sparkEnds.capacity.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.capacity} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 
@@ -576,10 +514,7 @@
 			deltaAbsoluteText="−0.17pp"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.errorRate} />
-					<circle cx={sparkEnds.errorRate.x} cy={sparkEnds.errorRate.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.errorRate} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 
@@ -601,10 +536,7 @@
 			deltaAbsoluteText="+0.39M"
 		>
 			{#snippet chart()}
-				<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-					<polyline points={sparks.tokyo} />
-					<circle cx={sparkEnds.tokyo.x} cy={sparkEnds.tokyo.y} r="2" />
-				</svg>
+				<Sparkline class="pa-kpi-tile__spark" data={sparks.tokyo} type="line" showEndDot />
 			{/snippet}
 		</KpiTerminalTile>
 	</Column>
@@ -642,10 +574,7 @@
 		deltaAbsoluteText="+4.4pp"
 	>
 		{#snippet chart()}
-			<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-				<polyline points={sparks.completion} />
-				<circle cx={sparkEnds.completion.x} cy={sparkEnds.completion.y} r="2" />
-			</svg>
+			<Sparkline class="pa-kpi-tile__spark" data={sparks.completion} type="line" showEndDot />
 		{/snippet}
 	</KpiTerminalTile>
 
@@ -665,10 +594,7 @@
 		deltaAbsoluteText="−0.17pp"
 	>
 		{#snippet chart()}
-			<svg class="pa-kpi-tile__spark" viewBox="0 0 100 24" preserveAspectRatio="none">
-				<polyline points={sparks.errorRate} />
-				<circle cx={sparkEnds.errorRate.x} cy={sparkEnds.errorRate.y} r="2" />
-			</svg>
+			<Sparkline class="pa-kpi-tile__spark" data={sparks.errorRate} type="line" showEndDot />
 		{/snippet}
 	</KpiTerminalTile>
 </KpiTerminal>

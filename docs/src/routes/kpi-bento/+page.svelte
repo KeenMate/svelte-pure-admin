@@ -7,23 +7,16 @@
 		KpiBento,
 		KpiBentoTile
 	} from '@keenmate/svelte-pure-admin';
+	import Sparkline from '$lib/charts/Sparkline.svelte';
 
-	// Sparkline shapes — kept as constants to keep the markup tidy
+	// Sparkline data — values are "higher = more". Chart.js draws bigger y higher.
 	const sparks = {
-		completion: '0,18 12,16 24,17 36,12 48,15 60,9 72,11 84,7 96,5',
-		revenue:    '0,20 12,19 24,17 36,14 48,11 60,9 72,7 84,5 96,4',
-		serverTemp: '0,17 12,16 24,15 36,13 48,12 60,10 72,9 84,7 96,6',
-		capacity:   '0,15 12,12 24,16 36,9 48,13 60,7 72,11 84,5 96,9',
-		errorRate:  '0,7 12,9 24,8 36,11 48,10 60,12 72,11 84,13 96,15',
-		tokyo:      '0,14 12,11 24,15 36,9 48,13 60,8 72,12 84,10 96,9'
-	};
-	const polygons = {
-		completion: '0,18 12,16 24,17 36,12 48,15 60,9 72,11 84,7 96,5 100,24 0,24',
-		revenue:    '0,20 12,19 24,17 36,14 48,11 60,9 72,7 84,5 96,4 100,24 0,24',
-		serverTemp: '0,17 12,16 24,15 36,13 48,12 60,10 72,9 84,7 96,6 100,24 0,24',
-		capacity:   '0,15 12,12 24,16 36,9 48,13 60,7 72,11 84,5 96,9 100,24 0,24',
-		errorRate:  '0,7 12,9 24,8 36,11 48,10 60,12 72,11 84,13 96,15 100,24 0,24',
-		tokyo:      '0,14 12,11 24,15 36,9 48,13 60,8 72,12 84,10 96,9 100,24 0,24'
+		completion: [6, 8, 7, 12, 9, 15, 13, 17, 19],
+		revenue:    [4, 5, 7, 10, 13, 15, 17, 19, 20],
+		serverTemp: [7, 8, 9, 11, 12, 14, 15, 17, 18],
+		capacity:   [9, 12, 8, 15, 11, 17, 13, 19, 15],
+		errorRate:  [17, 15, 16, 13, 14, 12, 13, 11, 9],
+		tokyo:      [10, 13, 9, 15, 11, 16, 12, 14, 15]
 	};
 </script>
 
@@ -52,10 +45,7 @@
 		targetText="$900K"
 	>
 		{#snippet chart()}
-			<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-				<polygon points={polygons.revenue} />
-				<polyline points={sparks.revenue} />
-			</svg>
+			<Sparkline data={sparks.revenue} type="area" height="100%" />
 		{/snippet}
 	</KpiBentoTile>
 
@@ -69,10 +59,7 @@
 		targetText="90.0%"
 	>
 		{#snippet chart()}
-			<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-				<polygon points={polygons.completion} />
-				<polyline points={sparks.completion} />
-			</svg>
+			<Sparkline data={sparks.completion} type="area" height="100%" />
 		{/snippet}
 	</KpiBentoTile>
 
@@ -86,10 +73,7 @@
 		targetText="≤ 25°C"
 	>
 		{#snippet chart()}
-			<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-				<polygon points={polygons.serverTemp} />
-				<polyline points={sparks.serverTemp} />
-			</svg>
+			<Sparkline data={sparks.serverTemp} type="area" height="100%" />
 		{/snippet}
 	</KpiBentoTile>
 
@@ -103,10 +87,7 @@
 		targetText="80.0%"
 	>
 		{#snippet chart()}
-			<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-				<polygon points={polygons.capacity} />
-				<polyline points={sparks.capacity} />
-			</svg>
+			<Sparkline data={sparks.capacity} type="area" height="100%" />
 		{/snippet}
 	</KpiBentoTile>
 
@@ -120,10 +101,7 @@
 		targetText="≤ 0.50%"
 	>
 		{#snippet chart()}
-			<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-				<polygon points={polygons.errorRate} />
-				<polyline points={sparks.errorRate} />
-			</svg>
+			<Sparkline data={sparks.errorRate} type="area" height="100%" />
 		{/snippet}
 	</KpiBentoTile>
 
@@ -138,10 +116,7 @@
 		targetText="¥13.0M"
 	>
 		{#snippet chart()}
-			<svg viewBox="0 0 100 24" preserveAspectRatio="none">
-				<polygon points={polygons.tokyo} />
-				<polyline points={sparks.tokyo} />
-			</svg>
+			<Sparkline data={sparks.tokyo} type="area" height="100%" />
 		{/snippet}
 	</KpiBentoTile>
 
