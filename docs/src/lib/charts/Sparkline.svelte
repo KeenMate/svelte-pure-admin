@@ -25,6 +25,7 @@
 	 */
 
 	import { Chart, registerables } from 'chart.js';
+	import { chartColorSync } from '@keenmate/svelte-pure-admin';
 
 	Chart.register(...registerables);
 
@@ -62,37 +63,34 @@
 	}: Props = $props();
 
 	let canvas: HTMLCanvasElement | undefined = $state();
+	let chart: Chart | undefined;
 
 	$effect(() => {
 		if (!canvas) return;
 
-		// Resolve currentColor from the canvas's computed style so the chart
-		// inherits whatever sentiment cascade the surrounding tile set.
-		const color = getComputedStyle(canvas).color;
-
-		// Area fill = same colour at 15% opacity, tied to the resolved colour
-		// so themes still drive it.
-		const fillColor = `color-mix(in srgb, ${color} 15%, transparent)`;
-
 		const isBar = type === 'bar';
 		const isArea = type === 'area';
 
-		const chart = new Chart(canvas, {
+		// Resolve currentColor from the canvas's computed style so the chart
+		// inherits whatever sentiment cascade the surrounding tile set.
+		const initialColor = getComputedStyle(canvas).color;
+
+		chart = new Chart(canvas, {
 			type: isBar ? 'bar' : 'line',
 			data: {
 				labels: data.map((_, i) => i),
 				datasets: [
 					{
 						data,
-						borderColor: color,
-						backgroundColor: isBar ? color : fillColor,
+						borderColor: initialColor,
+						backgroundColor: isBar ? initialColor : `color-mix(in srgb, ${initialColor} 15%, transparent)`,
 						fill: isArea ? 'origin' : false,
 						tension,
 						pointRadius: showEndDot
 							? data.map((_, i) => (i === data.length - 1 ? 3 : 0))
 							: 0,
 						pointHoverRadius: 0,
-						pointBackgroundColor: color,
+						pointBackgroundColor: initialColor,
 						borderWidth: isBar ? 0 : 2
 					}
 				]
@@ -111,10 +109,30 @@
 			}
 		});
 
-		return () => chart.destroy();
+		return () => {
+			chart?.destroy();
+			chart = undefined;
+		};
 	});
+
+	// Re-applied by the `chartColorSync` action on theme stylesheet swap and
+	// on light/dark mode class change. Without this, the chart is built once
+	// at mount and any later theme change leaves the line frozen at the
+	// original colour (often black if the cascade hadn't resolved yet when
+	// the chart first mounted).
+	function applyColor(color: string) {
+		if (!chart) return;
+		const isBar = type === 'bar';
+		// Type-cast — runtime Chart.js accepts pointBackgroundColor on both
+		// line and bar datasets; the union type narrows it away.
+		const ds = chart.data.datasets[0] as { borderColor: string; backgroundColor: string; pointBackgroundColor: string };
+		ds.borderColor = color;
+		ds.backgroundColor = isBar ? color : `color-mix(in srgb, ${color} 15%, transparent)`;
+		ds.pointBackgroundColor = color;
+		chart.update('none');
+	}
 </script>
 
 <div class={className} style="position: relative; width: 100%; height: {height}; display: block">
-	<canvas bind:this={canvas}></canvas>
+	<canvas bind:this={canvas} use:chartColorSync={applyColor}></canvas>
 </div>

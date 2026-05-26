@@ -140,7 +140,7 @@ export { default as Pager } from './display/Pager.svelte';
 export { default as LoadMore } from './display/LoadMore.svelte';
 export { default as Stat } from './display/Stat.svelte';
 export { default as KpiGrid } from './display/KpiGrid.svelte';
-export { kpiPopover, kpiSparklineDots } from './display/kpi-actions';
+export { kpiPopover, kpiSparklineDots, chartColorSync } from './display/kpi-actions';
 export { default as KpiStrip } from './display/KpiStrip.svelte';
 export { default as KpiStripRow } from './display/KpiStripRow.svelte';
 export type { KpiStripColumn } from './display/KpiStrip.svelte';

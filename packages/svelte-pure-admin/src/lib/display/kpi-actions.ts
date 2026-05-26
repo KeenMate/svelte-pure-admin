@@ -6,15 +6,20 @@
  *   1. kpiPopover         — cursor-anchored hover detail popover (Floating UI).
  *   2. kpiSparklineDots   — SVG <circle> → CSS <span> endpoint dot conversion
  *                           so dots stay round under preserveAspectRatio="none".
+ *   3. chartColorSync     — re-fires a callback with the host's current
+ *                           `color` whenever the active theme stylesheet
+ *                           swaps or the light/dark mode class toggles, so
+ *                           canvas-based charts (Chart.js, ECharts, etc.)
+ *                           can stay in sync with the sentiment cascade.
  *
- * Both are per-host actions: attach to the tile / row / chart wrapper
+ * All three are per-host actions: attach to the tile / row / chart wrapper
  * element. Cleanup is scoped to the host so unmounting a KPI tile removes
  * its moved-to-<body> popover and event listeners.
  *
  * Requires Floating UI (@floating-ui/dom) loaded globally as
  * window.FloatingUIDOM — same convention as Tooltip / Popconfirm.
  * No-op when Floating UI is missing (popover only — sparkline conversion
- * has no FloatingUI dependency).
+ * and color sync have no FloatingUI dependency).
  */
 
 import type { Action } from 'svelte/action';
@@ -168,6 +173,67 @@ export const kpiSparklineDots: Action<HTMLElement> = (node) => {
 				}
 				wrap.remove();
 			}
+		}
+	};
+};
+
+/**
+ * Re-fires the supplied callback with the host element's resolved `color`
+ * (via `getComputedStyle`) whenever the active theme stylesheet finishes
+ * loading after a swap, or the light/dark mode class on `<html>` / `<body>`
+ * toggles. Use to keep canvas-based charts (Chart.js, ECharts, etc.) — which
+ * cache their stroke / fill colours at draw time — in sync with the
+ * surrounding KPI sentiment cascade.
+ *
+ * The callback is NOT called on mount; the host's existing chart-build
+ * effect is expected to read the initial colour itself. Only subsequent
+ * theme-induced colour changes trigger the callback.
+ *
+ * Theme switching is detected via the `load` event on the
+ * `<link id="pa-theme-css">` element written by SettingsPanel. Light/dark
+ * mode toggles are detected via a MutationObserver on the `class` attribute
+ * of `<html>` and `<body>`.
+ *
+ * Example (Chart.js wrapper):
+ *
+ *   let canvas: HTMLCanvasElement;
+ *   let chart: Chart;
+ *
+ *   $effect(() => {
+ *     const color = getComputedStyle(canvas).color;
+ *     chart = new Chart(canvas, { ... borderColor: color ... });
+ *     return () => chart.destroy();
+ *   });
+ *
+ *   function onColorChange(color: string) {
+ *     if (!chart) return;
+ *     chart.data.datasets[0].borderColor = color;
+ *     chart.update('none');
+ *   }
+ *
+ *   <canvas bind:this={canvas} use:chartColorSync={onColorChange}></canvas>
+ */
+export const chartColorSync: Action<HTMLElement, (color: string) => void> = (node, callback) => {
+	let cb = callback;
+
+	function sync() {
+		cb?.(getComputedStyle(node).color);
+	}
+
+	const themeLink = document.getElementById('pa-theme-css') as HTMLLinkElement | null;
+	themeLink?.addEventListener('load', sync);
+
+	const observer = new MutationObserver(sync);
+	observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+	observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+	return {
+		update(newCallback: (color: string) => void) {
+			cb = newCallback;
+		},
+		destroy() {
+			themeLink?.removeEventListener('load', sync);
+			observer.disconnect();
 		}
 	};
 };

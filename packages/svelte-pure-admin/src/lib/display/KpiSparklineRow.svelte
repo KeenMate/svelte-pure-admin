@@ -64,7 +64,16 @@
 		class?: string;
 		/** Override the label cell content. */
 		label?: import('svelte').Snippet;
-		/** Chart cell content (SVG sparkline, Chart.js canvas, etc.). */
+		/**
+		 * Chart cell content (SVG sparkline, Chart.js canvas, etc.).
+		 *
+		 * Colour cascades via `currentColor` from the row's variant class.
+		 * SVGs inherit live; canvas-based charts (Chart.js, ECharts, etc.)
+		 * cache stroke/fill at draw time and need the `chartColorSync`
+		 * action on the canvas to re-sync on theme/mode change — otherwise
+		 * the line can freeze (often black) if the cascade hadn't resolved
+		 * when the chart first mounted.
+		 */
 		chart?: import('svelte').Snippet;
 		/** Override the value cell content. */
 		value?: import('svelte').Snippet;
