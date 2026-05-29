@@ -33,6 +33,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { version as libVersion } from '../../../packages/svelte-pure-admin/package.json';
 	import '../app.css';
 
 	let { data, children } = $props();
@@ -801,7 +802,7 @@
 
 	<Footer>
 		{#snippet end()}
-			<span>App version: 1.5.0</span>
+			<span>App version: {libVersion}</span>
 		{/snippet}
 	</Footer>
 	</Layout>
