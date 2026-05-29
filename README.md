@@ -4,6 +4,16 @@ Svelte 5 component library for Pure Admin CSS framework — 100+ ready-to-use co
 
 **Ships with AI reference files** — 14 plain-text docs in `ai/` optimized for LLM-assisted development (Claude, ChatGPT, Copilot). Point your AI assistant at `node_modules/@keenmate/svelte-pure-admin/ai/INDEX.txt` for instant component knowledge.
 
+## What's New in 1.8.0
+
+Canvas charts in KPI tiles now stay correctly coloured across theme switches and slow first-paint windows.
+
+- **`<ThemeReady>`** — wrapper component that gates children until the active theme stylesheet has resolved. Wrap any theme-cascade-dependent rendering (canvas charts, dynamically-generated SVGs, JS-driven CSSOM edits) so it never samples a half-loaded cascade. Default loader is a centred `Spinner`; pass a `loader` snippet to size the placeholder to your content's footprint
+- **`themeReady`** store + **`initThemeReadyTracker()`** — the reactive primitive behind `<ThemeReady>`, also exported for direct use. Self-bootstrapped, SSR-safe, fail-open on a 404 theme link
+- **`chartColorSync`** Svelte action — keeps canvas-based charts (Chart.js, ECharts, …) in sync with the theme cascade. Use on the canvas element to receive a callback when the theme swaps or light/dark mode flips, then update your chart's `borderColor` / `backgroundColor` and call `chart.update('none')`. JSDoc on all KPI `chart` snippet props now points at this action
+- **`SettingsPanel` fix** — the theme link href compare was always disagreeing (absolute vs. relative URL), causing a spurious link rewrite on every mount. Themes still apply correctly; the fix matters for any downstream code that listens for real href changes
+- **Docker boot fix** — removed `envPrefix: 'PA_'` from the docs site's adapter-node config (it was clashing with `PA_THEMES_DIR` and crashing the container on startup)
+
 ## What's New in 1.7.0
 
 Sync with `@keenmate/pure-admin-core` **v2.5.0 → v2.7.2**.
@@ -19,12 +29,6 @@ Sync with `@keenmate/pure-admin-core` **v2.5.0 → v2.7.2**.
 - **Docs site theme management** — migrated to the new `@keenmate/pureadmin` CLI (declarations in `pureadmin.json`, resolutions in `pureadmin.lock.json`, per-developer overrides in `.pureadmin.json`). Adding a theme is now a single `pureadmin themes add <id>` away; the settings panel and FOUC-prevention pick it up automatically — no source-code changes needed
 
 See [CHANGELOG.md](./CHANGELOG.md#unreleased) for the full list and BREAKING-change migration notes.
-
-## What's New in 1.6.2
-
-- **Timeline layout modifiers** — `alignment="start" | "end"` forces all items to one side; `shouldKeepLayout` preserves the alternating zig-zag on mobile instead of collapsing to a single column
-- **Docs: Timeline Block page rewritten** — working Load More (reactive `$state`), working Virtual Scroll with `IntersectionObserver`, plus Start/End/Keep-Layout and combination examples — mirrors pure-admin's `/timeline/block` 1:1
-- **Docs: Dashboard cleanup** — dropped orphan components (`ActivityFeed`, `MetricList`, `StatusList`, `QuickActions`) whose CSS classes weren't in pure-admin-core; the dashboard now uses `Timeline` for Recent Activity, compact `Table` for Traffic Sources / Top Products, `List` + `Badge` for System Status, and `ButtonGroup vertical` for Quick Actions
 
 ## Installation
 

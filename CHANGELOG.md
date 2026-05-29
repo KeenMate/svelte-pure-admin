@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-05-29
+
+Canvas charts in KPI components are now safe across theme stylesheet swaps and slow first-paint windows. The headline addition is a library-level theme-readiness gate (`<ThemeReady>` + `themeReady` store) that holds rendering until the cascade resolves, paired with a `chartColorSync` action that keeps already-mounted charts in sync on light/dark mode toggles.
+
+### Added — library
+
+- **`<ThemeReady>`** (`config/ThemeReady.svelte`) — wrapper that renders children only when the active theme stylesheet has finished loading (or definitively failed). Default loader is a centred `Spinner`; consumers can supply a custom `loader` snippet sized to the gated content's footprint to avoid layout shift. Self-bootstraps the tracker so it works without `PureAdminProvider`
+- **`themeReady`** — `Readable<boolean>` store, `true` when the cascade is safe to sample, `false` while a theme stylesheet swap is in flight. Defaults to `true` so apps without our wiring still render normally
+- **`initThemeReadyTracker()`** — idempotent, SSR-safe initializer that wires `themeReady` to the lifecycle of `<link id="pa-theme-css">`. Called automatically by `PureAdminProvider.onMount` and by `<ThemeReady>` on first instance (so init runs before child chart effects sample their initial colour)
+- **`chartColorSync`** Svelte action (`display/kpi-actions.ts`) — re-fires a callback with the host element's resolved `color` whenever the theme stylesheet `load`s after a swap, or the `pa-mode-*` class on `<html>` / `<body>` flips. Use on canvas-based charts (Chart.js, ECharts, etc.) that cache stroke / fill at draw time and would otherwise freeze on theme changes. Composes with `<ThemeReady>` — the gate handles first-paint and theme swaps, the action covers in-place light/dark toggles where the link isn't swapped
+
+### Changed — library
+
+- **KPI `chart` snippet props** on `KpiSparklineRow`, `KpiHeroMain`, `KpiBentoTile`, `KpiTerminalTile` now carry a JSDoc warning about the cascade-asymmetry between SVG (live `currentColor`) and canvas (cached at draw time), with a pointer to `chartColorSync` and `<ThemeReady>`
+
+### Fixed
+
+- **`SettingsPanel`**: the `themeLink.href` guard compared an absolute URL (`themeLink.href` always reads back resolved) against a root-relative string (`selectedTheme.cssPath`), so the strings never matched and the link href was re-assigned on every mount. Fixed by resolving `cssPath` against `document.baseURI` before the compare — eliminates a spurious href mutation that was tripping the new `themeReady` tracker
+- **`docs/svelte.config.js`**: removed `envPrefix: 'PA_'` from the `adapter-node` config. The option namespaces the adapter's own env vars (`PORT`, `HOST`, `ORIGIN`, `BODY_SIZE_LIMIT`) and rejects any other `PA_*` env var as a misconfiguration — which clashed with our `PA_THEMES_DIR` and crashed the Docker container on boot
+
+### Changed — docs site infrastructure
+
+- **Dashboard + 7 KPI demo pages** migrated from hand-authored SVG sparklines to a Chart.js wrapper at `docs/src/lib/charts/Sparkline.svelte`. The wrapper internally uses `<ThemeReady>` for the first-paint gate and `chartColorSync` for theme-swap reactivity, so it doubles as the reference implementation for both new library primitives
+
+---
+
 ## [1.7.0] - 2026-05-19
 
 Sync with `@keenmate/pure-admin-core` **v2.5.0 → v2.7.2** — alerts rewrite, programmatic toast service, data-driven notifications panel, full migration to the new `@keenmate/pureadmin` CLI v1.3.x for theme management — **plus a 7-component KPI showcase suite** mirroring the dashboard layouts promoted to core in v2.7.x.
