@@ -25,7 +25,7 @@
 	 */
 
 	import { Chart, registerables } from 'chart.js';
-	import { chartColorSync } from '@keenmate/svelte-pure-admin';
+	import { chartColorSync, ThemeReady } from '@keenmate/svelte-pure-admin';
 
 	Chart.register(...registerables);
 
@@ -133,6 +133,18 @@
 	}
 </script>
 
+<!--
+	Gated on the theme stylesheet being resolved so the initial
+	`getComputedStyle(canvas).color` read inside the chart $effect never
+	samples a half-loaded cascade. `chartColorSync` (below, on the canvas)
+	then keeps the colour in sync on later theme swaps.
+-->
 <div class={className} style="position: relative; width: 100%; height: {height}; display: block">
-	<canvas bind:this={canvas} use:chartColorSync={applyColor}></canvas>
+	<ThemeReady>
+		{#snippet loader()}
+			<!-- Chart-shaped placeholder so the layout doesn't shift when the gate releases. -->
+			<div style="width: 100%; height: 100%;"></div>
+		{/snippet}
+		<canvas bind:this={canvas} use:chartColorSync={applyColor}></canvas>
+	</ThemeReady>
 </div>

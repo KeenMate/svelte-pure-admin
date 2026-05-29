@@ -12,6 +12,7 @@
 	import { defaultConfig, mergeConfig } from './config';
 	import { shortcutRegistry } from '../services/shortcut-registry.svelte';
 	import { initI18n } from '../i18n/setup';
+	import { initThemeReadyTracker } from './theme-ready';
 	import ShortcutHelpDialog from '../feedback/ShortcutHelpDialog.svelte';
 
 	interface Props {
@@ -46,6 +47,13 @@
 
 	// Shortcut help dialog state
 	let showShortcutHelp = $state(false);
+
+	// Wire the theme-ready signal to the active theme stylesheet so
+	// <ThemeReady>-gated content (charts, dynamically-generated SVGs, etc.)
+	// holds until the cascade is safe to sample.
+	onMount(() => {
+		initThemeReadyTracker();
+	});
 
 	// Setup global keyboard shortcut listener
 	onMount(() => {

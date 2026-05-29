@@ -103,7 +103,14 @@
 					themeLink.rel = 'stylesheet';
 					document.head.appendChild(themeLink);
 				}
-				if (themeLink.href !== selectedTheme.cssPath) {
+				// Compare resolved-URL form on both sides — `themeLink.href`
+				// always reads back as an absolute URL, while `cssPath` is
+				// usually a root-relative string. A naive string compare
+				// would always disagree and re-assign on every mount, which
+				// invalidates downstream theme-load listeners (e.g. the
+				// MutationObserver in `theme-ready.ts`).
+				const desiredHref = new URL(selectedTheme.cssPath, document.baseURI).href;
+				if (themeLink.href !== desiredHref) {
 					themeLink.href = selectedTheme.cssPath;
 				}
 			}

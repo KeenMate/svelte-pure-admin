@@ -16,6 +16,8 @@ export type {
 
 // Configuration
 export { default as PureAdminProvider } from './config/PureAdminProvider.svelte';
+export { default as ThemeReady } from './config/ThemeReady.svelte';
+export { themeReady, initThemeReadyTracker } from './config/theme-ready';
 export type { PureAdminConfig } from './config/config';
 export { defaultConfig, mergeConfig } from './config/config';
 export { usePureAdminConfig } from './config/hooks';
