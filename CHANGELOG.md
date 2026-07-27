@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.9.0-rc01] - 2026-07-27
+
 Sync with `@keenmate/pure-admin-core` **v2.7.2 → v2.9.0-rc06** — canonical card header, profile role chip migration, and thin Svelte wrappers over the interactive behaviours core now ships as JS (`@keenmate/pure-admin-core/js/*`): **Splitter**, **RangeGroup**, card actions-overflow, and Stat fit-mode. The overflow toolbar (`.pa-overflow`) is core-JS-driven raw markup rather than a wrapped library component; `SplitButton` gains a `data-pa-keep-open` opt-out; and buttons adopt core rc06's unified (centered-by-default) content model.
 
 ### Added — library (thin wrappers over core JS, core v2.9.0-rc)
