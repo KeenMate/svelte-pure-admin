@@ -65,6 +65,14 @@ export { default as Section } from './layout/Section.svelte';
 export { default as SettingsPanel } from './layout/SettingsPanel.svelte';
 export { default as Divider } from './layout/Divider.svelte';
 export { default as SlidePanel } from './layout/SlidePanel.svelte';
+export { default as Splitter } from './layout/Splitter.svelte';
+export { default as SplitterPane } from './layout/SplitterPane.svelte';
+export { default as SplitterGutter } from './layout/SplitterGutter.svelte';
+export type {
+	SplitterOrientation,
+	SplitterResizeDetail,
+	SplitterToggleDetail
+} from './layout/splitter-context';
 export type { ThemeOption } from './layout/types';
 
 // Form Components
@@ -77,6 +85,19 @@ export { default as NumberInput } from './forms/NumberInput.svelte';
 export { default as DateInput } from './forms/DateInput.svelte';
 export { default as FileInput } from './forms/FileInput.svelte';
 export { default as RangeInput } from './forms/RangeInput.svelte';
+export { default as RangeGroup } from './forms/RangeGroup.svelte';
+export type {
+	RangeGroupRow,
+	RangeHandleShape,
+	RangeGroupValues,
+	RangeGroupSingleValue,
+	RangeGroupRangeValue
+} from './forms/range-group-types';
+export { isRangeValue, seedRows } from './forms/range-group-types';
+// Querystring sync: default codec + adapters (override via RangeGroup's codec / qsAdapter props).
+// The svelte-spa-router adapter is a separate subpath: '@keenmate/svelte-pure-admin/adapters/svelte-spa-router'.
+export { rangeGroupCodec, historyQsAdapter, hashQsAdapter } from './forms/range-group-qs';
+export type { RangeGroupCodec, QsAdapter } from './forms/range-group-qs';
 export { default as ColorInput } from './forms/ColorInput.svelte';
 export { default as Textarea } from './forms/Textarea.svelte';
 export { default as Select } from './forms/Select.svelte';

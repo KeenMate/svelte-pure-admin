@@ -9,6 +9,32 @@
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"strict": true,
-		"moduleResolution": "bundler"
+		"moduleResolution": "bundler",
+		// The lib is aliased to its SOURCE (svelte.config.js, for HMR), so svelte-check
+		// type-checks the library source here too. Its `internal/core-js.ts` dynamic-imports
+		// `@keenmate/pure-admin-core/js/*` — self-contained IIFEs symlinked outside node_modules
+		// that TS would otherwise lint with checkJs. Map that specifier to the lib's stub, exactly
+		// as the library's own tsconfig does. Replicating the SvelteKit-generated paths is required
+		// because `extends` REPLACES `paths` wholesale rather than merging.
+		"paths": {
+			"@keenmate/pure-admin-core/js/*": [
+				"../packages/svelte-pure-admin/src/lib/internal/core-js.stub.d.ts"
+			],
+			"@keenmate/svelte-pure-admin": [
+				"../packages/svelte-pure-admin/src/lib"
+			],
+			"@keenmate/svelte-pure-admin/*": [
+				"../packages/svelte-pure-admin/src/lib/*"
+			],
+			"$lib": [
+				"./src/lib"
+			],
+			"$lib/*": [
+				"./src/lib/*"
+			],
+			"$app/types": [
+				"./.svelte-kit/types/index.d.ts"
+			]
+		}
 	}
 }

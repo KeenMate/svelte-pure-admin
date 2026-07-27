@@ -19,6 +19,8 @@
 		action?: import('svelte').Snippet;
 		/** Item content */
 		children?: import('svelte').Snippet;
+		/** Rest props (data-*, aria-*, etc.) forwarded to the item button — e.g. `data-pa-keep-open` */
+		[key: string]: any;
 	}
 
 	let {
@@ -28,7 +30,8 @@
 		class: className = '',
 		icon,
 		action,
-		children
+		children,
+		...restProps
 	}: Props = $props();
 
 	const classes = $derived(() => {
@@ -41,7 +44,7 @@
 
 {#if action}
 	<div class="pa-btn-split__item-row">
-		<button class={classes()} {onclick} {disabled}>
+		<button class={classes()} {onclick} {disabled} {...restProps}>
 			{#if icon}
 				<span class="pa-btn-split__item-icon">{@render icon()}</span>
 			{/if}
@@ -50,7 +53,7 @@
 		{@render action()}
 	</div>
 {:else}
-	<button class={classes()} {onclick} {disabled}>
+	<button class={classes()} {onclick} {disabled} {...restProps}>
 		{#if icon}
 			<span class="pa-btn-split__item-icon">{@render icon()}</span>
 		{/if}

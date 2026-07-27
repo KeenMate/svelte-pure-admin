@@ -1,8 +1,3 @@
-<script lang="ts" module>
-	// Track the currently open split button globally (only one open at a time)
-	let currentOpenInstance: { close: () => void } | undefined;
-</script>
-
 <script lang="ts">
 	/**
 	 * Pure Admin Split Button Component (Svelte 5)
@@ -10,6 +5,13 @@
 	 *
 	 * Primary action button + dropdown toggle with menu items.
 	 * Uses Floating UI for positioning (teleports menu to <body>).
+	 *
+	 * Single-open is coordinated through the shared `window.PaMenus` registry that
+	 * core's split-button.js / overflow.js define (core v2.9.0-rc06): opening this
+	 * menu closes every other open menu on the page — including raw-core split
+	 * buttons and `.pa-overflow` "more" menus — and vice-versa. We define the
+	 * registry defensively (mirroring core's object shape) so it also works on a
+	 * page that loads no core JS at all.
 	 */
 
 	import { onMount, tick } from 'svelte';
@@ -67,6 +69,30 @@
 	let menuEl = $state<HTMLDivElement | undefined>(undefined);
 	let cleanupAutoUpdate: (() => void) | undefined;
 
+	// Lazily get (or defensively create) the shared cross-component dismissal
+	// registry. Mirrors the exact object shape in core's split-button.js /
+	// overflow.js so a later-loading core IIFE reuses ours (`window.PaMenus || {…}`).
+	function paMenus(): NonNullable<Window['PaMenus']> {
+		return (window.PaMenus ??= {
+			closers: [],
+			register(fn: () => void) {
+				this.closers.push(fn);
+				return fn;
+			},
+			closeOthers(self: () => void) {
+				this.closers.forEach((fn) => {
+					if (fn !== self) {
+						try {
+							fn();
+						} catch {
+							/* a stale closer must never block the others */
+						}
+					}
+				});
+			}
+		});
+	}
+
 	// Build container class string
 	const classes = $derived(() => {
 		const base = ['pa-btn-split'];
@@ -99,9 +125,6 @@
 
 	function closeMenu() {
 		isOpen = false;
-		if (currentOpenInstance?.close === closeMenu) {
-			currentOpenInstance = undefined;
-		}
 		cleanupAutoUpdate?.();
 		cleanupAutoUpdate = undefined;
 
@@ -121,13 +144,11 @@
 	}
 
 	async function openMenu() {
-		// Close any other open split button
-		if (currentOpenInstance) {
-			currentOpenInstance.close();
-		}
+		// Close every other open menu (our other instances, raw-core split buttons,
+		// and `.pa-overflow` "more" menus) via the shared registry.
+		paMenus().closeOthers(closeMenu);
 
 		isOpen = true;
-		currentOpenInstance = { close: closeMenu };
 
 		await tick();
 
@@ -184,7 +205,17 @@
 		}
 	}
 
-	function handleMenuClick() {
+	function handleMenuClick(event: MouseEvent) {
+		const target = event.target as Element | null;
+		// Match core split-button.js: only a real menu-item click dismisses the menu.
+		// Clicks on dead space or on an inline row-action button (e.g. the delete in a
+		// `.pa-btn-split__item-row`, which is a sibling of the item, not inside it)
+		// leave the menu open — so those actions don't need any opt-out.
+		if (!target?.closest('.pa-btn-split__item')) return;
+		// Opt-out: an item (or ancestor) marked `data-pa-keep-open` stays open — for
+		// items that spawn their own popover (e.g. a Popconfirm) which would otherwise
+		// lose its anchor. Mirrors core's `data-pa-keep-open` guard (core v2.9.0-rc06).
+		if (target.closest('[data-pa-keep-open]')) return;
 		closeMenu();
 	}
 
@@ -208,11 +239,17 @@
 	onMount(() => {
 		document.addEventListener('click', handleClickOutside);
 		document.addEventListener('keydown', handleKeydown);
+		// Join the shared dismissal registry so core menus can close us on open.
+		paMenus().register(closeMenu);
 
 		return () => {
 			document.removeEventListener('click', handleClickOutside);
 			document.removeEventListener('keydown', handleKeydown);
 			cleanupAutoUpdate?.();
+			// Unregister our closer (core's registry has no unregister of its own) so
+			// it doesn't accumulate stale closures across navigations.
+			const registry = window.PaMenus;
+			if (registry) registry.closers = registry.closers.filter((fn) => fn !== closeMenu);
 			// Ensure menu is returned from body on unmount
 			if (menuEl && menuEl.parentElement === document.body) {
 				menuEl.remove();

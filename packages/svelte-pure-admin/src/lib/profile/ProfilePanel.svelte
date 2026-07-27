@@ -115,7 +115,9 @@
 				<h3 class="pa-profile-panel__name">{name}</h3>
 				<p class="pa-profile-panel__email">{email}</p>
 				{#if role}
-					<span class="pa-profile-panel__role">{role}</span>
+					<!-- Role chip migrated to .pa-badge in core v2.9.0-rc01
+					     (the bespoke .pa-profile-panel__role SCSS rule was removed) -->
+					<span class="pa-badge">{role}</span>
 				{/if}
 			</div>
 

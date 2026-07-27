@@ -1,0 +1,31 @@
+/**
+ * SSR-safe loader for the core framework's interactive JS.
+ *
+ * Since @keenmate/pure-admin-core v2.9.0-rc04 the framework ships its component
+ * behaviours as self-contained IIFEs under `@keenmate/pure-admin-core/js/*`. Each
+ * one reads `document.readyState` at evaluation time and attaches its API to
+ * `window` (e.g. `window.PaSplitter`), so it must never be imported during SSR.
+ *
+ * These thin-wrapper components call `loadCoreJs(...)` from inside `onMount`
+ * (browser-only) and then drive the resulting `window.Pa*` API. Import specifiers
+ * are static string literals per branch so the bundler can resolve them.
+ */
+export async function loadCoreJs(
+	module: 'splitter' | 'range-group' | 'pa-stat-fit' | 'overflow'
+): Promise<void> {
+	if (typeof window === 'undefined') return;
+	switch (module) {
+		case 'splitter':
+			await import('@keenmate/pure-admin-core/js/splitter.js');
+			break;
+		case 'range-group':
+			await import('@keenmate/pure-admin-core/js/range-group.js');
+			break;
+		case 'pa-stat-fit':
+			await import('@keenmate/pure-admin-core/js/pa-stat-fit.js');
+			break;
+		case 'overflow':
+			await import('@keenmate/pure-admin-core/js/overflow.js');
+			break;
+	}
+}

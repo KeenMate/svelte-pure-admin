@@ -4,7 +4,9 @@
 	 * Based on @keenmate/pure-admin-core snippets/cards.html
 	 */
 
+	import { onMount } from 'svelte';
 	import type { ThemeColor } from '../types';
+	import { loadCoreJs } from '../internal/core-js';
 
 	type CardVariant = 'primary' | 'success' | 'warning' | 'danger' | 'info'
 		| 'color-1' | 'color-2' | 'color-3' | 'color-4' | 'color-5'
@@ -49,12 +51,18 @@
 		headerClass?: string;
 		/** Additional CSS classes */
 		class?: string;
+		/** Inline style on the card root (e.g. `height: 100%; margin: 0` inside a splitter pane). */
+		style?: string;
 		/** Header snippet (for complex headers) */
 		header?: import('svelte').Snippet;
 		/** Title icon snippet (renders before title text) */
 		titleIcon?: import('svelte').Snippet;
 		/** Header actions snippet (buttons, controls in header toolbar area) */
 		headerActions?: import('svelte').Snippet;
+		/** Progressively collapse header actions into a "…" overflow menu when space is tight (core v2.9.0-rc02, JS-driven via overflow.js). */
+		isActionsOverflow?: boolean;
+		/** Which end drops first when actions overflow — `end` (rightmost, default) or `start`. */
+		actionsOverflowFrom?: 'start' | 'end';
 		/** Tabs snippet (renders in card header as tabs) */
 		tabs?: import('svelte').Snippet;
 		/** Body snippet (main content) */
@@ -84,14 +92,29 @@
 		hasInlineTabs = false,
 		headerClass,
 		class: className = '',
+		style,
 		header,
 		titleIcon,
 		headerActions,
 		tabs,
 		children,
 		footer,
-		footerActions
+		footerActions,
+		isActionsOverflow = false,
+		actionsOverflowFrom
 	}: Props = $props();
+
+	// Header actions wrapper — target for the JS-driven overflow menu.
+	let headerActionsEl = $state<HTMLDivElement | undefined>(undefined);
+	const headerActionsClasses = $derived(
+		isActionsOverflow ? 'pa-card__actions pa-card__actions--overflow' : 'pa-card__actions'
+	);
+
+	onMount(() => {
+		if (!isActionsOverflow || !headerActionsEl) return;
+		const el = headerActionsEl;
+		loadCoreJs('overflow').then(() => window.PaCardActionsOverflow?.init(el));
+	});
 
 	// Build class string
 	const classes = $derived(() => {
@@ -137,7 +160,7 @@
 	const hasFooter = $derived(footer || footerActions);
 </script>
 
-<div class={classes()}>
+<div class={classes()} {style}>
 	{#if hasHeader}
 		<div class={headerClasses()}>
 			{#if tabs}
@@ -147,26 +170,26 @@
 			{:else if header}
 				{@render header()}
 			{:else}
-				<!-- Three-part header layout (v1.4.1): Title - Description - Actions -->
-				{#if titleIcon && (titleText || title)}
+				<!-- Canonical three-part header (core v2.9.0-rc05): Title - Description - Actions.
+				     .pa-card__title is the single canonical title structure (icon optional),
+				     .pa-card__description is a real BEM element (not a bare <p>). -->
+				{#if title || titleText}
 					<div class="pa-card__title">
-						<span class="pa-card__title-icon">
-							{@render titleIcon()}
-						</span>
+						{#if titleIcon}
+							<span class="pa-card__title-icon">
+								{@render titleIcon()}
+							</span>
+						{/if}
 						<h3 class="pa-card__title-text">
 							{#if title}{@render title()}{:else}{titleText}{/if}
 						</h3>
 					</div>
-				{:else if title}
-					<h3>{@render title()}</h3>
-				{:else if titleText}
-					<h3>{titleText}</h3>
 				{/if}
 				{#if description}
-					<p>{@render description()}</p>
+					<p class="pa-card__description">{@render description()}</p>
 				{:else if descriptionText}
-					<!-- Description fills available space and truncates with ellipsis -->
-					<p>{descriptionText}</p>
+					<!-- Description flexes to fill and truncates with ellipsis -->
+					<p class="pa-card__description">{descriptionText}</p>
 				{:else if subtitle}
 					<p class="pa-text pa-text--secondary">{@render subtitle()}</p>
 				{:else if subtitleText}
@@ -174,7 +197,11 @@
 					<p class="pa-text pa-text--secondary">{subtitleText}</p>
 				{/if}
 				{#if headerActions}
-					<div class="pa-card__actions">
+					<div
+						bind:this={headerActionsEl}
+						class={headerActionsClasses}
+						data-pa-actions-overflow-from={isActionsOverflow ? actionsOverflowFrom : undefined}
+					>
 						{@render headerActions()}
 					</div>
 				{/if}

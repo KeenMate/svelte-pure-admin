@@ -4,6 +4,9 @@
 	 * Based on @keenmate/pure-admin-core scss/core-components/_statistics.scss
 	 */
 
+	import { onMount, tick } from 'svelte';
+	import { loadCoreJs } from '../internal/core-js';
+
 	type StatVariant = 'hero' | 'hero-compact' | 'square';
 	type StatColor = 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger';
 	// 5-step sentiment scale since core v2.6.0/2.7.0.
@@ -29,6 +32,10 @@
 		symbolText?: string;
 		/** Render symbol BEFORE number (prefix currencies: `$847K`, `¥12.4M`). Default false (suffix: `87%`, `23°C`). Since core v2.6.0. */
 		isSymbolPrefix?: boolean;
+		/** Square only: fit-to-box + progressive-disclosure mode (core v2.9.0-rc04, JS-driven via pa-stat-fit.js). Needs a height source on the tile. */
+		isFit?: boolean;
+		/** Square fit-mode only: lowest-priority context row (`.pa-stat__context`), revealed on the largest tiles. */
+		contextText?: string;
 		/** Additional CSS classes */
 		class?: string;
 		/** Icon snippet (for default variant) */
@@ -47,6 +54,8 @@
 		changeDirection,
 		symbolText,
 		isSymbolPrefix = false,
+		isFit = false,
+		contextText,
 		class: className = '',
 		icon,
 		children
@@ -60,6 +69,34 @@
 		if (className) base.push(className);
 		return base.join(' ');
 	});
+
+	// Change row class — only add the sentiment modifier when a direction is given.
+	// Fit tiles (dashboard) render a bare `.pa-stat__change`; passing a direction
+	// (stat-fit-lab) adds `--positive`/`--negative`/etc. Avoids `--undefined`.
+	const changeClass = $derived(
+		changeDirection ? `pa-stat__change pa-stat__change--${changeDirection}` : 'pa-stat__change'
+	);
+
+	// Fit mode (square only) — pa-stat-fit.js wraps the flat children into
+	// slot/group/meta and fits the number to the box. Init on a display:contents
+	// host so its descendant scan finds the tile without adding a layout box.
+	const useFit = $derived(variant === 'square' && isFit);
+	let fitHostEl = $state<HTMLDivElement | undefined>(undefined);
+	let squareEl = $state<HTMLDivElement | undefined>(undefined);
+
+	onMount(() => {
+		if (!useFit || !fitHostEl) return;
+		const host = fitHostEl;
+		loadCoreJs('pa-stat-fit').then(() => window.PaStatFit?.init(host));
+	});
+
+	// Re-fit when the number text changes (the slot box doesn't move, so the
+	// ResizeObserver inside pa-stat-fit wouldn't fire on its own).
+	$effect(() => {
+		void number;
+		if (!useFit || !squareEl) return;
+		tick().then(() => window.PaStatFit?.refresh(squareEl));
+	});
 </script>
 
 {#if children}
@@ -71,8 +108,29 @@
 		<div class="pa-stat__label">{labelText}</div>
 		<div class="pa-stat__value">{number}</div>
 		{#if changeText}
-			<div class="pa-stat__change pa-stat__change--{changeDirection}">{changeText}</div>
+			<div class={changeClass}>{changeText}</div>
 		{/if}
+	</div>
+{:else if variant === 'square' && useFit}
+	<div bind:this={fitHostEl} style="display: contents;">
+		<div bind:this={squareEl} class={classes()} data-pa-stat-fit>
+			{#if isSymbolPrefix && symbolText}
+				<span class="pa-stat__symbol">{symbolText}</span>
+				<span class="pa-stat__number">{number}</span>
+			{:else}
+				<span class="pa-stat__number">{number}</span>
+				{#if symbolText}
+					<span class="pa-stat__symbol">{symbolText}</span>
+				{/if}
+			{/if}
+			<div class="pa-stat__label">{labelText}</div>
+			{#if changeText}
+				<div class={changeClass}>{changeText}</div>
+			{/if}
+			{#if contextText}
+				<div class="pa-stat__context">{contextText}</div>
+			{/if}
+		</div>
 	</div>
 {:else if variant === 'square'}
 	<div class={classes()}>
@@ -101,7 +159,7 @@
 			<div class="pa-stat__number">{number}</div>
 			<div class="pa-stat__label">{labelText}</div>
 			{#if changeText}
-				<div class="pa-stat__change pa-stat__change--{changeDirection}">{changeText}</div>
+				<div class={changeClass}>{changeText}</div>
 			{/if}
 		{/if}
 	</div>

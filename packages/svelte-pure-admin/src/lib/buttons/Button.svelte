@@ -141,7 +141,9 @@
 				{@render icon()}
 			</span>
 		{/if}
-		{@render children?.()}
+		{#if children}
+			<span class="pa-btn__label">{@render children()}</span>
+		{/if}
 		{#if icon && iconPosition === 'end'}
 			<span class="pa-btn__icon">
 				{@render icon()}
@@ -166,7 +168,9 @@
 				{@render icon()}
 			</span>
 		{/if}
-		{@render children?.()}
+		{#if children}
+			<span class="pa-btn__label">{@render children()}</span>
+		{/if}
 		{#if icon && iconPosition === 'end'}
 			<span class="pa-btn__icon">
 				{@render icon()}

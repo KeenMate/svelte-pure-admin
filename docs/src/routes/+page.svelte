@@ -210,27 +210,48 @@
 	</Column>
 
 	<Column size="100" md="1-3">
-		<Card titleText="Key Performance Indicators">
+		<!-- Key Performance Indicators — fit mode in a 2×3 grid (data-pa-stat-fit).
+		     Each tile fits its number to the box and reveals label → change → context
+		     as it grows. Mirrors dashboard.mustache "fit · 2×3". -->
+		<Card>
+			{#snippet title()}
+				Key Performance Indicators <Badge variant="info">fit · 2×3</Badge>
+			{/snippet}
 			<Grid class="pa-kpi-grid">
 				<Column size="100" xl="50">
-					<Stat variant="square" color="primary" number={87} symbolText="%" labelText="Completion Rate" />
+					<Stat variant="square" color="primary" isFit class="hr-15" number={87} symbolText="%" labelText="Completion Rate" changeText="▲ 4.2% vs last week" contextText="Updated 2 min ago" />
 				</Column>
 				<Column size="100" xl="50">
-					<Stat variant="square" color="success" number={94} symbolText="%" labelText="Customer Satisfaction" />
+					<Stat variant="square" color="success" isFit class="hr-15" isSymbolPrefix symbolText="$" number="847K" labelText="Monthly Revenue" changeText="▲ 12.5% vs last month" contextText="FY2026 · Q2" />
 				</Column>
 				<Column size="100" xl="50">
-					<Stat variant="square" color="info" number={62} symbolText="%" labelText="Market Share" />
+					<Stat variant="square" color="info" isFit class="hr-15" number={23} symbolText="°C" labelText="Server Temp" changeText="▼ 1.1°C vs 1h ago" contextText="Rack A · sensor 3" />
 				</Column>
 				<Column size="100" xl="50">
-					<Stat variant="square" color="warning" number={78} symbolText="%" labelText="Server Capacity" />
+					<Stat variant="square" color="warning" isFit class="hr-15" number={78} symbolText="%" labelText="Server Capacity" changeText="▲ 6.0% vs last week" contextText="12 of 16 nodes active" />
 				</Column>
 				<Column size="100" xl="50">
-					<Stat variant="square" color="danger" number={23} symbolText="%" labelText="Error Rate" />
+					<Stat variant="square" color="danger" isFit class="hr-15" number={23} symbolText="%" labelText="Error Rate" changeText="▼ 0.4% vs yesterday" contextText="last 24h · 5xx only" />
 				</Column>
 				<Column size="100" xl="50">
-					<Stat variant="square" color="secondary" number={91} symbolText="%" labelText="Uptime" />
+					<Stat variant="square" color="secondary" isFit class="hr-15" isSymbolPrefix symbolText="¥" number="12.4M" labelText="Tokyo Office" changeText="▲ 3.1% vs last month" contextText="JPY · region APAC" />
 				</Column>
 			</Grid>
+		</Card>
+
+		<!-- Same six KPIs as full-width fit-mode tiles — the disclosure ladder has
+		     more height so it reveals label → change → context. Mirrors the
+		     dashboard.mustache "fit mode" card. -->
+		<Card>
+			{#snippet title()}
+				Key Performance Indicators <Badge variant="info">fit mode</Badge>
+			{/snippet}
+			<Stat variant="square" color="primary" isFit class="hr-15" number={87} symbolText="%" labelText="Completion Rate" changeText="▲ 4.2% vs last week" contextText="Updated 2 min ago" />
+			<Stat variant="square" color="success" isFit class="hr-15" isSymbolPrefix symbolText="$" number="847K" labelText="Monthly Revenue" changeText="▲ 12.5% vs last month" contextText="FY2026 · Q2" />
+			<Stat variant="square" color="info" isFit class="hr-15" number={23} symbolText="°C" labelText="Server Temp" changeText="▼ 1.1°C vs 1h ago" contextText="Rack A · sensor 3" />
+			<Stat variant="square" color="warning" isFit class="hr-15" number={78} symbolText="%" labelText="Server Capacity" changeText="▲ 6.0% vs last week" contextText="12 of 16 nodes active" />
+			<Stat variant="square" color="danger" isFit class="hr-15" number={23} symbolText="%" labelText="Error Rate" changeText="▼ 0.4% vs yesterday" contextText="last 24h · 5xx only" />
+			<Stat variant="square" color="secondary" isFit class="hr-15" isSymbolPrefix symbolText="¥" number="12.4M" labelText="Tokyo Office" changeText="▲ 3.1% vs last month" contextText="JPY · region APAC" />
 		</Card>
 
 		<Card titleText="Traffic Sources" hasPadding={false}>

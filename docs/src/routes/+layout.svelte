@@ -213,6 +213,8 @@
 		{ id: 'data-display', title: 'Data Display', path: '/data-display', icon: '📄' },
 		{ id: 'data-display-2', title: 'Data Display v2', path: '/data-display-2', icon: '📄' },
 		{ id: 'data-visualization', title: 'Data Visualization', path: '/data-visualization', icon: '📈' },
+		{ id: 'range-group', title: 'Range Group', path: '/range-group', icon: '🎚️' },
+		{ id: 'splitter', title: 'Splitter', path: '/splitter', icon: '↔️' },
 		{ id: 'timeline-simple', title: 'Timeline Simple', path: '/timeline-simple', icon: '⏱️' },
 		{ id: 'timeline-block', title: 'Timeline Block', path: '/timeline-block', icon: '📦' },
 		{ id: 'timeline-feed', title: 'Timeline Feed', path: '/timeline-feed', icon: '📰' },
@@ -688,6 +690,9 @@
 						<SidebarItem href="/data-visualization" labelText="Data Visualization" active={$page.url.pathname === '/data-visualization'}>
 							{#snippet icon()}📈{/snippet}
 						</SidebarItem>
+						<SidebarItem href="/range-group" labelText="Range Group" active={$page.url.pathname === '/range-group'}>
+							{#snippet icon()}🎚️{/snippet}
+						</SidebarItem>
 					{/snippet}
 				</SidebarItem>
 
@@ -740,6 +745,9 @@
 					{#snippet icon()}📐{/snippet}
 					{#snippet submenu()}
 						<SidebarItem href="/layouts" labelText="Page Layouts" active={$page.url.pathname === '/layouts'}>
+							{#snippet icon()}•{/snippet}
+						</SidebarItem>
+						<SidebarItem href="/splitter" labelText="Splitter" active={$page.url.pathname === '/splitter'}>
 							{#snippet icon()}•{/snippet}
 						</SidebarItem>
 					{/snippet}

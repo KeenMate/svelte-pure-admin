@@ -1,6 +1,63 @@
 <script lang="ts">
-	import { Heading, Paragraph, Button, ButtonGroup, Card, Grid, Column, BasicList, Tooltip, SplitButton, SplitButtonItem } from '@keenmate/svelte-pure-admin';
+	import { Heading, Paragraph, Button, ButtonGroup, Card, Grid, Column, BasicList, Tooltip, SplitButton, SplitButtonItem, Popconfirm } from '@keenmate/svelte-pure-admin';
 	import { onMount } from 'svelte';
+	import OverflowToolbar from './OverflowToolbar.svelte';
+
+	// --- "Items with Actions" split buttons (reactive, mirrors the pure-admin demo) ---
+
+	// Bookmarks / Recent: the inline action button removes its own row live.
+	let bookmarks = $state([
+		{ id: 1, icon: 'fa-home', label: 'Dashboard' },
+		{ id: 2, icon: 'fa-chart-line', label: 'Analytics' },
+		{ id: 3, icon: 'fa-users', label: 'Team Members' }
+	]);
+	function removeBookmark(event: MouseEvent, id: number) {
+		event.stopPropagation(); // keep the menu open (SplitButton closes on any menu click)
+		bookmarks = bookmarks.filter((b) => b.id !== id);
+	}
+
+	let recent = $state([
+		{ id: 1, icon: 'fa-file', label: 'Report Q4.pdf' },
+		{ id: 2, icon: 'fa-file-code', label: 'schema.sql' }
+	]);
+	function removeRecent(event: MouseEvent, id: number) {
+		event.stopPropagation();
+		recent = recent.filter((r) => r.id !== id);
+	}
+
+	// Members: primary button adds a member; each delete opens a popconfirm.
+	const memberPool = ['Dave Grohl', 'Eve Torres', 'Frank Zappa', 'Grace Slick', 'Hank Williams', 'Iggy Pop', 'Janis Joplin', 'Kurt Cobain'];
+	let members = $state([
+		{ id: 1, name: 'Alice Cooper' },
+		{ id: 2, name: 'Bob Dylan' },
+		{ id: 3, name: 'Charlie Parker' }
+	]);
+	let nextMemberId = 4;
+	let addedMemberCount = 0;
+	function addMember() {
+		const name = memberPool[addedMemberCount % memberPool.length];
+		addedMemberCount += 1;
+		members.push({ id: nextMemberId++, name });
+	}
+
+	// Single shared popconfirm, re-anchored to whichever delete button opened it.
+	let removeShow = $state(false);
+	let removeTrigger = $state<HTMLElement | null>(null);
+	let removeTargetId = $state<number | null>(null);
+	let removeName = $state('');
+	function askRemoveMember(event: MouseEvent, member: { id: number; name: string }) {
+		// The delete button carries `data-pa-keep-open`, so SplitButton leaves its
+		// menu open on click — no stopPropagation needed. This keeps the trigger
+		// visible so the shared Popconfirm can anchor to it inside the menu.
+		removeTrigger = event.currentTarget as HTMLElement;
+		removeTargetId = member.id;
+		removeName = member.name;
+		removeShow = true;
+	}
+	function confirmRemoveMember() {
+		if (removeTargetId !== null) members = members.filter((m) => m.id !== removeTargetId);
+		removeTargetId = null;
+	}
 		
 	onMount(() => {
 		function addRippleEffect(button: HTMLElement) {
@@ -451,39 +508,23 @@
 
 	<!-- Items with Actions -->
 	<Heading level={4} class="mt-4">Items with Actions</Heading>
-	<Paragraph class="text-muted mb-2">Menu items can include inline action buttons for quick operations like delete.</Paragraph>
+	<Paragraph class="text-muted mb-2">Two patterns. <strong>Bookmarks</strong> and <strong>Recent</strong> use an inline action button (a <code>.pa-btn-split__item-row</code> delete) — a row-action isn't the item itself, so clicking it removes the row and the menu stays open on its own. <strong>Members</strong> instead confirms on the item: the item carries <code>data-pa-keep-open</code> so clicking it (a real menu item, which would otherwise close the menu) keeps it open while the popconfirm is anchored — and the primary button adds a new member.</Paragraph>
 	<div class="pa-btn-group gap-lg">
 		<SplitButton variant="primary" onclick={() => {}}>
 			{#snippet icon()}<i class="fas fa-bookmark"></i>{/snippet}
 			Bookmarks
 			{#snippet menu()}
-				<SplitButtonItem>
-					{#snippet icon()}<i class="fas fa-home"></i>{/snippet}
-					Dashboard
-					{#snippet action()}
-						<Button size="xs" variant="danger" isIconOnly onclick={(e) => { e.stopPropagation(); alert('Remove Dashboard'); }}>
-							{#snippet icon()}<i class="fas fa-trash"></i>{/snippet}
-						</Button>
-					{/snippet}
-				</SplitButtonItem>
-				<SplitButtonItem>
-					{#snippet icon()}<i class="fas fa-chart-line"></i>{/snippet}
-					Analytics
-					{#snippet action()}
-						<Button size="xs" variant="danger" isIconOnly onclick={(e) => { e.stopPropagation(); alert('Remove Analytics'); }}>
-							{#snippet icon()}<i class="fas fa-trash"></i>{/snippet}
-						</Button>
-					{/snippet}
-				</SplitButtonItem>
-				<SplitButtonItem>
-					{#snippet icon()}<i class="fas fa-users"></i>{/snippet}
-					Team Members
-					{#snippet action()}
-						<Button size="xs" variant="danger" isIconOnly onclick={(e) => { e.stopPropagation(); alert('Remove Team Members'); }}>
-							{#snippet icon()}<i class="fas fa-trash"></i>{/snippet}
-						</Button>
-					{/snippet}
-				</SplitButtonItem>
+				{#each bookmarks as b (b.id)}
+					<SplitButtonItem>
+						{#snippet icon()}<i class="fas {b.icon}"></i>{/snippet}
+						{b.label}
+						{#snippet action()}
+							<Button size="xs" variant="danger" isIconOnly onclick={(e) => removeBookmark(e, b.id)}>
+								{#snippet icon()}<i class="fas fa-trash-can"></i>{/snippet}
+							</Button>
+						{/snippet}
+					</SplitButtonItem>
+				{/each}
 			{/snippet}
 		</SplitButton>
 
@@ -491,62 +532,49 @@
 			{#snippet icon()}<i class="fas fa-clock-rotate-left"></i>{/snippet}
 			Recent
 			{#snippet menu()}
-				<SplitButtonItem>
-					{#snippet icon()}<i class="fas fa-file"></i>{/snippet}
-					Report Q4.pdf
-					{#snippet action()}
-						<Button size="xs" variant="secondary" isIconOnly onclick={(e) => { e.stopPropagation(); alert('Remove Report'); }}>
-							{#snippet icon()}<i class="fas fa-xmark"></i>{/snippet}
-						</Button>
-					{/snippet}
-				</SplitButtonItem>
-				<SplitButtonItem>
-					{#snippet icon()}<i class="fas fa-file-code"></i>{/snippet}
-					schema.sql
-					{#snippet action()}
-						<Button size="xs" variant="secondary" isIconOnly onclick={(e) => { e.stopPropagation(); alert('Remove schema'); }}>
-							{#snippet icon()}<i class="fas fa-xmark"></i>{/snippet}
-						</Button>
-					{/snippet}
-				</SplitButtonItem>
+				{#each recent as r (r.id)}
+					<SplitButtonItem>
+						{#snippet icon()}<i class="fas {r.icon}"></i>{/snippet}
+						{r.label}
+						{#snippet action()}
+							<Button size="xs" variant="secondary" isIconOnly onclick={(e) => removeRecent(e, r.id)}>
+								{#snippet icon()}<i class="fas fa-xmark"></i>{/snippet}
+							</Button>
+						{/snippet}
+					</SplitButtonItem>
+				{/each}
 			{/snippet}
 		</SplitButton>
 
-		<SplitButton variant="danger" onclick={() => {}}>
+		<SplitButton variant="danger" onclick={addMember}>
 			{#snippet icon()}<i class="fas fa-user-plus"></i>{/snippet}
 			Members
 			{#snippet menu()}
-				<SplitButtonItem>
-					{#snippet icon()}<i class="fas fa-user"></i>{/snippet}
-					Alice Cooper
-					{#snippet action()}
-						<Button size="xs" variant="danger" isIconOnly onclick={(e) => { e.stopPropagation(); alert('Remove Alice'); }}>
-							{#snippet icon()}<i class="fas fa-trash"></i>{/snippet}
-						</Button>
-					{/snippet}
-				</SplitButtonItem>
-				<SplitButtonItem>
-					{#snippet icon()}<i class="fas fa-user"></i>{/snippet}
-					Bob Dylan
-					{#snippet action()}
-						<Button size="xs" variant="danger" isIconOnly onclick={(e) => { e.stopPropagation(); alert('Remove Bob'); }}>
-							{#snippet icon()}<i class="fas fa-trash"></i>{/snippet}
-						</Button>
-					{/snippet}
-				</SplitButtonItem>
-				<SplitButtonItem>
-					{#snippet icon()}<i class="fas fa-user"></i>{/snippet}
-					Charlie Parker
-					{#snippet action()}
-						<Button size="xs" variant="danger" isIconOnly onclick={(e) => { e.stopPropagation(); alert('Remove Charlie'); }}>
-							{#snippet icon()}<i class="fas fa-trash"></i>{/snippet}
-						</Button>
-					{/snippet}
-				</SplitButtonItem>
+				{#each members as m (m.id)}
+					<SplitButtonItem isDanger data-pa-keep-open onclick={(e) => askRemoveMember(e, m)}>
+						{#snippet icon()}<i class="fas fa-user"></i>{/snippet}
+						{m.name}
+					</SplitButtonItem>
+				{/each}
 			{/snippet}
 		</SplitButton>
 	</div>
+
+	<Popconfirm
+		bind:show={removeShow}
+		trigger={removeTrigger}
+		messageText={`Remove ${removeName}?`}
+		icon="danger"
+		isCompact
+		position="bottom"
+		confirmText="Remove"
+		confirmVariant="danger"
+		onconfirm={confirmRemoveMember}
+	/>
 </Card>
+
+<!-- Overflow Toolbar (.pa-overflow; core-JS-driven, not a library component — see OverflowToolbar.svelte) -->
+<OverflowToolbar />
 
 <!-- Text Truncation -->
 <Card titleText="Text Truncation">
@@ -919,6 +947,8 @@
 		<li><code>pa-btn--outline-warning</code> - Outline warning</li>
 		<li><code>pa-btn--outline-danger</code> - Outline danger</li>
 		<li><code>pa-btn--outline-info</code> - Outline info</li>
+		<li><code>pa-btn--color-{'{1-9}'}</code> - Theme color slots</li>
+		<li><code>pa-btn--outline-color-{'{1-9}'}</code> - Outline theme color slots</li>
 	</BasicList>
 
 	<Heading level={4} class="mt-4">Button Sizes</Heading>
@@ -941,7 +971,7 @@
 	<BasicList class="pa-list-basic--compact">
 		<li><code>pa-btn--align-start</code> - Inline-start align content (RTL: right)</li>
 		<li><code>pa-btn--align-end</code> - Inline-end align content (RTL: left)</li>
-		<li><code>pa-btn--align-center</code> - Center-align content</li>
+		<li><code>pa-btn--align-center</code> - Center-align content (the default since core rc06; explicit)</li>
 		<li><code>pa-btn--align-justify</code> - Space-between content</li>
 	</BasicList>
 
@@ -975,5 +1005,32 @@
 		<li><code>pa-btn-group--lg-horizontal</code> - Horizontal at 992px+</li>
 		<li><code>pa-btn-group--xl-vertical</code> - Vertical at 1200px+</li>
 		<li><code>pa-btn-group--xl-horizontal</code> - Horizontal at 1200px+</li>
+	</BasicList>
+
+	<Heading level={4} class="mt-4">Split Buttons</Heading>
+	<BasicList class="pa-list-basic--compact">
+		<li><code>pa-btn-split</code> - Container for split button</li>
+		<li><code>pa-btn-split__toggle</code> - Toggle button (fixed square width)</li>
+		<li><code>pa-btn-split__chevron</code> - On the icon to opt-in to 180deg rotation on open (omit for static icons)</li>
+		<li><code>pa-btn-split__menu</code> - Dropdown menu panel (outer, overflow hidden)</li>
+		<li><code>pa-btn-split__menu-inner</code> - Inner wrapper for menu items (padding, flex layout)</li>
+		<li><code>pa-btn-split__menu--open</code> - Show dropdown menu</li>
+		<li><code>pa-btn-split__item</code> - Menu item button</li>
+		<li><code>pa-btn-split__item--danger</code> - Destructive action styling</li>
+		<li><code>pa-btn-split__item-row</code> - Menu row wrapping an item + a trailing action button (e.g. delete)</li>
+		<li><code>data-placement="top-end"</code> - Open menu upward (on container)</li>
+		<li><code>data-pa-keep-open</code> - On an item (or ancestor): keep the menu open on click, for actions that spawn their own popover</li>
+	</BasicList>
+
+	<Heading level={4} class="mt-4">Overflow Toolbar</Heading>
+	<BasicList class="pa-list-basic--compact">
+		<li><code>pa-overflow</code> - Progressive-collapse flex row; auto-appends a <code>[⋮]</code> "more" trigger and walks overflowing children into it</li>
+		<li><code>pa-card__actions--overflow</code> - Card-header alias of <code>pa-overflow</code> on the <code>pa-card__actions</code> slot</li>
+		<li><code>pa-overflow__trigger</code> - The auto-created <code>[⋮]</code> button (retheming hook; ships as a standard <code>pa-btn--secondary</code>)</li>
+		<li><code>data-pa-overflow-trigger="ghost"</code> - Make the trigger chromeless instead of bordered (on the container)</li>
+		<li><code>data-pa-actions-priority</code> - Drop order per child (default <code>0</code>; higher survives longer)</li>
+		<li><code>data-pa-actions-overflow-from</code> - <code>end</code> (default, rightmost first) or <code>start</code> (leftmost first)</li>
+		<li><code>data-pa-overflow-label</code> - Override the section label for a collapsed split-button group</li>
+		<li><code>pa-btn-split--in-overflow</code> / <code>pa-btn-split__group-label</code> - Applied by <code>overflow.js</code> when a split button collapses as an atomic labeled group (not authored by hand)</li>
 	</BasicList>
 </Card>

@@ -12,7 +12,10 @@
 		"target": "ES2022",
 		"module": "ES2022",
 		"lib": ["ES2022", "DOM", "DOM.Iterable"],
-		"types": ["svelte"]
+		"types": ["svelte"],
+		"paths": {
+			"@keenmate/pure-admin-core/js/*": ["./src/lib/internal/core-js.stub.d.ts"]
+		}
 	},
 	"include": ["src/**/*"],
 	"exclude": ["node_modules", "dist"]

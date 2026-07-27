@@ -4,6 +4,20 @@ Svelte 5 component library for Pure Admin CSS framework — 100+ ready-to-use co
 
 **Ships with AI reference files** — 14 plain-text docs in `ai/` optimized for LLM-assisted development (Claude, ChatGPT, Copilot). Point your AI assistant at `node_modules/@keenmate/svelte-pure-admin/ai/INDEX.txt` for instant component knowledge.
 
+## What's New in 1.9.0
+
+Sync with `@keenmate/pure-admin-core` **v2.7.2 → v2.9.0-rc06** — new interactive wrappers, overflow toolbars, and the unified button model. **Requires `@keenmate/pure-admin-core` ≥ 2.9.0-rc06.**
+
+- **`Splitter` + `SplitterPane` + `SplitterGutter`** — resizable N-pane layouts over core's `splitter.js`: drag / keyboard resize, collapse-to-rail, and `localStorage` persistence. Root `onresize` / `oncollapse` / `onexpand` callbacks; per-pane `size` / `min` / `max` / `isMinimizable`
+- **`RangeGroup`** — compact multi-range filter: one toggle summarising N numeric sliders in a Floating-UI panel. Reactive `bind:values`, one-param URL sync via `qsKey` (`?filters=age:25..60,children:gte:2`), `immediate` / `apply` modes, and pluggable codec / query-string adapters (History, hash, or `svelte-spa-router`)
+- **`Stat` fit-mode** — `isFit` + `contextText` opt into square fit-to-box tiles whose number scales to the tile and whose label / change / context rows reveal progressively by size
+- **`Card` overflow actions** — `isActionsOverflow` progressively collapses header actions into a "…" more-menu when space is tight; the header also emits core's canonical `.pa-card__title-text` / `.pa-card__description` structure
+- **`SplitButton` speaks core's rc06 menu model** — joins the shared `window.PaMenus` registry so only one menu (Svelte split button, raw-core split button, or `.pa-overflow` more-menu) is ever open at once; adds the `data-pa-keep-open` opt-out for items that spawn their own popover; and now dismisses only on a real menu-item click. `SplitButtonItem` forwards `data-*` / `aria-*` to its button
+- **Buttons centered by default** (core rc06 unified content model) — full-width icon+label buttons that used to left-align now center; add `align="start"` for the old look. `Button` now wraps text in `.pa-btn__label` so `align="center"` / `"justify"` behave exactly like core
+- **`ProfilePanel`** role chip migrated to `.pa-badge` (the bespoke `.pa-profile-panel__role` rule was dropped upstream)
+
+See [CHANGELOG.md](./CHANGELOG.md#unreleased) for the full list and behavior-change notes.
+
 ## What's New in 1.8.0
 
 Canvas charts in KPI tiles now stay correctly coloured across theme switches and slow first-paint windows.
@@ -13,22 +27,6 @@ Canvas charts in KPI tiles now stay correctly coloured across theme switches and
 - **`chartColorSync`** Svelte action — keeps canvas-based charts (Chart.js, ECharts, …) in sync with the theme cascade. Use on the canvas element to receive a callback when the theme swaps or light/dark mode flips, then update your chart's `borderColor` / `backgroundColor` and call `chart.update('none')`. JSDoc on all KPI `chart` snippet props now points at this action
 - **`SettingsPanel` fix** — the theme link href compare was always disagreeing (absolute vs. relative URL), causing a spurious link rewrite on every mount. Themes still apply correctly; the fix matters for any downstream code that listens for real href changes
 - **Docker boot fix** — removed `envPrefix: 'PA_'` from the docs site's adapter-node config (it was clashing with `PA_THEMES_DIR` and crashing the container on startup)
-
-## What's New in 1.7.0
-
-Sync with `@keenmate/pure-admin-core` **v2.5.0 → v2.7.2**.
-
-- **7-component KPI showcase suite** — seven dashboard layouts ready to drop in: `KpiStrip` (numeric strip), `KpiSparklineList`, `KpiGaugeList` (comparison gauges), `KpiHeroList` + `KpiHeroMain` + `KpiHeroSide`, `KpiBento`, `KpiEditorial`, `KpiTerminal` (with optional tabs+panes). Every layout ships with a shared cursor-anchored hover popover (Floating UI), an auto-row "detail" builder (Current → Previous → Δ absolute → Δ percent → Target), and composable layout modifiers (`noPreviousValue` / `noDeltaPercent` / `noTargetBar` for the strip; `isChartFirst` / `noDelta` for sparkline; `gridLayout` / `cellMinWidth` for gauges; `heroSplit` for hero). See the `/kpi-*` demo routes
-- **Toast service** — programmatic `toastService.show({...})` with action buttons, custom progress colors, max-width, and sugar methods (`success`, `danger`, `warning`, `info`, `primary`). Pair with a single `<ToastContainer />` to drive toasts from anywhere in your app. See `/toasts` demo
-- **Alert** — new `isHeadingLarge` opts into the pre-v2.5.0 large heading style; `isMultiline` correctly stacks an icon at the top of multi-line content. Default heading size is now smaller per core v2.5.0 — set `isHeadingLarge` if you want the punchier look
-- **`Stat`** — symbol-prefix mode for currencies (`isSymbolPrefix` renders `$847K` / `¥12.4M` instead of suffix). 5-step `changeDirection` scale (`very-positive` / `positive` / `neutral` / `negative` / `very-negative`) per core v2.6.0/2.7.0
-- **`Gauge`** — `gaugeSize` prop overrides `--pa-gauge-size` (default `12rem`); height auto-derives 2:1
-- **`KpiGrid`** — wraps `<Stat variant="square">` tiles to align flush with surrounding content (negative-margin negation)
-- **`NotificationsPanel` (BREAKING)** — rewritten as data-driven (`items: NotificationItem[]`, per-item `itemActions` snippet, optional bulk-select checkboxes, `isPageView`). The previous hardcoded sample-data version is gone
-- **`Spinner` (BREAKING type)** — size narrowed to `'xs'` only. Larger modifiers were never defined in core SCSS and silently rendered at the default size. Use `<Loader type="ring" size="lg">` for visibly larger spinners
-- **Docs site theme management** — migrated to the new `@keenmate/pureadmin` CLI (declarations in `pureadmin.json`, resolutions in `pureadmin.lock.json`, per-developer overrides in `.pureadmin.json`). Adding a theme is now a single `pureadmin themes add <id>` away; the settings panel and FOUC-prevention pick it up automatically — no source-code changes needed
-
-See [CHANGELOG.md](./CHANGELOG.md#unreleased) for the full list and BREAKING-change migration notes.
 
 ## Installation
 
@@ -105,6 +103,7 @@ npm install @keenmate/svelte-pure-admin @keenmate/pure-admin-core
 | `DateInput` | Date picker input |
 | `FileInput` | File upload input |
 | `RangeInput` | Range slider input |
+| `RangeGroup` | Compact multi-range filter — `rows`-driven, `bind:values`, `mode` (`immediate`/`apply`) + `debounce`, optional `qsKey` URL sync (pluggable `qsAdapter` / `codec`) |
 | `ColorInput` | Color picker input |
 | `Textarea` | Multiline text input |
 | `Select` | Dropdown select |
