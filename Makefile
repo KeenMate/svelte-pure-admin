@@ -1,6 +1,6 @@
 # Makefile for @keenmate/svelte-pure-admin Monorepo
 
-.PHONY: help setup install dev dev-lib build build-docs build-all package check check-lib check-docs publish publish-dry clean sync-snippets sync-snippets-update verify podman-build podman-run podman-stop podman-restart podman-logs podman-clean podman-deploy podman-push
+.PHONY: help setup install dev dev-lib build build-docs build-all package check check-lib check-docs publish publish-rc publish-dry clean sync-snippets sync-snippets-update verify podman-build podman-run podman-stop podman-restart podman-logs podman-clean podman-deploy podman-push
 
 # === Shell Configuration (cross-platform) ===
 # Use sh on Unix, cmd on Windows
@@ -52,6 +52,7 @@ help:
 	@echo "  Package:"
 	@echo "    make verify               - Clean, build, and verify package"
 	@echo "    make publish TAG=rc       - Publish to npm (TAG required for prereleases)"
+	@echo "    make publish-rc           - Publish to npm under the rc dist-tag"
 	@echo "    make publish-dry TAG=rc   - Dry run publish"
 	@echo ""
 	@echo "  Docker (docs site):"
@@ -128,6 +129,10 @@ verify: clean build
 publish: clean build
 	@echo "Publishing @keenmate/svelte-pure-admin to npm..."
 	npm publish -w @keenmate/svelte-pure-admin --access public $(NPM_TAG)
+
+# Publish a prerelease to npm under the rc dist-tag (so it never becomes `latest`)
+publish-rc:
+	$(MAKE) publish TAG=rc
 
 # Dry run publish
 publish-dry: clean build
