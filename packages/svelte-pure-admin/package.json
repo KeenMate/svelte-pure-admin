@@ -40,8 +40,7 @@
     "svelte": "^5.0.0"
   },
   "devDependencies": {
-    "@keenmate/pure-admin-core": "file:../../../pure-admin/packages/core",
-    "@keenmate/pure-admin-theme-audi": "file:../../../pure-admin/packages/theme-audi",
+    "@keenmate/pure-admin-core": "^2.9.0-rc06",
     "@sveltejs/package": "^2.0.0",
     "@sveltejs/vite-plugin-svelte": "^6.2.4",
     "publint": "^0.2.0",
