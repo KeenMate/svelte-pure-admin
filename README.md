@@ -468,6 +468,21 @@ npm run package   # Package for npm
 npm run check     # Type check
 ```
 
+## Security & `npm audit`
+
+`npm audit` currently reports advisories in this repo's dependency tree. **None of them affect consumers of the published `@keenmate/svelte-pure-admin` package**, and none have an applicable forward fix today.
+
+**Why the published package is not affected:** it ships only `dist/` + `ai/`, and its sole runtime dependency is `svelte-i18n`. Every flagged package is either build-time tooling (not shipped) or belongs to this repo's own docs site — not to code that runs in your app.
+
+| Advisory | Package | Scope | Affects consumers? |
+|---|---|---|---|
+| `cookie` <0.7.0 (OOB chars) | via `@sveltejs/kit` | docs site runtime only | No — comes from *your* SvelteKit version, not this library. Already on the latest kit (`2.70.1`); no fixed release exists upstream yet. |
+| `esbuild` ≤0.24.2 (dev-server request) | via `svelte-i18n` | **dev/build only**, not production | No — dev-server issue; `svelte-i18n` is already at the latest version. |
+| `brace-expansion` / `minimatch` / `glob` (DoS) | via `publint` | build-time linter, not shipped | No |
+| `adm-zip` <0.6.0 (crafted-ZIP DoS) | this repo's docs theme handler | docs site only, trusted input | No — only unzips theme bundles from the trusted pureadmin registry |
+
+**Do not run `npm audit fix --force` in this repo** — its "fixes" are destructive downgrades (e.g. `@sveltejs/kit@0.0.30`, `svelte-i18n@3.7.1`) that break the build. The remaining forward-fixable items (`publint`, `adm-zip`) are dev/docs-only and are upgraded on their own cadence.
+
 ## Browser Support
 
 - Modern browsers with ES2020+ support
