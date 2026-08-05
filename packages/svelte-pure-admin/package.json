@@ -1,6 +1,6 @@
 {
   "name": "@keenmate/svelte-pure-admin",
-  "version": "1.9.0-rc01",
+  "version": "1.9.0-rc02",
   "description": "Svelte 5 component library for Pure Admin CSS framework — 100+ ready-to-use components for building admin dashboards. Includes AI reference files for LLM-assisted development.",
   "type": "module",
   "svelte": "./dist/index.js",
@@ -36,11 +36,11 @@
     "svelte-i18n": "^4.0.0"
   },
   "peerDependencies": {
-    "@keenmate/pure-admin-core": "^2.9.0-rc06",
+    "@keenmate/pure-admin-core": "^2.9.0-rc08",
     "svelte": "^5.0.0"
   },
   "devDependencies": {
-    "@keenmate/pure-admin-core": "^2.9.0-rc06",
+    "@keenmate/pure-admin-core": "^2.9.0-rc08",
     "@sveltejs/package": "^2.0.0",
     "@sveltejs/vite-plugin-svelte": "^6.2.4",
     "publint": "^0.2.0",

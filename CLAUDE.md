@@ -2,7 +2,7 @@
 
 Svelte 5 component library wrapping the Pure Admin CSS framework (`@keenmate/pure-admin-core`) into reusable, type-safe components. Every component must mirror the HTML structure from the core framework's snippet library.
 
-**Stack:** Svelte 5 (runes) · SvelteKit 2.x library mode · TypeScript · Vite · `@keenmate/pure-admin-core` v2.9.0-rc06
+**Stack:** Svelte 5 (runes) · SvelteKit 2.x library mode · TypeScript · Vite · `@keenmate/pure-admin-core` v2.9.0-rc08
 
 ## Core rules
 
@@ -95,4 +95,4 @@ Version-by-version breaking-change history lives in `CHANGELOG.md` (this repo) a
 
 ---
 
-**Pure Admin Core:** 2.9.0-rc06 (synced) · **Svelte:** 5.x · **SvelteKit:** 2.x
+**Pure Admin Core:** 2.9.0-rc08 (synced) · **Svelte:** 5.x · **SvelteKit:** 2.x

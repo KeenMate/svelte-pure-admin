@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.9.0-rc02] - 2026-08-05
+
+Dependency-only refresh — sync `@keenmate/pure-admin-core` **v2.9.0-rc06 → v2.9.0-rc08** (core rc07 + rc08). **No library component or API changes.** The upstream changes are CSS-level and build-level; consumers still import `@keenmate/pure-admin-core/css` and nothing in the library's emitted markup changed. `svelte-check` passes clean against rc08.
+
+### Changed — dependency
+
+- Peer dependency `@keenmate/pure-admin-core` bumped `^2.9.0-rc06` → `^2.9.0-rc08`. Upstream deltas are non-breaking for us:
+  - **core rc07** — `.text-truncate` on a text-only `.pa-btn` ellipses again (regressed under rc06's flex model); the `.pa-overflow` "more" `[⋮]` trigger no longer clips next to a long sibling title.
+  - **core rc08** — the previously inert `.border` / `.rounded` utilities now render real borders / radius (behavior change, but the library emits neither class); core's `--base-*` / utility / `.pa-row` grid foundation is now single-sourced from the new `@keenmate/pure-css` package — a build-time dependency of core only, with compiled `main.css` byte-identical, so no consumer action is needed.
+
+### Fixed
+
+- **Clean-install / CI packaging** — the lockfile pinned `@keenmate/pure-admin-core` to a local `file:` symlink of the sibling checkout, so a fresh install off the author's machine (Docker / CI) couldn't resolve the core `js/*` wrappers and `vite build` failed. Core now resolves to the published registry tarball; local core development uses `npm link` / a gitignored override instead. (First release to carry the fix; landed post-rc01.)
+
 ## [1.9.0-rc01] - 2026-07-27
 
 Sync with `@keenmate/pure-admin-core` **v2.7.2 → v2.9.0-rc06** — canonical card header, profile role chip migration, and thin Svelte wrappers over the interactive behaviours core now ships as JS (`@keenmate/pure-admin-core/js/*`): **Splitter**, **RangeGroup**, card actions-overflow, and Stat fit-mode. The overflow toolbar (`.pa-overflow`) is core-JS-driven raw markup rather than a wrapped library component; `SplitButton` gains a `data-pa-keep-open` opt-out; and buttons adopt core rc06's unified (centered-by-default) content model.

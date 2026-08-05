@@ -6,7 +6,7 @@ Svelte 5 component library for Pure Admin CSS framework — 100+ ready-to-use co
 
 ## What's New in 1.9.0
 
-Sync with `@keenmate/pure-admin-core` **v2.7.2 → v2.9.0-rc06** — new interactive wrappers, overflow toolbars, and the unified button model. **Requires `@keenmate/pure-admin-core` ≥ 2.9.0-rc06.**
+Sync with `@keenmate/pure-admin-core` **v2.7.2 → v2.9.0-rc08** — new interactive wrappers, overflow toolbars, and the unified button model. **Requires `@keenmate/pure-admin-core` ≥ 2.9.0-rc08.**
 
 - **`Splitter` + `SplitterPane` + `SplitterGutter`** — resizable N-pane layouts over core's `splitter.js`: drag / keyboard resize, collapse-to-rail, and `localStorage` persistence. Root `onresize` / `oncollapse` / `onexpand` callbacks; per-pane `size` / `min` / `max` / `isMinimizable`
 - **`RangeGroup`** — compact multi-range filter: one toggle summarising N numeric sliders in a Floating-UI panel. Reactive `bind:values`, one-param URL sync via `qsKey` (`?filters=age:25..60,children:gte:2`), `immediate` / `apply` modes, and pluggable codec / query-string adapters (History, hash, or `svelte-spa-router`)
