@@ -126,6 +126,19 @@ export interface SearchResult {
 	title: string;
 	/** Secondary text (e.g., email, price) */
 	subtitle?: string;
+	/**
+	 * Longer descriptive text — the `.pa-search-results__snippet` on the page-level
+	 * `SearchResults` list (e.g. a full-text excerpt). May contain
+	 * `<mark class="pa-search-results__mark">…</mark>` highlight when the surface's
+	 * `allowHtml` is enabled.
+	 */
+	snippet?: string;
+	/** Trailing meta chips — the `.pa-search-results__meta-item` trail (e.g. "Docs / Guides", "Updated 2 days ago"). */
+	meta?: string[];
+	/** Type label shown at the row's end — the `.pa-search-results__type` / autocomplete `__item-type` (e.g. "Page", "Product"). */
+	type?: string;
+	/** Destination link for a `SearchResults` row (the `<a href>`). */
+	href?: string;
 	/** Icon (emoji or icon class) */
 	icon?: string;
 	/** Badge text (e.g., status, category) */

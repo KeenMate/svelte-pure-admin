@@ -200,8 +200,21 @@ Content pieces (place inside the zones):
                returns a flat SearchResult[]; each row's `group` field is bucketed
                client-side into sections (single round-trip, no fan-out). Props:
                value (bindable), placeholder, globalSearch, onselect, groups
-               (SearchGroup[] label/icon/order/limit), debounce, minChars, emptyText.
+               (SearchGroup[] label/icon/order/limit), debounce, minChars, emptyText,
+               allowHtml (render <mark> highlight).
+  NavbarSearchInput type-and-go (.pa-navbar-search--input): a GET <form> that navigates
+               to a results page on Enter (no dropdown/palette). Props: action, method,
+               name (->query param), value, placeholder.
   ProfileButton profile button. name, onclick, `icon` snippet.
+
+Search destination + sidebar search (rc15):
+  SearchResults page-level results list (.pa-search-results). Props: results
+               (SearchResult[]), variant (compact|detailed|grouped|cards), groups,
+               allowHtml, onselect, emptyText. `grouped` buckets by SearchResult.group.
+  SidebarSearch sidebar search affordance (.pa-sidebar__search); renders its own
+               <li class="pa-sidebar__item">. Trigger mode (onclick -> palette) or
+               type-and-go (set `action` -> .pa-sidebar__search--input GET form).
+               Props: labelText, onclick, action, method, name, value, placeholder, icon.
 
 Minimal navbar (config brand auto-fills AppHeader):
 

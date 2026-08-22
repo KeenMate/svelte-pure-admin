@@ -1,0 +1,88 @@
+<script lang="ts">
+	/**
+	 * SidebarSearch — a framed search affordance at the top of the sidebar (core
+	 * `.pa-sidebar__search`, v2.9.0-rc12/rc15). Place it as the first sidebar item; it
+	 * collapses to just its icon in an `.pa-layout__sidebar--icon-collapse` sidebar.
+	 *
+	 * Two modes:
+	 * - **Trigger** (default) — a `<button>` that fires `onclick` (open the command
+	 *   palette or your own search).
+	 * - **Type-and-go** — set `action` to render `.pa-sidebar__search--input`: a `<form>`
+	 *   whose native GET submit navigates to a results page on Enter. Its magnifier is a
+	 *   `type="submit"`, so it still submits from the collapsed icon-rail (an empty query
+	 *   lands on the bare results page). `name` becomes the query param (default `q`).
+	 *
+	 * Renders its own `<li class="pa-sidebar__item">`, so it sits as a sibling of
+	 * `SidebarItem` inside `<Sidebar>`.
+	 */
+	import { _ } from '../i18n';
+
+	interface Props {
+		/** Label text (trigger mode). */
+		labelText?: string;
+		/** Click handler (trigger mode) — e.g. open the command palette. */
+		onclick?: () => void;
+		/** Form target — set this to switch to type-and-go mode (`.pa-sidebar__search--input`). */
+		action?: string;
+		/** HTTP method (type-and-go; default `get`). */
+		method?: 'get' | 'post';
+		/** Query field name → URL param (type-and-go; default `q`). */
+		name?: string;
+		/** Bound query text (type-and-go). */
+		value?: string;
+		/** Placeholder for the input (type-and-go). */
+		placeholder?: string;
+		/** Additional CSS classes. */
+		class?: string;
+		/** Icon (defaults to a magnifier). */
+		icon?: import('svelte').Snippet;
+	}
+
+	let {
+		labelText = 'Search…',
+		onclick,
+		action,
+		method = 'get',
+		name = 'q',
+		value = $bindable(''),
+		placeholder = 'Search…',
+		class: className = '',
+		icon
+	}: Props = $props();
+
+	const isInput = $derived(action !== undefined);
+</script>
+
+<li class="pa-sidebar__item">
+	{#if isInput}
+		<form
+			class={['pa-sidebar__search', 'pa-sidebar__search--input', className].filter(Boolean).join(' ')}
+			{action}
+			{method}
+			role="search"
+		>
+			<button type="submit" class="pa-sidebar__search-icon" aria-label={$_('pureAdmin.a11y.openSearch')}>
+				{#if icon}{@render icon()}{:else}🔍{/if}
+			</button>
+			<input
+				type="search"
+				{name}
+				class="pa-sidebar__search-field"
+				bind:value
+				{placeholder}
+				autocomplete="off"
+				aria-label={$_('pureAdmin.a11y.openSearch')}
+			/>
+		</form>
+	{:else}
+		<button
+			type="button"
+			class={['pa-sidebar__search', className].filter(Boolean).join(' ')}
+			{onclick}
+			aria-label={$_('pureAdmin.a11y.openSearch')}
+		>
+			<span class="pa-sidebar__icon" aria-hidden="true">{#if icon}{@render icon()}{:else}🔍{/if}</span>
+			<span class="pa-sidebar__label">{labelText}</span>
+		</button>
+	{/if}
+</li>

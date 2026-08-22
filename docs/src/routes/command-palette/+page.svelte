@@ -16,12 +16,25 @@
 		AppHeader,
 		NavMenu,
 		NavItem,
-		NavbarSearchField
+		NavbarSearchField,
+		SearchResults,
+		CodeBlock
 	} from '@keenmate/svelte-pure-admin';
 	import type { Command, SearchContext, SearchResult, SearchGroup } from '@keenmate/svelte-pure-admin';
 
 	let showPalette = $state(false);
 	let fieldSelected = $state('');
+	let resultsVariant = $state<'compact' | 'detailed' | 'grouped' | 'cards'>('detailed');
+
+	// Page-level results (the destination a search submits to). Rows tagged with a
+	// `group` so the `grouped` preset can bucket them; `snippet`/`meta`/`type` feed the
+	// richer presets. `<mark>` highlight would render with `allowHtml`.
+	const searchResultsDemo: SearchResult[] = [
+		{ id: 'r1', group: 'Pages', type: 'Page', icon: '📄', href: '#', title: 'Getting started with widgets', snippet: 'A step-by-step guide covering widget setup, configuration, and troubleshooting for teams of any size.', meta: ['Docs / Guides', 'Updated 2 days ago'] },
+		{ id: 'r2', group: 'Pages', type: 'Page', icon: '📄', href: '#', title: 'Widget API reference', snippet: 'Endpoints, payloads and rate limits for the Widget REST API.', meta: ['Docs / API'] },
+		{ id: 'r3', group: 'Products', type: 'Product', icon: '📦', href: '#', title: 'Widget Pro subscription', snippet: 'Advanced widgets with priority support and higher limits.', meta: ['$49 / mo', 'In stock'] },
+		{ id: 'r4', group: 'Users', type: 'User', icon: '👤', href: '#', title: 'Jane Smith', snippet: 'Administrator · jane.smith@example.com', meta: ['Active'] }
+	];
 	let displayStyle = $state<'inline' | 'tokens'>('inline');
 
 	// =========================================================================
@@ -494,6 +507,52 @@
 					<code>groups</code> to control each section's label, order and cap.
 				</Alert>
 			</div>
+		</div>
+	</Card>
+
+	<Card class="mt-3">
+		<div class="pa-card__body">
+			<h3>Search Results Page (SearchResults)</h3>
+			<p>
+				The page-level results list a search <em>navigates to</em> (distinct from the live
+				dropdown). One item tree, four presets — switch below. The <code>grouped</code> preset
+				buckets by each row's <code>group</code>; <code>detailed</code> adds the snippet and
+				meta trail. Backend <code>&lt;mark&gt;</code> highlight renders with <code>allowHtml</code>.
+			</p>
+
+			<ButtonGroup class="mb-3">
+				{#each ['compact', 'detailed', 'grouped', 'cards'] as v}
+					<Button
+						size="sm"
+						variant={resultsVariant === v ? 'primary' : 'secondary'}
+						isOutline={resultsVariant !== v}
+						onclick={() => (resultsVariant = v as typeof resultsVariant)}
+					>
+						{v}
+					</Button>
+				{/each}
+			</ButtonGroup>
+
+			<SearchResults results={searchResultsDemo} variant={resultsVariant} />
+
+			<div class="mt-3">
+				<Alert variant="info">
+					<strong>Type-and-go:</strong> for a plain "submit → results page" box (no dropdown,
+					no palette), use <code>NavbarSearchInput</code> in a navbar zone or
+					<code>SidebarSearch</code> with an <code>action</code> — a native GET form that lands
+					on your <code>SearchResults</code> page.
+				</Alert>
+			</div>
+
+			<CodeBlock>{`<!-- Navbar zone: type-and-go form (Enter → /search?q=…) -->
+<NavbarSearchInput action="/search" name="q" placeholder="Search…" />
+
+<!-- Sidebar: trigger (opens palette) OR type-and-go (pass action) -->
+<SidebarSearch onclick={() => (showPalette = true)} />
+<SidebarSearch action="/search" name="q" />
+
+<!-- Command palette size preset (rc15): --sm / --lg / --xl -->
+<CommandPalette bind:show size="lg" {commands} {contexts} />`}</CodeBlock>
 		</div>
 	</Card>
 </div>

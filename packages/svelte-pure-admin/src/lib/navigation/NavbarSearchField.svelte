@@ -46,6 +46,13 @@
 		minChars?: number;
 		/** Message shown when a search returns nothing. */
 		emptyText?: string;
+		/**
+		 * Render `title` / `subtitle` as HTML so a backend's match highlight shows —
+		 * `<mark class="pa-search-results__mark">…</mark>` (core v2.9.0-rc15 renders the
+		 * same `<mark>` in the autocomplete popup too). The value is injected as HTML, so
+		 * the consumer is responsible for it being backend-sanitised.
+		 */
+		allowHtml?: boolean;
 		/** Additional CSS classes on the field shell. */
 		class?: string;
 	}
@@ -59,6 +66,7 @@
 		debounce = 300,
 		minChars = 1,
 		emptyText = 'No results',
+		allowHtml = false,
 		class: className = ''
 	}: Props = $props();
 
@@ -249,9 +257,13 @@
 								<span class="pa-search-autocomplete__item-icon">{result.icon}</span>
 							{/if}
 							<div class="pa-search-autocomplete__item-content">
-								<span class="pa-search-autocomplete__item-name">{result.title}</span>
+								<span class="pa-search-autocomplete__item-name">
+									{#if allowHtml}{@html result.title}{:else}{result.title}{/if}
+								</span>
 								{#if result.subtitle}
-									<span class="pa-search-autocomplete__item-type">{result.subtitle}</span>
+									<span class="pa-search-autocomplete__item-type">
+										{#if allowHtml}{@html result.subtitle}{:else}{result.subtitle}{/if}
+									</span>
 								{/if}
 							</div>
 							{#if result.badge}

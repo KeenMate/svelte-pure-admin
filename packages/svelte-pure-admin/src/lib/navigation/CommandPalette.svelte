@@ -42,6 +42,18 @@
 		placeholder?: string;
 		/** Display style for multi-step commands: 'inline' shows full path in input, 'tokens' shows selections as badges */
 		displayStyle?: 'inline' | 'tokens';
+		/**
+		 * Size preset (core v2.9.0-rc15) — sets both the palette width and results
+		 * height together via `.pa-command-palette--{sm|lg|xl}`. Omit for the default
+		 * (60.8 / 38.4rem). Composes with the individual overrides below.
+		 */
+		size?: 'sm' | 'lg' | 'xl';
+		/** Override the container max-width (`--pa-command-palette-width`, e.g. `'72rem'`). */
+		width?: string;
+		/** Override the gap above the palette (`--pa-command-palette-offset-top`). */
+		offsetTop?: string;
+		/** Override the results scroll height (`--pa-command-palette-results-max-height`). */
+		resultsMaxHeight?: string;
 		/** Additional CSS classes */
 		class?: string;
 		/** Custom error display snippet */
@@ -56,6 +68,10 @@
 		onglobalselect,
 		placeholder,
 		displayStyle = 'inline',
+		size,
+		width,
+		offsetTop,
+		resultsMaxHeight,
 		class: className = '',
 		errorSnippet
 	}: Props = $props();
@@ -90,8 +106,19 @@
 	const classes = $derived(() => {
 		const base = ['pa-command-palette'];
 		if (show) base.push('pa-command-palette--active');
+		if (size) base.push(`pa-command-palette--${size}`);
 		if (className) base.push(className);
 		return base.join(' ');
+	});
+
+	// Runtime size overrides (core v2.9.0-rc15) — set the CSS vars only when provided,
+	// so they fall back to the SCSS defaults / the `size` preset otherwise.
+	const paletteStyle = $derived(() => {
+		const vars: string[] = [];
+		if (width) vars.push(`--pa-command-palette-width: ${width}`);
+		if (offsetTop) vars.push(`--pa-command-palette-offset-top: ${offsetTop}`);
+		if (resultsMaxHeight) vars.push(`--pa-command-palette-results-max-height: ${resultsMaxHeight}`);
+		return vars.join('; ') || undefined;
 	});
 
 	// Get current step (if in command mode)
@@ -794,7 +821,7 @@
 
 <svelte:window onkeydown={handleKeyDown} />
 
-<div class={classes()}>
+<div class={classes()} style={paletteStyle()}>
 	<!-- Backdrop -->
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<!-- svelte-ignore a11y_no_static_element_interactions -->

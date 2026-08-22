@@ -63,6 +63,7 @@ export { default as Sidebar } from './layout/Sidebar.svelte';
 export { default as SidebarItem } from './layout/SidebarItem.svelte';
 export { default as SidebarSection } from './layout/SidebarSection.svelte';
 export { default as SidebarDivider } from './layout/SidebarDivider.svelte';
+export { default as SidebarSearch } from './layout/SidebarSearch.svelte';
 export { default as Main } from './layout/Main.svelte';
 export { default as Footer } from './layout/Footer.svelte';
 export { default as Grid } from './layout/Grid.svelte';
@@ -280,6 +281,8 @@ export { default as TabsOverflow } from './navigation/TabsOverflow.svelte';
 export { default as CommandPalette } from './navigation/CommandPalette.svelte';
 export { default as NavbarSearch } from './navigation/NavbarSearch.svelte';
 export { default as NavbarSearchField } from './navigation/NavbarSearchField.svelte';
+export { default as NavbarSearchInput } from './navigation/NavbarSearchInput.svelte';
+export { default as SearchResults } from './navigation/SearchResults.svelte';
 export type {
 	Command,
 	CommandStep,
