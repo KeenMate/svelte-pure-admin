@@ -55,8 +55,14 @@ export { default as Layout } from './layout/Layout.svelte';
 export { default as LayoutInner } from './layout/LayoutInner.svelte';
 export { default as LayoutContent } from './layout/LayoutContent.svelte';
 export { default as Navbar } from './layout/Navbar.svelte';
+export { default as AppHeader } from './layout/AppHeader.svelte';
+export { default as PageHeader } from './layout/PageHeader.svelte';
+export { default as FitSlot } from './layout/FitSlot.svelte';
+export { default as FitStep } from './layout/FitStep.svelte';
 export { default as Sidebar } from './layout/Sidebar.svelte';
 export { default as SidebarItem } from './layout/SidebarItem.svelte';
+export { default as SidebarSection } from './layout/SidebarSection.svelte';
+export { default as SidebarDivider } from './layout/SidebarDivider.svelte';
 export { default as Main } from './layout/Main.svelte';
 export { default as Footer } from './layout/Footer.svelte';
 export { default as Grid } from './layout/Grid.svelte';
@@ -273,6 +279,7 @@ export { default as TabsScrollable } from './navigation/TabsScrollable.svelte';
 export { default as TabsOverflow } from './navigation/TabsOverflow.svelte';
 export { default as CommandPalette } from './navigation/CommandPalette.svelte';
 export { default as NavbarSearch } from './navigation/NavbarSearch.svelte';
+export { default as NavbarSearchField } from './navigation/NavbarSearchField.svelte';
 export type {
 	Command,
 	CommandStep,
@@ -280,9 +287,11 @@ export type {
 	StepSelection,
 	SearchContext,
 	SearchResult,
+	SearchGroup,
 	PaletteMode
 } from './navigation/command-palette-types';
 export { default as NavItem } from './navigation/NavItem.svelte';
+export { default as NavMenu } from './navigation/NavMenu.svelte';
 export { default as NavDropdown } from './navigation/NavDropdown.svelte';
 
 // Typography Components

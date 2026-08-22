@@ -1,184 +1,112 @@
 <script lang="ts">
 	/**
-	 * Pure Admin Header/Navbar Component (Svelte 5)
+	 * Pure Admin Navbar Component (Svelte 5)
 	 * Based on @keenmate/pure-admin-core snippets/layout.html
 	 *
-	 * THREE-SECTION LAYOUT (v1.0.0-rc06, renamed in v1.4.2):
-	 * - .pa-header__start - Burger, Brand, Start Nav (stays anchored to inline-start)
-	 * - .pa-header__center - Page Title (flexible, fills space)
-	 * - .pa-header__end - End Nav, Notifications, Profile (stays anchored to inline-end)
+	 * Mirrors core's universal navbar schema: a fixed burger anchor + three OPEN
+	 * zones, all direct children of `.pa-navbar__inner`:
+	 *   pa-navbar__inner > [burger]  [__start]  [__center]  [__end]
 	 *
-	 * HYBRID NAMING CONVENTION:
-	 * - Outer wrapper: pa-navbar + pa-navbar__inner
-	 * - Inner elements: pa-header__ classes (burger, brand, nav, title, profile-btn)
+	 * The zones are open containers — this component prescribes NO fixed brand / nav /
+	 * search / profile slots or ordering. Compose each zone yourself with the content
+	 * pieces (`AppHeader`, `NavMenu`, `PageHeader`, `NavbarSearch`, `ProfileButton`,
+	 * notifications, …) and wrap anything responsive in a `FitSlot`. Navbar only
+	 * renders the shell and initialises the two header engines:
+	 *   - navbar-fit     — priority-driven degradation, on `.pa-navbar__inner`
+	 *   - navbar-dropdown — touch support for hover dropdowns (global)
+	 * Responsive nav-item collapse lives on `NavMenu` (it owns its own behaviour).
 	 *
-	 * Auto-config: When no brand snippet is provided, uses config.app.name and config.app.logo
+	 * The burger is a fixed anchor OUTSIDE the zones (core rc13): it carries no
+	 * `data-pa-fit`, so it must not sit inside a measured zone.
 	 */
-	import { usePureAdminConfig } from '../config/hooks';
-	import Heading from '../typography/Heading.svelte';
+	import { onMount } from 'svelte';
 	import { _ } from '../i18n';
-
-	const config = usePureAdminConfig();
+	import { loadCoreJs } from '../internal/core-js';
 
 	interface Props {
-		/** Additional CSS classes for outer nav */
+		/** Additional CSS classes for the outer `<nav>` */
 		class?: string;
-		/** Additional CSS classes for inner div */
+		/** Additional CSS classes for the `.pa-navbar__inner` element */
 		innerClass?: string;
-		/** Brand section snippet */
-		brand?: import('svelte').Snippet;
-		/** Start navigation snippet (left in LTR, right in RTL) */
-		navStart?: import('svelte').Snippet;
-		/** Search bar snippet (placed in center section) */
-		search?: import('svelte').Snippet;
-		/** End navigation snippet (right in LTR, left in RTL) */
-		navEnd?: import('svelte').Snippet;
-		/** Page title snippet (center section) */
-		title?: import('svelte').Snippet;
-		/** Notifications snippet (right section) */
-		notifications?: import('svelte').Snippet;
-		/** Profile button snippet (right section) */
-		profile?: import('svelte').Snippet;
-		/** Burger menu toggle event */
-		onburgerclick?: () => void;
-		/** Show burger menu */
+		/** Show the burger toggle (fixed anchor, first child of `.pa-navbar__inner`) */
 		showBurger?: boolean;
-		/** Whether burger is in active (X) state - toggles animation */
+		/** Burger click handler */
+		onburgerclick?: () => void;
+		/** Whether the burger is in its active (X) state — toggles the animation */
 		burgerActive?: boolean;
-		/** Children content (fallback) */
-		children?: import('svelte').Snippet;
+		/** START zone content (inline-start) — brand, primary nav, … */
+		start?: import('svelte').Snippet;
+		/** CENTER zone content (flex:1) — page title, search, … */
+		center?: import('svelte').Snippet;
+		/** END zone content (inline-end) — secondary nav, notifications, profile, … */
+		end?: import('svelte').Snippet;
 	}
 
 	let {
 		class: className = '',
 		innerClass = '',
-		brand,
-		navStart,
-		search,
-		navEnd,
-		title,
-		notifications,
-		profile,
-		onburgerclick,
 		showBurger = false,
+		onburgerclick,
 		burgerActive = false,
-		children
+		start,
+		center,
+		end
 	}: Props = $props();
 
-	// Build class string for outer nav
+	let navbarElement = $state<HTMLElement | null>(null);
+	let navInnerElement = $state<HTMLElement | null>(null);
+
+	onMount(() => {
+		// Touch support for hover dropdowns in any NavMenu (global listeners at eval;
+		// init() only (re)applies ARIA on `.pa-navmenu__item--has-dropdown` parents).
+		loadCoreJs('navbar-dropdown').then(() => {
+			window.PaNavDropdown?.init(navbarElement ?? undefined);
+		});
+
+		// Navbar Fit — the one non-declarative piece; WHICH slots degrade is composed
+		// as FitSlot/FitStep in the zones. Core `init` no-ops without `[data-pa-fit]`.
+		loadCoreJs('navbar-fit').then(() => {
+			if (navInnerElement) window.pureAdmin?.components?.navFit?.init(navInnerElement);
+		});
+	});
+
 	const classes = $derived(() => {
 		const base = ['pa-navbar'];
 		if (className) base.push(className);
 		return base.join(' ');
 	});
 
-	// Build class string for inner div
 	const innerClasses = $derived(() => {
 		const base = ['pa-navbar__inner'];
 		if (innerClass) base.push(innerClass);
 		return base.join(' ');
 	});
-
-	// Check if left section has content
-	const hasLeftContent = $derived(() => {
-		return (showBurger && onburgerclick) || brand || config().app.logo || config().app.name || navStart;
-	});
-
-	// Check if center section has content
-	const hasCenterContent = $derived(() => {
-		return title || search;
-	});
-
-	// Check if right section has content
-	const hasRightContent = $derived(() => {
-		return navEnd || notifications || profile;
-	});
 </script>
 
-<nav class={classes()}>
-	<div class={innerClasses()}>
-		<!-- Start Section: Burger, Brand, Start Nav (stays anchored to inline-start) -->
-		{#if hasLeftContent()}
-			<div class="pa-header__start">
-				{#if showBurger && onburgerclick}
-					<button
-						class="pa-header__burger burger-menu"
-						class:active={burgerActive}
-						onclick={onburgerclick}
-						aria-label={$_('pureAdmin.a11y.toggleSidebar')}
-					>
-						<span></span>
-						<span></span>
-						<span></span>
-					</button>
-				{/if}
-
-				{#if brand}
-					<div class="pa-header__brand">
-						{@render brand()}
-					</div>
-				{:else if config().app.logo || config().app.name}
-					<!-- Default brand from config -->
-					<div class="pa-header__brand">
-						{#if config().app.logo}
-							<img src={config().app.logo} alt={config().app.name} class="pa-header__logo" />
-						{/if}
-						{#if config().app.name}
-							<Heading level={1}>{config().app.name}</Heading>
-						{/if}
-					</div>
-				{/if}
-
-				{#if navStart}
-					<nav class="pa-header__nav pa-header__nav--start">
-						<ul>
-							{@render navStart()}
-						</ul>
-					</nav>
-				{/if}
-			</div>
+<nav class={classes()} bind:this={navbarElement}>
+	<div class={innerClasses()} bind:this={navInnerElement}>
+		<!-- Burger: fixed anchor OUTSIDE the zones (core rc13) — first child of __inner. -->
+		{#if showBurger && onburgerclick}
+			<button
+				class="pa-navbar__burger burger-menu"
+				class:active={burgerActive}
+				onclick={onburgerclick}
+				aria-label={$_('pureAdmin.a11y.toggleSidebar')}
+			>
+				<span></span>
+				<span></span>
+				<span></span>
+			</button>
 		{/if}
 
-		<!-- Center Section: Page Title (flexible, fills space between start/end) -->
-		{#if hasCenterContent()}
-			<div class="pa-header__center">
-				{#if search}
-					<div class="pa-header__search">
-						{@render search()}
-					</div>
-				{/if}
-
-				{#if title}
-					<div class="pa-header__title">
-						{@render title()}
-					</div>
-				{/if}
-			</div>
+		{#if start}
+			<div class="pa-navbar__start">{@render start()}</div>
 		{/if}
-
-		<!-- End Section: End Nav, Notifications, Profile (stays anchored to inline-end) -->
-		{#if hasRightContent()}
-			<div class="pa-header__end">
-				{#if navEnd}
-					<nav class="pa-header__nav pa-header__nav--end">
-						<ul>
-							{@render navEnd()}
-						</ul>
-					</nav>
-				{/if}
-
-				{#if notifications}
-					{@render notifications()}
-				{/if}
-
-				{#if profile}
-					{@render profile()}
-				{/if}
-			</div>
+		{#if center}
+			<div class="pa-navbar__center">{@render center()}</div>
 		{/if}
-
-		{#if children}
-			{@render children()}
+		{#if end}
+			<div class="pa-navbar__end">{@render end()}</div>
 		{/if}
 	</div>
 </nav>

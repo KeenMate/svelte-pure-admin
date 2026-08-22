@@ -1,5 +1,17 @@
 <script lang="ts">
-	import { Heading, Paragraph, Card, Grid, Column, CodeBlock, Alert } from '@keenmate/svelte-pure-admin';
+	import {
+		Heading,
+		Paragraph,
+		Card,
+		Grid,
+		Column,
+		CodeBlock,
+		Alert,
+		Sidebar,
+		SidebarItem,
+		SidebarSection,
+		SidebarDivider
+	} from '@keenmate/svelte-pure-admin';
 </script>
 
 <!-- Full Width Layout -->
@@ -128,6 +140,122 @@
 		</Column>
 	</Grid>
 </Card>
+
+<!-- New in core v2.9.0-rc10 -->
+<Heading level={3}>New in core v2.9.0 (rc09 / rc10 / rc12)</Heading>
+<Paragraph>
+	Flat sidebar section headings and dividers, plus navbar active state and responsive collapse.
+</Paragraph>
+
+<Grid>
+	<Column size="100" md="50">
+		<Card titleText="Sidebar sections + divider">
+			<Paragraph>
+				<code>&lt;SidebarSection&gt;</code> is a flat, non-interactive group heading;
+				<code>&lt;SidebarDivider&gt;</code> draws a thin rule between groups. Both are
+				<code>&lt;li&gt;</code> siblings to <code>&lt;SidebarItem&gt;</code> in the same list.
+			</Paragraph>
+			<Sidebar>
+				<SidebarSection labelText="Project" />
+				<SidebarItem href="#dashboard" labelText="Dashboard" active>
+					{#snippet icon()}📊{/snippet}
+				</SidebarItem>
+				<SidebarItem href="#components" labelText="Components">
+					{#snippet icon()}🧩{/snippet}
+				</SidebarItem>
+
+				<SidebarDivider />
+
+				<SidebarSection labelText="Guides" />
+				<SidebarItem href="#getting-started" labelText="Getting Started">
+					{#snippet icon()}🚀{/snippet}
+				</SidebarItem>
+				<SidebarItem href="#forms" labelText="Forms">
+					{#snippet icon()}📝{/snippet}
+				</SidebarItem>
+			</Sidebar>
+		</Card>
+	</Column>
+	<Column size="100" md="50">
+		<Card titleText="Code">
+			<h4 class="mb-2">Sidebar with flat sections</h4>
+			<CodeBlock>{`<Sidebar>
+  <SidebarSection labelText="Project" />
+  <SidebarItem href="/" labelText="Dashboard" active />
+  <SidebarItem href="/components" labelText="Components" />
+
+  <SidebarDivider />
+
+  <SidebarSection labelText="Guides" />
+  <SidebarItem href="/getting-started" labelText="Getting Started" />
+</Sidebar>`}</CodeBlock>
+
+			<h4 class="mb-2 mt-4">Zones: compose start / center / end</h4>
+			<Paragraph>
+				<code>Navbar</code> mirrors core's universal schema — a fixed burger plus three
+				open zones. It prescribes no fixed brand / nav / search / profile slots: compose
+				each zone from <code>AppHeader</code>, <code>NavMenu</code>, <code>PageHeader</code>,
+				<code>NavbarSearch</code>, <code>ProfileButton</code>, … in any order you like.
+			</Paragraph>
+			<CodeBlock>{`<Navbar showBurger onburgerclick={toggle}>
+  {#snippet start()}
+    <AppHeader><h1>My App</h1></AppHeader>
+    <NavMenu>…</NavMenu>
+  {/snippet}
+  {#snippet center()}<PageHeader><h2>Dashboard</h2></PageHeader>{/snippet}
+  {#snippet end()}<ProfileButton name="Jane" onclick={openProfile} />{/snippet}
+</Navbar>`}</CodeBlock>
+
+			<h4 class="mb-2 mt-4">NavMenu: active state + responsive collapse</h4>
+			<Paragraph>
+				Mark the current section with <code>isActive</code> on a <code>NavItem</code>. Opt a
+				<code>NavMenu</code> into progressive collapse with <code>collapse</code> — its
+				lowest-priority items fold out as the header narrows (per-item order via
+				<code>navPriority</code>; <code>navCollapse="hide"</code> to just hide one). Touch
+				support for hover dropdowns is wired automatically.
+			</Paragraph>
+			<CodeBlock>{`<NavMenu collapse="menu" moreLabel="More">
+  <NavItem href="/" isActive navPriority={10}>Dashboard</NavItem>
+  <NavItem href="/reports">Reports</NavItem>
+  <NavItem href="/forms" navCollapse="hide">Forms</NavItem>
+</NavMenu>
+
+<!-- Or fold items into the sidebar instead of a "More" menu: -->
+<NavMenu collapse="sidebar" collapseLabel="Menu">…</NavMenu>`}</CodeBlock>
+
+			<h4 class="mb-2 mt-4">Navbar Fit: priority-driven header degradation (rc12–rc14)</h4>
+			<Paragraph>
+				Where <code>navCollapse</code> only folds nav <em>items</em>, Navbar Fit degrades
+				<em>every</em> header slot — brand wordmark, version tag, page title, search box —
+				one at a time, <strong>lowest priority first</strong>, until the row fits, then
+				restores as space returns (no blanket mobile breakpoint). It's pure composition:
+				nothing fit-aware is baked into <code>Navbar</code> — wrap a slot in a
+				<code>FitSlot</code> to opt it in. <code>strategy="hide"</code> drops the slot;
+				<code>strategy="steps"</code> holds a ladder of <code>FitStep</code> variants
+				(widest first) that shrinks <code>Svelte Pure Admin → SPA → gone</code>. FitStep
+				auto-numbers the ladder and hides the non-first steps for a correct first paint —
+				no <code>data-pa-fit-step</code> or <code>pa-fit-hidden</code> to hand-author.
+			</Paragraph>
+			<CodeBlock>{`<Navbar>
+  {#snippet start()}
+    <AppHeader>
+      <h1>
+        <FitSlot strategy="steps" priority={30} class="pa-app-header__name">
+          <FitStep>Svelte Pure Admin</FitStep>
+          <FitStep>SPA</FitStep>
+        </FitSlot>
+        <FitSlot priority={10} class="pa-app-header__version">v1.9.0</FitSlot>
+      </h1>
+    </AppHeader>
+  {/snippet}
+  {#snippet center()}
+    <FitSlot priority={25} tag="div"><NavbarSearch onclick={openPalette} /></FitSlot>
+    <FitSlot priority={20} tag="div"><PageHeader><Heading level={2}>Dashboard</Heading></PageHeader></FitSlot>
+  {/snippet}
+</Navbar>`}</CodeBlock>
+		</Card>
+	</Column>
+</Grid>
 
 <!-- Card Layout Demonstrations -->
 <Heading level={3}>Card Layout Patterns</Heading>

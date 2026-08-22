@@ -1,23 +1,31 @@
 <script lang="ts">
 	/**
 	 * Pure Admin TableContainer Component (Svelte 5)
-	 * Based on @keenmate/pure-admin-core v1.3.0
+	 * Based on @keenmate/pure-admin-core snippets/tables.html
 	 *
-	 * A container for tables with optional panel styling:
-	 * - Base: overflow-x scroll, border, border-radius
-	 * - Panel: card-like shadow, larger border-radius, hover effect
+	 * The bare, card-less framed wrapper: a border, rounded corners, and
+	 * horizontal scroll on overflow — with NO header. Use it when you want the
+	 * table framed but don't need a header / footer / actions area.
+	 *
+	 * The panel mode below (`.pa-table-container--panel`) is DEPRECATED in core
+	 * v2.9.0-rc10 — it was a near-duplicate of `<TableCard>`. Use `<TableCard>`
+	 * for any table that needs a header / actions / footer or card chrome.
 	 */
 
 	interface Props {
-		/** Panel modifier - card-like visual containment */
+		/**
+		 * @deprecated Since core v2.9.0-rc10 — `.pa-table-container--panel` is
+		 * deprecated (near-duplicate of the table card). Use `<TableCard>` instead.
+		 * Still renders as legacy tolerance; slated for removal in a future major.
+		 */
 		isPanel?: boolean;
-		/** Title text (only shown when panel=true) */
+		/** @deprecated Panel mode only — use `<TableCard titleText=… />` instead. */
 		titleText?: string;
 		/** Additional CSS classes */
 		class?: string;
-		/** Header snippet (replaces title, only shown when panel=true) */
+		/** @deprecated Panel mode only — use `<TableCard>`'s `header` snippet instead. */
 		header?: import('svelte').Snippet;
-		/** Header actions (buttons, controls — only shown when panel=true) */
+		/** @deprecated Panel mode only — use `<TableCard>`'s `headerActions` snippet instead. */
 		headerActions?: import('svelte').Snippet;
 		/** Table content */
 		children?: import('svelte').Snippet;

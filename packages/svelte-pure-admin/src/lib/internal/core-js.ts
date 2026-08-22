@@ -11,7 +11,15 @@
  * are static string literals per branch so the bundler can resolve them.
  */
 export async function loadCoreJs(
-	module: 'splitter' | 'range-group' | 'pa-stat-fit' | 'overflow'
+	module:
+		| 'splitter'
+		| 'range-group'
+		| 'pa-stat-fit'
+		| 'overflow'
+		| 'navbar-collapse'
+		| 'navbar-dropdown'
+		| 'navbar-fit'
+		| 'sidebar-resize'
 ): Promise<void> {
 	if (typeof window === 'undefined') return;
 	switch (module) {
@@ -26,6 +34,18 @@ export async function loadCoreJs(
 			break;
 		case 'overflow':
 			await import('@keenmate/pure-admin-core/js/overflow.js');
+			break;
+		case 'navbar-collapse':
+			await import('@keenmate/pure-admin-core/js/navbar-collapse.js');
+			break;
+		case 'navbar-dropdown':
+			await import('@keenmate/pure-admin-core/js/navbar-dropdown.js');
+			break;
+		case 'navbar-fit':
+			await import('@keenmate/pure-admin-core/js/navbar-fit.js');
+			break;
+		case 'sidebar-resize':
+			await import('@keenmate/pure-admin-core/js/sidebar-resize.js');
 			break;
 	}
 }

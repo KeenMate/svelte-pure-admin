@@ -14,6 +14,7 @@
 	import { onMount } from 'svelte';
 	import type { ThemeOption } from './types';
 	import { _ } from '../i18n';
+	import { loadCoreJs } from '../internal/core-js';
 
 	interface SettingsPanelState {
 		theme: string;
@@ -174,11 +175,19 @@
 				sidebar.classList.add('pa-layout__sidebar--icon-collapse');
 			}
 
-			// Sidebar resizable
+			// Sidebar resizable — mirror pure-admin's settings panel: toggle the
+			// class AND drive core's sidebar-resize.js. init() creates + binds the
+			// handle; on disable we remove the handle core created (core exposes no
+			// teardown — its init() recreates it when re-enabled, since the detached
+			// handle's parentNode is then null).
 			if (settings.sidebarResizable) {
 				sidebar.classList.add('pa-layout__sidebar--resizable');
+				loadCoreJs('sidebar-resize').then(() => {
+					window.pureAdmin?.components?.sidebarResize?.init();
+				});
 			} else {
 				sidebar.classList.remove('pa-layout__sidebar--resizable');
+				sidebar.querySelector('.pa-sidebar-resize')?.remove();
 			}
 		}
 

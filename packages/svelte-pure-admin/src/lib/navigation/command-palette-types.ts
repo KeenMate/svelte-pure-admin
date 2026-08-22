@@ -132,6 +132,13 @@ export interface SearchResult {
 	badge?: string;
 	/** Badge variant for styling (e.g., 'success', 'warning', 'danger', 'info', 'primary') */
 	badgeVariant?: string;
+	/**
+	 * Group / category label the result belongs to — e.g. the server's "group
+	 * column" from a single search query (`"Products"` | `"Users"` | `"Pages"`).
+	 * `NavbarSearchField` buckets a flat result set by this into `__section` headings;
+	 * a single round-trip returns rows already tagged with their group.
+	 */
+	group?: string;
 	/** Result type for global search routing (e.g., 'command', 'context', 'product') */
 	_type?: string;
 	/** Reference to original Command (when _type === 'command') */
@@ -140,6 +147,24 @@ export interface SearchResult {
 	_context?: SearchContext;
 	/** Additional data passed to onSelect */
 	data?: any;
+}
+
+/**
+ * Presentation-only grouping metadata for `NavbarSearchField`. Controls a group's
+ * section-heading label, icon, display order, and per-group cap for results tagged
+ * with a matching `SearchResult.group`. It NEVER triggers a fetch — grouping is
+ * applied client-side to a single search response. Omit it entirely to derive
+ * groups from the distinct `group` values in first-seen order.
+ */
+export interface SearchGroup {
+	/** Matches `SearchResult.group`. */
+	id: string;
+	/** Section heading text (defaults to `id`). */
+	label?: string;
+	/** Optional icon shown beside the section heading. */
+	icon?: string;
+	/** Cap the number of rows shown for this group (top-N). */
+	limit?: number;
 }
 
 /**

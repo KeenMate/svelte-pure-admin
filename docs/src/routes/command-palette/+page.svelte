@@ -12,11 +12,16 @@
 		OrderedList,
 		CommandPalette,
 		NavbarSearch,
-		Navbar
+		Navbar,
+		AppHeader,
+		NavMenu,
+		NavItem,
+		NavbarSearchField
 	} from '@keenmate/svelte-pure-admin';
-	import type { Command, SearchContext, SearchResult } from '@keenmate/svelte-pure-admin';
+	import type { Command, SearchContext, SearchResult, SearchGroup } from '@keenmate/svelte-pure-admin';
 
 	let showPalette = $state(false);
+	let fieldSelected = $state('');
 	let displayStyle = $state<'inline' | 'tokens'>('inline');
 
 	// =========================================================================
@@ -50,6 +55,39 @@
 		{ id: 9, name: 'Grace Lee', email: 'grace.lee@example.com', role: 'Customer', status: 'New' },
 		{ id: 10, name: 'Henry Ford', email: 'henry.f@example.com', role: 'Customer', status: 'Active' }
 	];
+
+	// Inline live-search demo (NavbarSearchField). One `globalSearch` call returns a
+	// FLAT result set where each row is tagged with a `group` (the server's "group
+	// column"); the field buckets them into sections. This mimics a single query that
+	// hits three tables and returns a grouped table — no per-group fan-out.
+	const staticPages = [
+		{ id: 'home', title: 'Dashboard', path: '/' },
+		{ id: 'pricing', title: 'Pricing', path: '/pricing' },
+		{ id: 'docs', title: 'Documentation', path: '/docs' },
+		{ id: 'contact', title: 'Contact', path: '/contact' },
+		{ id: 'about', title: 'About Us', path: '/about' }
+	];
+
+	const fieldGroups: SearchGroup[] = [
+		{ id: 'products', label: 'Products', limit: 5 },
+		{ id: 'users', label: 'Users', limit: 5 },
+		{ id: 'pages', label: 'Pages', limit: 5 }
+	];
+
+	function fieldSearch(query: string): SearchResult[] {
+		const q = query.toLowerCase();
+		const out: SearchResult[] = [];
+		for (const p of products)
+			if (p.name.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q))
+				out.push({ id: `p${p.id}`, title: p.name, subtitle: p.price, icon: p.icon, badge: p.status, group: 'products', data: p });
+		for (const u of users)
+			if (u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q))
+				out.push({ id: `u${u.id}`, title: u.name, subtitle: u.email, icon: '👤', badge: u.role, group: 'users', data: u });
+		for (const pg of staticPages)
+			if (pg.title.toLowerCase().includes(q) || pg.path.toLowerCase().includes(q))
+				out.push({ id: pg.id, title: pg.title, subtitle: pg.path, icon: '📄', group: 'pages', data: pg });
+		return out;
+	}
 
 	const orders = [
 		{ id: 1001, customer: 'John Doe', total: '$1,234.56', items: 2, status: 'Shipped' },
@@ -387,20 +425,22 @@
 
 		<div class="pa-card__body--no-padding">
 			<Navbar class="position-relative">
-				{#snippet brand()}
-					<h1>My App</h1>
+				{#snippet start()}
+					<AppHeader><h1>My App</h1></AppHeader>
 				{/snippet}
 
-				{#snippet search()}
+				{#snippet center()}
 					<NavbarSearch
 						placeholder="Search or type / for commands..."
 						onclick={() => (showPalette = true)}
 					/>
 				{/snippet}
 
-				{#snippet navEnd()}
-					<li><a href="#notifications">🔔</a></li>
-					<li><a href="#profile">👤</a></li>
+				{#snippet end()}
+					<NavMenu>
+						<NavItem href="#notifications">🔔</NavItem>
+						<NavItem href="#profile">👤</NavItem>
+					</NavMenu>
 				{/snippet}
 			</Navbar>
 		</div>
@@ -410,6 +450,50 @@
 				<strong>Usage:</strong> The <code>NavbarSearch</code> component shows a search input with a keyboard shortcut hint.
 				When clicked, it calls your <code>onclick</code> handler to open the command palette.
 			</Alert>
+		</div>
+	</Card>
+
+	<Card class="mt-3">
+		<div class="pa-card__body">
+			<h3>Inline Live Search (NavbarSearchField)</h3>
+			<p>
+				A live search box with its own anchored results dropdown — distinct from the pill that
+				opens the palette. Type e.g. <code>a</code> or <code>pro</code>: one
+				<code>globalSearch</code> call returns a flat result set where each row is tagged with a
+				<code>group</code> (the server's "group column"), and the field buckets them into
+				<strong>Products / Users / Pages</strong> sections (top&nbsp;5 each). No per-group requests.
+			</p>
+
+			<div class="pa-card__body--no-padding">
+				<Navbar class="position-relative">
+					{#snippet start()}
+						<AppHeader><h1>My App</h1></AppHeader>
+					{/snippet}
+					{#snippet center()}
+						<NavbarSearchField
+							placeholder="Search products, users, pages…"
+							globalSearch={fieldSearch}
+							groups={fieldGroups}
+							onselect={(r) => (fieldSelected = `${r.group}: ${r.title}`)}
+						/>
+					{/snippet}
+				</Navbar>
+			</div>
+
+			{#if fieldSelected}
+				<div class="mt-3">
+					<Alert variant="success"><strong>Selected:</strong> {fieldSelected}</Alert>
+				</div>
+			{/if}
+
+			<div class="mt-3">
+				<Alert variant="info">
+					<strong>Single round-trip:</strong> the grouped sections come from one
+					<code>globalSearch(query)</code> returning <code>SearchResult[]</code> with a
+					<code>group</code> field — not three separate queries. Pass
+					<code>groups</code> to control each section's label, order and cap.
+				</Alert>
+			</div>
 		</div>
 	</Card>
 </div>

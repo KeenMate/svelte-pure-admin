@@ -5,6 +5,10 @@
 		LayoutInner,
 		LayoutContent,
 		Navbar,
+		AppHeader,
+		PageHeader,
+		FitSlot,
+		FitStep,
 		Sidebar,
 		SidebarItem,
 		Main,
@@ -21,6 +25,7 @@
 		Heading,
 		Paragraph,
 		NavItem,
+		NavMenu,
 		NavDropdown,
 		NavbarSearch,
 		CommandPalette,
@@ -124,7 +129,7 @@
 
 		// Check if click is outside profile panel
 		if (showProfilePanel) {
-			const profileBtn = target.closest('.pa-header__profile-btn');
+			const profileBtn = target.closest('.pa-navbar__profile-btn');
 			const profilePanel = target.closest('.pa-profile-panel');
 			if (!profileBtn && !profilePanel) {
 				showProfilePanel = false;
@@ -496,57 +501,92 @@
 		onglobalselect={handleGlobalSelect}
 	/>
 
-	<Navbar onburgerclick={toggleSidebar} showBurger={true} burgerActive={sidebarMobileVisible || sidebarUserToggled}>
-		{#snippet navStart()}
-			<NavItem href="/">📊 Dashboard</NavItem>
-			<NavItem href="/components" hasDropdown>
-				🧩 Components
-				{#snippet dropdown()}
-					<NavDropdown>
-						<NavItem href="/buttons">Buttons</NavItem>
-						<NavItem href="/cards">Cards</NavItem>
-						<NavItem href="/tabs">Tabs</NavItem>
-						<NavItem hasDropdown>
-							More ›
-							{#snippet dropdown()}
-								<NavDropdown level2>
-									<NavItem href="/badges">Badges</NavItem>
-									<NavItem href="/modals">Modals</NavItem>
-									<NavItem href="/loaders">Loaders</NavItem>
-									<NavItem href="/tooltips">Tooltips</NavItem>
-									<NavItem href="/popconfirm">Popconfirm</NavItem>
-									<NavItem href="/alerts">Alerts</NavItem>
-									<NavItem href="/lists">Lists</NavItem>
-									<NavItem href="/checkbox-lists">Checkbox Lists</NavItem>
-									<NavItem href="/code">Code</NavItem>
-								</NavDropdown>
-							{/snippet}
-						</NavItem>
-					</NavDropdown>
-				{/snippet}
-			</NavItem>
-			<NavItem href="/forms">📝 Forms</NavItem>
+	<!-- Navbar mirrors core's universal schema: a fixed burger + three open zones
+	     (start / center / end). Each zone is composed freely from content pieces —
+	     AppHeader, NavMenu, PageHeader, NavbarSearch, ProfileButton, … — and anything
+	     responsive is wrapped in a FitSlot. Nothing about placement or order is baked
+	     into Navbar. -->
+	<Navbar
+		onburgerclick={toggleSidebar}
+		showBurger={true}
+		burgerActive={sidebarMobileVisible || sidebarUserToggled}
+	>
+		{#snippet start()}
+			<!-- App identity. As the header narrows the version tag drops first
+			     (priority 10), then — after the title (20) and search (25) — the wordmark
+			     shrinks to its monogram (steps, priority 30). FitStep auto-indexes each
+			     variant and hides the non-first ones for a correct first paint. -->
+			<AppHeader>
+				<h1>
+					<FitSlot strategy="steps" priority={30} class="pa-app-header__name">
+						<FitStep>Svelte Pure Admin</FitStep>
+						<FitStep>SPA</FitStep>
+					</FitSlot>
+					<FitSlot priority={10} class="pa-app-header__version">v{libVersion}</FitSlot>
+				</h1>
+			</AppHeader>
+
+			<!-- Primary nav — folds into the sidebar as the header narrows. -->
+			<NavMenu collapse="sidebar" collapseLabel="Menu">
+				<NavItem href="/" isActive={$page.url.pathname === '/'} navPriority={10} navIcon="📊">Dashboard</NavItem>
+				<NavItem
+					href="/components"
+					hasDropdown
+					isActive={$page.url.pathname.startsWith('/components')}
+					navIcon="🧩"
+				>
+					Components
+					{#snippet dropdown()}
+						<NavDropdown>
+							<NavItem href="/buttons">Buttons</NavItem>
+							<NavItem href="/cards">Cards</NavItem>
+							<NavItem href="/tabs">Tabs</NavItem>
+							<NavItem hasDropdown>
+								More ›
+								{#snippet dropdown()}
+									<NavDropdown level2>
+										<NavItem href="/badges">Badges</NavItem>
+										<NavItem href="/modals">Modals</NavItem>
+										<NavItem href="/loaders">Loaders</NavItem>
+										<NavItem href="/tooltips">Tooltips</NavItem>
+										<NavItem href="/popconfirm">Popconfirm</NavItem>
+										<NavItem href="/alerts">Alerts</NavItem>
+										<NavItem href="/lists">Lists</NavItem>
+										<NavItem href="/checkbox-lists">Checkbox Lists</NavItem>
+										<NavItem href="/code">Code</NavItem>
+									</NavDropdown>
+								{/snippet}
+							</NavItem>
+						</NavDropdown>
+					{/snippet}
+				</NavItem>
+				<NavItem href="/forms" isActive={$page.url.pathname === '/forms'} navIcon="📝">Forms</NavItem>
+			</NavMenu>
 		{/snippet}
 
-		{#snippet search()}
-			<NavbarSearch
-				placeholder="Search..."
-				onclick={() => (showCommandPalette = true)}
-			/>
-		{/snippet}
+		{#snippet center()}
+			<FitSlot priority={25} tag="div">
+				<NavbarSearch
+					placeholder="Search..."
+					onclick={() => (showCommandPalette = true)}
+				/>
+			</FitSlot>
 
-		{#snippet title()}
 			{#if $page.data.pageTitle}
-				<Heading level={2}>{$page.data.pageTitle}</Heading>
+				<!-- Wrap the page title in a FitSlot to have it degrade (here: hide at
+				     priority 20, between the version and search). -->
+				<FitSlot priority={20} tag="div">
+					<PageHeader><Heading level={2}>{$page.data.pageTitle}</Heading></PageHeader>
+				</FitSlot>
 			{/if}
 		{/snippet}
 
-		{#snippet navEnd()}
-			<NavItem href="/alerts">⚠️ Alerts</NavItem>
-			<NavItem href="/tables">📋 Tables</NavItem>
-		{/snippet}
+		{#snippet end()}
+			<NavMenu>
+				<NavItem href="/alerts">⚠️ Alerts</NavItem>
+				<NavItem href="/tables">📋 Tables</NavItem>
+			</NavMenu>
 
-		{#snippet notifications()}
 			<div class="pa-notifications">
 				<button class="pa-notifications__btn" onclick={toggleNotifications} aria-label="Notifications">
 					<span class="pa-notifications__icon">🔔</span>
@@ -554,16 +594,14 @@
 				</button>
 				<NotificationsPanel bind:show={showNotifications} />
 			</div>
-		{/snippet}
 
-		{#snippet profile()}
 			<ProfileButton name="John Doe" onclick={toggleProfilePanel} />
 		{/snippet}
 	</Navbar>
 
 	<Layout>
 		<LayoutInner>
-			<Sidebar isResizable>
+			<Sidebar>
 				<!-- Getting Started (Svelte-specific) -->
 				<SidebarItem href="/getting-started" labelText="Getting Started" active={$page.url.pathname === '/getting-started'}>
 					{#snippet icon()}🚀{/snippet}

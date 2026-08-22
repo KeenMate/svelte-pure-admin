@@ -27,7 +27,7 @@
 	}: Props = $props();
 
 	const classes = $derived(() => {
-		const base = ['pa-header__profile-btn'];
+		const base = ['pa-navbar__profile-btn'];
 		if (className) base.push(className);
 		return base.join(' ');
 	});
@@ -42,6 +42,6 @@
 		{/if}
 	</span>
 	{#if name}
-		<span class="pa-header__profile-name">{name}</span>
+		<span class="pa-navbar__profile-name">{name}</span>
 	{/if}
 </button>
