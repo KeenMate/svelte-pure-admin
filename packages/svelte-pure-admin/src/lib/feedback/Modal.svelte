@@ -114,6 +114,16 @@
 		return base.join(' ');
 	});
 
+	// Close-button variant mirrors the core snippets: `--secondary` on a plain
+	// header, `--light` when the header wears a role colour (variant / headerVariant
+	// / banded band) so the × reads against the coloured fill. Never `--primary`
+	// (a filled accent close button is visually far too heavy for a header control).
+	const closeBtnClasses = $derived(
+		`pa-btn pa-btn--sm pa-btn--icon-only pa-btn--${
+			variant || headerVariant || isBanded ? 'light' : 'secondary'
+		}`
+	);
+
 	// Track external show changes so that setting show=false via binding
 	// goes through the same close flow (beforeCloseCallback / onclose)
 	let wasOpen = false;
@@ -173,7 +183,7 @@
 				{:else if titleText}
 					<h3 class="pa-modal__title">{titleText}</h3>
 				{/if}
-				{#if shouldShowClose}<button class="pa-btn pa-btn--primary pa-btn--icon-only pa-btn--sm" onclick={handleClose} aria-label={$_('pureAdmin.buttons.close')}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>{/if}
+				{#if shouldShowClose}<button class={closeBtnClasses} onclick={handleClose} aria-label={$_('pureAdmin.buttons.close')}><span class="pa-icon pa-icon--x" aria-hidden="true"></span></button>{/if}
 			</div>
 		{/if}
 

@@ -131,7 +131,10 @@
 		{/if}
 	</div>
 
-	<button class="pa-toast__close" onclick={handleClose} aria-label={$_('pureAdmin.buttons.close')}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+	<!-- Canonical close: the masked pa-icon--x primitive (same lucide X as
+	     --pa-icon-x), sized/tinted via CSS to match every other core close glyph
+	     — not a hardcoded inline SVG at a fixed 24px. -->
+	<button class="pa-toast__close" onclick={handleClose} aria-label={$_('pureAdmin.buttons.close')}><span class="pa-icon pa-icon--x" aria-hidden="true"></span></button>
 
 	{#if shouldShowProgress && duration > 0}
 		<div

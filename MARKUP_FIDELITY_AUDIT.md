@@ -133,3 +133,46 @@ direct.
 Toast / Modal / NotificationsPanel — audit those against `pa-icon--x`.
 
 ---
+
+## Toast — 🔧 fixed close glyph
+
+Source: `packages/svelte-pure-admin/src/lib/feedback/Toast.svelte`
+
+Structure (`pa-toast__icon` / `__content` [`__title` / `__message` / `__actions`] /
+`__close` / `__progress`) matches the snippet. **🔧 Fix:** the close button held a
+hardcoded inline `<svg width=24 height=24>`; canonical is
+`<span class="pa-icon pa-icon--x" aria-hidden>` (same lucide X as `--pa-icon-x`,
+but sized/tinted by the `pa-icon` mask so it matches every other close glyph
+instead of a fixed 24px). Swapped in.
+
+---
+
+## Modal — 🔧 fixed close glyph + wrong close variant
+
+Source: `packages/svelte-pure-admin/src/lib/feedback/Modal.svelte`
+
+Container / backdrop / header / title / body / footer + size and variant classes
+all match. **🔧 Fix (two-in-one):** the header close button was
+`pa-btn pa-btn--primary pa-btn--icon-only pa-btn--sm` with an inline SVG.
+- **Glyph** → `<span class="pa-icon pa-icon--x">` (as above).
+- **Variant** → the snippets use `pa-btn--secondary` on a plain header and
+  `pa-btn--light` on a colour-headed modal — **never `--primary`** (a filled
+  accent close button is far too heavy for a header control). Now derived:
+  `--light` when `variant || headerVariant || isBanded`, else `--secondary`.
+
+Verified: plain modal → `…pa-btn--secondary`, `variant="success"` modal →
+`…pa-btn--light`, both with `pa-icon--x`.
+
+---
+
+## NotificationsPanel — ✅ faithful
+
+Source: `packages/svelte-pure-admin/src/lib/feedback/NotificationsPanel.svelte`
+
+Panel (`__panel` + `is-open`), header (`h3` + `__mark-read`), list
+(`__list` / `--page`), item (`__item` / `--unread`), `__icon-wrapper`
+(+ variants, correctly no `--info`), `__content` (`h4` / `p` / `__time`),
+`__actions`, and the optional leading `pa-checkbox` all match the snippet.
+No close glyph. No change.
+
+---
