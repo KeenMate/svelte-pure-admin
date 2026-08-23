@@ -121,8 +121,8 @@ Buttons ✅ · Card 🔧(subtitle→`pa-card__meta`) · Badge ⚠️(core gap: n
 · Alert 🔧×2(`__content` over-wrap + close glyph) · Navbar/NavItem/NavbarSearch 🔧
 · Toast 🔧(close glyph) · Modal 🔧×2(close glyph + `--primary`→`--secondary`/`--light`)
 · NotificationsPanel ✅ · Forms cluster 🔧×4(phantom classes) · CheckboxList 🔧(label-in-label)
-· FilterCard 🔧(dropped duplicate scoped `<style>`).
-Commits: `5167b61`, `1bc1ebe`, `3463951`, `de1051a`, +this.
+· FilterCard 🔧(dropped duplicate scoped `<style>`) · Field ⚠️(faithful; blocked on core).
+Commits: `5167b61`, `1bc1ebe`, `3463951`, `de1051a`, `9a02006`, +this.
 
 Forms faithful (no change): `Input`, `Select`, `Textarea`, `FormGroup`(state), `Checkbox`,
 `InputGroup`/`Prepend`/`Append`, `CheckboxList` container. Still to do in the cluster:
@@ -169,6 +169,19 @@ SCSS is demo-only.)
 - Add `pa-badge--color-{1..9}` to `core-components/_badges.scss` (mirror the alert
   `--color-N` pair that sets bg **and** `--pa-color-N-text`), then switch
   `Badge.svelte`'s `themeColor` off the generic `pa-bg-color-N`.
+- **`_data-display.scss` copy-hint i18n hook (unblocks `Field`).** Replace the
+  hardcoded `content: 'Click to copy'` / `content: 'Copied!'` (`::after` at lines
+  ~94, 139) with an overridable source — e.g. `content: var(--pa-field-copy-hint,
+  'Click to copy')` / `var(--pa-field-copied-text, 'Copied!')`, or
+  `content: attr(data-copy-hint)`. Then `Field.svelte` can set the var/attr from
+  i18n and **delete** its scoped `<style>` + the four invented classes
+  (`pa-field--copy-click-custom`, `pa-field--copied-custom`, `pa-field__copy-hint`,
+  `pa-field__copy--copied`), reusing core's `::after` mechanism. See the Field
+  section below.
+- **`_icons.scss` add `pa-icon--copy` (+ maybe `pa-icon--check`).** Core only ships
+  `pa-icon--x` today, so `Field`'s copy button falls back to an inline `<svg>` (the
+  snippet blesses `<i class="fas fa-copy">`). A masked `pa-icon--copy` would let the
+  copy glyph match the `pa-icon--x` close-glyph pattern used everywhere else.
 
 ---
 
@@ -427,5 +440,43 @@ byte-matches the snippet.
 `fa fa-sync-alt` where the snippet shows `fas fa-caret-down` etc. — an
 icon-glyph / FA-prefix choice consistent with the rest of the lib, not a markup
 divergence.
+
+---
+
+## Field — ⚠️ faithful structure, BLOCKED ON CORE (no wrapper change)
+
+Source: `display/Field.svelte`. Reference: `snippets/data-display.html` +
+`core-components/_data-display.scss`.
+
+**Structure is faithful:** `pa-field` (+ `--full`), `__label`, `__value`,
+`--copy-btn` / `--copy-click` / `--copy-hover` / `--copied`, `pa-field__copy`
+button — all real core classes. (🟡 `pa-field__value--{success|warning|danger}`
+is only styled inside a `.pa-fields--chips` container — `_data-display.scss:447`
+— so `valueVariant` on a standalone `<Field>` is a contextual no-op. Harmless.)
+
+**Why it's blocked, not fixed:** core drives the copy hint entirely from CSS
+with **hardcoded English** — `.pa-field--copy-click .pa-field__value::after {
+content: 'Click to copy' }` and `.pa-field--copied …::after { content:
+'Copied!' }` (`_data-display.scss:94,139`). There is no CSS-var / `attr()` hook,
+so a wrapper that wants i18n / prop-overridable hint text CANNOT reuse core's
+mechanism. The component works around it by inventing four non-core `pa-`
+classes and a scoped `<style>`:
+- `pa-field--copy-click-custom` / `pa-field--copied-custom` — markers whose only
+  job is to scope an override that suppresses core's `::after`
+  (`content:'' !important; display:none`).
+- `pa-field__copy-hint` — a real `<span>` rendering the resolved i18n text in
+  place of the killed `::after`, with the opacity/hover transitions re-coded.
+- `pa-field__copy--copied` — greens the button on copied.
+
+It also renders inline `<svg>` copy/check icons where the snippet blesses
+`<i class="fas fa-copy">`, and swaps the button to a **check** on copied where
+core keeps `fa-copy` and flips the `::after` text to "Copied!".
+
+These are **coupled**: `--copied-custom` is added in every mode, so it suppresses
+core's `::after` even in `--copy-btn` / `--copy-hover` — where there's no
+`pa-field__copy-hint` — making the check-SVG the *sole* copied feedback there.
+Remove any one piece in isolation and a mode loses its feedback. A faithful
+version therefore needs core hooks first; a partial wrapper rewrite would ship a
+half-migrated component. **Left unchanged — see core follow-ups.**
 
 ---
