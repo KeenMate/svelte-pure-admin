@@ -6,7 +6,6 @@
 		Badge,
 		Button,
 		Table,
-		TableResponsive,
 		Stat,
 		List,
 		ListItem,
@@ -296,7 +295,6 @@
 	</Column>
 	<Column size="100" md="50">
 		<Card titleText="Recent Orders">
-			<TableResponsive>
 				<Table size="xs">
 					<thead>
 						<tr>
@@ -339,7 +337,6 @@
 						</tr>
 					</tbody>
 				</Table>
-			</TableResponsive>
 			{#snippet footer()}
 				<Button variant="secondary" size="sm">View All Orders</Button>
 			{/snippet}

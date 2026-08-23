@@ -9,7 +9,6 @@
 		Badge,
 		Button,
 		Table,
-		TableResponsive,
 		FormGroup,
 		FormLabel,
 		Input,
@@ -616,7 +615,7 @@
 	</Grid>
 
 	<FieldGroup titleText="Items" class="mt-5">
-		<Table isStriped class="pa-table--hover">
+		<Table isStriped>
 			<thead>
 				<tr>
 					<th>Product</th>
@@ -763,7 +762,7 @@
 	<div class="pa-detail-view" class:pa-detail-view--panel-open={detailPanelOpen}>
 		<!-- Left: Table -->
 		<div class="pa-detail-view__main">
-			<Table isStriped class="pa-table--hover">
+			<Table isStriped>
 				<thead>
 					<tr>
 						<th>Order</th>
@@ -856,7 +855,7 @@
 		<Paragraph>Click a isRow to open a full-screen overlay panel (slides in from right, like profile panel).</Paragraph>
 	{/snippet}
 
-	<Table isStriped class="pa-table--hover">
+	<Table isStriped>
 		<thead>
 			<tr>
 				<th>SKU</th>

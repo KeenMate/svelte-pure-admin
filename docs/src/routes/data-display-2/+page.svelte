@@ -524,7 +524,7 @@
 
 	<!-- Items: regular table -->
 	<Heading level={4} class="mb-2">Items</Heading>
-	<Table isStriped class="pa-table--hover mb-8">
+	<Table isStriped class="mb-8">
 		<thead>
 			<tr>
 				<th>Product</th>

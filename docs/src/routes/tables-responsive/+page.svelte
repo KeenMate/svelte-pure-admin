@@ -392,7 +392,7 @@
 
 // Combine with isTable variants
 <table class="pa-table pa-table--responsive pa-table--striped">
-<table class="pa-table pa-table--responsive pa-table--hover">
+<table class="pa-table pa-table--responsive">
 <table class="pa-table pa-table--responsive pa-table--compact">
 
 // Actions column - use col-auto class

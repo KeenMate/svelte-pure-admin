@@ -363,7 +363,7 @@ ${'<'}/script>
 		<Column size="100" md="1-2" lg="1-3">
 			<Heading level={4}>Data Display</Heading>
 			<BasicList>
-				<li>Table, TableResponsive</li>
+				<li>Table, TableContainer, TableCard</li>
 				<li>Card</li>
 				<li>Badge, BadgeGroup</li>
 				<li>Code, CodeBlock</li>
