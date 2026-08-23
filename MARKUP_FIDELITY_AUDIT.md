@@ -123,7 +123,8 @@ Buttons ✅ · Card 🔧(subtitle→`pa-card__meta`) · Badge 🔧(→`pa-badge-
 · NotificationsPanel ✅ · Forms cluster 🔧×4(phantom classes) · CheckboxList 🔧(label-in-label)
 · FilterCard 🔧(dropped duplicate scoped `<style>`) · Field 🔧(core hook `2db3c3d` + wrapper
 workaround removed; visual i18n awaits themes rebuild at publish)
-· Tables 🔧×3(Table phantoms, TableCard bare-`h3`+description, TableResponsive deprecated) · TableContainer ✅.
+· Tables 🔧×3(Table phantoms, TableCard bare-`h3`+description, TableResponsive deprecated) · TableContainer ✅
+· Tabs cluster 🔧(TabItem `--w-Nx`→`minwr-{n}`; other 9 tab components ✅).
 Commits: `5167b61`, `1bc1ebe`, `3463951`, `de1051a`, `9a02006`, `bbe546a`, `91786af`, `1b6770b`, `7ae2099`, +this.
 
 Forms faithful (no change): `Input`, `Select`, `Textarea`, `FormGroup`(state), `Checkbox`,
@@ -324,6 +325,38 @@ source).
 Verified by dumping `/audit`: `pa-table pa-table--striped pa-table--xs` (no
 hover/borderless), and the table-card header is bare `<h3>` + `.pa-table-card__description`
 + `__actions`, then `__body--scrollable` + `__footer`.
+
+---
+
+## Tabs cluster — 🔧 fixed `TabItem` fixed-size; everything else ✅
+
+Source: `navigation/{Tabs,TabItem,TabPanel,TabsContainer,TabsContent,TabsVerticalLayout,TabsScrollable,TabsOverflow}.svelte`,
+`display/{CardTab,CardTabContent}.svelte`. Reference: `snippets/tabs.html` + `_tabs.scss`.
+
+**✅ Faithful, no change (9 of 10):**
+- `Tabs` — `pa-tabs` + `--pills`/`--boxed`/`--vertical` · `--sm`/`--lg` · `--centered`/`--full`
+  · `--nowrap`/`--scrollable`/`--collapse` · `--border-top`. Every modifier real; underline is
+  the default (no class).
+- `TabPanel` (`pa-tabs__panel`/`--active`), `TabsContent` (`pa-tabs__content`),
+  `TabsContainer` (`pa-tabs__container`/`--bordered`/`--card`), `TabsVerticalLayout`
+  (`pa-tabs__vertical-layout`/`--bordered`) — all match.
+- `TabsScrollable` (`pa-tabs--scrollable` + `__scroll-container` + `__scroll-btn--start/--end/--visible`,
+  `data-tabs-scroll`), `TabsOverflow` (`__overflow` + `__overflow-toggle--has-active` +
+  `__overflow-menu--open`) — match the snippet incl. the fa chevron/ellipsis glyphs.
+- `CardTab` (`pa-card__tab`/`--active`), `CardTabContent` (`pa-card__tab-content`/`--active`) — match.
+
+**🔧 `TabItem`** pushed `pa-tabs__item--w-${width}` / `--h-${height}` — **phantom** (0 hits in
+compiled CSS; fixed-size tabs silently did nothing). The blessed "FIXED WIDTH TABS" shape in
+the snippet uses the rem min-size **utilities** `minwr-{n}` / `minhr-{n}` (from `utilities.scss`)
+directly on the tab button. → now emits `minwr-${n}` / `minhr-${n}` (prop API unchanged:
+`width="6x"` → `minwr-6`; `width="3x" height="3x"` → `minwr-3 minhr-3` = 30×30 square). Verified
+in the dump. **No core change needed.**
+
+> ⚠️ **Cross-repo note (fixed-size tabs).** A pure-admin session was weighing whether to *build*
+> a new `pa-tabs__item--w-{N}` core class for this — but the mechanism already exists as the
+> `minwr-{n}` / `minhr-{n}` utilities, documented in `tabs.html` ("FIXED WIDTH TABS", lines
+> 599-606 / 999-1003). Their analysis only checked `_tabs.scss`, not `utilities.scss`. If they
+> nonetheless add a dedicated `--w-{N}`, this maps trivially — but nothing needs building today.
 
 ---
 

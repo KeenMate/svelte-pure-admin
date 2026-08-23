@@ -45,11 +45,14 @@
 		// Active state
 		if (active) base.push('pa-tabs__item--active');
 
-		// Fixed width
-		if (width) base.push(`pa-tabs__item--w-${width}`);
-
-		// Fixed height
-		if (height) base.push(`pa-tabs__item--h-${height}`);
+		// Fixed width / height. Core has NO `pa-tabs__item--w-Nx` / `--h-Nx`
+		// (0 hits in the compiled CSS). The blessed "FIXED WIDTH TABS" shape in
+		// snippets/tabs.html uses the rem min-size utilities `minwr-{n}` /
+		// `minhr-{n}` (utilities.scss) directly on the tab button. The prop
+		// values are `Nx` (e.g. "6x" = 6rem), so strip the `x` for the utility
+		// number — `minwr-3 minhr-3` gives a 30×30 icon square.
+		if (width) base.push(`minwr-${width.replace('x', '')}`);
+		if (height) base.push(`minhr-${height.replace('x', '')}`);
 
 		// Custom classes
 		if (className) base.push(className);
