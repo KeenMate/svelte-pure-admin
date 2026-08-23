@@ -77,9 +77,9 @@
 		// Only add copy classes if there's something to copy
 		if (copyMode && canCopy) {
 			if (copyMode === 'btn') base.push('pa-field--copy-btn');
-			if (copyMode === 'click') base.push('pa-field--copy-click', 'pa-field--copy-click-custom');
+			if (copyMode === 'click') base.push('pa-field--copy-click');
 			if (copyMode === 'hover') base.push('pa-field--copy-hover');
-			if (copied) base.push('pa-field--copied', 'pa-field--copied-custom');
+			if (copied) base.push('pa-field--copied');
 		}
 		if (className) base.push(className);
 		return base.join(' ');
@@ -91,6 +91,22 @@
 		if (valueVariant) base.push(`pa-field__value--${valueVariant}`);
 		return base.join(' ');
 	});
+
+	// Feed the hint / feedback strings into core's copy `::after` via the
+	// inherited CSS vars it reads (`var(--pa-copy-hint-text, 'Click to copy')`
+	// / `var(--pa-copied-text, 'Copied!')`, core >= the copy-hint-i18n release).
+	// Set inline only when copy is active, so non-copy fields stay clean and a
+	// per-field `copyHintText` / `copiedText` prop overrides the app-wide value
+	// through the normal cascade. On older core the literal `::after` ignores
+	// the vars and shows English — graceful, no breakage.
+	function cssString(s: string): string {
+		return `'${s.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`;
+	}
+	const copyVarStyle = $derived(
+		copyMode && canCopy
+			? `--pa-copy-hint-text: ${cssString(resolvedHintText)}; --pa-copied-text: ${cssString(resolvedCopiedText)}`
+			: undefined
+	);
 
 	// Determine which value content to render
 	const hasValueContent = $derived(valueSnippet || children || valueText !== undefined);
@@ -133,7 +149,7 @@
 	}
 </script>
 
-<div class={classes()}>
+<div class={classes()} style={copyVarStyle}>
 	{#if labelSnippet}
 		<span class="pa-field__label">
 			{@render labelSnippet()}
@@ -160,62 +176,25 @@
 				<button
 					type="button"
 					class="pa-field__copy"
-					class:pa-field__copy--copied={copied}
 					onclick={handleCopy}
 					aria-label={copied ? resolvedCopiedText : resolvedHintText}
 				>
-					{#if copied}
-						<!-- Checkmark icon -->
-						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-							<polyline points="20 6 9 17 4 12"/>
-						</svg>
-					{:else}
-						<!-- Copy icon (matches Font Awesome fa-copy / fa-regular fa-clone) -->
-						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 448 512" fill="currentColor">
-							<path d="M384 336H192c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16l140.1 0L400 115.9V320c0 8.8-7.2 16-16 16zM192 384H384c35.3 0 64-28.7 64-64V115.9c0-12.7-5.1-24.9-14.1-33.9L366.1 14.1c-9-9-21.2-14.1-33.9-14.1H192c-35.3 0-64 28.7-64 64V320c0 35.3 28.7 64 64 64zM64 128c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H256c35.3 0 64-28.7 64-64V416H272v32c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V192c0-8.8 7.2-16 16-16H80V128H64z"/>
-						</svg>
-					{/if}
+					<!-- Static copy glyph (snippet blesses `fas fa-copy`). Core shows
+					     the "Copied!" feedback via the value's ::after on --copied, so
+					     the button icon never swaps. -->
+					<i class="fas fa-copy" aria-hidden="true"></i>
 				</button>
-			{/if}
-			{#if copyMode === 'click' && canCopy}
-				<span class="pa-field__copy-hint">{copied ? resolvedCopiedText : resolvedHintText}</span>
 			{/if}
 		</span>
 	{/if}
 </div>
 
-<style>
-	/* Hide CSS-generated ::after text when using Svelte-rendered text */
-	/* Use high specificity to override the SCSS !important rules */
-	:global(.pa-field.pa-field--copy-click-custom .pa-field__value)::after,
-	:global(.pa-field.pa-field--copied-custom .pa-field__value)::after {
-		content: '' !important;
-		display: none !important;
-	}
-
-	/* Style for Svelte-rendered hint text (matches CSS ::after styling) */
-	.pa-field__copy-hint {
-		font-size: 1rem; /* matches $font-size-2xs (10px) */
-		margin-left: var(--pa-spacing-sm, 0.5rem);
-		transition: opacity 0.15s;
-	}
-
-	:global(.pa-field--copy-click) .pa-field__copy-hint {
-		opacity: 0;
-	}
-
-	:global(.pa-field--copy-click:hover) .pa-field__copy-hint {
-		opacity: 0.6;
-	}
-
-	:global(.pa-field--copied) .pa-field__copy-hint {
-		opacity: 1 !important;
-		color: var(--pa-color-4, #28a745);
-	}
-
-	/* Visual feedback for copy button when copied */
-	.pa-field__copy--copied {
-		color: var(--pa-color-4, #28a745) !important;
-		opacity: 1 !important;
-	}
-</style>
+<!--
+	No scoped <style> and no invented classes: the copy hint / "Copied!"
+	feedback is core's own `.pa-field__value::after`, and its text is fed
+	through the inherited `--pa-copy-hint-text` / `--pa-copied-text` vars set
+	inline above (core copy-hint-i18n release). Previously this component
+	suppressed core's ::after and re-implemented the hint with a scoped
+	stylesheet + `pa-field--copy-click-custom` / `--copied-custom` /
+	`pa-field__copy-hint` / `pa-field__copy--copied` — all removed.
+-->

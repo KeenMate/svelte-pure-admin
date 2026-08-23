@@ -121,8 +121,8 @@ Buttons ✅ · Card 🔧(subtitle→`pa-card__meta`) · Badge ⚠️(core gap: n
 · Alert 🔧×2(`__content` over-wrap + close glyph) · Navbar/NavItem/NavbarSearch 🔧
 · Toast 🔧(close glyph) · Modal 🔧×2(close glyph + `--primary`→`--secondary`/`--light`)
 · NotificationsPanel ✅ · Forms cluster 🔧×4(phantom classes) · CheckboxList 🔧(label-in-label)
-· FilterCard 🔧(dropped duplicate scoped `<style>`) · Field ⚠️(faithful; core hook landed
-`2db3c3d`, wrapper cleanup queued post-publish).
+· FilterCard 🔧(dropped duplicate scoped `<style>`) · Field 🔧(core hook `2db3c3d` + wrapper
+workaround removed; visual i18n awaits themes rebuild at publish).
 Commits: `5167b61`, `1bc1ebe`, `3463951`, `de1051a`, `9a02006`, +this.
 
 Forms faithful (no change): `Input`, `Select`, `Textarea`, `FormGroup`(state), `Checkbox`,
@@ -489,31 +489,33 @@ Remove any one piece in isolation and a mode loses its feedback. A faithful
 version therefore needs core hooks first; a partial wrapper rewrite would ship a
 half-migrated component.
 
-### Core hook landed (`2db3c3d`) — QUEUED wrapper cleanup (do after core publishes)
+### 🔧 FIXED — workaround removed, wired to the core hook
 
-The core gap is fixed: `pure-admin` `2db3c3d` makes the hint text an inherited
-CSS var (`--pa-copy-hint-text` / `--pa-copied-text`) with English fallback. Once
-core publishes (≥ rc16) and the lib's `@keenmate/pure-admin-core` dep is bumped,
-rewrite `Field.svelte` to shed the whole workaround:
+Core hook landed in `pure-admin` `2db3c3d` (hint text = inherited
+`--pa-copy-hint-text` / `--pa-copied-text` with English fallback). `Field.svelte`
+is now cleaned up:
 
-1. **Delete the scoped `<style>` block** and the four invented classes
+1. **Scoped `<style>` block deleted**, and the four invented classes gone
    (`pa-field--copy-click-custom`, `pa-field--copied-custom`, `pa-field__copy-hint`,
-   `pa-field__copy--copied`).
-2. **Stop rendering the `pa-field__copy-hint` span.** With new core, every mode's
-   copied feedback is core's own `::after` ("Copied!") — no suppression, so the
-   check-SVG swap is no longer needed either. Keep `pa-field__copy` with
-   `<i class="fas fa-copy">` (the snippet's blessed glyph) as the static icon.
-3. **Feed i18n into the vars once, globally** — set `--pa-copy-hint-text` /
-   `--pa-copied-text` from `$_('pureAdmin.field.clickToCopy' / '.copied')` in a
-   root-level effect (a PureAdmin provider / `ThemeReady`), NOT per-Field, e.g.
-   `document.documentElement.style.setProperty('--pa-copy-hint-text', JSON.stringify(text))`.
-   Then all copy components (field/desc-table/banded/accent-grid) get translated
-   hints for free; unset locales fall back to English.
-4. Verify with the harness: the `::after` shows the i18n string, no `svelte-*`
-   scope class, no invented `pa-field__*` classes in the dump.
+   `pa-field__copy--copied`). `classes()` now pushes only the real
+   `pa-field--copy-click` / `--copied`.
+2. **`pa-field__copy-hint` span removed** — the hint / "Copied!" feedback is core's
+   own `.pa-field__value::after` in every mode. The check-SVG swap is gone too; the
+   button is a static `<i class="fas fa-copy">` (the snippet's glyph).
+3. **i18n fed through the vars, per-field inline** — `Field` sets
+   `--pa-copy-hint-text` / `--pa-copied-text` from its resolved i18n text (respecting
+   the `copyHintText` / `copiedText` props) on its own root, only when copy is active.
+   Self-sufficient (no provider needed); a per-field prop overrides the app-wide
+   value via the cascade. Chose per-field inline over a global provider set so
+   standalone `<Field>`s still translate.
+4. Verified by dumping `/audit`: `pa-field--copy-*` real classes only, no `svelte-*`
+   class, no invented `pa-field__*`, `<i class="fas fa-copy">`, and
+   `style="--pa-copy-hint-text: '…'; --pa-copied-text: '…'"` on copy fields (absent
+   on plain fields).
 
-**Until then `Field.svelte` stays as-is** — reverting the workaround against the
-still-pinned rc15 core would regress (old core hardcodes English and the removed
-suppression would leave btn/hover modes with no copied feedback).
+**Deploy note:** the *visual* i18n `::after` only appears once the theme CSS is
+rebuilt against the new core (the demo harness loads `static/themes/<id>.css`, not
+core `main.css`). Until then the demo shows core's English literal — graceful, no
+breakage. Ship as part of the core+themes+lib publish-together.
 
 ---
