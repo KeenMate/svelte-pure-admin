@@ -66,14 +66,14 @@
 		</span>
 		<div class="pa-callout__content">
 			{#if headingText}
-				<div class="pa-callout__heading">{headingText}</div>
+				<h4 class="pa-callout__heading">{headingText}</h4>
 			{/if}
 			{@render children?.()}
 		</div>
 	{:else}
 		<!-- Simple callout -->
 		{#if headingText}
-			<div class="pa-callout__heading">{headingText}</div>
+			<h4 class="pa-callout__heading">{headingText}</h4>
 		{/if}
 		{@render children?.()}
 	{/if}

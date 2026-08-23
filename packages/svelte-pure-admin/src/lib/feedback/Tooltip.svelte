@@ -93,6 +93,7 @@
 		if (!tooltipElement) {
 			tooltipElement = document.createElement('div');
 			tooltipElement.className = 'pa-tooltip-floating';
+			tooltipElement.setAttribute('role', 'tooltip'); // matches the core portal-tooltip shape
 			tooltipElement.style.position = 'absolute';
 			tooltipElement.style.top = '0';
 			tooltipElement.style.left = '0';

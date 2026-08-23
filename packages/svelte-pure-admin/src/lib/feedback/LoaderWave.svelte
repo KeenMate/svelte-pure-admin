@@ -29,4 +29,11 @@
 	});
 </script>
 
-<div class={classes()}></div>
+<!-- 5 spans required — same stagger as bars (empty div renders nothing). -->
+<div class={classes()}>
+	<span></span>
+	<span></span>
+	<span></span>
+	<span></span>
+	<span></span>
+</div>

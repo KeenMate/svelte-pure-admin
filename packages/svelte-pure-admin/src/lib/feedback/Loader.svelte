@@ -9,7 +9,10 @@
 
 	export type LoaderType = 'dots' | 'bars' | 'pulse' | 'ring' | 'wave';
 	export type LoaderSize = 'default' | 'lg';
-	export type LoaderColor = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
+	// No `text-secondary` utility exists in core (only text-primary/success/danger/
+	// warning/info); loaders theme via currentColor, so a phantom class would just
+	// no-op. Drop 'secondary' from the union.
+	export type LoaderColor = 'primary' | 'success' | 'danger' | 'warning' | 'info';
 
 	interface Props {
 		/** Loader type */

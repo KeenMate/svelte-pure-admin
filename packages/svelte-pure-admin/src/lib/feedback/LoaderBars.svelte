@@ -29,4 +29,11 @@
 	});
 </script>
 
-<div class={classes()}></div>
+<!-- 5 spans required — the CSS staggers nth-child(1..5) (empty div renders nothing). -->
+<div class={classes()}>
+	<span></span>
+	<span></span>
+	<span></span>
+	<span></span>
+	<span></span>
+</div>

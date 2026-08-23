@@ -124,7 +124,8 @@ Buttons ✅ · Card 🔧(subtitle→`pa-card__meta`) · Badge 🔧(→`pa-badge-
 · FilterCard 🔧(dropped duplicate scoped `<style>`) · Field 🔧(core hook `2db3c3d` + wrapper
 workaround removed; visual i18n awaits themes rebuild at publish)
 · Tables 🔧×3(Table phantoms, TableCard bare-`h3`+description, TableResponsive deprecated) · TableContainer ✅
-· Tabs cluster 🔧(TabItem `--w-Nx`→`minwr-{n}`; other 9 tab components ✅).
+· Tabs cluster 🔧(TabItem `--w-Nx`→`minwr-{n}`; other 9 tab components ✅)
+· Feedback leftovers 🔧(Callout `h4`, Tooltip `role`, Popover close glyph, Loader spans+`secondary`; Popconfirm/Spinner ✅).
 Commits: `5167b61`, `1bc1ebe`, `3463951`, `de1051a`, `9a02006`, `bbe546a`, `91786af`, `1b6770b`, `7ae2099`, +this.
 
 Forms faithful (no change): `Input`, `Select`, `Textarea`, `FormGroup`(state), `Checkbox`,
@@ -357,6 +358,40 @@ in the dump. **No core change needed.**
 > `minwr-{n}` / `minhr-{n}` utilities, documented in `tabs.html` ("FIXED WIDTH TABS", lines
 > 599-606 / 999-1003). Their analysis only checked `_tabs.scss`, not `utilities.scss`. If they
 > nonetheless add a dedicated `--w-{N}`, this maps trivially — but nothing needs building today.
+
+---
+
+## Feedback cluster — 🔧 Callout/Tooltip/Popover/Loaders · ✅ Popconfirm/Spinner
+
+Source: `feedback/{Callout,Tooltip,Popover,PopoverContainer,Popconfirm,Loader,Spinner,
+Loader*}.svelte`. Reference: `snippets/{callouts,tooltips,popconfirm,loaders}.html`.
+
+- **🔧 `Callout`** rendered `<div class="pa-callout__heading">`; the snippet blesses a real
+  heading (`.pa-callout__heading` on an `<h4>`/`h*` so the semantic margin reset applies).
+  → `<h4 class="pa-callout__heading">`. Icon branch (`__icon` + `__content`) and simple branch
+  already faithful.
+- **🔧 `Tooltip`** — the CSS-trigger classes (`pa-tooltip` + `--floating` + position/variant/
+  multiline/help/keyword) are all correct; the JS-portal element `.pa-tooltip-floating` was
+  missing `role="tooltip"` (the snippet shape has it). → added.
+- **🔧 `Popover` / `PopoverContainer`** — trigger (`pa-popover` + `__trigger`) and portaled
+  content (`__content[data-show]` / `__header` `<h4>` / `__body`, size+alignment on the content
+  wrapper) are faithful to the portal contract; the `__close` button rendered an inline `<svg>`.
+  → masked `pa-icon--x` (same sweep as Toast/Modal/Alert). 🟡 `pa-popover--{size}` also sits on
+  the trigger wrapper (redundant with the portal's copy) — benign, left as-is.
+- **🔧 `LoaderDots` / `LoaderBars` / `LoaderWave`** emitted an **empty `<div>`** — but the CSS
+  animates child spans (dots = 3, bars/wave = 5), so they rendered nothing. → added the spans.
+  (⚠️ These are **not exported** from the index — the public loader is `<Loader type=…>`, which
+  already emits correct spans. Redundant with `Loader`; candidates for removal or export.)
+- **🔧 `Loader`** dropped `secondary` from its `color` union — no `text-secondary` utility exists
+  (only `text-{primary,success,danger,warning,info}`), so it was a no-op class.
+- **✅ Faithful, no change:** `Popconfirm` (`__arrow`/`__content`/`__message`(+`__icon--*`)/
+  `__actions`, `is-open` state class — all match), `Spinner` (`--xs` + variants; author already
+  documented that larger sizes don't exist), `LoaderPulse`/`LoaderRing` (CSS-only, correctly
+  childless), `LoaderCenter`/`LoaderOverlay` (wrapper + slot).
+
+Verified by dumping `/audit`: `<h4 class="pa-callout__heading">`; `pa-popconfirm … is-open`
+with `__icon--danger`; `pa-loader-dots text-success` (3 spans), `pa-loader-bars--lg` (5 spans),
+`pa-loader-ring` (empty), center/overlay wrapping spinners.
 
 ---
 

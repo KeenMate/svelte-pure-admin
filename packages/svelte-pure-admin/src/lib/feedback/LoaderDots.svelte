@@ -29,4 +29,9 @@
 	});
 </script>
 
-<div class={classes()}></div>
+<!-- 3 spans required — the CSS animates the child spans (empty div renders nothing). -->
+<div class={classes()}>
+	<span></span>
+	<span></span>
+	<span></span>
+</div>
