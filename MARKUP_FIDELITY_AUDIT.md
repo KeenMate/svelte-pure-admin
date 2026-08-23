@@ -358,6 +358,12 @@ in the dump. **No core change needed.**
 > `minwr-{n}` / `minhr-{n}` utilities, documented in `tabs.html` ("FIXED WIDTH TABS", lines
 > 599-606 / 999-1003). Their analysis only checked `_tabs.scss`, not `utilities.scss`. If they
 > nonetheless add a dedicated `--w-{N}`, this maps trivially — but nothing needs building today.
+>
+> **Update:** the pure-admin session confirmed `minwr-*`/`maxwr-*` as the mechanism (validating
+> the `TabItem` fix) and additionally shipped a new core modifier **`pa-tabs--wrap-labels`**
+> (opt-in multi-line tab titles, unified height via flex stretch). Exposed on svelte `Tabs` as
+> the `wrapLabels` prop → `pa-tabs--wrap-labels`; verified in the dump. Ships with the core+themes
+> batch (themes rebuilt include the class).
 
 ---
 
