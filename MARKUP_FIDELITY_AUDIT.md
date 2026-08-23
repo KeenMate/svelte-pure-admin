@@ -121,7 +121,8 @@ Buttons ✅ · Card 🔧(subtitle→`pa-card__meta`) · Badge ⚠️(core gap: n
 · Alert 🔧×2(`__content` over-wrap + close glyph) · Navbar/NavItem/NavbarSearch 🔧
 · Toast 🔧(close glyph) · Modal 🔧×2(close glyph + `--primary`→`--secondary`/`--light`)
 · NotificationsPanel ✅ · Forms cluster 🔧×4(phantom classes) · CheckboxList 🔧(label-in-label)
-· FilterCard 🔧(dropped duplicate scoped `<style>`) · Field ⚠️(faithful; blocked on core).
+· FilterCard 🔧(dropped duplicate scoped `<style>`) · Field ⚠️(faithful; core hook landed
+`2db3c3d`, wrapper cleanup queued post-publish).
 Commits: `5167b61`, `1bc1ebe`, `3463951`, `de1051a`, `9a02006`, +this.
 
 Forms faithful (no change): `Input`, `Select`, `Textarea`, `FormGroup`(state), `Checkbox`,
@@ -176,15 +177,17 @@ SCSS is demo-only.)
 - Add `pa-badge--color-{1..9}` to `core-components/_badges.scss` (mirror the alert
   `--color-N` pair that sets bg **and** `--pa-color-N-text`), then switch
   `Badge.svelte`'s `themeColor` off the generic `pa-bg-color-N`.
-- **`_data-display.scss` copy-hint i18n hook (unblocks `Field`).** Replace the
-  hardcoded `content: 'Click to copy'` / `content: 'Copied!'` (`::after` at lines
-  ~94, 139) with an overridable source — e.g. `content: var(--pa-field-copy-hint,
-  'Click to copy')` / `var(--pa-field-copied-text, 'Copied!')`, or
-  `content: attr(data-copy-hint)`. Then `Field.svelte` can set the var/attr from
-  i18n and **delete** its scoped `<style>` + the four invented classes
-  (`pa-field--copy-click-custom`, `pa-field--copied-custom`, `pa-field__copy-hint`,
-  `pa-field__copy--copied`), reusing core's `::after` mechanism. See the Field
-  section below.
+- ✅ **DONE IN CORE (pending publish) — copy-hint i18n hook.** Implemented in
+  `pure-admin` commit `2db3c3d`: all 8 hardcoded `::after` literals across
+  `pa-field` / `pa-desc-table` / `pa-banded` / `pa-accent-grid` now read
+  `content: var(--pa-copy-hint-text, 'Click to copy')` /
+  `var(--pa-copied-text, 'Copied!')`. Chose an **inherited CSS variable** over
+  `attr()` so a consumer sets the text ONCE on any ancestor (`:root`/`body`) and
+  every copy element obeys — with per-section / per-element override via the normal
+  cascade (`attr()` can't read ancestors, so it can't do a global default).
+  English stays as the built-in fallback. Documented in `snippets/data-display.html`
+  + `CSS-VARIABLES.md`. **Blocked on:** core publish (≥ rc16) + bumping the lib's
+  `@keenmate/pure-admin-core` dep, then execute the wrapper cleanup below.
 - **`_icons.scss` add `pa-icon--copy` (+ maybe `pa-icon--check`).** Core only ships
   `pa-icon--x` today, so `Field`'s copy button falls back to an inline `<svg>` (the
   snippet blesses `<i class="fas fa-copy">`). A masked `pa-icon--copy` would let the
@@ -484,6 +487,33 @@ core's `::after` even in `--copy-btn` / `--copy-hover` — where there's no
 `pa-field__copy-hint` — making the check-SVG the *sole* copied feedback there.
 Remove any one piece in isolation and a mode loses its feedback. A faithful
 version therefore needs core hooks first; a partial wrapper rewrite would ship a
-half-migrated component. **Left unchanged — see core follow-ups.**
+half-migrated component.
+
+### Core hook landed (`2db3c3d`) — QUEUED wrapper cleanup (do after core publishes)
+
+The core gap is fixed: `pure-admin` `2db3c3d` makes the hint text an inherited
+CSS var (`--pa-copy-hint-text` / `--pa-copied-text`) with English fallback. Once
+core publishes (≥ rc16) and the lib's `@keenmate/pure-admin-core` dep is bumped,
+rewrite `Field.svelte` to shed the whole workaround:
+
+1. **Delete the scoped `<style>` block** and the four invented classes
+   (`pa-field--copy-click-custom`, `pa-field--copied-custom`, `pa-field__copy-hint`,
+   `pa-field__copy--copied`).
+2. **Stop rendering the `pa-field__copy-hint` span.** With new core, every mode's
+   copied feedback is core's own `::after` ("Copied!") — no suppression, so the
+   check-SVG swap is no longer needed either. Keep `pa-field__copy` with
+   `<i class="fas fa-copy">` (the snippet's blessed glyph) as the static icon.
+3. **Feed i18n into the vars once, globally** — set `--pa-copy-hint-text` /
+   `--pa-copied-text` from `$_('pureAdmin.field.clickToCopy' / '.copied')` in a
+   root-level effect (a PureAdmin provider / `ThemeReady`), NOT per-Field, e.g.
+   `document.documentElement.style.setProperty('--pa-copy-hint-text', JSON.stringify(text))`.
+   Then all copy components (field/desc-table/banded/accent-grid) get translated
+   hints for free; unset locales fall back to English.
+4. Verify with the harness: the `::after` shows the i18n string, no `svelte-*`
+   scope class, no invented `pa-field__*` classes in the dump.
+
+**Until then `Field.svelte` stays as-is** — reverting the workaround against the
+still-pinned rc15 core would regress (old core hardcodes English and the removed
+suppression would leave btn/hover modes with no copied feedback).
 
 ---
