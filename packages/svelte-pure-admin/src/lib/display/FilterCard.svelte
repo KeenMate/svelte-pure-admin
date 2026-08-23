@@ -166,50 +166,12 @@
 	</div>
 </div>
 
-<style>
-	.pa-filter-card__row {
-		display: flex;
-		gap: 0.5rem;
-		align-items: center;
-		flex-wrap: wrap;
-	}
-
-	.pa-filter-card__filters {
-		display: flex;
-		gap: 0.5rem;
-		align-items: center;
-		flex-wrap: wrap;
-		flex: 1;
-		min-width: 0;
-	}
-
-	.pa-filter-card__actions {
-		display: flex;
-		gap: 0.25rem;
-		align-items: center;
-		flex-shrink: 0;
-	}
-
-	.pa-filter-card__advanced {
-		margin-top: 1rem;
-		padding-top: 1rem;
-		border-top: 1px solid var(--pa-border-color, #e2e8f0);
-	}
-
-	.pa-filter-card__advanced-actions {
-		display: flex;
-		justify-content: flex-end;
-		gap: 0.5rem;
-		margin-top: 1rem;
-	}
-
-	.pa-filter-card--loading {
-		opacity: 0.7;
-		pointer-events: none;
-	}
-
-	.pa-filter-card--disabled {
-		opacity: 0.5;
-		pointer-events: none;
-	}
-</style>
+<!--
+	No scoped <style>: all `.pa-filter-card__*` layout + `--loading` / `--disabled`
+	state live in core's `_filter-card.scss`, loaded globally like every other
+	component. The removed block duplicated core but drifted — it omitted core's
+	`__filters > * { flex:1; min-width:200px }` stretch rule and hardcoded the
+	advanced-block spacing at 1rem where core uses $spacing-md (0.75rem). Relying
+	on core keeps the component in lockstep with the framework and drops the
+	Svelte scoping-class noise from the emitted markup.
+-->

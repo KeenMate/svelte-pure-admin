@@ -120,13 +120,33 @@ These are the mistakes svelte-pure-admin actually makes (each already hit ≥1 c
 Buttons ✅ · Card 🔧(subtitle→`pa-card__meta`) · Badge ⚠️(core gap: no `pa-badge--color-N`)
 · Alert 🔧×2(`__content` over-wrap + close glyph) · Navbar/NavItem/NavbarSearch 🔧
 · Toast 🔧(close glyph) · Modal 🔧×2(close glyph + `--primary`→`--secondary`/`--light`)
-· NotificationsPanel ✅ · Forms cluster 🔧×4(phantom classes) · CheckboxList 🔧(label-in-label).
-Commits: `5167b61`, `1bc1ebe`, `3463951`, +this.
+· NotificationsPanel ✅ · Forms cluster 🔧×4(phantom classes) · CheckboxList 🔧(label-in-label)
+· FilterCard 🔧(dropped duplicate scoped `<style>`).
+Commits: `5167b61`, `1bc1ebe`, `3463951`, `de1051a`, +this.
 
 Forms faithful (no change): `Input`, `Select`, `Textarea`, `FormGroup`(state), `Checkbox`,
 `InputGroup`/`Prepend`/`Append`, `CheckboxList` container. Still to do in the cluster:
-`FilterCard`, `QueryEditor`, `FileInput`, `RangeGroup*`, `DateInput`, `NumberInput`,
-`ColorInput`, `Form`, `FormErrorSummary`.
+`FileInput`, `RangeGroup*`, `DateInput`, `NumberInput`, `ColorInput`, `Form`,
+`FormErrorSummary`. (No `QueryEditor` component exists in the lib — the query-editor
+SCSS is demo-only.)
+
+### Scoped `<style>` sweep (done — FilterCard triggered it)
+
+`grep -rln "<style" src/lib` → 5 hits; FilterCard fixed. Remaining, triaged:
+- 🟡 `config/ThemeReady.svelte` — `.pa-theme-ready__default-loader` centering; a
+  wrapper-only gate concept with no core component. Leave.
+- 🟡 `display/BandedRow.svelte` — one `:global(.pa-banded__copy){transition}` polish
+  line on a core class. Additive, harmless; could migrate to core `_banded` someday.
+- ⚠️ **`display/Field.svelte`** — NOT benign. Suppresses core's
+  `.pa-field__value::after` copy-hint (`content:'' !important; display:none`) and
+  re-implements the hint as **invented** classes `pa-field__copy-hint` /
+  `pa-field__copy--copied` with hardcoded colors, to get i18n/real-text hints. Fights
+  the core `::after` contract. Audit `Field` on its own (Display list) — decide: push
+  a real hint element into core, or keep the override but document it.
+- ⚠️ **`navigation/CommandPalette.svelte`** — invents/overrides
+  `.pa-command-palette__token{,--command,--context,--prompt,--value}` + `__error` /
+  `__error-icon` with hardcoded rgba(). Audit against `_command-palette.scss`: are
+  those token classes in core? If yes → duplication; if no → invented. Its own pass.
 
 ## Next — remaining components (rough priority)
 
@@ -378,5 +398,34 @@ Source: `display/CheckboxList.svelte`, `display/CheckboxListItem.svelte`,
 Verified by dumping `/audit`: list item is
 `<label class="pa-checkbox-list__label"><span class="pa-checkbox">…</span><span class="pa-checkbox-list__text">…</span></label>`
 (no nested label), standalone `CheckboxBox` → `<span class="pa-checkbox">`.
+
+---
+
+## FilterCard — 🔧 removed duplicate scoped `<style>`
+
+Source: `display/FilterCard.svelte`. Reference: `snippets/filter-card.html` +
+`core-components/_filter-card.scss`.
+
+Markup was already faithful: `<div class="pa-card pa-filter-card [--loading|
+--disabled]">` → `__body` → `__row` → `__filters` / `__actions` →
+`__advanced` / `__advanced-actions`, all correct (there is no `.pa-filter-card`
+*base block* in core — the wrapper piggybacks on `pa-card`, which the component
+does).
+
+**🔧 Fix:** the component shipped a scoped `<style>` re-implementing the whole
+`.pa-filter-card__*` layout + state modifiers that already live in core's
+`_filter-card.scss`. Two problems: (1) Svelte scopes those selectors, so every
+`__row` / `__filters` / … element got a `svelte-*` hash class — DOM noise no
+other audited component emits; (2) the copy had drifted — it dropped core's
+`.pa-filter-card__filters > * { flex:1; min-width:200px }` child-stretch rule
+and hardcoded advanced spacing at `1rem` vs core's `$spacing-md` (0.75rem) +
+`--pa-border-color`. Removed the block; the component now inherits core CSS like
+every sibling. Verified by dumping `/audit`: no `svelte-*` classes, structure
+byte-matches the snippet.
+
+🟡 Benign: action-button icons use `fa fa-chevron-up/down`, `fa fa-times`,
+`fa fa-sync-alt` where the snippet shows `fas fa-caret-down` etc. — an
+icon-glyph / FA-prefix choice consistent with the rest of the lib, not a markup
+divergence.
 
 ---
