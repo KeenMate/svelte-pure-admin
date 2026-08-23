@@ -115,15 +115,16 @@ These are the mistakes svelte-pure-admin actually makes (each already hit ≥1 c
   (which has unrelated uncommitted work — don't sweep it in); it's a scratch helper,
   fine to leave untracked.
 
-## Status — done (9)
+## Status — done
 
 Buttons ✅ · Card 🔧(subtitle→`pa-card__meta`) · Badge 🔧(→`pa-badge--color-N`, keen closed core gap)
 · Alert 🔧×2(`__content` over-wrap + close glyph) · Navbar/NavItem/NavbarSearch 🔧
 · Toast 🔧(close glyph) · Modal 🔧×2(close glyph + `--primary`→`--secondary`/`--light`)
 · NotificationsPanel ✅ · Forms cluster 🔧×4(phantom classes) · CheckboxList 🔧(label-in-label)
 · FilterCard 🔧(dropped duplicate scoped `<style>`) · Field 🔧(core hook `2db3c3d` + wrapper
-workaround removed; visual i18n awaits themes rebuild at publish).
-Commits: `5167b61`, `1bc1ebe`, `3463951`, `de1051a`, `9a02006`, +this.
+workaround removed; visual i18n awaits themes rebuild at publish)
+· Tables 🔧×3(Table phantoms, TableCard bare-`h3`+description, TableResponsive deprecated) · TableContainer ✅.
+Commits: `5167b61`, `1bc1ebe`, `3463951`, `de1051a`, `9a02006`, `bbe546a`, `91786af`, `1b6770b`, `7ae2099`, +this.
 
 Forms faithful (no change): `Input`, `Select`, `Textarea`, `FormGroup`(state), `Checkbox`,
 `InputGroup`/`Prepend`/`Append`, `CheckboxList` container. Still to do in the cluster:
@@ -286,6 +287,43 @@ in `pure-admin` (keen's WIP) + needs themes rebuilt; against today's published c
 the class is a no-op (unstyled), so this ships with the core+themes+lib batch (same
 as the copy-hint work). Unlike Field it does **not** degrade to a background — it
 degrades to unstyled — so don't release the lib ahead of core here.
+
+---
+
+## Tables cluster — 🔧 fixed (Table, TableCard, TableResponsive) · ✅ TableContainer
+
+Source: `display/Table.svelte`, `TableCard.svelte`, `TableContainer.svelte`,
+`TableResponsive.svelte`. Reference: `snippets/tables.html` + `_tables.scss`
+(phantoms verified against the compiled `dist/css/main.css`, not the `&`-nested
+source).
+
+- **🔧 `Table`** pushed three phantom classes: `pa-table--hover` (hover is built
+  into `.pa-table`), `pa-table--borderless` (a plain table has no full borders;
+  only `--bordered` adds them), `pa-table--compact` (compact IS `--xs`). All 0 hits
+  in compiled CSS. → removed hover/borderless (props kept inert), `isCompact` now
+  emits the real `pa-table--xs`. Real modifiers (`--striped` / `--bordered` /
+  `--{xs,sm,lg,xl}` / `--responsive` / `--responsive-grid`) unchanged.
+- **🔧 `TableCard`** wrapped the title in `<div class="pa-table-card__title"><h4
+  class="pa-table-card__title-text">` — a legacy shape. The snippet blesses a bare
+  heading (`.pa-table-card__header` styles `h1..h6` + `p` automatically, confirmed
+  in compiled CSS). → now `<h3>{titleText}</h3>`; added the `descriptionText` prop
+  emitting the blessed `<p class="pa-table-card__description">` subtitle. `--variant`
+  / `--color-N` / `--plain` / `__body--scrollable` / `__footer` / `__actions` all
+  already faithful.
+- **🔧 `TableResponsive`** emits `<div class="pa-table-responsive">` — **phantom**
+  (0 hits); responsiveness is a `<table>` modifier (`pa-table--responsive`), which a
+  wrapper can't apply to its child, so the component is a no-op (the landing page
+  wraps a non-responsive `<Table>` in it → dead markup). → **deprecated** with a
+  pointer to `<Table isResponsive>` (+ `data-label`) or `<TableContainer>`; render
+  left unchanged as legacy tolerance. *Follow-up:* migrate the two docs usages off
+  it; remove in a future major.
+- **✅ `TableContainer`** — base `pa-table-container` faithful; panel mode
+  (`--panel` / `__header` / `__title` / `__actions`) already correctly marked
+  `@deprecated` per core rc10 (near-duplicate of the table card). No change.
+
+Verified by dumping `/audit`: `pa-table pa-table--striped pa-table--xs` (no
+hover/borderless), and the table-card header is bare `<h3>` + `.pa-table-card__description`
++ `__actions`, then `__body--scrollable` + `__footer`.
 
 ---
 

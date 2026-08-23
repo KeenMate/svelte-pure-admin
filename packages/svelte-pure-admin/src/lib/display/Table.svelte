@@ -46,9 +46,11 @@
 	const classes = $derived(() => {
 		const base = ['pa-table'];
 		if (isStriped) base.push('pa-table--striped');
-		if (isHover) base.push('pa-table--hover');
-		if (isBorderless) base.push('pa-table--borderless');
-		if (isCompact) base.push('pa-table--compact');
+		// Hover is built into `.pa-table` — there is no `--hover` modifier; and
+		// there is no `--borderless` (a plain table has no full cell borders,
+		// only `--bordered` adds them). `isHover` / `isBorderless` are kept as
+		// inert props for API stability. See snippets/tables.html.
+		if (isCompact) base.push('pa-table--xs'); // "compact" IS the xs size in core
 		if (size) base.push(`pa-table--${size}`);
 		if (isBordered) base.push('pa-table--bordered');
 		if (isResponsive) base.push('pa-table--responsive');

@@ -15,6 +15,8 @@
 	interface Props {
 		/** Card title text */
 		titleText?: string;
+		/** Optional subtitle — renders `.pa-table-card__description` between title and actions */
+		descriptionText?: string;
 		/** Semantic color variant */
 		variant?: SemanticVariant;
 		/** Theme color variant (1-9) */
@@ -37,6 +39,7 @@
 
 	let {
 		titleText,
+		descriptionText,
 		variant,
 		color,
 		isScrollable = false,
@@ -66,7 +69,7 @@
 	});
 
 	// Determine if we should show header
-	const hasHeader = $derived(header || titleText || headerActions);
+	const hasHeader = $derived(header || titleText || descriptionText || headerActions);
 </script>
 
 <div class={classes()}>
@@ -76,9 +79,13 @@
 				{@render header()}
 			{:else}
 				{#if titleText}
-					<div class="pa-table-card__title">
-						<h4 class="pa-table-card__title-text">{titleText}</h4>
-					</div>
+					<!-- Core styles bare h1..h6 in the header automatically; the
+					     blessed title shape is a plain heading (snippets/tables.html),
+					     not the legacy .pa-table-card__title / __title-text wrapper. -->
+					<h3>{titleText}</h3>
+				{/if}
+				{#if descriptionText}
+					<p class="pa-table-card__description">{descriptionText}</p>
 				{/if}
 				{#if headerActions}
 					<div class="pa-table-card__actions">
