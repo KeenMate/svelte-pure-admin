@@ -45,11 +45,12 @@
 	}: Props = $props();
 
 	// Build class string
+	// A nav item's <li> always carries the base class (the demo puts
+	// `pa-navmenu__item` on every top-level and has-dropdown <li>); modifiers stack
+	// on top. Emitting `--has-dropdown` / `--active` without the base is BEM-wrong.
 	const classes = $derived(() => {
-		const base = [];
-		if (hasDropdown) {
-			base.push('pa-navmenu__item', 'pa-navmenu__item--has-dropdown');
-		}
+		const base = ['pa-navmenu__item'];
+		if (hasDropdown) base.push('pa-navmenu__item--has-dropdown');
 		if (isActive) base.push('pa-navmenu__item--active');
 		if (className) base.push(className);
 		return base.join(' ');

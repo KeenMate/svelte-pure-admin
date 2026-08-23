@@ -8,13 +8,9 @@
 
 	import { _ } from '../i18n';
 
-	type NavbarSearchSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-
 	interface Props {
 		/** Placeholder text */
 		placeholder?: string;
-		/** Size variant (matches input sizes) */
-		size?: NavbarSearchSize;
 		/** Click handler (typically opens command palette) */
 		onclick?: () => void;
 		/** Additional CSS classes */
@@ -23,14 +19,15 @@
 
 	let {
 		placeholder = 'Search...',
-		size = 'lg',
 		onclick,
 		class: className = ''
 	}: Props = $props();
 
+	// Core defines no size modifiers for the pill trigger — only `--field` and
+	// `--input` exist (see core `_command-palette.scss`). The trigger is the base
+	// `.pa-navbar-search`; a consumer sizes the zone via `class` if needed.
 	const classes = $derived(() => {
 		const base = ['pa-navbar-search'];
-		if (size) base.push(`pa-navbar-search--${size}`);
 		if (className) base.push(className);
 		return base.join(' ');
 	});
@@ -38,23 +35,13 @@
 	function handleClick() {
 		onclick?.();
 	}
-
-	function handleKeyDown(event: KeyboardEvent) {
-		// Allow Enter or Space to trigger
-		if (event.key === 'Enter' || event.key === ' ') {
-			event.preventDefault();
-			onclick?.();
-		}
-	}
 </script>
 
-<!-- svelte-ignore a11y_no_static_element_interactions -->
-<div
+<!-- A real <button> (mirrors the core demo's trigger) — focus + Enter/Space for free. -->
+<button
+	type="button"
 	class={classes()}
 	onclick={handleClick}
-	onkeydown={handleKeyDown}
-	tabindex="0"
-	role="button"
 	aria-label={$_('pureAdmin.a11y.openSearch')}
 >
 	<span class="pa-navbar-search__icon">🔍</span>
@@ -63,4 +50,4 @@
 		<kbd>Ctrl</kbd>
 		<kbd>K</kbd>
 	</span>
-</div>
+</button>

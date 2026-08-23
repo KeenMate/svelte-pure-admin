@@ -128,7 +128,14 @@
 			</span>
 		{/if}
 
-		{#if icon || isDismissible}
+		{#if icon}
+			<!-- Only wrap in __content when there's an icon to flow around (the icon
+			     is one flex item, __content the flex:1 sibling). WITHOUT an icon,
+			     structural children (__heading / __list / __actions / <p>) go DIRECT
+			     into .pa-alert so the alert's flex `gap` spaces them — wrapping them
+			     in __content (a plain block, no gap) collapses that vertical rhythm.
+			     --dismissible is only a padding modifier; the absolutely-positioned
+			     __close needs no wrapper. See snippets/alerts.html "WITH vs WITHOUT icon". -->
 			<div class="pa-alert__content">
 				{@render body()}
 			</div>
@@ -138,7 +145,7 @@
 
 		{#if isDismissible}
 			<button type="button" class="pa-alert__close" onclick={dismiss} aria-label={$_('pureAdmin.common.buttons.close')}>
-				<span aria-hidden="true">×</span>
+				<span class="pa-icon pa-icon--x" aria-hidden="true"></span>
 			</button>
 		{/if}
 	</div>

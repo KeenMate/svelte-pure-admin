@@ -191,10 +191,11 @@
 					<!-- Description flexes to fill and truncates with ellipsis -->
 					<p class="pa-card__description">{descriptionText}</p>
 				{:else if subtitle}
-					<p class="pa-text pa-text--secondary">{@render subtitle()}</p>
+					<!-- Legacy subtitle → canonical .pa-card__meta (the card's own muted
+					     byline element) rather than a generic utility class. -->
+					<span class="pa-card__meta">{@render subtitle()}</span>
 				{:else if subtitleText}
-					<!-- Legacy subtitleText (shown as secondary text) -->
-					<p class="pa-text pa-text--secondary">{subtitleText}</p>
+					<span class="pa-card__meta">{subtitleText}</span>
 				{/if}
 				{#if headerActions}
 					<div
