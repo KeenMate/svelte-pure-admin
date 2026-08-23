@@ -401,6 +401,30 @@ with `__icon--danger`; `pa-loader-dots text-success` (3 spans), `pa-loader-bars-
 
 ---
 
+## Display — Lists ✅ · Code 🔧 (in progress; Display is a 60+ component cluster)
+
+Reference: `snippets/lists.html`, `code.html`.
+
+- **✅ Lists — all faithful, no change:** `BasicList` (`pa-list-basic` + `--compact`/`--spacious`
+  · `--unstyled`/`--inline`/`--bordered`/`--striped` · `--icon` (+`--danger`/`--info`/`--warning`,
+  correctly NOT emitting a phantom `--success` since success is the `--icon` default)),
+  `OrderedList` (`--roman`/`--alpha`), `DefinitionList` (`--inline`), `List` (`pa-list`),
+  `ListItem` (`__item`/`__avatar`/`__content`/`__title`/`__subtitle`/`__meta`). The div-based
+  `List`/`ListItem` is one of the two blessed shapes (🟡 semantic `<ul>/<li>` is a11y-preferred
+  but the div form is explicitly blessed too).
+- **✅ Code — mostly faithful:** `Code` (bare `<code>`, per the snippet's "no class" inline
+  contract), `CodeBlockWithHeader` (`pa-code-block`/`__header`/`__title`/`__body`, copy Button).
+- **🔧 `CodeBlock`** typed `language` with `typescript` + `svelte` → `pa-code--typescript` /
+  `pa-code--svelte`, both **phantom** (0 hits in compiled CSS; core accents only js/json/html/
+  css/bash/sql/python). Dropped from the union.
+
+**Remaining Display sub-clusters (not yet audited):** data-display family (DescTable/Fields/
+DetailPanel/DetailView/PropCardRow/AccentGrid/Banded), statistics/KPI mega-cluster (Stat/
+Sparkline/Progress*/Gauge/Heatmap*/BarList/DataBar/StackedBar*/Metric*/Status*/the ~18 Kpi*),
+Timeline/ActivityFeed/QuickActions/DotLeaders/Pager/LoadMore.
+
+---
+
 ## Alert — 🔧 two fixes
 
 Source: `packages/svelte-pure-admin/src/lib/feedback/Alert.svelte`

@@ -5,7 +5,9 @@
 	 * For code blocks (pre elements) with syntax highlighting hints
 	 */
 
-	type Language = 'javascript' | 'typescript' | 'json' | 'html' | 'css' | 'bash' | 'sql' | 'python' | 'svelte';
+	// Core defines language accents only for these seven (code.html / _code.scss);
+	// there is no pa-code--typescript or pa-code--svelte — dropped from the union.
+	type Language = 'javascript' | 'json' | 'html' | 'css' | 'bash' | 'sql' | 'python';
 
 	interface Props {
 		/** Programming language for styling */
