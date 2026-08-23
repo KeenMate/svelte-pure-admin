@@ -197,6 +197,11 @@ SCSS is demo-only.)
   `pa-icon--x` today, so `Field`'s copy button falls back to an inline `<svg>` (the
   snippet blesses `<i class="fas fa-copy">`). A masked `pa-icon--copy` would let the
   copy glyph match the `pa-icon--x` close-glyph pattern used everywhere else.
+- **`_detail-panel.scss` — bless a `pa-detail-panel__actions` header slot.** The wrapper
+  exposes a header `actions` slot but the class is phantom; the header is just
+  `__title` (`flex:1`) + `__close`. Mirror the `pa-card__actions` canonicalization: add a
+  small flex slot between title and close so header buttons have a documented home.
+  Until then `DetailPanel`'s `actions` emits an unstyled wrapper (legacy tolerance).
 
 ---
 
@@ -418,10 +423,48 @@ Reference: `snippets/lists.html`, `code.html`.
   `pa-code--svelte`, both **phantom** (0 hits in compiled CSS; core accents only js/json/html/
   css/bash/sql/python). Dropped from the union.
 
-**Remaining Display sub-clusters (not yet audited):** data-display family (DescTable/Fields/
-DetailPanel/DetailView/PropCardRow/AccentGrid/Banded), statistics/KPI mega-cluster (Stat/
+**Remaining Display sub-clusters (not yet audited):** statistics/KPI mega-cluster (Stat/
 Sparkline/Progress*/Gauge/Heatmap*/BarList/DataBar/StackedBar*/Metric*/Status*/the ~18 Kpi*),
-Timeline/ActivityFeed/QuickActions/DotLeaders/Pager/LoadMore.
+Timeline/ActivityFeed/QuickActions/Pager/LoadMore.
+
+---
+
+## Display — data-display family — 🔧 copy buttons + DetailPanel close · ✅ containers
+
+Reference: `snippets/data-display.html`, `detail-panel.html`. Verdict cross-checked
+against the compiled `main.css` copy-pattern selectors.
+
+- **✅ Containers/structure faithful, no change:** `Fields` (`pa-fields` + all layout /
+  spacing / `--cols-N` / `--color-N` / `--no-border` modifiers · optional
+  `pa-fields-container`), `FieldGroup` (`pa-field-group` + `<h3 class="__title">`),
+  `DescTable` (`pa-desc-table` + `--cols-2`/`--fixed`/`--middle`/align/`--truncate` ·
+  `--label-width` inline · `pa-desc-container`), `Banded` (`pa-banded` + width/align/
+  truncate · `pa-banded-container`), `AccentGrid` (`pa-accent-grid`), `PropCard`
+  (`pa-prop-card` + `__header`), `DotLeaders`/`DotLeadersItem`
+  (`__item`/`__label`/`__leader`/`__value` + `--total`), `DetailView` (all
+  `pa-detail-view*` classes present in core). `Field` was fixed in the prior session.
+- **🔧 Copy family — `DescTableItem` / `PropCardRow` / `AccentGridItem` / `BandedRow`:**
+  all four emitted a hand-inlined `<svg>` copy glyph that **swapped to a checkmark** on
+  copy — an invention; the snippet blesses a static `<i class="fas fa-copy">` and drives
+  "Copied!" via core's value `::after`, not an icon swap. Converted to the static FA
+  glyph (matching the `Field` precedent). For the three components core ships a
+  `--copied ::after` for (desc-table / accent-grid / banded — confirmed in compiled CSS),
+  broadened the `--copied` toggle from `click`-only to **every** copy mode so btn/hover
+  keep feedback, and bridged the resolved svelte-i18n hint into the inherited
+  `--pa-copy-hint-text` / `--pa-copied-text` vars (like `Field`). `PropCardRow` got the
+  glyph only — core ships **no** `--copied`/`::after` for prop-card by design (snippet's
+  copy-pattern table + compiled CSS both confirm). Removed `BandedRow`'s stray scoped
+  `<style>` (a `:global(.pa-banded__copy)` colour transition).
+- **🔧 `DetailPanel` close** inline `<svg>` X → `<i class="fa-solid fa-xmark">` per
+  `snippets/detail-panel.html` (detail-panel close is explicitly FA, *not* the masked
+  `pa-icon--x` primitive that modal/toast/alert use — verified in the snippet).
+- **⚠️ API-DECISION FLAG — `pa-detail-panel__actions`.** `DetailPanel` exposes a header
+  `actions` snippet wrapped in `<div class="pa-detail-panel__actions">`, but that class is
+  **phantom** (0 hits in compiled CSS). Core's `.pa-detail-panel__header` is a flex row of
+  just `__title` (`flex:1`) + `__close`. This is the same shape gap the card header grew a
+  blessed `pa-card__actions` slot to fill — core should likely bless a
+  `pa-detail-panel__actions` slot (a core change, not a wrapper invention). Left rendering
+  as legacy tolerance; raise in the pure-admin repo. Did NOT invent core CSS.
 
 ---
 

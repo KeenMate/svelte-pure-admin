@@ -51,11 +51,23 @@
 		const base = ['pa-banded__row'];
 		if (copyMode && canCopy) {
 			base.push(`pa-banded__row--copy-${copyMode}`);
-			if (copyMode === 'click' && copied) base.push('pa-banded__row--copied');
+			// Core shows the "Copied!" ::after for any copy mode (not just click).
+			if (copied) base.push('pa-banded__row--copied');
 		}
 		if (className) base.push(className);
 		return base.join(' ');
 	});
+
+	// Bridge svelte-i18n hint strings into core's copy ::after via the inherited
+	// --pa-copy-hint-text / --pa-copied-text vars (English fallback on older core).
+	function cssString(s: string): string {
+		return `'${s.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`;
+	}
+	const copyVarStyle = $derived(
+		copyMode && canCopy
+			? `--pa-copy-hint-text: ${cssString($_('pureAdmin.field.clickToCopy'))}; --pa-copied-text: ${cssString($_('pureAdmin.field.copied'))}`
+			: undefined
+	);
 
 	const labelClasses = $derived(() => {
 		const base = ['pa-banded__label'];
@@ -100,6 +112,7 @@
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<span
 		class="pa-banded__value"
+		style={copyVarStyle}
 		onclick={copyMode === 'click' && canCopy ? handleValueClick : undefined}
 	>
 		{#if children}
@@ -114,23 +127,10 @@
 				onclick={handleCopy}
 				aria-label={copied ? $_('pureAdmin.field.copied') : $_('pureAdmin.field.clickToCopy')}
 			>
-				{#if copied}
-					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<polyline points="20 6 9 17 4 12"/>
-					</svg>
-				{:else}
-					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 448 512" fill="currentColor">
-						<path d="M384 336H192c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16l140.1 0L400 115.9V320c0 8.8-7.2 16-16 16zM192 384H384c35.3 0 64-28.7 64-64V115.9c0-12.7-5.1-24.9-14.1-33.9L366.1 14.1c-9-9-21.2-14.1-33.9-14.1H192c-35.3 0-64 28.7-64 64V320c0 35.3 28.7 64 64 64zM64 128c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H256c35.3 0 64-28.7 64-64V416H272v32c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V192c0-8.8 7.2-16 16-16H80V128H64z"/>
-					</svg>
-				{/if}
+				<!-- Static copy glyph (snippet blesses `fas fa-copy`); the "Copied!"
+				     feedback is core's value ::after on --copied, not an icon swap. -->
+				<i class="fas fa-copy" aria-hidden="true"></i>
 			</button>
 		{/if}
 	</span>
 </div>
-
-<style>
-	/* Visual feedback for copy button when copied */
-	:global(.pa-banded__copy) {
-		transition: color 0.15s;
-	}
-</style>
