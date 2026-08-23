@@ -17,15 +17,15 @@
 
 	let { for: htmlFor, required = false, class: className = '', children }: Props = $props();
 
-	// Build class string
-	const classes = $derived(() => {
-		const base = ['pa-form-label'];
-		if (required) base.push('pa-form-label--required');
-		if (className) base.push(className);
-		return base.join(' ');
-	});
+	// Core styles a BARE <label> inside `.pa-form .pa-form-group` — there is NO
+	// `.pa-form-label` class and no required-indicator markup (see
+	// snippets/forms.html COMPONENT REFERENCE: "use the native `required`
+	// attribute"). So emit a bare label, forwarding only a caller-supplied
+	// class. The required `*` is a wrapper-level affordance rendered as a plain
+	// unclassed span so it doesn't claim a core class contract.
 </script>
 
-<label for={htmlFor} class={classes()}>
+<label for={htmlFor} class={className || undefined}>
 	{@render children?.()}
+	{#if required}<span aria-hidden="true">*</span>{/if}
 </label>

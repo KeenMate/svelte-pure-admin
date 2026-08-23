@@ -49,7 +49,9 @@
 	const wrapperClasses = $derived(() => {
 		const base = ['pa-radio'];
 		if (size) base.push(`pa-radio--${size}`);
-		if (disabled) base.push('pa-radio--disabled');
+		// Core has no `.pa-radio--disabled` (only size modifiers) — the native
+		// `disabled` attribute on the <input> is the disabled contract
+		// (snippets/forms.html). Checkbox has --disabled; radio does not.
 		if (className) base.push(className);
 		return base.join(' ');
 	});

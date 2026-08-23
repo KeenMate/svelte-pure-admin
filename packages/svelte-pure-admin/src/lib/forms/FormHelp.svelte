@@ -11,7 +11,9 @@
 
 	import type { ThemeColor } from '../types';
 
-	type HelpVariant = 'error' | 'success' | 'warning' | 'info';
+	// Core defines only --error / --success / --warning (plus --color-N via
+	// themeColor); there is no `.pa-form-help--info` (see snippets/forms.html).
+	type HelpVariant = 'error' | 'success' | 'warning';
 
 	interface Props {
 		/** Help text variant */

@@ -50,7 +50,9 @@
 			if (isSuccess) base.push('pa-form-group--success');
 			if (isError) base.push('pa-form-group--error');
 		}
-		if (isRequired) base.push('pa-form-group--required');
+		// Core has no `.pa-form-group--required` — required is expressed via the
+		// native `required` attribute on the control (snippets/forms.html).
+		// `isRequired` is kept as an inert prop for API stability only.
 		if (effectiveHorizontal) base.push('pa-form-group--horizontal');
 		if (className) base.push(className);
 		return base.join(' ');

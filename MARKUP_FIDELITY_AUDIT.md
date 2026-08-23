@@ -115,12 +115,16 @@ These are the mistakes svelte-pure-admin actually makes (each already hit ≥1 c
   (which has unrelated uncommitted work — don't sweep it in); it's a scratch helper,
   fine to leave untracked.
 
-## Status — done (8)
+## Status — done (9)
 
 Buttons ✅ · Card 🔧(subtitle→`pa-card__meta`) · Badge ⚠️(core gap: no `pa-badge--color-N`)
 · Alert 🔧×2(`__content` over-wrap + close glyph) · Navbar/NavItem/NavbarSearch 🔧
 · Toast 🔧(close glyph) · Modal 🔧×2(close glyph + `--primary`→`--secondary`/`--light`)
-· NotificationsPanel ✅. Commits: `5167b61`, `1bc1ebe`.
+· NotificationsPanel ✅ · Forms cluster 🔧×4(4 phantom classes). Commits: `5167b61`, `1bc1ebe`, +this.
+
+Forms faithful (no change): `Input`, `Select`, `Textarea`, `FormGroup`(state), `Checkbox`,
+`CheckboxBox`, `InputGroup`/`Prepend`/`Append`. Still to do in the cluster:
+`CheckboxList`, `FilterCard`, `QueryEditor`, `FileInput`, `RangeGroup*`, `DateInput`, etc.
 
 ## Next — remaining components (rough priority)
 
@@ -302,5 +306,48 @@ Panel (`__panel` + `is-open`), header (`h3` + `__mark-read`), list
 (+ variants, correctly no `--info`), `__content` (`h4` / `p` / `__time`),
 `__actions`, and the optional leading `pa-checkbox` all match the snippet.
 No close glyph. No change.
+
+---
+
+## Forms cluster — 🔧 four phantom-class fixes
+
+Source: `packages/svelte-pure-admin/src/lib/forms/*`. Reference:
+`snippets/forms.html` (+ its COMPONENT REFERENCE block) and
+`core-components/forms/_form-*.scss`, `_checkboxes-radios.scss`.
+
+**Faithful, no change:**
+- `Input` — `pa-input` + `--{size}` / `--{state}` / `--color-{n}`, all blessed.
+- `Select` — `pa-select` + same modifier set. ✅
+- `Textarea` — `pa-textarea` + `--{size}` / `--{state}` / `--color-{n}`. (Core has
+  no textarea validation border, but the standalone `--error` etc. classes *do*
+  exist and are harmless; state is opt-in via prop. 🟡)
+- `FormGroup` — `pa-form-group` + `--{state}` / `--horizontal` all real. (Only the
+  `--required` push was phantom — fixed below.)
+- `Checkbox` / `CheckboxBox` — `pa-checkbox` + `--{size}` / `--x` / `--disabled`
+  (`&--disabled` at `_checkboxes-radios.scss:155`), `__box` / `__label`. ✅
+- `InputGroup` / `InputGroupPrepend` / `InputGroupAppend` — `pa-input-group`
+  (+ `--{size}`) / `__prepend` / `__append`. ✅
+
+**🔧 Fixed (phantom classes core never defines — verified by grepping
+`_form-*.scss` / `_checkboxes-radios.scss`):**
+1. **`FormLabel`** emitted `pa-form-label` + `pa-form-label--required`. Core styles a
+   **bare `<label>`** inside `.pa-form .pa-form-group` (`_form-layout.scss:49`) and
+   the snippet REFERENCE says outright "There is NO `.pa-form-label` class." → emit a
+   bare `<label>`, forward only a caller class; `required` renders a plain unclassed
+   `*` (core ships no required-indicator markup, so no pa- class is invented).
+2. **`FormGroup`** pushed `pa-form-group--required`. Snippet: "No
+   `.pa-form-group--required` class — use the native `required` attribute." → removed;
+   `isRequired` kept as an inert prop for API stability.
+3. **`FormHelp`** typed a `'info'` variant → `pa-form-help--info`. Only
+   `--error` / `--success` / `--warning` (+ `--color-N`) exist
+   (`_form-states.scss:76`). → dropped `info` from the union.
+4. **`Radio`** pushed `pa-radio--disabled`. `.pa-radio` has only size modifiers
+   (`_checkboxes-radios.scss:169-201`); disabled is the native attribute (checkbox
+   has `--disabled`, radio does not). → removed.
+
+Verified by dumping `/audit`: bare `<label for>…<span aria-hidden>*</span>`,
+`<div class="pa-form-group">` (no `--required`), `<span class="pa-form-help">`
+(no `--info`), disabled radio `<label class="pa-radio"><input disabled>` (no
+`--disabled`).
 
 ---
