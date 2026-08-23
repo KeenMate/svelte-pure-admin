@@ -143,10 +143,17 @@ SCSS is demo-only.)
   `pa-field__copy--copied` with hardcoded colors, to get i18n/real-text hints. Fights
   the core `::after` contract. Audit `Field` on its own (Display list) — decide: push
   a real hint element into core, or keep the override but document it.
-- ⚠️ **`navigation/CommandPalette.svelte`** — invents/overrides
-  `.pa-command-palette__token{,--command,--context,--prompt,--value}` + `__error` /
-  `__error-icon` with hardcoded rgba(). Audit against `_command-palette.scss`: are
-  those token classes in core? If yes → duplication; if no → invented. Its own pass.
+- ⚠️ **`navigation/CommandPalette.svelte`** — checked against
+  `_command-palette.scss`: core defines `__tokens` (container), `__token-prompt`,
+  and `__empty` (no-results) — but **NOT** `__token` (singular), the
+  `__token--command/--context/--value` type variants, or `__error`/`__error-icon`.
+  So the scoped `<style>` styles **invented** classes (and `__token--prompt`
+  duplicates core's differently-named `__token-prompt`). Unlike FilterCard, the
+  block can't just be deleted — the markup must first be reconciled to core's real
+  names, and the typed-token *coloring* (command/context/value tints) may be a true
+  core gap (core only styles the prompt token). Needs a full CommandPalette pass:
+  rename `__token-prompt`, map error→`__empty` or raise a core `__error`, then drop
+  the block or convert survivors to core follow-ups.
 
 ## Next — remaining components (rough priority)
 
