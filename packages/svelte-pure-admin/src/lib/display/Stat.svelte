@@ -9,6 +9,9 @@
 
 	type StatVariant = 'hero' | 'hero-compact' | 'square';
 	type StatColor = 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger';
+	// The default variant's icon tile ships only these five (`_statistics.scss`);
+	// there is no `pa-stat__icon--secondary` (verified absent in compiled CSS).
+	type StatIconVariant = 'primary' | 'success' | 'info' | 'warning' | 'danger';
 	// 5-step sentiment scale since core v2.6.0/2.7.0.
 	// `positive` / `negative` alias `--pa-success` / `--pa-danger`; `--very-*` are explicit darker stops.
 	type ChangeDirection = 'very-positive' | 'positive' | 'neutral' | 'negative' | 'very-negative';
@@ -18,8 +21,8 @@
 		variant?: StatVariant;
 		/** Color for square variant */
 		color?: StatColor;
-		/** Icon variant for icon */
-		iconVariant?: StatColor;
+		/** Icon variant for icon (default variant only; no `secondary`) */
+		iconVariant?: StatIconVariant;
 		/** Number/value to display */
 		number?: string | number;
 		/** Label text */

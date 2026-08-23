@@ -468,6 +468,57 @@ against the compiled `main.css` copy-pattern selectors.
 
 ---
 
+## Display — stats primitives — 🔧 Stat icon type · ✅ 11 faithful · 🚩 4 phantom components
+
+Statistics / data-viz / feed cluster. `snippets/statistics.html` + `timeline.html`
+cover Stat/Timeline; the data-viz + list components have **no snippet** — verified
+against the compiled `main.css` contract directly.
+
+- **✅ Faithful, no change (11):** `Timeline`/`TimelineItem` (`pa-timeline--simple/
+  alternating/feed` + item colour/`--filled`/`--date-header` + all the
+  time/date/icon/avatar/comment/content sub-elements), `Progress`/`ProgressGroup`/
+  `ProgressRing` (size/variant/`--rounded`/`--striped`/`--animated`, `__fill`,
+  `__label-value`), `BarList`/`BarListItem`, `Sparkline`/`SparklineBar`, `DataBar`
+  (`--negative`, `__track`/`__fill`), `StackedBar`/`Segment`/`Legend`/`LegendItem`
+  (incl. `--secondary` segment + all legend-swatch colours), `Gauge` (`--zones`,
+  `__min`/`__max`, `--pa-gauge-size`), `Heatmap`/`HeatmapCell`/`HeatmapLegend`
+  (`data-level` 0–4, `--success`/`--danger`), `Pager` (`__container`/`__controls`/
+  `__input`/`__text`), `LoadMore` (`__button--loading`/`__spinner`/`__count`). Every
+  class + modifier confirmed present in compiled CSS.
+- **🔧 `Stat` — `iconVariant` drops phantom `secondary`.** The default icon tile ships
+  primary/success/info/warning/**danger** only; `pa-stat__icon--secondary` is absent
+  (verified). Narrowed the `iconVariant` type to those five so `secondary` (valid only on
+  the `--square` tile via `color`) can't reach the icon. NB the `statistics.html` "no
+  `--danger` on the icon" note is **stale** — `--danger` *does* exist; only `--secondary`
+  is missing. (All five `__change--{very-,}positive/neutral/{very-,}negative` sentiment
+  steps, `--hero-compact`, `--square --secondary`, and `__context` all verified present.)
+
+  Minor, left as-is: the default-variant *no-icon* fallback branch emits a bare
+  `__number`/`__label` (skipping `__content`) plus a hero-only `__change` row — an
+  unusual config (default stats normally have an icon); graceful, not a phantom.
+
+### 🚩 API-DECISION FLAG — four fully-phantom public components
+
+`MetricList`/`MetricListItem`, `StatusList`/`StatusListItem`, `ActivityFeed`/
+`ActivityFeedItem`, `QuickActions` (7 files, **all exported from `index.ts`**) emit
+`pa-metric-list*` / `pa-status-list*` / `pa-activity-feed*` / `pa-quick-actions`
+markup — and **none of those classes exist anywhere**: 0 hits in compiled `main.css`,
+0 in core SCSS source, 0 in core git history, 0 in any built theme, and they're not
+even demoed in the docs. They render **completely unstyled DOM** for any consumer who
+imports them. This is not a modifier phantom — the whole component blocks are absent
+from the framework contract. **Not resolved unilaterally** (deleting public exports is
+breaking; adding 4 components' worth of CSS to core is a real design decision).
+Candidate resolutions raised with the user:
+  - **`ActivityFeed`** ≈ core's existing `pa-timeline--feed` (icon/avatar + text + time
+    is exactly the feed timeline) — strongest redirect candidate.
+  - **`MetricList`** ≈ `pa-fields` / `pa-dot-leaders` (label/value list).
+  - **`QuickActions`** ≈ a flex column of `pa-btn` (or a vertical button group).
+  - **`StatusList`** has no clean core equivalent (indicator dot + label + value).
+Pending the user's call between: add real CSS to core / deprecate + redirect in the
+wrapper / hybrid. Left rendering as-is meanwhile.
+
+---
+
 ## Alert — 🔧 two fixes
 
 Source: `packages/svelte-pure-admin/src/lib/feedback/Alert.svelte`
