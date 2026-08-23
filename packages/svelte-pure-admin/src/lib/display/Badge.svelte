@@ -8,7 +8,7 @@
 	import type { ThemeColor } from '../types';
 
 	interface Props extends BaseBadgeProps {
-		/** Theme color variant (1-9) — applies pa-bg-color-N */
+		/** Theme color variant (1-9) — applies pa-badge--color-N */
 		themeColor?: ThemeColor;
 		/** Icon snippet */
 		icon?: import('svelte').Snippet;
@@ -35,7 +35,10 @@
 		if (size) base.push(`pa-badge--${size}`);
 		if (isPill) base.push('pa-badge--pill');
 		if (isEllipsisStart) base.push('pa-badge--ellipsis-start');
-		if (themeColor) base.push(`pa-bg-color-${themeColor}`);
+		// Core's blessed theme-slot badge (paints --pa-color-N bg AND a
+		// contrasting --pa-color-N-text label), not the generic pa-bg-color-N
+		// utility which only set the background — see pure-admin _badge-base.scss.
+		if (themeColor) base.push(`pa-badge--color-${themeColor}`);
 		if (className) base.push(className);
 		return base.join(' ');
 	});

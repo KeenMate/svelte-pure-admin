@@ -117,7 +117,7 @@ These are the mistakes svelte-pure-admin actually makes (each already hit ≥1 c
 
 ## Status — done (9)
 
-Buttons ✅ · Card 🔧(subtitle→`pa-card__meta`) · Badge ⚠️(core gap: no `pa-badge--color-N`)
+Buttons ✅ · Card 🔧(subtitle→`pa-card__meta`) · Badge 🔧(→`pa-badge--color-N`, keen closed core gap)
 · Alert 🔧×2(`__content` over-wrap + close glyph) · Navbar/NavItem/NavbarSearch 🔧
 · Toast 🔧(close glyph) · Modal 🔧×2(close glyph + `--primary`→`--secondary`/`--light`)
 · NotificationsPanel ✅ · Forms cluster 🔧×4(phantom classes) · CheckboxList 🔧(label-in-label)
@@ -174,9 +174,11 @@ SCSS is demo-only.)
 
 ## Core follow-ups to raise (do in the pure-admin repo, not here)
 
-- Add `pa-badge--color-{1..9}` to `core-components/_badges.scss` (mirror the alert
-  `--color-N` pair that sets bg **and** `--pa-color-N-text`), then switch
-  `Badge.svelte`'s `themeColor` off the generic `pa-bg-color-N`.
+- ✅ **DONE IN CORE (keen WIP, pending commit/publish) — `pa-badge--color-{1..9}`.**
+  A keen-pure-admin session added it to `_badge-base.scss` (bg `--pa-color-N` +
+  contrasting `--pa-color-N-text`, mirroring alerts). `Badge.svelte` now switched to
+  `pa-badge--color-${n}` (was the generic `pa-bg-color-N`). Ships with the batch —
+  degrades to *unstyled* on old core, so lib must not lead core here.
 - ✅ **DONE IN CORE (pending publish) — copy-hint i18n hook.** Implemented in
   `pure-admin` commit `2db3c3d`: all 8 hardcoded `::after` literals across
   `pa-field` / `pa-desc-table` / `pa-banded` / `pa-accent-grid` now read
@@ -263,21 +265,27 @@ styling) and now on-contract.
 
 ---
 
-## Badge — ✅ faithful · ⚠️ one core gap
+## Badge — 🔧 fixed (core gap closed by keen, wrapper switched)
 
 Source: `packages/svelte-pure-admin/src/lib/display/Badge.svelte`
 
 Variants, sizes, `--pill`, `--ellipsis-start`, and the `pa-badge__icon` wrapper
 all match. Clickable badge (role/tabindex/keydown) is a reasonable a11y add.
 
-**⚠️ `themeColor` maps to the generic `pa-bg-color-N` utility.** Core defines no
-`pa-badge--color-N` (grep of `_badges.scss` = 0 hits), unlike buttons/cards/alerts
-which all have a `--color-N` pair that sets **both** background and a contrasting
-`--pa-color-N-text`. The generic `pa-bg-color-N` only paints the background, so a
-theme-slot badge can land dark-text-on-dark. **This is a core gap, not a wrapper
-defect** — the wrapper improvises the only class available. *Follow-up:* add
-`pa-badge--color-{1..9}` to core `_badges.scss` (mirror the alert pattern), then
-switch the wrapper to it. Left as-is for now.
+**Was ⚠️: `themeColor` mapped to the generic `pa-bg-color-N` utility** (background
+only → dark-text-on-dark risk), because core had no `pa-badge--color-N`. **Now
+fixed:** a **keen-pure-admin session added `pa-badge--color-{1..9}` to core**
+(`_badge-base.scss` — paints `--pa-color-N` bg AND a contrasting `--pa-color-N-text`
+label, mirroring the alert pattern; the SCSS comment credits both wrappers'
+`pa-bg-color-N` improvisation). This was core follow-up #1 from this audit.
+`Badge.svelte`'s `themeColor` now emits `pa-badge--color-${n}`; verified in the
+dump (`<span class="pa-badge pa-badge--color-3">`).
+
+**Publish coordination:** the core `pa-badge--color-N` feature is committed-pending
+in `pure-admin` (keen's WIP) + needs themes rebuilt; against today's published core
+the class is a no-op (unstyled), so this ships with the core+themes+lib batch (same
+as the copy-hint work). Unlike Field it does **not** degrade to a background — it
+degrades to unstyled — so don't release the lib ahead of core here.
 
 ---
 
