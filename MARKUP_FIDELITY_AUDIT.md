@@ -120,11 +120,13 @@ These are the mistakes svelte-pure-admin actually makes (each already hit ≥1 c
 Buttons ✅ · Card 🔧(subtitle→`pa-card__meta`) · Badge ⚠️(core gap: no `pa-badge--color-N`)
 · Alert 🔧×2(`__content` over-wrap + close glyph) · Navbar/NavItem/NavbarSearch 🔧
 · Toast 🔧(close glyph) · Modal 🔧×2(close glyph + `--primary`→`--secondary`/`--light`)
-· NotificationsPanel ✅ · Forms cluster 🔧×4(4 phantom classes). Commits: `5167b61`, `1bc1ebe`, +this.
+· NotificationsPanel ✅ · Forms cluster 🔧×4(phantom classes) · CheckboxList 🔧(label-in-label).
+Commits: `5167b61`, `1bc1ebe`, `3463951`, +this.
 
 Forms faithful (no change): `Input`, `Select`, `Textarea`, `FormGroup`(state), `Checkbox`,
-`CheckboxBox`, `InputGroup`/`Prepend`/`Append`. Still to do in the cluster:
-`CheckboxList`, `FilterCard`, `QueryEditor`, `FileInput`, `RangeGroup*`, `DateInput`, etc.
+`InputGroup`/`Prepend`/`Append`, `CheckboxList` container. Still to do in the cluster:
+`FilterCard`, `QueryEditor`, `FileInput`, `RangeGroup*`, `DateInput`, `NumberInput`,
+`ColorInput`, `Form`, `FormErrorSummary`.
 
 ## Next — remaining components (rough priority)
 
@@ -349,5 +351,32 @@ Verified by dumping `/audit`: bare `<label for>…<span aria-hidden>*</span>`,
 `<div class="pa-form-group">` (no `--required`), `<span class="pa-form-help">`
 (no `--info`), disabled radio `<label class="pa-radio"><input disabled>` (no
 `--disabled`).
+
+---
+
+## CheckboxList / CheckboxListItem / CheckboxBox — 🔧 fixed label-in-label
+
+Source: `display/CheckboxList.svelte`, `display/CheckboxListItem.svelte`,
+`forms/CheckboxBox.svelte`. Reference: `snippets/checkbox-lists.html`.
+
+- `CheckboxList` — `pa-checkbox-list` + `--compact` / `--bordered` / `--striped`
+  (variant) + `--inline` / `--grid` / `--2col` / `--3col` (layout). All real
+  modifiers. ✅ (Minor 🟡: variant is single-select so you can't compose
+  bordered+striped — an API limit, not a markup divergence.)
+- `CheckboxListItem` — `<li class="pa-checkbox-list__item">` (+ `--disabled` /
+  `--locked`), `<label class="pa-checkbox-list__label">`, title+description wrapped
+  in `__text` with `__description` nested (matches the snippet's flex-stacking
+  note), `__actions` sibling `<div>`. Structure ✅.
+- **🔧 `CheckboxBox`** rendered `<label class="pa-checkbox">`. Nested by
+  `CheckboxListItem` inside `.pa-checkbox-list__label`, that made
+  **`<label><label>…</label></label>`** — invalid, ambiguous click target. The
+  snippet's nested pattern (lines 110, 578) uses `<span class="pa-checkbox">`;
+  `.pa-checkbox` CSS is element-agnostic. → changed to `<span>`, which also
+  matches CheckboxBox's own docstring ("building block / raw checkbox without
+  label wrapper"). The full interactive control stays `<Checkbox>` (`<label>`).
+
+Verified by dumping `/audit`: list item is
+`<label class="pa-checkbox-list__label"><span class="pa-checkbox">…</span><span class="pa-checkbox-list__text">…</span></label>`
+(no nested label), standalone `CheckboxBox` → `<span class="pa-checkbox">`.
 
 ---

@@ -70,7 +70,16 @@
 	});
 </script>
 
-<label class={wrapperClasses()}>
+<!--
+	Building block — renders a `<span class="pa-checkbox">`, NOT a `<label>`.
+	Core's nested-in-list pattern (snippets/checkbox-lists.html) wraps the
+	custom checkbox in a `<span class="pa-checkbox">` inside an outer
+	`.pa-checkbox-list__label`; a `<label>` here would nest label-in-label
+	(invalid HTML, ambiguous click target). The complete interactive control
+	with its own label + text is `<Checkbox>`. `.pa-checkbox` styling is
+	element-agnostic — the SCSS targets the class, so span works identically.
+-->
+<span class={wrapperClasses()}>
 	<input
 		bind:this={inputElement}
 		type="checkbox"
@@ -82,4 +91,4 @@
 		{onchange}
 	/>
 	<span class="pa-checkbox__box"></span>
-</label>
+</span>

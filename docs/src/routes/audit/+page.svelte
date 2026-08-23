@@ -1,27 +1,15 @@
 <script lang="ts">
 	// MARKUP-FIDELITY AUDIT SCRATCH PAGE — overwritten per component. Safe to clobber.
-	import {
-		Form,
-		FormGroup,
-		FormLabel,
-		FormHelp,
-		FormField,
-		Input,
-		Radio
-	} from '@keenmate/svelte-pure-admin';
+	import { CheckboxList, CheckboxListItem, CheckboxBox } from '@keenmate/svelte-pure-admin';
 </script>
 
 <div id="audit-root" style="padding:2rem">
-	<Form>
-		<!-- bare label expected — NO pa-form-label class; required → trailing * -->
-		<FormGroup isRequired>
-			<FormLabel for="u" required>Username</FormLabel>
-			<Input id="u" placeholder="user" />
-			<FormHelp>Pick a handle.</FormHelp>
-		</FormGroup>
+	<CheckboxList variant="bordered">
+		<CheckboxListItem id="a" labelText="Plain option" />
+		<CheckboxListItem id="b" labelText="With description" descriptionText="A muted caption" checked />
+		<CheckboxListItem id="c" labelText="Locked" state="locked" />
+	</CheckboxList>
 
-		<!-- radio disabled → native attr only, NO pa-radio--disabled -->
-		<Radio name="r" value="a" labelText="Enabled" />
-		<Radio name="r" value="b" disabled labelText="Disabled" />
-	</Form>
+	<!-- standalone building block: should be <span class="pa-checkbox"> -->
+	<CheckboxBox id="raw" />
 </div>
