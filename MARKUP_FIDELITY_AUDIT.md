@@ -18,6 +18,134 @@ fixed) · 🔧 fixed in this pass · ⚠️ needs follow-up / discussion.
 
 ---
 
+# ▶ RESUME HERE — handoff for continuing the audit
+
+> Read this whole block before continuing. It is the operating manual for this task.
+
+## Goal
+
+Audit the **DOM that `@keenmate/svelte-pure-admin` components emit** against the
+**canonical markup contract** in `@keenmate/pure-admin-core`, fix divergences in
+the svelte lib source, and record each finding here + in `CHANGELOG.md`. "Contract"
+= `pure-admin/packages/core/snippets/<component>.html` (the blessed markup, with a
+long `COMPONENT REFERENCE` comment) **plus** the component's SCSS in
+`pure-admin/packages/core/src/scss/core-components/`.
+
+## Repos & key paths (two separate git repos)
+
+- **svelte lib (WE EDIT THIS):** `C:\Git\KM\svelte-pure-admin\packages\svelte-pure-admin\src\lib\`
+  — components grouped by folder: `buttons/ display/ feedback/ forms/ layout/
+  navigation/ typography/`. Files are **tab-indented** Svelte 5 (runes: `$props`,
+  `$derived`, `$state`, snippets via `{#snippet}` / `{@render}`).
+- **core (READ-ONLY reference):** `C:\Git\KM\pure-admin\packages\core\snippets\*.html`
+  + `...\src\scss\core-components\**`.
+- **This report:** `C:\Git\KM\svelte-pure-admin\MARKUP_FIDELITY_AUDIT.md` (findings).
+- **Changelog:** `C:\Git\KM\svelte-pure-admin\CHANGELOG.md` — add bullets to the WIP
+  section under `### Fixed — library` (or `### Deprecated — library`).
+- **DOM dump helper:** `C:\Git\KM\pure-admin\scripts\dump-dom.mjs`.
+- **Scratch route (overwrite per component):** `C:\Git\KM\svelte-pure-admin\docs\src\routes\audit\+page.svelte`.
+
+## Harness workflow (per component)
+
+1. Dev server (SvelteKit docs) runs at **http://localhost:5173**; its vite alias
+   maps `@keenmate/svelte-pure-admin` → the lib **source**, so editing a lib file
+   hot-reloads instantly. (If the server is down, start it in `../svelte-pure-admin`.)
+2. Overwrite `docs/src/routes/audit/+page.svelte` — import the component, render the
+   cases you want under `<div id="audit-root">`. Safe to clobber every time.
+3. Dump the rendered DOM (Svelte hydration comments are auto-stripped):
+   ```
+   cd /c/Git/KM/pure-admin
+   MSYS_NO_PATHCONV=1 node scripts/dump-dom.mjs /audit "<css-selector>" [nth]
+   ```
+   - **MUST set `MSYS_NO_PATHCONV=1`** or Git Bash rewrites the leading-slash
+     `/audit` arg into a Windows path and navigation fails.
+   - **Run it from `/c/Git/KM/pure-admin`** (the Bash cwd persists between calls and
+     drifts after any `cd` — pass an absolute `cd` first).
+   - `nth` picks the Nth match (0-based); omit to get count + first match.
+4. Diff the dump against the snippet + SCSS. Fix in the lib source. Re-dump to verify.
+5. Record here (use the legend) and add a CHANGELOG bullet.
+
+## Recurring divergence patterns — CHECK EVERY COMPONENT FOR THESE
+
+These are the mistakes svelte-pure-admin actually makes (each already hit ≥1 component):
+
+1. **Close/dismiss glyphs.** Lib uses an inline `<svg>` or a literal `×`. Core
+   blesses **`<span class="pa-icon pa-icon--x" aria-hidden="true"></span>`** (a
+   masked-icon primitive; `--pa-icon-x` is a lucide X, sized/tinted by CSS). Fixed
+   in Alert, Toast, Modal — **check any remaining component with a close/remove/clear
+   button** (chips, tags, tabs, inputs, search-clear, drawer close…).
+2. **Phantom modifier classes.** Lib emits a `--size`/`--variant` class that core
+   never defines (e.g. `pa-navbar-search--lg`). **Grep the component SCSS for every
+   modifier the wrapper can emit**; if it's absent, it's dead — drop it (or the prop).
+3. **Generic utility instead of the component's own element.** e.g. `pa-text--secondary`
+   where the card wants `pa-card__meta`; `pa-bg-color-N` where a `--color-N` pair is
+   wanted. Watch "secondary text" / "subtitle" / "theme color" code paths.
+4. **BEM modifier without its base class.** e.g. `pa-navmenu__item--active` with no
+   `pa-navmenu__item`. The base must always be present.
+5. **Wrong hardcoded variant.** e.g. Modal close was `pa-btn--primary`; core uses
+   `--secondary` / `--light`. Cross-check hardcoded variants against the snippet.
+6. **Over-wrapping that breaks a flex-gap layout.** e.g. Alert wrapped structural
+   children in `.pa-alert__content` (a plain block) — but the alert spaces its
+   children via flex **`gap`**, which only works on **direct** children. Before adding
+   any wrapper div, check whether the core component relies on `gap` (direct children)
+   vs block-flow margins. Grep the SCSS for `gap:` and `> p` / child-combinator rules.
+7. **`<div role="button" tabindex="0">` instead of a real `<button>`** — a11y
+   downgrade; prefer the native element (fixed in NavbarSearch).
+8. **Icon-only controls with no accessible name** — a11y (often a demo-usage gap,
+   not a lib bug; note it but only "fix" if the component makes labelling impossible).
+
+## Rules / judgement calls
+
+- **Don't over-fix.** A divergence that renders identically (e.g. Button always
+  wrapping its label in `pa-btn__label`, `flex:0 1 auto` == bare text node) is 🟡 —
+  note it, don't change it. Verify no-op claims against the SCSS before dismissing.
+- **Core gaps ≠ wrapper defects.** If core lacks the class the wrapper needs
+  (e.g. no `pa-badge--color-N`), flag ⚠️ as a core follow-up — **do NOT invent a
+  class** or edit core from here.
+- **Match indentation (tabs) exactly** when editing Svelte files, or Edit fails.
+- **Deprecated props** still get fixed to the canonical shape if cheap+safe, but
+  keep them deprecated (don't resurrect them as recommended).
+- Only touch files that are part of THIS audit; leave unrelated uncommitted work.
+
+## Git
+
+- Branch: **`prod`** (both repos). Commit in logical batches with subject
+  `fix(audit): …`. Trailer: `Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>`.
+- **Do NOT push** — the user pushes. `dump-dom.mjs` lives in the *pure-admin* repo
+  (which has unrelated uncommitted work — don't sweep it in); it's a scratch helper,
+  fine to leave untracked.
+
+## Status — done (8)
+
+Buttons ✅ · Card 🔧(subtitle→`pa-card__meta`) · Badge ⚠️(core gap: no `pa-badge--color-N`)
+· Alert 🔧×2(`__content` over-wrap + close glyph) · Navbar/NavItem/NavbarSearch 🔧
+· Toast 🔧(close glyph) · Modal 🔧×2(close glyph + `--primary`→`--secondary`/`--light`)
+· NotificationsPanel ✅. Commits: `5167b61`, `1bc1ebe`.
+
+## Next — remaining components (rough priority)
+
+1. **Forms (highest traffic):** `forms/` — Field / FieldGroup / Input / Select /
+   Checkbox / CheckboxList / Radio / Textarea / FilterCard / QueryEditor. Compare to
+   `snippets/forms.html`, `checkbox-lists.html`, `filter-card.html`, `query-editor`
+   SCSS. Watch input-group, validation, and clear-button (`pa-icon--x`) shapes.
+2. **Tables:** Table / TableCard / TableContainer vs `snippets/tables.html`
+   (rc10 consolidated the wrappers to two blessed shapes — verify).
+3. **Tabs / CardTab** vs `snippets/tabs.html` + card tabs.
+4. **Feedback leftovers:** Popconfirm, Popover, Callout, Tooltip, Loader* vs
+   `snippets/` (callouts, popconfirm, tooltips, loaders).
+5. **Display:** List/BasicList/DefinitionList/DescTable/Banded/BarList/DataBar/Code/
+   Gauge/Heatmap + KPI* vs the matching snippets.
+6. **Layout/Typography:** Sidebar / Footer / Grid / Column / DetailPanel / Heading /
+   Paragraph / Label.
+
+## Core follow-ups to raise (do in the pure-admin repo, not here)
+
+- Add `pa-badge--color-{1..9}` to `core-components/_badges.scss` (mirror the alert
+  `--color-N` pair that sets bg **and** `--pa-color-N-text`), then switch
+  `Badge.svelte`'s `themeColor` off the generic `pa-bg-color-N`.
+
+---
+
 ## Navbar / NavItem / NavbarSearch — 🔧 fixed (prior session)
 
 Sources: `navigation/NavItem.svelte`, `navigation/NavbarSearch.svelte`,
