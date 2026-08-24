@@ -263,21 +263,6 @@ export type PaletteMode =
 	| 'global-search'; // Global search (no prefix)
 
 /**
- * Token type for syntax highlighting
- */
-export type TokenType = 'command' | 'context' | 'prompt' | 'value' | 'query' | 'text';
-
-/**
- * Parsed token from input
- */
-export interface Token {
-	type: TokenType;
-	value: string;
-	start: number;
-	end: number;
-}
-
-/**
  * Internal state of the command palette
  */
 export interface PaletteState {

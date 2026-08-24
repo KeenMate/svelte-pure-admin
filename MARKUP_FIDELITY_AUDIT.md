@@ -170,9 +170,8 @@ SCSS is demo-only.)
 3. **Tabs / CardTab** vs `snippets/tabs.html` + card tabs.
 4. **Feedback leftovers:** Popconfirm, Popover, Callout, Tooltip, Loader* vs
    `snippets/` (callouts, popconfirm, tooltips, loaders).
-5. **Display:** ✅ mostly done (Lists/Code/data-display family/stats primitives/the ~18
-   `Kpi*`). Only **`CommandPalette`** left (phantom `__token`/`__error` vs core's
-   `__tokens`/`__token-prompt`/`__empty`).
+5. **Display:** ✅ **done** — Lists/Code/data-display family/stats primitives/the ~18
+   `Kpi*`/`CommandPalette` all audited.
 6. **Layout/Typography:** Sidebar / Footer / Grid / Column / DetailPanel / Heading /
    Paragraph / Label.
 
@@ -407,7 +406,7 @@ with `__icon--danger`; `pa-loader-dots text-success` (3 spans), `pa-loader-bars-
 
 ---
 
-## Display — Lists ✅ · Code 🔧 (in progress; Display is a 60+ component cluster)
+## Display — Lists ✅ · Code 🔧 (Display, a 60+ component cluster, is now fully audited — see the data-display / stats / KPI / CommandPalette sections below)
 
 Reference: `snippets/lists.html`, `code.html`.
 
@@ -574,6 +573,41 @@ neg|warn">`) fully faithful — the `.pos/.neg/.warn` are core-scoped and presen
   the `kpi-editorial-minimal` docs route to `gridLayout="2col"`. Adds `KpiEditorialGridLayout`.
 
 `svelte-check` clean (352 files, 0 errors — only the 3 pre-existing SidebarItem warnings).
+
+---
+
+## Display — CommandPalette — 🔧 3 invented classes dropped · ✅ rest faithful
+
+Diffed every emitted `pa-command-palette__*` class against compiled `main.css` +
+`snippets/command-palette.html`. Three inventions, all fixed; everything else faithful.
+
+- **🔧 Dead syntax-highlighter removed.** `tokenize` / `getHighlightedHtml` / `escapeHtml`
+  (+ the `Token` / `TokenType` types, imported only here, not re-exported) were **never
+  called** — no `@html`, no call site — but the component's scoped `<style>` shipped
+  `__token` + `__token--command|context|prompt|value`, core-prefixed classes core doesn't
+  define. Deleted the functions, the two types, and the styles.
+- **🔧 Error state → core's `__empty`.** The error branch rendered a scoped-styled
+  `__error` / `__error-icon`. **Core has no error state** — only `__empty` (centered muted
+  "no results" text; the snippet's COMPONENT REFERENCE confirms). Now renders through the
+  real `__empty` container + the real `text-danger` utility for the tint, so the entire
+  scoped `<style>` block is gone (the `errorSnippet` escape hatch is unchanged).
+- **🔧 Token badge remove is a real `<button>`.** It was `<span class="pa-badge__remove"
+  onclick>&times;</span>`; the snippet blesses `<button class="pa-badge__remove"
+  aria-label="Remove"><span class="pa-icon pa-icon--x">` — now that (focusable, labelled,
+  masked-icon glyph, matching every other close affordance in the audit).
+- **✅ Faithful, no change:** `--sm`/`--lg`/`--xl` size presets + `--active`; `__backdrop`/
+  `__container`/`__search`/`__tokens`/`__token-prompt` (badge chips + prompt caption per
+  snippet)/`__input-wrapper`/`__input`/`__context`(+`--visible`)/`__results`(+`--loading`)/
+  `__home`/`__home-section`/`__home-heading`/`__item`(+`--active`)/`__item-icon`/
+  `__item-content`/`__item-title`/`__item-meta`/`__shortcut`/`__key`/`__loader`/`__empty`.
+  Runtime `width`/`offsetTop`/`resultsMaxHeight` CSS-var overrides (rc15) all real.
+- **📋 Known unimplemented core features (NOT markup bugs — the wrapper renders a subset):**
+  `--fullscreen` + `__fullscreen-bar` / `__fullscreen-title` (fullscreen mode), `__pagination`
+  (paged results), `__section` (result-group divider — the wrapper groups only on the home
+  screen via `__home-section`), and a visible `__close` button (the palette closes via
+  backdrop / Esc). Implementing these is feature-parity work, out of scope for a markup audit.
+
+**Display cluster is now complete.** `svelte-check` clean (352 files, 0 errors).
 
 ---
 

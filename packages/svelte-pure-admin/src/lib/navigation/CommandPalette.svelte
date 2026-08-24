@@ -18,9 +18,7 @@
 		SearchResult,
 		StepOption,
 		StepSelection,
-		PaletteMode,
-		Token,
-		TokenType
+		PaletteMode
 	} from './command-palette-types';
 
 	// =========================================================================
@@ -145,90 +143,6 @@
 		}
 		return display;
 	});
-
-	// =========================================================================
-	// TOKENIZER (for syntax highlighting)
-	// =========================================================================
-
-	function tokenize(input: string): Token[] {
-		const tokens: Token[] = [];
-		let pos = 0;
-
-		// Check for command prefix
-		if (input.startsWith('/')) {
-			const match = input.match(/^\/\S*/);
-			if (match) {
-				tokens.push({
-					type: 'command',
-					value: match[0],
-					start: 0,
-					end: match[0].length
-				});
-				pos = match[0].length;
-			}
-		}
-		// Check for context prefix
-		else if (input.startsWith(':')) {
-			const match = input.match(/^:\S*/);
-			if (match) {
-				tokens.push({
-					type: 'context',
-					value: match[0],
-					start: 0,
-					end: match[0].length
-				});
-				pos = match[0].length;
-			}
-		}
-
-		// Rest is query text
-		if (pos < input.length) {
-			tokens.push({
-				type: 'query',
-				value: input.substring(pos),
-				start: pos,
-				end: input.length
-			});
-		}
-
-		return tokens;
-	}
-
-	// Generate highlighted HTML
-	function getHighlightedHtml(input: string): string {
-		const tokens = tokenize(input);
-		let html = '';
-
-		for (const token of tokens) {
-			const escaped = escapeHtml(token.value);
-			switch (token.type) {
-				case 'command':
-					html += `<span class="pa-command-palette__token pa-command-palette__token--command">${escaped}</span>`;
-					break;
-				case 'context':
-					html += `<span class="pa-command-palette__token pa-command-palette__token--context">${escaped}</span>`;
-					break;
-				case 'prompt':
-					html += `<span class="pa-command-palette__token pa-command-palette__token--prompt">${escaped}</span>`;
-					break;
-				case 'value':
-					html += `<span class="pa-command-palette__token pa-command-palette__token--value">${escaped}</span>`;
-					break;
-				default:
-					html += escaped;
-			}
-		}
-
-		return html + ' '; // Trailing space prevents collapse
-	}
-
-	function escapeHtml(text: string): string {
-		return text
-			.replace(/&/g, '&amp;')
-			.replace(/</g, '&lt;')
-			.replace(/>/g, '&gt;')
-			.replace(/"/g, '&quot;');
-	}
 
 	// =========================================================================
 	// INPUT HANDLING
@@ -840,9 +754,14 @@
 						{/if}
 						<span class="pa-badge">
 							<span>{sel.option?.label || sel.freeText}</span>
-							<!-- svelte-ignore a11y_click_events_have_key_events -->
-							<!-- svelte-ignore a11y_no_static_element_interactions -->
-							<span class="pa-badge__remove" onclick={() => rewindToStep(i)}>&times;</span>
+							<button
+								type="button"
+								class="pa-badge__remove"
+								aria-label="Remove"
+								onclick={() => rewindToStep(i)}
+							>
+								<span class="pa-icon pa-icon--x" aria-hidden="true"></span>
+							</button>
 						</span>
 					{/each}
 					{#if currentStep()?.prompt && selections.length === currentStepIndex}
@@ -927,9 +846,11 @@
 				{#if errorSnippet}
 					{@render errorSnippet(error)}
 				{:else}
-					<div class="pa-command-palette__error">
-						<span class="pa-command-palette__error-icon">⚠️</span>
-						<span>{error}</span>
+					<!-- Core has no error state — only `__empty` (centered muted text).
+					     Render the error through it with a real `text-danger` utility for the
+					     tint, rather than inventing a scoped-styled `__error` class. -->
+					<div class="pa-command-palette__empty text-danger">
+						<span aria-hidden="true">⚠️</span> {error}
 					</div>
 				{/if}
 			{:else if displayItems.length === 0}
@@ -983,46 +904,3 @@
 		</div>
 	</div>
 </div>
-
-<style>
-	/* Token highlighting */
-	:global(.pa-command-palette__token) {
-		border-radius: 0.25rem;
-		padding: 0.125rem 0.25rem;
-	}
-
-	:global(.pa-command-palette__token--command) {
-		background: rgba(59, 130, 246, 0.2);
-		color: rgb(37, 99, 235);
-	}
-
-	:global(.pa-command-palette__token--context) {
-		background: rgba(139, 92, 246, 0.2);
-		color: rgb(109, 40, 217);
-	}
-
-	:global(.pa-command-palette__token--prompt) {
-		color: var(--pa-text-muted, #9ca3af);
-	}
-
-	:global(.pa-command-palette__token--value) {
-		background: rgba(34, 197, 94, 0.2);
-		color: rgb(21, 128, 61);
-	}
-
-	/* Error styling */
-	.pa-command-palette__error {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.5rem;
-		padding: 1rem;
-		text-align: center;
-		color: var(--pa-danger, #ef4444);
-		font-size: 0.875rem;
-	}
-
-	.pa-command-palette__error-icon {
-		font-size: 1rem;
-	}
-</style>
