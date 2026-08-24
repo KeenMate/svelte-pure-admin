@@ -170,8 +170,9 @@ SCSS is demo-only.)
 3. **Tabs / CardTab** vs `snippets/tabs.html` + card tabs.
 4. **Feedback leftovers:** Popconfirm, Popover, Callout, Tooltip, Loader* vs
    `snippets/` (callouts, popconfirm, tooltips, loaders).
-5. **Display:** List/BasicList/DefinitionList/DescTable/Banded/BarList/DataBar/Code/
-   Gauge/Heatmap + KPI* vs the matching snippets.
+5. **Display:** ✅ mostly done (Lists/Code/data-display family/stats primitives/the ~18
+   `Kpi*`). Only **`CommandPalette`** left (phantom `__token`/`__error` vs core's
+   `__tokens`/`__token-prompt`/`__empty`).
 6. **Layout/Typography:** Sidebar / Footer / Grid / Column / DetailPanel / Heading /
    Paragraph / Label.
 
@@ -423,9 +424,12 @@ Reference: `snippets/lists.html`, `code.html`.
   `pa-code--svelte`, both **phantom** (0 hits in compiled CSS; core accents only js/json/html/
   css/bash/sql/python). Dropped from the union.
 
-**Remaining Display sub-clusters (not yet audited):** statistics/KPI mega-cluster (Stat/
-Sparkline/Progress*/Gauge/Heatmap*/BarList/DataBar/StackedBar*/Metric*/Status*/the ~18 Kpi*),
-Timeline/ActivityFeed/QuickActions/Pager/LoadMore.
+**Remaining Display sub-clusters:** ✅ data-display family, stats primitives (Stat/
+Sparkline/Progress*/Gauge/Heatmap*/BarList/DataBar/StackedBar*/Timeline/Pager/LoadMore),
+and the ~18 `Kpi*` mega-cluster are all now audited (see their sections below). Metric*/
+Status*/ActivityFeed/QuickActions were **removed** (fully-phantom). **Left in Display:**
+`CommandPalette` (flagged earlier — invents `__token`/`__token--*`/`__error` vs core's
+`__tokens`/`__token-prompt`/`__empty`).
 
 ---
 
@@ -521,6 +525,55 @@ is already built in the **core demo** from real, shipping components (verified i
   - **StatusList** → status shown as `pa-badge` pills in the core demo → wrapper `Badge`.
 Removed the 7 files, their `index.ts` exports, and their README rows. `svelte-check`
 clean (352 files).
+
+---
+
+## Display — KPI mega-cluster (18 `Kpi*`) — ✅ 15 faithful · 🔧 1 markup · ➕ 2 parity gaps
+
+No KPI snippet exists; verified every emitted class + dynamic modifier against the
+compiled `main.css` (`_kpi-*.scss`) and the docs routes. **The cluster is remarkably
+clean** — every `Kpi*` component's static classes and, crucially, every *dynamic*
+sentiment / grid / layout modifier stem maps **exactly** to core's per-block vocabulary.
+That's the real risk here (the `Stat --secondary` failure mode): each KPI family speaks a
+*different* sentiment dialect, and the wrapper's TS union types match each one:
+- `KpiGaugeVariant` = positive/warning/negative/neutral → `pa-kpi-gauge--*` ✅
+- `KpiHeroVariant` = positive/negative/neutral/up-strong → hero-main + hero-side ✅ (both
+  blocks genuinely lack `--down-strong`; the wrapper doesn't emit it)
+- `KpiSparklineTrendVariant` = up-strong/up/flat/down/down-strong → `pa-kpi-tile--*` +
+  `pa-kpi-spark-row--*` ✅
+- `KpiSparklineDeltaVariant` = very-positive/positive/neutral/negative/very-negative →
+  `__value--` / `__delta--` on tile + spark-row ✅
+- `KpiDeltaVariant` = positive/negative/neutral/up-strong/down-strong → `bento-tile--` +
+  `strip__delta--` + `edit__delta--` ✅
+- `KpiTerminalStatus` = good/warn/neutral → `pa-kpi-tile__status--*` ✅
+- Grid/layout: `KpiGaugeListGridLayout` (2col/max-2..6), `hero-list__layout--hero-{2-3,3-4}`,
+  `terminal__grid--2col` all ✅.
+
+The five "bare block" classes that carry no own CSS (`pa-kpi-strip` / `-terminal` / `-edit`
+/ `-gauge-list` / `tile__delta`) are **benign BEM bases** — core styles them on children /
+modifiers only (same pattern as `pa-stat__change`), so they're the canonical block names,
+not phantoms. `KpiDetailPopover` (`.pa-kpi-detail` + `__title` + `<dl><dt><dd class="pos|
+neg|warn">`) fully faithful — the `.pos/.neg/.warn` are core-scoped and present.
+
+- **🔧 `KpiTerminalTile` — sparkline host `display: contents`.** Core's terminal tile has
+  `<svg class="pa-kpi-tile__spark">` as a *direct* flex child of `.pa-kpi-tile` (no wrapper).
+  The wrapper hosted the `kpiSparklineDots` action (needs an element to scan for the SVG's
+  `<circle>`) on a plain `<div>`, adding a layout box core doesn't have. Host is now
+  `display: contents` — hosts the action, contributes no box, SVG is the effective direct
+  child. (The `pa-kpi-tile__spark` class is the consumer's to put on their SVG — the docs
+  route + core demo both do; not missing.) Same idiom as `Stat.svelte`'s fit host.
+- **➕ `KpiBento` — `layout` prop added.** Emitted only bare `pa-kpi-bento__grid`; core ships
+  `--hero-right` (mirror) + `--5-tile` (hero + 4) layout modifiers that were unreachable.
+  Added `layout?: 'hero-right' | '5-tile'` + `KpiBentoLayout` type. Additive; default 6-tile
+  hero-left unchanged.
+- **➕ `KpiEditorial` — `is2Columns` → `gridLayout` enum (BREAKING) + `cellMinWidth`.** Core's
+  editorial grid ships the full `--2col` + `--max-2..6` family (identical to gauges), but the
+  wrapper exposed only a `--2col` boolean, leaving the four column caps unreachable and
+  diverging from `KpiGaugeList`. Replaced with the same `gridLayout` enum + `cellMinWidth`
+  knob (`--pa-kpi-edit-cell-min`). Migrated the 5 `is2Columns` usages + 3 prose mentions in
+  the `kpi-editorial-minimal` docs route to `gridLayout="2col"`. Adds `KpiEditorialGridLayout`.
+
+`svelte-check` clean (352 files, 0 errors — only the 3 pre-existing SidebarItem warnings).
 
 ---
 

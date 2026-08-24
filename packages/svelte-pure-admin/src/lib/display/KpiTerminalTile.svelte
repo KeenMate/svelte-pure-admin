@@ -217,9 +217,13 @@
 		</div>
 	{/if}
 
-	<!-- Sparkline -->
+	<!-- Sparkline. Core's terminal tile has the `<svg class="pa-kpi-tile__spark">`
+	     as a direct flex child of `.pa-kpi-tile` (no wrapper element). The
+	     `kpiSparklineDots` action needs a host to scan for the SVG, so the host
+	     is `display: contents` — it hosts the action but adds no layout box,
+	     leaving the consumer's SVG as the effective direct child. -->
 	{#if chart}
-		<div use:kpiSparklineDots>
+		<div use:kpiSparklineDots style="display: contents;">
 			{@render chart()}
 		</div>
 	{/if}

@@ -113,12 +113,12 @@
 <!-- 1×3 page-grid: same design at 1/3-width cards, internal grid forced to 2-col -->
 <Paragraph>
 	1×3 page-grid demonstrating the design at 1/3-width cards. Each card's internal grid forces 2-col via
-	<Code>is2Columns</Code>.
+	<Code>gridLayout="2col"</Code>.
 </Paragraph>
 
 <Grid>
 	<Column size="100" md="1-3">
-		<KpiEditorial titleText="Performance" isLive is2Columns>
+		<KpiEditorial titleText="Performance" isLive gridLayout="2col">
 			<KpiEditorialTile valueText="86.9" unit="%" deltaText="+3.3%" deltaVariant="positive" targetText="90.0%" detailTitleText="Completion Rate">
 				{#snippet label()}Completion<br />Rate{/snippet}
 			</KpiEditorialTile>
@@ -129,7 +129,7 @@
 	</Column>
 
 	<Column size="100" md="1-3">
-		<KpiEditorial titleText="Revenue" isLive is2Columns>
+		<KpiEditorial titleText="Revenue" isLive gridLayout="2col">
 			<KpiEditorialTile labelText="MRR" prefix="$" valueText="871" unit="K" deltaText="+15.8%" deltaVariant="up-strong" targetText="$900K" detailTitleText="MRR" />
 			<KpiEditorialTile labelText="Bookings" prefix="€" valueText="2.4" unit="M" deltaText="+18.0%" deltaVariant="up-strong" targetText="€2.6M" detailTitleText="Bookings" />
 			<KpiEditorialTile labelText="Convert" valueText="5.7" unit="%" deltaText="+1.2%" deltaVariant="positive" targetText="7.0%" detailTitleText="Conversion" />
@@ -138,7 +138,7 @@
 	</Column>
 
 	<Column size="100" md="1-3">
-		<KpiEditorial titleText="Customer" isLive is2Columns>
+		<KpiEditorial titleText="Customer" isLive gridLayout="2col">
 			<KpiEditorialTile labelText="NPS" valueText="62" deltaText="+4.0" deltaVariant="positive" targetText="65" detailTitleText="NPS" />
 			<KpiEditorialTile labelText="CSAT" valueText="4.7" deltaText="±0.0" deltaVariant="neutral" targetText="4.8" detailTitleText="CSAT" />
 			<KpiEditorialTile labelText="DAU" valueText="42.7" unit="k" deltaText="+6.2%" deltaVariant="positive" targetText="45k" detailTitleText="DAU" />
@@ -158,7 +158,7 @@
 
 <Grid>
 	<Column size="100" md="25">
-		<KpiEditorial titleText="Top line" isLive is2Columns>
+		<KpiEditorial titleText="Top line" isLive gridLayout="2col">
 			<KpiEditorialTile labelText="Revenue" prefix="$" valueText="871" unit="K" deltaText="+15.8%" deltaVariant="up-strong" targetText="$900K" detailTitleText="Revenue" />
 			<KpiEditorialTile labelText="Convert" valueText="5.7" unit="%" deltaText="+1.2%" deltaVariant="positive" targetText="7.0%" detailTitleText="Conversion" />
 		</KpiEditorial>
@@ -176,7 +176,7 @@
 	</Column>
 
 	<Column size="100" md="30">
-		<KpiEditorial titleText="Customer" isLive is2Columns>
+		<KpiEditorial titleText="Customer" isLive gridLayout="2col">
 			<KpiEditorialTile labelText="NPS" valueText="62" deltaText="+4.0" deltaVariant="positive" targetText="65" detailTitleText="NPS" />
 			<KpiEditorialTile labelText="DAU" valueText="42.7" unit="k" deltaText="+6.2%" deltaVariant="positive" targetText="45k" detailTitleText="DAU" />
 		</KpiEditorial>
@@ -202,10 +202,13 @@
 
 	<h4 class="mt-4">Picking the column count</h4>
 	<Paragraph>
-		Default is 3-col with container queries collapsing to 2-col under 640 px and 1-col under 360 px. Pass
-		<Code>is2Columns</Code> on <Code>KpiEditorial</Code> to force 2-col regardless of card width — useful
-		when "1/3 of the page" varies enough across viewport widths that the breakpoint can't reliably catch
-		the right bucket. Keep tile count a multiple of column count to avoid orphan rows.
+		Default is a cell-min-driven <Code>auto-fit</Code> grid. Pass <Code>gridLayout="2col"</Code> on
+		<Code>KpiEditorial</Code> to force exactly 2 columns regardless of card width, or a
+		<Code>gridLayout="max-N"</Code> cap (N = 2–6) to ceiling the column count while still collapsing
+		responsively below the <Code>cell-min × N</Code> threshold — useful when "1/3 of the page" varies
+		enough across viewport widths that <Code>auto-fit</Code> can't reliably catch the right bucket. Tune
+		<Code>cellMinWidth</Code> to shift the collapse points. Keep tile count a multiple of column count to
+		avoid orphan rows.
 	</Paragraph>
 </Card>
 
@@ -217,7 +220,8 @@
 		<li><Code>titleText</Code> — card title in the header.</li>
 		<li><Code>isLive</Code> — show the LIVE pill with animated green dot.</li>
 		<li><Code>footerText</Code> — footer caption (plain string). Override via <Code>footer</Code> snippet.</li>
-		<li><Code>is2Columns</Code> — force 2-column grid (<Code>pa-kpi-edit__grid--2col</Code>).</li>
+		<li><Code>gridLayout</Code> — <Code>2col</Code> or <Code>max-2</Code>…<Code>max-6</Code> grid modifier (default: cell-min <Code>auto-fit</Code>).</li>
+		<li><Code>cellMinWidth</Code> — CSS length for <Code>--pa-kpi-edit-cell-min</Code> (default <Code>14rem</Code>).</li>
 	</BasicList>
 
 	<h4 class="mt-4">KpiEditorialTile props</h4>

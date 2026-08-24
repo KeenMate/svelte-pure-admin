@@ -177,6 +177,7 @@ export type { KpiStripColumn } from './display/KpiStrip.svelte';
 export type { KpiDeltaVariant } from './display/KpiStripRow.svelte';
 export type { KpiDetailSentiment, KpiDetailRow, KpiAnyDeltaVariant } from './display/kpi-detail';
 export { default as KpiEditorial } from './display/KpiEditorial.svelte';
+export type { KpiEditorialGridLayout } from './display/KpiEditorial.svelte';
 export { default as KpiEditorialTile } from './display/KpiEditorialTile.svelte';
 export { default as KpiGaugeList } from './display/KpiGaugeList.svelte';
 export type { KpiGaugeListGridLayout } from './display/KpiGaugeList.svelte';
@@ -189,6 +190,7 @@ export type {
 	KpiSparklineDeltaVariant
 } from './display/KpiSparklineRow.svelte';
 export { default as KpiBento } from './display/KpiBento.svelte';
+export type { KpiBentoLayout } from './display/KpiBento.svelte';
 export { default as KpiBentoTile } from './display/KpiBentoTile.svelte';
 export { default as KpiHeroList } from './display/KpiHeroList.svelte';
 export type { KpiHeroSplit } from './display/KpiHeroList.svelte';

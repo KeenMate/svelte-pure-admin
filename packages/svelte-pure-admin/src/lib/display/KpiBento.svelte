@@ -1,3 +1,13 @@
+<script lang="ts" module>
+	/**
+	 * Bento grid layout modifier. Maps to `pa-kpi-bento__grid--<value>`.
+	 * Default (omitted) is the 6-tile hero-left layout. `'hero-right'` mirrors
+	 * it (hero on the right, still 6 tiles). `'5-tile'` is a hero + 4-supporting
+	 * composition — pass exactly 5 tiles for it (a 6th breaks the layout).
+	 */
+	export type KpiBentoLayout = 'hero-right' | '5-tile';
+</script>
+
 <script lang="ts">
 	/**
 	 * Pure Admin KPI Bento (Svelte 5)
@@ -17,6 +27,12 @@
 		isLive?: boolean;
 		/** Footer caption (plain string). Override via the `footer` snippet for richer markup. */
 		footerText?: string;
+		/**
+		 * Grid layout modifier. Default (omitted) is the 6-tile hero-left layout.
+		 * `'hero-right'` mirrors it; `'5-tile'` is hero + 4 supporting (pass exactly
+		 * 5 tiles). Tile source order is unchanged across layouts (1st = hero).
+		 */
+		layout?: KpiBentoLayout;
 		/** Additional CSS classes appended to the card. */
 		class?: string;
 		/** Tile content — pass 6 KpiBentoTile instances in order: hero, a, b, c, d, e. */
@@ -29,6 +45,7 @@
 		titleText,
 		isLive = false,
 		footerText,
+		layout,
 		class: className = '',
 		children,
 		footer
@@ -37,6 +54,12 @@
 	const classes = $derived(() => {
 		const base = ['pa-card', 'pa-kpi-bento'];
 		if (className) base.push(className);
+		return base.join(' ');
+	});
+
+	const gridClasses = $derived(() => {
+		const base = ['pa-kpi-bento__grid'];
+		if (layout) base.push(`pa-kpi-bento__grid--${layout}`);
 		return base.join(' ');
 	});
 </script>
@@ -52,7 +75,7 @@
 	{/if}
 
 	<div class="pa-card__body pa-kpi-bento__body">
-		<div class="pa-kpi-bento__grid">
+		<div class={gridClasses()}>
 			{@render children?.()}
 		</div>
 	</div>
