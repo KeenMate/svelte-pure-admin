@@ -172,8 +172,8 @@ SCSS is demo-only.)
    `snippets/` (callouts, popconfirm, tooltips, loaders).
 5. **Display:** ✅ **done** — Lists/Code/data-display family/stats primitives/the ~18
    `Kpi*`/`CommandPalette` all audited.
-6. **Layout/Typography:** Sidebar / Footer / Grid / Column / DetailPanel / Heading /
-   Paragraph / Label.
+6. **Layout/Typography:** ✅ **done** — see the Layout / Typography section below (only
+   finding: the `pa-app-header__logo` phantom, now dropped).
 
 ## Core follow-ups to raise (do in the pure-admin repo, not here)
 
@@ -202,6 +202,15 @@ SCSS is demo-only.)
   `__title` (`flex:1`) + `__close`. Mirror the `pa-card__actions` canonicalization: add a
   small flex slot between title and close so header buttons have a documented home.
   Until then `DetailPanel`'s `actions` emits an unstyled wrapper (legacy tolerance).
+- **`_navbar-elements.scss` — bless a `pa-app-header__logo` (logo-image slot).** Core's
+  `.pa-app-header` styles only its `<h1>` wordmark + `&__version`; there's no logo-image
+  contract (no `__logo` class, no `img` rule; `snippets/layout.html` brand is a bare
+  `<h1>`). The wrapper's config-driven brand fallback (`config.app.logo`) has to render a
+  bare, unsized `<img>` as a result. A `pa-app-header__logo` with a sensible height
+  constraint (e.g. `height: $font-size-xl; width: auto`) would give logo-based brands a
+  documented, sized home — many admin headers lead with a logomark, not a wordmark.
+  Until then `AppHeader`'s fallback logo is an unsized bare `<img>` (was emitting the
+  phantom `pa-app-header__logo`, now dropped).
 
 ---
 
@@ -608,6 +617,39 @@ Diffed every emitted `pa-command-palette__*` class against compiled `main.css` +
   backdrop / Esc). Implementing these is feature-parity work, out of scope for a markup audit.
 
 **Display cluster is now complete.** `svelte-check` clean (352 files, 0 errors).
+
+---
+
+## Layout / Typography — 🔧 1 phantom (AppHeader logo) · ✅ rest faithful
+
+Broad phantom scan of all of `layout/` (25 files) + `typography/` (6) against compiled
+`main.css`. Almost everything clean — the scan's other "not in core" hits were all false
+positives: `data-pa-fit-*` / `data-pa-splitter-*` **attribute** fragments, `--pa-local-
+sidebar-*` / `--pa-splitter-*` **CSS-var** names, and dynamic modifier stems
+(`pa-col-md-`, `pa-offset-md-`). Cleared genuinely:
+- **`pa-layout__sidebar--resizable`** (0 CSS hits) is a deliberate **JS activation hook** —
+  core's `src/js/sidebar-resize.js` does `querySelector('.pa-layout__sidebar--resizable')`.
+  CSS-less by design; the wrapper emitting it is correct. ✅
+- **`Column`** — `pa-col` / `pa-col-{size}` / `pa-col-{sm,md,lg,xl}-{n}` / `pa-offset-{n}` /
+  `pa-offset-{bp}-{n}` all present in core (incl. non-responsive `pa-offset-5..50`). ✅
+- **`pa-container-{sm,md,lg,xl,2xl}`** (Layout / SettingsPanel body classes) — all real. ✅
+- **Typography all faithful:** `Heading` (`<h1..h6>` + optional `pa-text--{start|center|
+  end}`), `Paragraph` (`pa-text--{secondary|xs|sm|lg|xl|caption|lead}` — `Size` is
+  xs/sm/lg/xl so no phantom `pa-text--md`), `Label` (`pa-label` + `--{primary|secondary|
+  success|danger|warning|info}` + `--{xs|sm|lg|xl}` + `--outline`, every one in core),
+  `Text`/`Link`/`Em`/`Strong` (semantic tags, class passthrough only). Every union type
+  maps exactly to core's vocabulary.
+
+- **🔧 `AppHeader` — dropped the phantom `pa-app-header__logo`.** Core's `.pa-app-header`
+  styles only its `<h1>` wordmark + `&__version` (`snippets/layout.html` brand is a bare
+  `<h1>`); there is **no** `__logo` class or `img` rule. The config-driven brand fallback
+  emitted `<img class="pa-app-header__logo">` — a class core never styles. Now a bare
+  `<img>` (honest; consumer sizes it). Raised a **core follow-up** to bless a
+  `pa-app-header__logo` height-constrained slot (see the follow-ups section).
+- **📋 Known, already-tracked:** `pa-detail-panel__actions` (DetailPanel header `actions`
+  slot) stays a phantom pending the core follow-up to add the slot — unchanged this pass.
+
+`svelte-check` clean (352 files, 0 errors).
 
 ---
 

@@ -30,9 +30,12 @@
 	{#if children}
 		{@render children()}
 	{:else if config().app.logo || config().app.name}
-		<!-- Default brand from config -->
+		<!-- Default brand from config. Core's `.pa-app-header` styles only its
+		     `<h1>` wordmark + `__version` — it has no logo-image slot (no `__logo`
+		     class, no `img` rule), so the logo renders as a bare `<img>` (consumer
+		     sizes it). See the core follow-up to bless a `pa-app-header__logo`. -->
 		{#if config().app.logo}
-			<img src={config().app.logo} alt={config().app.name} class="pa-app-header__logo" />
+			<img src={config().app.logo} alt={config().app.name} />
 		{/if}
 		{#if config().app.name}
 			<Heading level={1}>{config().app.name}</Heading>
