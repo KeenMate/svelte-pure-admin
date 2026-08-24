@@ -30,8 +30,6 @@ AccentGrid -> data-display.txt
 AccentGridItem -> data-display.txt
 Actions (card footer) -> display.txt
 Actions (alert) -> feedback.txt
-ActivityFeed -> display.txt
-ActivityFeedItem -> display.txt
 addMessages -> i18n.txt
 Alert -> feedback.txt
 align (Button) -> display.txt, common-patterns.txt
@@ -237,8 +235,6 @@ M
 -
 Main -> layout.txt, getting-started.txt
 mergeConfig -> getting-started.txt, common-patterns.txt
-MetricList -> display.txt
-MetricListItem -> display.txt
 minimal theme -> theming.txt
 Modal -> feedback.txt
 
@@ -291,7 +287,6 @@ PureAdminTranslations -> i18n.txt, typescript-types.txt
 
 Q
 -
-QuickActions -> display.txt
 
 R
 -
@@ -333,8 +328,6 @@ StackedBarLegendItem -> data-visualization.txt
 StackedBarSegment -> data-visualization.txt
 $state -> common-patterns.txt, getting-started.txt
 Stat -> display.txt
-StatusList -> display.txt
-StatusListItem -> display.txt
 StepOption -> navigation.txt, typescript-types.txt
 StepSelection -> navigation.txt, typescript-types.txt
 Striped (Fields) -> data-display.txt

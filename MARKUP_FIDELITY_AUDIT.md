@@ -468,7 +468,7 @@ against the compiled `main.css` copy-pattern selectors.
 
 ---
 
-## Display — stats primitives — 🔧 Stat icon type · ✅ 11 faithful · 🚩 4 phantom components
+## Display — stats primitives — 🔧 Stat icon type · ✅ 11 faithful · 🗑️ 4 phantom removed
 
 Statistics / data-viz / feed cluster. `snippets/statistics.html` + `timeline.html`
 cover Stat/Timeline; the data-viz + list components have **no snippet** — verified
@@ -497,25 +497,30 @@ against the compiled `main.css` contract directly.
   `__number`/`__label` (skipping `__content`) plus a hero-only `__change` row — an
   unusual config (default stats normally have an icon); graceful, not a phantom.
 
-### 🚩 API-DECISION FLAG — four fully-phantom public components
+### 🗑️ REMOVED — four fully-phantom public components (user decision: 100% sync to core)
 
 `MetricList`/`MetricListItem`, `StatusList`/`StatusListItem`, `ActivityFeed`/
-`ActivityFeedItem`, `QuickActions` (7 files, **all exported from `index.ts`**) emit
+`ActivityFeedItem`, `QuickActions` (7 files, all exported from `index.ts`) emitted
 `pa-metric-list*` / `pa-status-list*` / `pa-activity-feed*` / `pa-quick-actions`
 markup — and **none of those classes exist anywhere**: 0 hits in compiled `main.css`,
-0 in core SCSS source, 0 in core git history, 0 in any built theme, and they're not
-even demoed in the docs. They render **completely unstyled DOM** for any consumer who
-imports them. This is not a modifier phantom — the whole component blocks are absent
-from the framework contract. **Not resolved unilaterally** (deleting public exports is
-breaking; adding 4 components' worth of CSS to core is a real design decision).
-Candidate resolutions raised with the user:
-  - **`ActivityFeed`** ≈ core's existing `pa-timeline--feed` (icon/avatar + text + time
-    is exactly the feed timeline) — strongest redirect candidate.
-  - **`MetricList`** ≈ `pa-fields` / `pa-dot-leaders` (label/value list).
-  - **`QuickActions`** ≈ a flex column of `pa-btn` (or a vertical button group).
-  - **`StatusList`** has no clean core equivalent (indicator dot + label + value).
-Pending the user's call between: add real CSS to core / deprecate + redirect in the
-wrapper / hybrid. Left rendering as-is meanwhile.
+0 in core SCSS source, 0 in core git history, 0 in any built theme, and not demoed in
+either app. They rendered **completely unstyled DOM**. The whole component blocks are
+absent from the framework contract — not a modifier phantom.
+
+**Resolution: deleted, not deprecated.** The wrapper's contract is "100% synced to
+core", and the user confirmed effectively no one depends on these — so the surface
+should equal core's surface, and these four aren't in core. Every concept they targeted
+is already built in the **core demo** from real, shipping components (verified in
+`demo/views/`), so the wrapper already covers each:
+  - **QuickActions** → `pa-btn-group pa-btn-group--vertical` + `pa-btn--block` (core
+    dashboard "Quick Actions") → wrapper `ButtonGroup`.
+  - **ActivityFeed** → `pa-list` (cards "Activity Feed") **or** `pa-timeline--feed` /
+    `--simple` (timeline / dashboard "Recent Activity") → wrapper `List` / `Timeline`.
+  - **MetricList** → `pa-fields` / `pa-dot-leaders`, or `pa-kpi-strip` for the rich form
+    → wrapper `Fields` / `DotLeaders`.
+  - **StatusList** → status shown as `pa-badge` pills in the core demo → wrapper `Badge`.
+Removed the 7 files, their `index.ts` exports, and their README rows. `svelte-check`
+clean (352 files).
 
 ---
 

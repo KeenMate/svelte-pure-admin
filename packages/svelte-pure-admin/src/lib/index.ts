@@ -204,13 +204,6 @@ export type {
 } from './display/KpiTerminal.svelte';
 export { KPI_TERMINAL_CONTEXT } from './display/KpiTerminal.svelte';
 export type { KpiTerminalStatus } from './display/KpiTerminalTile.svelte';
-export { default as MetricList } from './display/MetricList.svelte';
-export { default as MetricListItem } from './display/MetricListItem.svelte';
-export { default as StatusList } from './display/StatusList.svelte';
-export { default as StatusListItem } from './display/StatusListItem.svelte';
-export { default as ActivityFeed } from './display/ActivityFeed.svelte';
-export { default as ActivityFeedItem } from './display/ActivityFeedItem.svelte';
-export { default as QuickActions } from './display/QuickActions.svelte';
 export { default as List } from './display/List.svelte';
 export { default as ListItem } from './display/ListItem.svelte';
 export { default as BasicList } from './display/BasicList.svelte';
