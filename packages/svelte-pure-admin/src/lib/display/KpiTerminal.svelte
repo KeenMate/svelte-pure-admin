@@ -120,7 +120,7 @@
 
 <div class={classes()}>
 	<div class="pa-card__header pa-kpi-header">
-		{#if titleText}<h3>{titleText}</h3>{/if}
+		{#if titleText}<div class="pa-card__title"><h3 class="pa-card__title-text">{titleText}</h3></div>{/if}
 		<div class="pa-kpi-terminal__controls">
 			{#if hasTabs && panes.length > 0}
 				<div class="pa-kpi-terminal__tabs" role="tablist" aria-label="Dashboard view">

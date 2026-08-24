@@ -18,6 +18,34 @@ fixed) · 🔧 fixed in this pass · ⚠️ needs follow-up / discussion.
 
 ---
 
+## ✅ Status (2026-08-25) — full 39-snippet re-validation complete
+
+Triggered by core `d423d05` (all 39 `snippets/*.html` brought to the badges.html
+gold standard + a two-round adversarial review). Re-validated **every** emitted
+component against the freshly-audited snippets (8 parallel cluster auditors, one
+per snippet group). Outcome: the lib was already faithful for the large majority;
+the sweep cleared the last phantoms and canonicalised a few shapes. See
+`CHANGELOG.md` → *Fixed — library* → "Snippet gold-standard re-audit" for the
+per-component list. Fixes: `SmallText` (`pa-form-text`→`pa-form-help`), `Text`
+(drop `muted`/`light`/`dark`/`secondary`), `Card` (drop `info`), `Main` (drop
+`pa-layout__main__inner`), `Modal` (drop `headerVariant`/`pa-modal__header--*`),
+7 KPI headers (`pa-card__title`>`__title-text`), `ProfilePanel`/favorite-remove
+(`pa-icon--x`), `CommandPalette` home keys (`__shortcut` wrap), and `RangeGroupCore`
+(re-add the blessed inert `pa-range__thumb--max`).
+
+**Lib is phantom-free** except three deliberate, documented cases:
+`pa-detail-panel__actions` (tracked core follow-up), `pa-layout__sidebar--resizable`
+(a CSS-less JS activation hook), and `pa-table-responsive` (the `@deprecated`
+`TableResponsive`).
+
+**Open items surfaced but NOT auto-changed** (deliberate wrapper API/behaviour, not
+phantoms — decide separately): `CompositeBadge` `__button` renders `<button>` (not
+`<span>`) when interactive; `BadgeGroup`'s "N more" limit is JS-driven rather than
+the pure-CSS 5-item cap; `KpiHeroMain`/`KpiBentoTile` defer the inner
+`__chart-svg` span to the consumer's `chart` snippet.
+
+---
+
 # ▶ RESUME HERE — handoff for continuing the audit
 
 > Read this whole block before continuing. It is the operating manual for this task.

@@ -284,16 +284,6 @@
 				<Paragraph>Card with danger color theme.</Paragraph>
 			</Card>
 		</Column>
-
-		<!-- Info Card -->
-		<Column size="100" md="1-2">
-			<Card variant="info">
-				{#snippet header()}
-					<Heading level={4}>Info Card</Heading>
-				{/snippet}
-				<Paragraph>Card with info color theme.</Paragraph>
-			</Card>
-		</Column>
 	</Grid>
 </Section>
 

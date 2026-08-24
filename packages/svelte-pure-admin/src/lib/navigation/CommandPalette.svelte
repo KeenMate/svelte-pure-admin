@@ -814,7 +814,7 @@
 										{/each}
 									</div>
 								{:else}
-									<span class="pa-command-palette__key">{cmd.shortcut}</span>
+									<div class="pa-command-palette__shortcut"><span class="pa-command-palette__key">{cmd.shortcut}</span></div>
 								{/if}
 							</div>
 						{/each}
@@ -832,7 +832,7 @@
 									<div class="pa-command-palette__item-title">{ctx.name}</div>
 									<div class="pa-command-palette__item-meta">{ctx.description}</div>
 								</div>
-								<span class="pa-command-palette__key">{ctx.shortcut}</span>
+								<div class="pa-command-palette__shortcut"><span class="pa-command-palette__key">{ctx.shortcut}</span></div>
 							</div>
 						{/each}
 					</div>

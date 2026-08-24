@@ -5,7 +5,8 @@
 	 * For form help text and validation messages
 	 */
 
-	type TextAccent = 'success' | 'error' | 'warning' | 'info';
+	// Core help text has only --error/--success/--warning (+ --color-{1..9}); no --info.
+	type TextAccent = 'error' | 'success' | 'warning';
 
 	interface Props {
 		/** Text accent/variant */
@@ -24,8 +25,8 @@
 
 	// Build class string
 	const classes = $derived(() => {
-		const base = ['pa-form-text'];
-		if (accent) base.push(`pa-form-text--${accent}`);
+		const base = ['pa-form-help'];
+		if (accent) base.push(`pa-form-help--${accent}`);
 		if (className) base.push(className);
 		return base.join(' ');
 	});

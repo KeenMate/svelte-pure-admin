@@ -402,7 +402,7 @@
 			</Card>
 		</Column>
 		<Column size="100" md="1-3">
-			<Card class="pa-card--bordered h-100" variant="info" titleText="On Submit">
+			<Card class="pa-card--bordered h-100" titleText="On Submit">
 				<FormGroup state={onSubmitError ? 'error' : onSubmitSuccess ? 'success' : undefined}>
 					<FormLabel>Email</FormLabel>
 					<Input

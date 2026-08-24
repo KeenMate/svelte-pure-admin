@@ -81,7 +81,7 @@
 <div class={classes()}>
 	{#if titleText || isLive}
 		<div class="pa-card__header pa-kpi-header">
-			{#if titleText}<h3>{titleText}</h3>{/if}
+			{#if titleText}<div class="pa-card__title"><h3 class="pa-card__title-text">{titleText}</h3></div>{/if}
 			{#if isLive}
 				<span class="pa-kpi-live"><span class="pa-kpi-live__dot"></span>LIVE</span>
 			{/if}

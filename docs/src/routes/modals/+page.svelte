@@ -253,10 +253,10 @@
   Processing...
 </Modal>
 
-<!-- Themed header only -->
+<!-- Themed modal -->
 <Modal bind:show={showDanger}
   titleText="Delete Item"
-  headerVariant="danger">
+  variant="danger">
   Are you sure?
   {#snippet footer()}
     <Button variant="danger">Delete</Button>
@@ -287,8 +287,7 @@
 		<tbody>
 			<tr><td><Code>show</Code></td><td>boolean (bindable)</td><td>false</td><td>Show/hide the modal</td></tr>
 			<tr><td><Code>size</Code></td><td>'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'fw'</td><td>'md'</td><td>Modal width</td></tr>
-			<tr><td><Code>variant</Code></td><td>'primary' | 'success' | 'warning' | 'danger' | 'info'</td><td>-</td><td>Full modal theming</td></tr>
-			<tr><td><Code>headerVariant</Code></td><td>same as variant</td><td>-</td><td>Header-only theming</td></tr>
+			<tr><td><Code>variant</Code></td><td>'primary' | 'success' | 'warning' | 'danger' | 'info'</td><td>-</td><td>Full modal theming (header colour inherits via the root)</td></tr>
 			<tr><td><Code>position</Code></td><td>'center' | 'top'</td><td>'center'</td><td>Vertical position</td></tr>
 			<tr><td><Code>isScrollable</Code></td><td>boolean</td><td>false</td><td>Scrollable body content</td></tr>
 			<tr><td><Code>isStatic</Code></td><td>boolean</td><td>false</td><td>Prevents ESC/backdrop close</td></tr>
@@ -537,7 +536,7 @@
 </Modal>
 
 <!-- Success Modal -->
-<Modal bind:show={showSuccess} headerVariant="success">
+<Modal bind:show={showSuccess} variant="success">
 	{#snippet header()}
 		<Heading level={4}>✓ Success!</Heading>
 	{/snippet}
@@ -549,7 +548,7 @@
 </Modal>
 
 <!-- Warning Modal -->
-<Modal bind:show={showWarning} headerVariant="warning">
+<Modal bind:show={showWarning} variant="warning">
 	{#snippet header()}
 		<Heading level={4}>⚠ Warning</Heading>
 	{/snippet}
@@ -564,7 +563,7 @@
 </Modal>
 
 <!-- Danger Modal -->
-<Modal bind:show={showDanger} headerVariant="danger">
+<Modal bind:show={showDanger} variant="danger">
 	{#snippet header()}
 		<Heading level={4}>🔥 Danger Zone</Heading>
 	{/snippet}
@@ -675,7 +674,7 @@
 </Modal>
 
 <!-- Delete Confirmation Modal -->
-<Modal bind:show={showConfirmDelete} size="sm" headerVariant="danger" titleText="Confirm Delete">
+<Modal bind:show={showConfirmDelete} size="sm" variant="danger" titleText="Confirm Delete">
 	<Paragraph>Are you sure you want to delete this item?</Paragraph>
 	<Alert variant="danger">
 		<strong>This action cannot be undone.</strong>
@@ -697,7 +696,7 @@
 </Modal>
 
 <!-- Information Dialog -->
-<Modal bind:show={showInfo} headerVariant="info" titleText="Information">
+<Modal bind:show={showInfo} variant="info" titleText="Information">
 	<Paragraph>Here's some important information you should know:</Paragraph>
 	<Alert variant="info">
 		Your subscription will expire in 7 days. Consider renewing to continue enjoying all features.
@@ -740,7 +739,7 @@
 </Modal>
 
 <!-- Static Modal (no ESC, no backdrop click) -->
-<Modal bind:show={showStatic} size="sm" isStatic headerVariant="warning" shouldShowClose={false}>
+<Modal bind:show={showStatic} size="sm" isStatic variant="warning" shouldShowClose={false}>
 	{#snippet header()}
 		<Heading level={4}>Static Modal</Heading>
 	{/snippet}

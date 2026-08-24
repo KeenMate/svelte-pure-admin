@@ -15,10 +15,8 @@
 		show?: boolean;
 		/** Modal size */
 		size?: ModalSize;
-		/** Modal variant/theme (for full modal theming) */
+		/** Modal variant/theme — themes the whole modal (header colour inherits via the root). */
 		variant?: ModalVariant;
-		/** Header variant (for header theming only) */
-		headerVariant?: ModalVariant;
 		/** Banded variant — header AND footer wear the role colour as filled bands. Compose with `variant` for the colour (success/warning/danger/info). Since core v2.7.0. */
 		isBanded?: boolean;
 		/** Modal position */
@@ -55,7 +53,6 @@
 		show = $bindable(false),
 		size = 'md',
 		variant,
-		headerVariant,
 		isBanded = false,
 		position = 'center',
 		isScrollable = false,
@@ -108,20 +105,19 @@
 		return base.join(' ');
 	});
 
-	// Build class string for header
+	// Header carries no variant class — core has no `pa-modal__header--{variant}`.
+	// Header colour comes from the root `pa-modal--{variant}` / `--banded` cascade.
 	const headerClasses = $derived(() => {
-		const base = ['pa-modal__header'];
-		if (headerVariant) base.push(`pa-modal__header--${headerVariant}`);
-		return base.join(' ');
+		return 'pa-modal__header';
 	});
 
 	// Close-button variant mirrors the core snippets: `--secondary` on a plain
-	// header, `--light` when the header wears a role colour (variant / headerVariant
-	// / banded band) so the × reads against the coloured fill. Never `--primary`
-	// (a filled accent close button is visually far too heavy for a header control).
+	// header, `--light` when the header wears a role colour (variant / banded band)
+	// so the × reads against the coloured fill. Never `--primary` (a filled accent
+	// close button is visually far too heavy for a header control).
 	const closeBtnClasses = $derived(
 		`pa-btn pa-btn--sm pa-btn--icon-only pa-btn--${
-			variant || headerVariant || isBanded ? 'light' : 'secondary'
+			variant || isBanded ? 'light' : 'secondary'
 		}`
 	);
 

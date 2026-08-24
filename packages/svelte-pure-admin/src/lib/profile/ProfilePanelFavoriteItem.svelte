@@ -67,9 +67,10 @@
 			<button
 				class="pa-profile-panel__favorite-remove"
 				title={$_('pureAdmin.a11y.removeFromFavorites')}
+				aria-label={$_('pureAdmin.a11y.removeFromFavorites')}
 				onclick={handleRemove}
 			>
-				✕
+				<span class="pa-icon pa-icon--x" aria-hidden="true"></span>
 			</button>
 		{/if}
 	</div>

@@ -8,7 +8,9 @@
 	import type { ThemeColor } from '../types';
 	import { loadCoreJs } from '../internal/core-js';
 
-	type CardVariant = 'primary' | 'success' | 'warning' | 'danger' | 'info'
+	// Core card variants: primary/success/warning/danger (no --info / --secondary)
+	// plus the theme-colour slots --color-{1..9}.
+	type CardVariant = 'primary' | 'success' | 'warning' | 'danger'
 		| 'color-1' | 'color-2' | 'color-3' | 'color-4' | 'color-5'
 		| 'color-6' | 'color-7' | 'color-8' | 'color-9';
 

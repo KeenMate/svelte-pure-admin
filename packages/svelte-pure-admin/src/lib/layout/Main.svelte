@@ -2,23 +2,20 @@
 	/**
 	 * Pure Admin Content/Main Component (Svelte 5)
 	 * Based on @keenmate/pure-admin-core snippets/layout.html
+	 *
+	 * Core blesses `<main class="pa-layout__main">` with content directly inside —
+	 * there is no inner wrapper class in the framework.
 	 */
 
 	interface Props {
-		/** Use inner wrapper */
-		useInner?: boolean;
 		/** Additional CSS classes */
 		class?: string;
-		/** Additional CSS classes for inner wrapper */
-		innerClass?: string;
 		/** Children content */
 		children?: import('svelte').Snippet;
 	}
 
 	let {
-		useInner = true,
 		class: className = '',
-		innerClass = '',
 		children
 	}: Props = $props();
 
@@ -28,21 +25,8 @@
 		if (className) base.push(className);
 		return base.join(' ');
 	});
-
-	// Build class string for inner wrapper
-	const innerClasses = $derived(() => {
-		const base = ['pa-layout__main__inner'];
-		if (innerClass) base.push(innerClass);
-		return base.join(' ');
-	});
 </script>
 
 <main class={classes()}>
-	{#if useInner}
-		<div class={innerClasses()}>
-			{@render children?.()}
-		</div>
-	{:else}
-		{@render children?.()}
-	{/if}
+	{@render children?.()}
 </main>

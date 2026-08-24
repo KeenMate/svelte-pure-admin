@@ -117,11 +117,13 @@
 								aria-label={row.mode === 'single' ? undefined : `Minimum ${row.label}`}
 								aria-hidden={row.mode === 'single' ? 'true' : undefined}
 							></button>
-							<!-- Core styles only `__thumb--min` (crossover z-index); the max
-							     thumb is the base `__thumb` — JS keys off `data-range-thumb`. -->
+							<!-- Both thumbs carry their BEM modifier per the core snippet's
+							     blessed shape (`--min`/`--max`). `--max` has no own CSS rule
+							     today, but the framework keeps it in the markup; JS keys off
+							     `data-range-thumb`. -->
 							<button
 								type="button"
-								class="pa-range__thumb"
+								class="pa-range__thumb pa-range__thumb--max"
 								data-range-thumb="max"
 								aria-label={row.mode === 'single' ? `Minimum ${row.label}` : `Maximum ${row.label}`}
 							></button>
