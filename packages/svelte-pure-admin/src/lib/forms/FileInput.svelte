@@ -56,7 +56,9 @@
 
 	// Build class string
 	const classes = $derived(() => {
-		const base = ['pa-input', 'pa-input--file'];
+		// Core has no `pa-input--file` modifier — the native file input is styled by
+		// the base `.pa-input`. Only size / state / theme-colour modifiers are real.
+		const base = ['pa-input'];
 		if (size) base.push(`pa-input--${size}`);
 		if (state) base.push(`pa-input--${state}`);
 		if (themeColor) base.push(`pa-input--color-${themeColor}`);

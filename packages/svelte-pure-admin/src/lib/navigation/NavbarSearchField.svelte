@@ -14,8 +14,9 @@
 	 *
 	 * Behaviour is consumer-owned (core ships only the markup/CSS): you supply the
 	 * data via `globalSearch` and handle selection via `onselect`. Renders core's
-	 * exact `.pa-search-autocomplete__item` structure (`__item-icon` / `__item-content`
-	 * → `__item-name` / `__item-type` / `__item-badge`).
+	 * exact `.pa-search-autocomplete__item` row — `__item-icon` / `__item-name` /
+	 * `__item-type` as direct flex children (no content wrapper); an optional
+	 * trailing `result.badge` renders as a real `pa-badge`.
 	 */
 	import { onMount, tick } from 'svelte';
 	import { _ } from '../i18n';
@@ -256,18 +257,20 @@
 							{#if result.icon}
 								<span class="pa-search-autocomplete__item-icon">{result.icon}</span>
 							{/if}
-							<div class="pa-search-autocomplete__item-content">
-								<span class="pa-search-autocomplete__item-name">
-									{#if allowHtml}{@html result.title}{:else}{result.title}{/if}
+							<!-- Core's autocomplete row (command-palette.html) lays `__item-icon`
+							     / `__item-name` / `__item-type` out as DIRECT flex children of
+							     `__item` — no `__item-content` wrapper. -->
+							<span class="pa-search-autocomplete__item-name">
+								{#if allowHtml}{@html result.title}{:else}{result.title}{/if}
+							</span>
+							{#if result.subtitle}
+								<span class="pa-search-autocomplete__item-type">
+									{#if allowHtml}{@html result.subtitle}{:else}{result.subtitle}{/if}
 								</span>
-								{#if result.subtitle}
-									<span class="pa-search-autocomplete__item-type">
-										{#if allowHtml}{@html result.subtitle}{:else}{result.subtitle}{/if}
-									</span>
-								{/if}
-							</div>
+							{/if}
 							{#if result.badge}
-								<span class="pa-search-autocomplete__item-badge">{result.badge}</span>
+								<!-- Core has no `__item-badge`; a real `pa-badge` is the blessed inline chip. -->
+								<span class="pa-badge">{result.badge}</span>
 							{/if}
 						</div>
 					{/each}

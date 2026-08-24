@@ -10,7 +10,7 @@
 	 */
 
 	import CompositeBadge from './CompositeBadge.svelte';
-	import type { CompositeBadgeItem, BadgeVariant } from './badge-types';
+	import type { CompositeBadgeItem, BadgeVariant, CompositeButtonVariant } from './badge-types';
 
 	interface Props {
 		// LEGACY MODE: Direct composite badge configuration
@@ -46,8 +46,8 @@
 		getVariantCallback?: (item: T) => BadgeVariant | undefined;
 		/** Custom callback to get label variant from data item */
 		getLabelVariantCallback?: (item: T) => BadgeVariant | undefined;
-		/** Custom callback to get button variant from data item */
-		getButtonVariantCallback?: (item: T) => BadgeVariant | undefined;
+		/** Custom callback to get button variant from data item (no `danger` — core has no `--btn-danger`) */
+		getButtonVariantCallback?: (item: T) => CompositeButtonVariant | undefined;
 		/** Custom callback to get interactive flag from data item */
 		getInteractiveCallback?: (item: T) => boolean;
 
@@ -126,7 +126,7 @@
 		return (item as any)[labelVariantMember];
 	}
 
-	function getButtonVariant(item: T): BadgeVariant | undefined {
+	function getButtonVariant(item: T): CompositeButtonVariant | undefined {
 		if (getButtonVariantCallback) return getButtonVariantCallback(item);
 		return (item as any)[buttonVariantMember];
 	}

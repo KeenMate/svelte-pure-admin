@@ -839,7 +839,7 @@
 				</div>
 			{:else if loading}
 				<div class="pa-command-palette__loader">
-					<div class="pa-spinner pa-spinner--sm pa-spinner--primary"></div>
+					<div class="pa-spinner pa-spinner--xs pa-spinner--primary"></div>
 					<span>{$_('pureAdmin.commandPalette.loading')}</span>
 				</div>
 			{:else if error}

@@ -56,13 +56,16 @@
 {:else if loader}
 	{@render loader()}
 {:else}
-	<div class="pa-theme-ready__default-loader">
+	<!-- Wrapper-only component (no core `pa-theme-ready` contract), so this private
+	     centering host uses a non-`pa-` scoped class rather than masquerading as a
+	     framework class a consumer might try to target globally. -->
+	<div class="theme-ready-loader">
 		<Spinner size="xs" />
 	</div>
 {/if}
 
 <style>
-	.pa-theme-ready__default-loader {
+	.theme-ready-loader {
 		display: flex;
 		align-items: center;
 		justify-content: center;

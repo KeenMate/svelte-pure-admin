@@ -117,9 +117,11 @@
 								aria-label={row.mode === 'single' ? undefined : `Minimum ${row.label}`}
 								aria-hidden={row.mode === 'single' ? 'true' : undefined}
 							></button>
+							<!-- Core styles only `__thumb--min` (crossover z-index); the max
+							     thumb is the base `__thumb` — JS keys off `data-range-thumb`. -->
 							<button
 								type="button"
-								class="pa-range__thumb pa-range__thumb--max"
+								class="pa-range__thumb"
 								data-range-thumb="max"
 								aria-label={row.mode === 'single' ? `Minimum ${row.label}` : `Maximum ${row.label}`}
 							></button>

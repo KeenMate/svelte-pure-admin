@@ -4,15 +4,15 @@
 	 * Based on @keenmate/pure-admin-core snippets/badges.html
 	 */
 
-	import type { BadgeVariant } from './badge-types';
+	import type { BadgeVariant, CompositeButtonVariant } from './badge-types';
 
 	interface Props {
 		/** Badge variant (main background) */
 		variant?: BadgeVariant;
 		/** Label section variant (for mixed colors) */
 		labelVariant?: BadgeVariant;
-		/** Button section variant (for mixed colors) */
-		buttonVariant?: BadgeVariant;
+		/** Button section variant (for mixed colors; no `danger` — core has no `--btn-danger`) */
+		buttonVariant?: CompositeButtonVariant;
 		/** Icon snippet */
 		icon?: import('svelte').Snippet;
 		/** Label text */

@@ -832,7 +832,7 @@
 					<CompositeBadge
 						variant="primary"
 						labelVariant="secondary"
-						buttonVariant="danger"
+						buttonVariant="warning"
 						labelText="Project Alpha"
 						buttonText="×"
 						isInteractive

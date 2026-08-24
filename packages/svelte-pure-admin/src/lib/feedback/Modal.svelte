@@ -80,7 +80,8 @@
 		if (variant) base.push(`pa-modal--${variant}`);
 		if (isBanded) base.push('pa-modal--banded');
 		if (position === 'top') base.push('pa-modal--top');
-		if (isStatic) base.push('pa-modal--static');
+		// `isStatic` is behavioural only (blocks backdrop/Esc close below); core has
+		// no `pa-modal--static` style, so we don't emit a class for it.
 		if (className) base.push(className);
 		return base.join(' ');
 	});

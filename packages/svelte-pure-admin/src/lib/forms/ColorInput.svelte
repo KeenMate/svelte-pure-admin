@@ -39,9 +39,12 @@
 		onchange
 	}: Props = $props();
 
-	// Build class string
+	// Build class string. Core has no `pa-input--color` modifier — the native
+	// colour input is styled by the base `.pa-input` (`pa-input--color-{1..9}` is a
+	// theme-colour BORDER modifier, unrelated to `<input type=color>`). Only the
+	// size modifiers are real.
 	const classes = $derived(() => {
-		const base = ['pa-input', 'pa-input--color'];
+		const base = ['pa-input'];
 		if (size) base.push(`pa-input--${size}`);
 		if (className) base.push(className);
 		return base.join(' ');
@@ -49,7 +52,10 @@
 </script>
 
 {#if showValue}
-	<div class="pa-color-wrapper">
+	<!-- Core ships no colour-input wrapper (`pa-color-wrapper` / `pa-color-value`
+	     are phantoms). Use the real `pa-input-group` addon layout: the swatch is the
+	     `.pa-input`, the hex value is an `__append` addon. -->
+	<div class="pa-input-group">
 		<input
 			type="color"
 			bind:value
@@ -60,7 +66,7 @@
 			{oninput}
 			{onchange}
 		/>
-		<span class="pa-color-value">{value}</span>
+		<span class="pa-input-group__append">{value}</span>
 	</div>
 {:else}
 	<input

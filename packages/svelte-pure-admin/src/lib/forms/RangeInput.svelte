@@ -57,9 +57,12 @@
 		onchange
 	}: Props = $props();
 
-	// Build class string
+	// Build class string. Core has no `pa-input--range` modifier (the blessed slider
+	// is the div-based `pa-range` / `pa-range-group` — see RangeGroup). This is a thin
+	// native `<input type=range>` on the base `.pa-input`; only size / state /
+	// theme-colour modifiers are real.
 	const classes = $derived(() => {
-		const base = ['pa-input', 'pa-input--range'];
+		const base = ['pa-input'];
 		if (size) base.push(`pa-input--${size}`);
 		if (state) base.push(`pa-input--${state}`);
 		if (themeColor) base.push(`pa-input--color-${themeColor}`);
@@ -69,7 +72,10 @@
 </script>
 
 {#if showValue}
-	<div class="pa-range-wrapper">
+	<!-- Core ships no native-range wrapper (`pa-range-wrapper` / `pa-range-value` are
+	     phantoms — those live on the div-based `pa-range` slider). Use the real
+	     `pa-input-group` addon layout. -->
+	<div class="pa-input-group">
 		<input
 			type="range"
 			bind:value
@@ -83,7 +89,7 @@
 			{oninput}
 			{onchange}
 		/>
-		<span class="pa-range-value">{value}</span>
+		<span class="pa-input-group__append">{value}</span>
 	</div>
 {:else}
 	<input

@@ -16,6 +16,14 @@ export type BadgeVariant =
 export type BadgeSize = 'xs' | 'sm' | 'lg' | 'xl';
 
 /**
+ * Button-section variant for CompositeBadge. Core ships
+ * `pa-composite-badge--btn-{primary|secondary|success|warning|info|light|dark}`
+ * — the button section has NO `--btn-danger` (unlike the base and `--label-`
+ * sets, which do), so `danger` is excluded to avoid emitting a dead class.
+ */
+export type CompositeButtonVariant = Exclude<BadgeVariant, 'danger'>;
+
+/**
  * Base Badge Props
  * Common props shared across badge components
  *
@@ -67,8 +75,8 @@ export interface CompositeBadgeItem {
 	variant?: BadgeVariant;
 	/** Label section variant (for mixed colors) */
 	labelVariant?: BadgeVariant;
-	/** Button section variant (for mixed colors) */
-	buttonVariant?: BadgeVariant;
+	/** Button section variant (for mixed colors; no `danger` — core has no `--btn-danger`) */
+	buttonVariant?: CompositeButtonVariant;
 	/** Icon snippet */
 	icon?: import('svelte').Snippet;
 	/** Label text */

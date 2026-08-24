@@ -653,6 +653,56 @@ sidebar-*` / `--pa-splitter-*` **CSS-var** names, and dynamic modifier stems
 
 ---
 
+## Full-library phantom sweep — 🔧 7 more components · ✅ lib now phantom-free (3 documented exceptions)
+
+Final pass: extracted **every** `pa-*` token emitted across all 250+ lib `.svelte` files and
+diffed against the compiled `main.css`. Filtered false positives (`data-pa-*` attribute
+fragments, `--pa-*` CSS-var names, dynamic modifier stems, comment mentions from prior
+fixes) and confirmed each residual against raw core selectors. Findings — all fixed:
+
+- **Specialized inputs (`FileInput` / `ColorInput` / `RangeInput`).** Core has **no** native
+  file/color/range input styling at all — only `pa-input--color-{1..9}` (a theme-colour
+  *border* modifier, unrelated to `<input type=color>`; the rich slider is the div-based
+  `pa-range`/`pa-range-group`). Dropped the phantom type modifiers `pa-input--file` /
+  `--color` / `--range` (each already a dead no-op; the native input was only ever styled
+  by base `.pa-input`). Replaced the invented `showValue` wrappers `pa-color-wrapper` /
+  `pa-color-value` / `pa-range-wrapper` / `pa-range-value` with core's real `pa-input-group`
+  + `__append` addon. Real size/state/theme-colour modifiers unchanged.
+- **`RangeGroupCore` — `pa-range__thumb--max` → base `pa-range__thumb`.** Core styles only
+  `__thumb--min` (crossover z-index); no `--max`. Drag JS keys off `data-range-thumb`.
+- **`NavbarSearchField` autocomplete row.** Core's `.pa-search-autocomplete__item` has
+  `__item-icon` / `__item-name` / `__item-type` as **direct** flex children — no
+  `__item-content` wrapper, no `__item-badge` (verified in `command-palette.html:273`).
+  Removed the wrapper; `result.badge` now renders as a real `pa-badge`. (The component's own
+  JSDoc had documented the wrong — invented — structure.)
+- **`Modal` — dropped phantom `pa-modal--static`.** `isStatic` is behavioural only (blocks
+  backdrop/Esc close in JS); core has no `--static` style.
+- **`CompositeBadge` / `CompositeBadgeGroup` — `buttonVariant` excludes `danger`.** Core's
+  button section ships `--btn-{primary|secondary|success|warning|info|light|dark}` — **no**
+  `--btn-danger` (the base + `--label-` sets have it; the button set doesn't). New
+  `CompositeButtonVariant = Exclude<BadgeVariant,'danger'>` in `badge-types.ts`; migrated the
+  one docs usage. Same failure mode as `Stat --secondary`.
+- **`CommandPalette` loader — `pa-spinner--sm` → `--xs`.** Core's spinner ships only the
+  `--xs` size (the `Spinner` component already constrains its `size` to `'xs'`; this was a
+  hand-rolled loader that hardcoded the wrong size).
+- **`ThemeReady` — private loader class off the `pa-` prefix.** Wrapper-only lifecycle
+  component (no core `pa-theme-ready` contract); its scoped centering host renamed
+  `pa-theme-ready__default-loader` → `theme-ready-loader` so it stops implying a framework
+  class a consumer could target globally.
+
+**✅ Verified faithful (no change):** `ProfilePanel` (role chip is already `pa-badge`; the
+`__role` scan hit was a comment), `CompositeBadge` base + `--{variant}` + `--label-*`,
+`pa-tabs__container` (benign BEM base; `--bordered`/`--card` real), `Spinner` (`size` already
+`'xs'`-only), `Column` (`pa-col*`/`pa-offset*` incl. non-responsive), `pa-container-*`,
+`DateInput`/`Input`/`NumberInput` (`pa-input--color-{N}` real).
+
+**The lib now emits no phantom `pa-*` class**, save three deliberate, documented cases:
+`pa-detail-panel__actions` (tracked core follow-up), `pa-layout__sidebar--resizable`
+(CSS-less JS hook `sidebar-resize.js` queries), `pa-table-responsive` (`@deprecated`
+`TableResponsive`, legacy tolerance). `svelte-check` clean (352 files, 0 errors).
+
+---
+
 ## Alert — 🔧 two fixes
 
 Source: `packages/svelte-pure-admin/src/lib/feedback/Alert.svelte`
