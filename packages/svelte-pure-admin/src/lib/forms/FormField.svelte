@@ -15,8 +15,6 @@
 	interface Props {
 		/** Field label text */
 		labelText?: string;
-		/** Show required indicator (*) on label */
-		required?: boolean;
 		/** Default help text (shown when no errors and not validated) */
 		helpText?: string;
 		/** Success message (shown when touched, no errors, and field has value) */
@@ -39,7 +37,6 @@
 
 	let {
 		labelText,
-		required = false,
 		helpText,
 		successMessage,
 		errors = null,
@@ -67,9 +64,11 @@
 
 <FormGroup class={className} {horizontal}>
 	{#if labelText}
-		<FormLabel {required}>{labelText}</FormLabel>
+		<FormLabel>{labelText}</FormLabel>
 	{/if}
 
+	<!-- Mark the control `required` inside the snippet — core's
+	     `.pa-form-group:has(:required) > label::after` draws the asterisk. -->
 	{@render children({ errors: normalizedErrors, touched, state })}
 
 	{#if showError}

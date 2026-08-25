@@ -13,8 +13,6 @@
 		isError?: boolean;
 		/** Has validation success (legacy, prefer state prop) */
 		isSuccess?: boolean;
-		/** Mark as required */
-		isRequired?: boolean;
 		/** Horizontal layout (label left, input right) */
 		isHorizontal?: boolean;
 		/** Horizontal layout - alias for isHorizontal */
@@ -29,7 +27,6 @@
 		state,
 		isError = false,
 		isSuccess = false,
-		isRequired = false,
 		isHorizontal = false,
 		horizontal = false,
 		class: className = '',
@@ -50,9 +47,9 @@
 			if (isSuccess) base.push('pa-form-group--success');
 			if (isError) base.push('pa-form-group--error');
 		}
-		// Core has no `.pa-form-group--required` — required is expressed via the
-		// native `required` attribute on the control (snippets/forms.html).
-		// `isRequired` is kept as an inert prop for API stability only.
+		// Core has no `.pa-form-group--required` — required is the native
+		// `required` attribute on the control, which core's
+		// `:has(:required) > label::after` turns into the label asterisk.
 		if (effectiveHorizontal) base.push('pa-form-group--horizontal');
 		if (className) base.push(className);
 		return base.join(' ');

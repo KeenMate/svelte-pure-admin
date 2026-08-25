@@ -82,22 +82,22 @@
 		<Grid>
 			<Column size="100" md="50">
 				<FormGroup state="error">
-					<FormLabel required>Email Address</FormLabel>
-					<Input type="email" value="invalid-email" state="error" />
+					<FormLabel>Email Address</FormLabel>
+					<Input type="email" value="invalid-email" state="error" required />
 					<FormHelp variant="error">Please enter a valid email address</FormHelp>
 				</FormGroup>
 			</Column>
 			<Column size="100" md="50">
 				<FormGroup state="error">
-					<FormLabel required>Password</FormLabel>
-					<Input type="password" value="123" state="error" />
+					<FormLabel>Password</FormLabel>
+					<Input type="password" value="123" state="error" required />
 					<FormHelp variant="error">Password must be at least 8 characters</FormHelp>
 				</FormGroup>
 			</Column>
 			<Column size="100" md="50">
 				<FormGroup state="success">
-					<FormLabel required>Username</FormLabel>
-					<Input type="text" value="johndoe" state="success" />
+					<FormLabel>Username</FormLabel>
+					<Input type="text" value="johndoe" state="success" required />
 					<FormHelp variant="success">Username is available</FormHelp>
 				</FormGroup>
 			</Column>
@@ -134,8 +134,8 @@
 		<Grid>
 			<Column size="100" md="50">
 				<FormGroup state="error">
-					<FormLabel required>First Name</FormLabel>
-					<Input type="text" placeholder="Enter first name" state="error" />
+					<FormLabel>First Name</FormLabel>
+					<Input type="text" placeholder="Enter first name" state="error" required />
 				</FormGroup>
 			</Column>
 			<Column size="100" md="50">
@@ -146,14 +146,14 @@
 			</Column>
 			<Column size="100" md="50">
 				<FormGroup state="error">
-					<FormLabel required>Email</FormLabel>
-					<Input type="email" value="not-an-email" state="error" />
+					<FormLabel>Email</FormLabel>
+					<Input type="email" value="not-an-email" state="error" required />
 				</FormGroup>
 			</Column>
 			<Column size="100" md="50">
 				<FormGroup state="error">
-					<FormLabel required>Password</FormLabel>
-					<Input type="password" value="password" state="error" />
+					<FormLabel>Password</FormLabel>
+					<Input type="password" value="password" state="error" required />
 				</FormGroup>
 			</Column>
 			<Column size="100">
@@ -187,8 +187,8 @@
 		<Grid>
 			<Column size="100" md="50">
 				<FormGroup state="error">
-					<FormLabel for="card-number" required>Card Number</FormLabel>
-					<Input type="text" id="card-number" value="1234-5678-XXXX" state="error" />
+					<FormLabel for="card-number">Card Number</FormLabel>
+					<Input type="text" id="card-number" value="1234-5678-XXXX" state="error" required />
 					<FormHelp variant="error">Invalid card number format. Please use 16 digits.</FormHelp>
 				</FormGroup>
 			</Column>
@@ -201,8 +201,8 @@
 			</Column>
 			<Column size="100" md="25">
 				<FormGroup state="error">
-					<FormLabel for="cvv" required>CVV</FormLabel>
-					<Input type="text" id="cvv" value="12" state="error" />
+					<FormLabel for="cvv">CVV</FormLabel>
+					<Input type="text" id="cvv" value="12" state="error" required />
 					<FormHelp variant="error">Must be 3 or 4 digits</FormHelp>
 				</FormGroup>
 			</Column>
@@ -499,8 +499,8 @@
 		<Grid>
 			<Column size="100" md="50">
 				<FormGroup state="error">
-					<FormLabel required>Display Name</FormLabel>
-					<Input type="text" placeholder="Enter display name" state="error" />
+					<FormLabel>Display Name</FormLabel>
+					<Input type="text" placeholder="Enter display name" state="error" required />
 					<FormHelp variant="error">Display name is required</FormHelp>
 				</FormGroup>
 			</Column>

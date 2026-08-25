@@ -434,7 +434,7 @@
 		<Grid>
 			<Column size="100" md="50">
 				<FormGroup>
-					<FormLabel required>First Name</FormLabel>
+					<FormLabel>First Name</FormLabel>
 					<Input
 						id="fd-first-name"
 						name="first_name"
@@ -442,6 +442,7 @@
 						autocomplete="given-name"
 						bind:value={firstName}
 						errors={errors.first_name}
+						required
 					/>
 					{#if errors.first_name}
 						<FormHelp variant="error">{errors.first_name}</FormHelp>
@@ -451,7 +452,7 @@
 
 			<Column size="100" md="50">
 				<FormGroup>
-					<FormLabel required>Last Name</FormLabel>
+					<FormLabel>Last Name</FormLabel>
 					<Input
 						id="fd-last-name"
 						name="last_name"
@@ -459,6 +460,7 @@
 						autocomplete="family-name"
 						bind:value={lastName}
 						errors={errors.last_name}
+						required
 					/>
 					{#if errors.last_name}
 						<FormHelp variant="error">{errors.last_name}</FormHelp>
@@ -468,7 +470,7 @@
 
 			<Column size="100" md="50">
 				<FormGroup>
-					<FormLabel required>Email</FormLabel>
+					<FormLabel>Email</FormLabel>
 					<Input
 						type="email"
 						id="fd-email"
@@ -477,6 +479,7 @@
 						autocomplete="email"
 						bind:value={email}
 						errors={errors.email}
+						required
 					/>
 					{#if errors.email}
 						<FormHelp variant="error">{errors.email}</FormHelp>
