@@ -9,7 +9,7 @@
 	 * v2.9.0-rc11). Core creates + binds the `.pa-sidebar-resize` handle on the
 	 * fly, so we render no handle of our own (its `init` reuses an existing handle
 	 * WITHOUT re-binding). Drag to resize, double-click the handle to reset.
-	 * Bounds come from CSS (`--pa-local-sidebar-{min,max}-width`), width persists
+	 * Bounds come from CSS (`--pc-local-sidebar-{min,max}-width`), width persists
 	 * to `localStorage` ('sidebar-width'), and the drag flags
 	 * `body.pa-sidebar-resized` so the width actually applies in the tablet band
 	 * (previously hand-rolled here, which missed that flag — the handle looked dead).

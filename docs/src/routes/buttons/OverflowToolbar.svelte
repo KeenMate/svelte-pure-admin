@@ -70,7 +70,7 @@
 	</div>
 	<div class="pa-card__body">
 		<p class="text-muted mb-1">Drag the resize handle in the bottom-right of the box below to shrink the bar. Lowest <code>data-pa-actions-priority</code> (default <code>0</code>) drops first; ties broken by DOM order. Pin "Publish" with <code>data-pa-actions-priority="10"</code>, and keep the split button visible longest with <code>data-pa-actions-priority="20"</code>. Drag all the way in and even the split button collapses into the <code>[⋮]</code> menu — it lands as an atomic <strong>RUN</strong> group (its primary plus its own options), not scattered loose.</p>
-		<div class="resizable-wrapper" style="overflow: auto; resize: horizontal; min-width: 64px; max-width: 100%; padding: 1rem; border: 1px dashed var(--pa-border-color); border-radius: var(--pa-border-radius);">
+		<div class="resizable-wrapper" style="overflow: auto; resize: horizontal; min-width: 64px; max-width: 100%; padding: 1rem; border: 1px dashed var(--pc-border-color); border-radius: var(--pc-border-radius);">
 			<div class="pa-overflow">
 				<button class="pa-btn pa-btn--secondary" onclick={() => act('Save')}>
 					<span class="pa-btn__icon"><i class="fas fa-floppy-disk"></i></span>
@@ -152,7 +152,7 @@
 			</div>
 		</div>
 
-		<p class="mt-2 mb-0" style="padding: 0.5rem 0.75rem; border: 1px solid var(--pa-border-color); border-radius: var(--pa-border-radius);" role="status" aria-live="polite">
+		<p class="mt-2 mb-0" style="padding: 0.5rem 0.75rem; border: 1px solid var(--pc-border-color); border-radius: var(--pc-border-radius);" role="status" aria-live="polite">
 			<strong>Last click:</strong>
 			{#if lastAction}
 				{lastAction} <span class="text-muted">· {actionCount} click{actionCount === 1 ? '' : 's'}</span>
@@ -163,7 +163,7 @@
 
 		<h4 class="mt-4">Drop direction</h4>
 		<p class="text-muted mb-1">Default <code>data-pa-actions-overflow-from="end"</code> collapses the rightmost child first. Set <code>data-pa-actions-overflow-from="start"</code> on the <code>.pa-overflow</code> container to collapse the leftmost child first instead.</p>
-		<div class="resizable-wrapper" style="overflow: auto; resize: horizontal; min-width: 200px; max-width: 100%; padding: 1rem; border: 1px dashed var(--pa-border-color); border-radius: var(--pa-border-radius);">
+		<div class="resizable-wrapper" style="overflow: auto; resize: horizontal; min-width: 200px; max-width: 100%; padding: 1rem; border: 1px dashed var(--pc-border-color); border-radius: var(--pc-border-radius);">
 			<div class="pa-overflow" data-pa-actions-overflow-from="start">
 				<button class="pa-btn pa-btn--outline-info" onclick={() => act('Filter')}>
 					<span class="pa-btn__icon"><i class="fas fa-filter"></i></span>

@@ -5,7 +5,7 @@
 	 *
 	 * A thin horizontal rule between sidebar groups, rendered as an
 	 * `<li class="pa-sidebar__divider">` sibling to the `<SidebarItem>`s. Draws a
-	 * `--pa-border-color` line and carries no text.
+	 * `--pc-border-color` line and carries no text.
 	 */
 
 	interface Props {

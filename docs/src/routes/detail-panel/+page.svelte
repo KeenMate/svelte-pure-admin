@@ -178,23 +178,23 @@
 
 {#snippet userDetail(user: User)}
 	<div class="pa-detail-panel__user-header" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-		<div style="width: 3rem; height: 3rem; border-radius: 50%; background: var(--pa-primary, #3b82f6); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1.1rem; flex-shrink: 0;">
+		<div style="width: 3rem; height: 3rem; border-radius: 50%; background: var(--pc-primary, #3b82f6); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1.1rem; flex-shrink: 0;">
 			{getInitial(user.name)}
 		</div>
 		<div>
 			<div style="font-weight: 600; font-size: 1.05rem;">{user.name}</div>
-			<div style="color: var(--pa-text-muted, #6b7280); font-size: 0.875rem;">{user.email}</div>
+			<div style="color: var(--pc-text-muted, #6b7280); font-size: 0.875rem;">{user.email}</div>
 		</div>
 	</div>
 
 	<Table isBorderless size="sm">
 		<tbody>
-			<tr><td style="font-weight: 500; width: 7rem; color: var(--pa-text-muted, #6b7280);">Role</td><td>{user.role}</td></tr>
-			<tr><td style="font-weight: 500; color: var(--pa-text-muted, #6b7280);">Department</td><td>{user.department}</td></tr>
-			<tr><td style="font-weight: 500; color: var(--pa-text-muted, #6b7280);">Phone</td><td>{user.phone}</td></tr>
-			<tr><td style="font-weight: 500; color: var(--pa-text-muted, #6b7280);">Location</td><td>{user.location}</td></tr>
-			<tr><td style="font-weight: 500; color: var(--pa-text-muted, #6b7280);">Joined</td><td>{user.joined}</td></tr>
-			<tr><td style="font-weight: 500; color: var(--pa-text-muted, #6b7280);">Status</td><td><Badge variant={statusVariant(user.status)}>{user.status}</Badge></td></tr>
+			<tr><td style="font-weight: 500; width: 7rem; color: var(--pc-text-muted, #6b7280);">Role</td><td>{user.role}</td></tr>
+			<tr><td style="font-weight: 500; color: var(--pc-text-muted, #6b7280);">Department</td><td>{user.department}</td></tr>
+			<tr><td style="font-weight: 500; color: var(--pc-text-muted, #6b7280);">Phone</td><td>{user.phone}</td></tr>
+			<tr><td style="font-weight: 500; color: var(--pc-text-muted, #6b7280);">Location</td><td>{user.location}</td></tr>
+			<tr><td style="font-weight: 500; color: var(--pc-text-muted, #6b7280);">Joined</td><td>{user.joined}</td></tr>
+			<tr><td style="font-weight: 500; color: var(--pc-text-muted, #6b7280);">Status</td><td><Badge variant={statusVariant(user.status)}>{user.status}</Badge></td></tr>
 		</tbody>
 	</Table>
 {/snippet}
@@ -343,17 +343,17 @@
 			{:else if activeTab === 'activity'}
 				<div style="display: flex; flex-direction: column; gap: 0.75rem;">
 					{#each activities as activity}
-						<div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 0.5rem 0; border-bottom: 1px solid var(--pa-border-color, #e5e7eb);">
+						<div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 0.5rem 0; border-bottom: 1px solid var(--pc-border-color, #e5e7eb);">
 							<span style="font-size: 0.9rem;">{activity.action}</span>
-							<span style="font-size: 0.8rem; color: var(--pa-text-muted, #6b7280); white-space: nowrap; margin-left: 1rem;">{activity.time}</span>
+							<span style="font-size: 0.8rem; color: var(--pc-text-muted, #6b7280); white-space: nowrap; margin-left: 1rem;">{activity.time}</span>
 						</div>
 					{/each}
 				</div>
 			{:else if activeTab === 'notes'}
 				<div style="display: flex; flex-direction: column; gap: 0.75rem;">
 					{#each notes as note}
-						<div style="padding: 0.75rem; border: 1px solid var(--pa-border-color, #e5e7eb); border-radius: 0.375rem;">
-							<div style="font-size: 0.8rem; color: var(--pa-text-muted, #6b7280); margin-bottom: 0.25rem;">{note.date}</div>
+						<div style="padding: 0.75rem; border: 1px solid var(--pc-border-color, #e5e7eb); border-radius: 0.375rem;">
+							<div style="font-size: 0.8rem; color: var(--pc-text-muted, #6b7280); margin-bottom: 0.25rem;">{note.date}</div>
 							<div style="font-size: 0.9rem;">{note.text}</div>
 						</div>
 					{/each}
@@ -658,11 +658,11 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr><td><code>--pa-local-detail-panel-width</code></td><td>Runtime panel width (set by resize handle, persisted to localStorage)</td></tr>
-			<tr><td><code>--pa-detail-panel-bg</code></td><td>Panel background color (defaults to card background)</td></tr>
-			<tr><td><code>--pa-detail-panel-border-color</code></td><td>Panel border color</td></tr>
-			<tr><td><code>--pa-detail-panel-header-bg</code></td><td>Header background color</td></tr>
-			<tr><td><code>--pa-detail-panel-footer-bg</code></td><td>Footer background color</td></tr>
+			<tr><td><code>--pc-local-detail-panel-width</code></td><td>Runtime panel width (set by resize handle, persisted to localStorage)</td></tr>
+			<tr><td><code>--pc-detail-panel-bg</code></td><td>Panel background color (defaults to card background)</td></tr>
+			<tr><td><code>--pc-detail-panel-border-color</code></td><td>Panel border color</td></tr>
+			<tr><td><code>--pc-detail-panel-header-bg</code></td><td>Header background color</td></tr>
+			<tr><td><code>--pc-detail-panel-footer-bg</code></td><td>Footer background color</td></tr>
 		</tbody>
 	</Table>
 </Card>

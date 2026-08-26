@@ -99,7 +99,7 @@ These are the mistakes svelte-pure-admin actually makes (each already hit ≥1 c
 
 1. **Close/dismiss glyphs.** Lib uses an inline `<svg>` or a literal `×`. Core
    blesses **`<span class="pa-icon pa-icon--x" aria-hidden="true"></span>`** (a
-   masked-icon primitive; `--pa-icon-x` is a lucide X, sized/tinted by CSS). Fixed
+   masked-icon primitive; `--pc-icon-x` is a lucide X, sized/tinted by CSS). Fixed
    in Alert, Toast, Modal — **check any remaining component with a close/remove/clear
    button** (chips, tags, tabs, inputs, search-clear, drawer close…).
 2. **Phantom modifier classes.** Lib emits a `--size`/`--variant` class that core
@@ -206,15 +206,15 @@ SCSS is demo-only.)
 ## Core follow-ups to raise (do in the pure-admin repo, not here)
 
 - ✅ **DONE IN CORE (keen WIP, pending commit/publish) — `pa-badge--color-{1..9}`.**
-  A keen-pure-admin session added it to `_badge-base.scss` (bg `--pa-color-N` +
-  contrasting `--pa-color-N-text`, mirroring alerts). `Badge.svelte` now switched to
+  A keen-pure-admin session added it to `_badge-base.scss` (bg `--pc-color-N` +
+  contrasting `--pc-color-N-text`, mirroring alerts). `Badge.svelte` now switched to
   `pa-badge--color-${n}` (was the generic `pa-bg-color-N`). Ships with the batch —
   degrades to *unstyled* on old core, so lib must not lead core here.
 - ✅ **DONE IN CORE (pending publish) — copy-hint i18n hook.** Implemented in
   `pure-admin` commit `2db3c3d`: all 8 hardcoded `::after` literals across
   `pa-field` / `pa-desc-table` / `pa-banded` / `pa-accent-grid` now read
-  `content: var(--pa-copy-hint-text, 'Click to copy')` /
-  `var(--pa-copied-text, 'Copied!')`. Chose an **inherited CSS variable** over
+  `content: var(--pc-copy-hint-text, 'Click to copy')` /
+  `var(--pc-copied-text, 'Copied!')`. Chose an **inherited CSS variable** over
   `attr()` so a consumer sets the text ONCE on any ancestor (`:root`/`body`) and
   every copy element obeys — with per-section / per-element override via the normal
   cascade (`attr()` can't read ancestors, so it can't do a global default).
@@ -303,7 +303,7 @@ It rendered `<p class="pa-text pa-text--secondary">` — a *generic text utility
 not a card sub-element, so it didn't participate in the header slot layout and
 diverged from the blessed shape. The canonical element for a muted header
 byline ("Published 2h ago") is `.pa-card__meta` (see the "CARD WITH METADATA"
-snippet: `<span class="pa-card__meta">…</span>`, styled `--pa-text-color-2` +
+snippet: `<span class="pa-card__meta">…</span>`, styled `--pc-text-color-2` +
 `font-size-sm`). Changed both subtitle branches to emit
 `<span class="pa-card__meta">`. Low-risk (deprecated prop, near-identical muted
 styling) and now on-contract.
@@ -320,7 +320,7 @@ all match. Clickable badge (role/tabindex/keydown) is a reasonable a11y add.
 **Was ⚠️: `themeColor` mapped to the generic `pa-bg-color-N` utility** (background
 only → dark-text-on-dark risk), because core had no `pa-badge--color-N`. **Now
 fixed:** a **keen-pure-admin session added `pa-badge--color-{1..9}` to core**
-(`_badge-base.scss` — paints `--pa-color-N` bg AND a contrasting `--pa-color-N-text`
+(`_badge-base.scss` — paints `--pc-color-N` bg AND a contrasting `--pc-color-N-text`
 label, mirroring the alert pattern; the SCSS comment credits both wrappers'
 `pa-bg-color-N` improvisation). This was core follow-up #1 from this audit.
 `Badge.svelte`'s `themeColor` now emits `pa-badge--color-${n}`; verified in the
@@ -491,7 +491,7 @@ against the compiled `main.css` copy-pattern selectors.
   `--copied ::after` for (desc-table / accent-grid / banded — confirmed in compiled CSS),
   broadened the `--copied` toggle from `click`-only to **every** copy mode so btn/hover
   keep feedback, and bridged the resolved svelte-i18n hint into the inherited
-  `--pa-copy-hint-text` / `--pa-copied-text` vars (like `Field`). `PropCardRow` got the
+  `--pc-copy-hint-text` / `--pc-copied-text` vars (like `Field`). `PropCardRow` got the
   glyph only — core ships **no** `--copied`/`::after` for prop-card by design (snippet's
   copy-pattern table + compiled CSS both confirm). Removed `BandedRow`'s stray scoped
   `<style>` (a `:global(.pa-banded__copy)` colour transition).
@@ -521,7 +521,7 @@ against the compiled `main.css` contract directly.
   `__label-value`), `BarList`/`BarListItem`, `Sparkline`/`SparklineBar`, `DataBar`
   (`--negative`, `__track`/`__fill`), `StackedBar`/`Segment`/`Legend`/`LegendItem`
   (incl. `--secondary` segment + all legend-swatch colours), `Gauge` (`--zones`,
-  `__min`/`__max`, `--pa-gauge-size`), `Heatmap`/`HeatmapCell`/`HeatmapLegend`
+  `__min`/`__max`, `--pc-gauge-size`), `Heatmap`/`HeatmapCell`/`HeatmapLegend`
   (`data-level` 0–4, `--success`/`--danger`), `Pager` (`__container`/`__controls`/
   `__input`/`__text`), `LoadMore` (`__button--loading`/`__spinner`/`__count`). Every
   class + modifier confirmed present in compiled CSS.
@@ -606,7 +606,7 @@ neg|warn">`) fully faithful — the `.pos/.neg/.warn` are core-scoped and presen
   editorial grid ships the full `--2col` + `--max-2..6` family (identical to gauges), but the
   wrapper exposed only a `--2col` boolean, leaving the four column caps unreachable and
   diverging from `KpiGaugeList`. Replaced with the same `gridLayout` enum + `cellMinWidth`
-  knob (`--pa-kpi-edit-cell-min`). Migrated the 5 `is2Columns` usages + 3 prose mentions in
+  knob (`--pc-kpi-edit-cell-min`). Migrated the 5 `is2Columns` usages + 3 prose mentions in
   the `kpi-editorial-minimal` docs route to `gridLayout="2col"`. Adds `KpiEditorialGridLayout`.
 
 `svelte-check` clean (352 files, 0 errors — only the 3 pre-existing SidebarItem warnings).
@@ -652,8 +652,8 @@ Diffed every emitted `pa-command-palette__*` class against compiled `main.css` +
 
 Broad phantom scan of all of `layout/` (25 files) + `typography/` (6) against compiled
 `main.css`. Almost everything clean — the scan's other "not in core" hits were all false
-positives: `data-pa-fit-*` / `data-pa-splitter-*` **attribute** fragments, `--pa-local-
-sidebar-*` / `--pa-splitter-*` **CSS-var** names, and dynamic modifier stems
+positives: `data-pa-fit-*` / `data-pa-splitter-*` **attribute** fragments, `--pc-local-
+sidebar-*` / `--pc-splitter-*` **CSS-var** names, and dynamic modifier stems
 (`pc-col-md-`, `pc-offset-md-`). Cleared genuinely:
 - **`pa-layout__sidebar--resizable`** (0 CSS hits) is a deliberate **JS activation hook** —
   core's `src/js/sidebar-resize.js` does `querySelector('.pa-layout__sidebar--resizable')`.
@@ -685,7 +685,7 @@ sidebar-*` / `--pa-splitter-*` **CSS-var** names, and dynamic modifier stems
 
 Final pass: extracted **every** `pa-*` token emitted across all 250+ lib `.svelte` files and
 diffed against the compiled `main.css`. Filtered false positives (`data-pa-*` attribute
-fragments, `--pa-*` CSS-var names, dynamic modifier stems, comment mentions from prior
+fragments, `--pc-*` CSS-var names, dynamic modifier stems, comment mentions from prior
 fixes) and confirmed each residual against raw core selectors. Findings — all fixed:
 
 - **Specialized inputs (`FileInput` / `ColorInput` / `RangeInput`).** Core has **no** native
@@ -768,7 +768,7 @@ Source: `packages/svelte-pure-admin/src/lib/feedback/Toast.svelte`
 Structure (`pa-toast__icon` / `__content` [`__title` / `__message` / `__actions`] /
 `__close` / `__progress`) matches the snippet. **🔧 Fix:** the close button held a
 hardcoded inline `<svg width=24 height=24>`; canonical is
-`<span class="pa-icon pa-icon--x" aria-hidden>` (same lucide X as `--pa-icon-x`,
+`<span class="pa-icon pa-icon--x" aria-hidden>` (same lucide X as `--pc-icon-x`,
 but sized/tinted by the `pa-icon` mask so it matches every other close glyph
 instead of a fixed 24px). Swapped in.
 
@@ -892,7 +892,7 @@ does).
 other audited component emits; (2) the copy had drifted — it dropped core's
 `.pa-filter-card__filters > * { flex:1; min-width:200px }` child-stretch rule
 and hardcoded advanced spacing at `1rem` vs core's `$spacing-md` (0.75rem) +
-`--pa-border-color`. Removed the block; the component now inherits core CSS like
+`--pc-border-color`. Removed the block; the component now inherits core CSS like
 every sibling. Verified by dumping `/audit`: no `svelte-*` classes, structure
 byte-matches the snippet.
 
@@ -942,7 +942,7 @@ half-migrated component.
 ### 🔧 FIXED — workaround removed, wired to the core hook
 
 Core hook landed in `pure-admin` `2db3c3d` (hint text = inherited
-`--pa-copy-hint-text` / `--pa-copied-text` with English fallback). `Field.svelte`
+`--pc-copy-hint-text` / `--pc-copied-text` with English fallback). `Field.svelte`
 is now cleaned up:
 
 1. **Scoped `<style>` block deleted**, and the four invented classes gone
@@ -953,14 +953,14 @@ is now cleaned up:
    own `.pa-field__value::after` in every mode. The check-SVG swap is gone too; the
    button is a static `<i class="fas fa-copy">` (the snippet's glyph).
 3. **i18n fed through the vars, per-field inline** — `Field` sets
-   `--pa-copy-hint-text` / `--pa-copied-text` from its resolved i18n text (respecting
+   `--pc-copy-hint-text` / `--pc-copied-text` from its resolved i18n text (respecting
    the `copyHintText` / `copiedText` props) on its own root, only when copy is active.
    Self-sufficient (no provider needed); a per-field prop overrides the app-wide
    value via the cascade. Chose per-field inline over a global provider set so
    standalone `<Field>`s still translate.
 4. Verified by dumping `/audit`: `pa-field--copy-*` real classes only, no `svelte-*`
    class, no invented `pa-field__*`, `<i class="fas fa-copy">`, and
-   `style="--pa-copy-hint-text: '…'; --pa-copied-text: '…'"` on copy fields (absent
+   `style="--pc-copy-hint-text: '…'; --pc-copied-text: '…'"` on copy fields (absent
    on plain fields).
 
 **Deploy note:** the *visual* i18n `::after` only appears once the theme CSS is

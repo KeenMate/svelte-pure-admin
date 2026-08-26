@@ -964,7 +964,7 @@
 	}
 
 	.invoice-totals :global(.pa-field:last-child) {
-		border-top: 1px solid var(--pa-border-color, #dee2e6);
+		border-top: 1px solid var(--pc-border-color, #dee2e6);
 		padding-top: 0.8rem;
 	}
 
@@ -1002,7 +1002,7 @@
 	}
 
 	:global(.text-secondary) {
-		color: var(--pa-text-muted, #6c757d);
+		color: var(--pc-text-muted, #6c757d);
 	}
 
 	/* Margin helpers */

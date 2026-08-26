@@ -757,6 +757,6 @@
 	}
 
 	.is-editing {
-		background-color: var(--pa-color-primary-bg-subtle, rgba(0, 123, 255, 0.08));
+		background-color: var(--pc-color-primary-bg-subtle, rgba(0, 123, 255, 0.08));
 	}
 </style>

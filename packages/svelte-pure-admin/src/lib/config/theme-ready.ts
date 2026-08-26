@@ -9,7 +9,7 @@
  *
  * Consumers gate theme-dependent rendering (canvas charts, dynamically
  * generated SVGs that read CSS variables, anything else that needs the
- * `--pa-*` cascade resolved before it samples computed styles) on this
+ * `--pc-*` cascade resolved before it samples computed styles) on this
  * signal — typically via the `<ThemeReady>` wrapper component.
  *
  * Default value is `true` so apps without the SettingsPanel / app.html

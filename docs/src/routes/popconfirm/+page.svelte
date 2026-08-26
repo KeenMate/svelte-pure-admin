@@ -214,7 +214,7 @@
 	<Grid>
 		<Column size="100" md="50">
 			<Heading level={4}>Basic Popconfirms</Heading>
-			<div class="min-h-12x">
+			<div class="minhr-12">
 				<ButtonGroup>
 					<Button
 						variant="danger"
@@ -251,7 +251,7 @@
 
 		<Column size="100" md="50">
 			<Heading level={4}>Compact Variant</Heading>
-			<div class="min-h-12x">
+			<div class="minhr-12">
 				<ButtonGroup>
 					<Button
 						size="xs"

@@ -3,28 +3,28 @@
 
 	// Color swatch data for semantic colors
 	const semanticColors = [
-		{ name: 'Success', variable: '--pa-success-bg', light: false },
-		{ name: 'Warning', variable: '--pa-warning-bg', light: false },
-		{ name: 'Danger', variable: '--pa-danger-bg', light: false },
-		{ name: 'Info', variable: '--pa-info-bg', light: false },
-		{ name: 'Accent', variable: '--pa-accent', light: false },
-		{ name: 'Primary BG', variable: '--pa-primary-bg', light: true },
-		{ name: 'Secondary BG', variable: '--pa-secondary-bg', light: true }
+		{ name: 'Success', variable: '--pc-success-bg', light: false },
+		{ name: 'Warning', variable: '--pc-warning-bg', light: false },
+		{ name: 'Danger', variable: '--pc-danger-bg', light: false },
+		{ name: 'Info', variable: '--pc-info-bg', light: false },
+		{ name: 'Accent', variable: '--pc-accent', light: false },
+		{ name: 'Primary BG', variable: '--pc-primary-bg', light: true },
+		{ name: 'Secondary BG', variable: '--pc-secondary-bg', light: true }
 	];
 
 	// Color slots 1-9
 	const colorSlots = Array.from({ length: 9 }, (_, i) => ({
 		name: `Color ${i + 1}`,
-		variable: `--pa-color-${i + 1}`,
+		variable: `--pc-color-${i + 1}`,
 		num: i + 1
 	}));
 
 	// Swatch preview styles
 	const swatchPreviewStyle = (variable: string, light: boolean) =>
-		`background-color: var(${variable}); height: 6rem; display: flex; align-items: center; justify-content: center; font-weight: 600; border-radius: var(--pa-border-radius) var(--pa-border-radius) 0 0; ${light ? 'color: var(--pa-text-primary);' : 'color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.3);'}`;
+		`background-color: var(${variable}); height: 6rem; display: flex; align-items: center; justify-content: center; font-weight: 600; border-radius: var(--pc-border-radius) var(--pc-border-radius) 0 0; ${light ? 'color: var(--pc-text-primary);' : 'color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.3);'}`;
 
 	const swatchInfoStyle =
-		'padding: 0.75rem; background: var(--pa-card-bg); font-size: 1.2rem; border: 1px solid var(--pa-border-color); border-top: none; border-radius: 0 0 var(--pa-border-radius) var(--pa-border-radius);';
+		'padding: 0.75rem; background: var(--pc-card-bg); font-size: 1.2rem; border: 1px solid var(--pc-border-color); border-top: none; border-radius: 0 0 var(--pc-border-radius) var(--pc-border-radius);';
 </script>
 
 <!-- Semantic Colors -->
@@ -38,7 +38,7 @@
 					<div style={swatchPreviewStyle(color.variable, color.light)}>{color.name}</div>
 					<div style={swatchInfoStyle}>
 						<div style="font-weight: 600; margin-bottom: 0.25rem;">{color.name}</div>
-						<div style="color: var(--pa-text-secondary); font-family: monospace; font-size: 1.1rem;">
+						<div style="color: var(--pc-text-secondary); font-family: monospace; font-size: 1.1rem;">
 							{color.variable}
 						</div>
 					</div>
@@ -59,7 +59,7 @@
 					<div style={swatchPreviewStyle(color.variable, false)}>{color.name}</div>
 					<div style={swatchInfoStyle}>
 						<div style="font-weight: 600; margin-bottom: 0.25rem;">{color.name}</div>
-						<div style="color: var(--pa-text-secondary); font-family: monospace; font-size: 1.1rem;">
+						<div style="color: var(--pc-text-secondary); font-family: monospace; font-size: 1.1rem;">
 							{color.variable}
 						</div>
 					</div>

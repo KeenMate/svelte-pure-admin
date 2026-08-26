@@ -2,7 +2,7 @@ THEMING AND CUSTOMIZATION
 =========================
 
 CRITICAL: This is a Svelte 5 component library (@keenmate/svelte-pure-admin).
-Theming works through CSS custom properties (--pa-*) defined by
+Theming works through CSS custom properties (--pc-*) defined by
 @keenmate/pure-admin-core. Themes override these variables. Color slots 1-9
 provide theme-defined accent colors available through utility classes and
 component props.
@@ -27,7 +27,7 @@ This provides all base styles, BEM classes (pa-*), and default CSS variable valu
 THEME PACKAGES
 --------------
 Pure Admin ships five theme packages. Each is a separate CSS file that overrides
-the --pa-* custom properties:
+the --pc-* custom properties:
 
   @keenmate/pure-admin-theme-audi         - Audi-inspired dark theme
   @keenmate/pure-admin-theme-dark         - General dark theme
@@ -192,7 +192,7 @@ type ThemeColor = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
 CSS custom properties for color slots:
 
-  --pa-color-1 through --pa-color-9
+  --pc-color-1 through --pc-color-9
 
 Utility classes for color slots:
 
@@ -258,53 +258,53 @@ Each theme defines its own color palette for slots 1-9. For example:
 
 CSS CUSTOM PROPERTIES
 ---------------------
-Pure Admin uses CSS custom properties (--pa-*) extensively. Themes override
+Pure Admin uses CSS custom properties (--pc-*) extensively. Themes override
 these to change the entire look. You can also override them yourself.
 
 Key CSS custom properties:
 
   Layout:
-    --pa-border-radius          - Global border radius
-    --pa-border-color           - Default border color
-    --pa-shadow                 - Default box shadow
+    --pc-border-radius          - Global border radius
+    --pc-border-color           - Default border color
+    --pc-shadow                 - Default box shadow
 
   Colors:
-    --pa-primary-bg             - Primary background
-    --pa-secondary-bg           - Secondary background
-    --pa-success-bg             - Success background
-    --pa-warning-bg             - Warning background
-    --pa-danger-bg              - Danger background
-    --pa-info-bg                - Info background
-    --pa-accent                 - Accent color
+    --pc-primary-bg             - Primary background
+    --pc-secondary-bg           - Secondary background
+    --pc-success-bg             - Success background
+    --pc-warning-bg             - Warning background
+    --pc-danger-bg              - Danger background
+    --pc-info-bg                - Info background
+    --pc-accent                 - Accent color
 
   Text:
-    --pa-text-primary           - Primary text color
-    --pa-text-color-2           - Secondary text color
-    --pa-text-muted             - Muted text color
+    --pc-text-primary           - Primary text color
+    --pc-text-color-2           - Secondary text color
+    --pc-text-muted             - Muted text color
 
   Components:
-    --pa-card-bg                - Card background
-    --pa-primary-rgb            - Primary color as RGB triplet (for alpha use)
-    --pa-danger                 - Danger color (solid)
+    --pc-card-bg                - Card background
+    --pc-primary-rgb            - Primary color as RGB triplet (for alpha use)
+    --pc-danger                 - Danger color (solid)
 
   Color slots:
-    --pa-color-1 through --pa-color-9
+    --pc-color-1 through --pc-color-9
 
 Override custom properties in your CSS:
 
 :root {
-  --pa-border-radius: 0.5rem;
-  --pa-accent: #e91e63;
-  --pa-color-1: #1976d2;
-  --pa-color-2: #388e3c;
-  --pa-color-3: #f57c00;
+  --pc-border-radius: 0.5rem;
+  --pc-accent: #e91e63;
+  --pc-color-1: #1976d2;
+  --pc-color-2: #388e3c;
+  --pc-color-3: #f57c00;
 }
 
 Or scope overrides to a specific section:
 
 .my-custom-section {
-  --pa-card-bg: #f5f5f5;
-  --pa-border-color: #ddd;
+  --pc-card-bg: #f5f5f5;
+  --pc-border-color: #ddd;
 }
 
 
@@ -444,13 +444,13 @@ SEMANTIC COLOR VARIABLES
 ------------------------
 Beyond color slots, themes define semantic colors for feedback/status:
 
-  --pa-success-bg    - Success green background
-  --pa-warning-bg    - Warning yellow/orange background
-  --pa-danger-bg     - Danger red background
-  --pa-info-bg       - Info blue background
-  --pa-accent        - Theme accent color
-  --pa-primary-bg    - Primary background
-  --pa-secondary-bg  - Secondary background
+  --pc-success-bg    - Success green background
+  --pc-warning-bg    - Warning yellow/orange background
+  --pc-danger-bg     - Danger red background
+  --pc-info-bg       - Info blue background
+  --pc-accent        - Theme accent color
+  --pc-primary-bg    - Primary background
+  --pc-secondary-bg  - Secondary background
 
 These are used by Alert, Badge, Button, Toast, and other feedback components
 via their variant prop ('success', 'warning', 'danger', 'info', 'primary').
@@ -526,7 +526,7 @@ COMPLETE THEMING SETUP EXAMPLE
 IMPORTANT NOTES
 ---------------
 - Always import @keenmate/pure-admin-core/css FIRST, before any theme CSS.
-- Theme CSS files override --pa-* variables. Order matters: theme CSS must load after core.
+- Theme CSS files override --pc-* variables. Order matters: theme CSS must load after core.
 - Color slots 1-9 change meaning per theme. Do not assume slot 3 = orange everywhere.
 - SettingsPanel persists all settings to localStorage automatically.
 - SettingsPanel applies settings to DOM on mount (loads from localStorage).

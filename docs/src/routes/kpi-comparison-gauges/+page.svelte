@@ -16,13 +16,13 @@
 	"Comparison gauges" KPI indicator. Each KPI is a goal-oriented progress bar —
 	<strong>label · value</strong> on top, <strong>bar with a target tick</strong> in the middle,
 	<strong>0 · tgt</strong> scale below. Bar fill is value/target, capped at 100% (overshoots are
-	signalled by colour, not by overflowing the bar). Colours: <Code>--pa-positive</Code> for "on
-	track", <Code>--pa-warning</Code> for "off-target / approaching limit",
-	<Code>--pa-neutral</Code> for "no strong sentiment".
+	signalled by colour, not by overflowing the bar). Colours: <Code>--pc-positive</Code> for "on
+	track", <Code>--pc-warning</Code> for "off-target / approaching limit",
+	<Code>--pc-neutral</Code> for "no strong sentiment".
 </Paragraph>
 <Paragraph>
 	Layout is a cell-min-driven <Code>auto-fit</Code> grid: cells stay at least
-	<Code>--pa-kpi-gauge-cell-min</Code> wide (default <Code>20rem</Code>), the grid fits as many
+	<Code>--pc-kpi-gauge-cell-min</Code> wide (default <Code>20rem</Code>), the grid fits as many
 	columns as the container allows, and the responsive cascade is intrinsic. <Code>max-2</Code>…<Code>max-6</Code>
 	modifiers cap the column count while still collapsing on narrow containers. The canonical card below uses
 	<Code>gridLayout="max-3"</Code> for a deterministic 2-row layout.
@@ -208,18 +208,18 @@
 
 	<h4 class="mt-4">Variant colours</h4>
 	<Paragraph>
-		Bar fill colour is driven by the <Code>variant</Code> prop via the <Code>--pa-kpi-bar-color</Code>
+		Bar fill colour is driven by the <Code>variant</Code> prop via the <Code>--pc-kpi-bar-color</Code>
 		cascade var. Variants: <Code>positive</Code> (green), <Code>warning</Code> (orange,
 		"off-target / approaching limit"), <Code>negative</Code> (red), <Code>neutral</Code> (grey, no
 		strong sentiment). Host apps can override per-tile via <Code>class</Code> + a custom rule on
-		<Code>--pa-kpi-bar-color</Code>.
+		<Code>--pc-kpi-bar-color</Code>.
 	</Paragraph>
 
 	<h4 class="mt-4">Layout</h4>
 	<Paragraph>
 		<strong>Cell-min-driven <Code>auto-fit</Code> grid.</strong> The default
 		<Code>KpiGaugeList</Code> packs as many columns as fit while keeping each cell at least
-		<Code>--pa-kpi-gauge-cell-min</Code> wide (default <Code>20rem</Code>). No
+		<Code>--pc-kpi-gauge-cell-min</Code> wide (default <Code>20rem</Code>). No
 		<Code>@container</Code> queries — the responsive cascade is intrinsic to the grid template.
 		Override per instance via the <Code>cellMinWidth</Code> prop (e.g.
 		<Code>cellMinWidth="24rem"</Code> for fewer, wider columns; <Code>"16rem"</Code> for more, narrower
@@ -234,8 +234,8 @@
 	</Paragraph>
 	<Paragraph>
 		<strong>Hairline dividers.</strong> The inter-tile dividers are <Code>gap: 1px</Code> on the grid
-		over <Code>background: var(--pa-border-color)</Code>, with each tile painting
-		<Code>background: var(--pa-card-bg)</Code> on top. Only the gap shows through, giving
+		over <Code>background: var(--pc-border-color)</Code>, with each tile painting
+		<Code>background: var(--pc-card-bg)</Code> on top. Only the gap shows through, giving
 		single-pixel hairlines on every interior boundary regardless of column count. Replaces the previous
 		per-tile <Code>border-right</Code> + <Code>border-bottom</Code> + nth-child suppression, which only
 		worked for the hardcoded 2-col layout. The card's outer border supplies the perimeter; the body
@@ -260,7 +260,7 @@
 		<li><Code>isLive</Code> — show the LIVE pill with animated green dot.</li>
 		<li><Code>footerText</Code> — footer caption (plain string). Override via the <Code>footer</Code> snippet.</li>
 		<li><Code>gridLayout</Code> — grid layout modifier: <Code>'2col'</Code> (deterministic 2 columns) / <Code>'max-2'</Code> / <Code>'max-3'</Code> / <Code>'max-4'</Code> / <Code>'max-5'</Code> / <Code>'max-6'</Code> (cap-at-N). Default omitted = cell-min-driven <Code>auto-fit</Code>.</li>
-		<li><Code>cellMinWidth</Code> — CSS length applied as <Code>--pa-kpi-gauge-cell-min</Code> on the grid (default upstream <Code>20rem</Code>). Smaller → more columns at the same container width; larger → fewer.</li>
+		<li><Code>cellMinWidth</Code> — CSS length applied as <Code>--pc-kpi-gauge-cell-min</Code> on the grid (default upstream <Code>20rem</Code>). Smaller → more columns at the same container width; larger → fewer.</li>
 	</BasicList>
 
 	<h4 class="mt-4">KpiGauge props</h4>
@@ -270,7 +270,7 @@
 		<li><Code>valueText</Code> / <Code>unit</Code> / <Code>prefix</Code> — focal value cell.</li>
 		<li><Code>barPercent</Code> — bar fill width 0–100 (no cap; overshoots are signalled by colour).</li>
 		<li><Code>tickPosition</Code> — target tick position (default <Code>"100%"</Code>; set to a smaller % for wider-scale bars).</li>
-		<li><Code>tickColor</Code> — tick colour override (default <Code>--pa-text-color-1</Code>).</li>
+		<li><Code>tickColor</Code> — tick colour override (default <Code>--pc-text-color-1</Code>).</li>
 		<li><Code>scaleStartText</Code> / <Code>scaleEndText</Code> — labels under the bar (default <Code>"0"</Code> + target text).</li>
 		<li><Code>detailTitleText</Code> — popover title (setting this enables the auto-generated popover).</li>
 		<li><Code>previousValueText</Code> — "Previous" row in the auto-generated popover.</li>

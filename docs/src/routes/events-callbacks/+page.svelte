@@ -474,7 +474,7 @@
 			<Paragraph>Events: <code>onglobalselect</code></Paragraph>
 
 			<Button onclick={() => { showCommandPalette = true; }}>Open Command Palette</Button>
-			<span style="color:var(--pa-text-color-2);margin-left:0.5rem;">(or Ctrl+K)</span>
+			<span style="color:var(--pc-text-color-2);margin-left:0.5rem;">(or Ctrl+K)</span>
 
 			<CommandPalette
 				bind:show={showCommandPalette}

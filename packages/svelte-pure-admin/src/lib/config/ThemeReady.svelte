@@ -4,7 +4,7 @@
 	 * the active theme stylesheet has resolved (or definitively failed).
 	 *
 	 * Use anywhere the cascade must be settled before sampling computed
-	 * styles or otherwise depending on `--pa-*` / `--base-*` values being
+	 * styles or otherwise depending on `--pc-*` / `--base-*` values being
 	 * populated: canvas charts (Chart.js, ECharts) reading
 	 * `getComputedStyle(...).color` at draw time, dynamically-generated
 	 * SVGs that look up theme tokens at build time, JS-driven CSSOM edits,

@@ -439,7 +439,7 @@
 	<h4 class="mt-4">Bar + percent in the target column</h4>
 	<Paragraph>
 		The "vs target" column carries a tiny progress bar with the percent value pinned below it. Bar fill
-		is theme-neutral grey via <Code>color-mix(in srgb, var(--pa-text-color-1) 40%, transparent)</Code>;
+		is theme-neutral grey via <Code>color-mix(in srgb, var(--pc-text-color-1) 40%, transparent)</Code>;
 		the percent value (e.g. "97 %" vs "108 %" vs "54 %") signals overshoot/undershoot, so colour
 		reinforcement isn't needed. Bar is visually capped at 100 % so over-target metrics read as
 		"fully filled" rather than overflowing.

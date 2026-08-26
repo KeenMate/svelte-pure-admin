@@ -217,7 +217,7 @@
 
 	<!-- NOTE: Virtual scroll requires pa-virtual-scroll component which doesn't exist yet -->
 	<!-- Using regular timeline for now with note -->
-	<div class="max-h-40x overflow-y-auto border rounded p-4">
+	<div class="maxhr-40 overflow-y-auto border rounded p-4">
 		<Timeline variant="simple">
 			{#each Array.from({ length: 50 }, (_, i) => i) as index}
 				<TimelineItem

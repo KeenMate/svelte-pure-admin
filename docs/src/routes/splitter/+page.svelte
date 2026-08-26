@@ -66,7 +66,7 @@
 
 :root {
   @include output-base-css-variables;
-  @include output-pa-css-variables;
+  @include output-pc-css-variables;
 }`;
 	const codeEditorJs = `function greet(name) {
   return \`Hello, \${name}!\`;
@@ -119,13 +119,13 @@ console.log(greet('Pure Admin'));`;
 	<Splitter
 		orientation="horizontal"
 		splitterId="demo-horizontal"
-		style="height: 360px; border: 1px solid var(--pa-border-color); border-radius: var(--pa-border-radius);"
+		style="height: 360px; border: 1px solid var(--pc-border-color); border-radius: var(--pc-border-radius);"
 	>
 		<SplitterPane
 			size="280px"
 			min="200px"
 			max="60%"
-			style="background: var(--pa-subtle-bg); padding: 1.6rem;"
+			style="background: var(--pc-subtle-bg); padding: 1.6rem;"
 		>
 			<h4 class="mb-3" style="margin-top: 0;">Files</h4>
 			<ul class="pa-list-basic">
@@ -158,7 +158,7 @@ console.log(greet('Pure Admin'));`;
 	<Splitter
 		orientation="vertical"
 		splitterId="demo-vertical"
-		style="height: 420px; border: 1px solid var(--pa-border-color); border-radius: var(--pa-border-radius);"
+		style="height: 420px; border: 1px solid var(--pc-border-color); border-radius: var(--pc-border-radius);"
 	>
 		<SplitterPane size="60%" min="80px" max="80%" style="padding: 1.6rem;">
 			<h4 class="mb-3" style="margin-top: 0;">Editor</h4>
@@ -166,7 +166,7 @@ console.log(greet('Pure Admin'));`;
 		</SplitterPane>
 		<SplitterGutter ariaLabel="Resize editor" />
 		<SplitterPane
-			style="background: var(--pa-subtle-bg); padding: 1.6rem; font-family: var(--pa-font-mono, monospace); font-size: 1.3rem;"
+			style="background: var(--pc-subtle-bg); padding: 1.6rem; font-family: var(--pc-font-mono, monospace); font-size: 1.3rem;"
 		>
 			<div class="mb-2" style="opacity: 0.6;">$ node demo.js</div>
 			<div>Hello, Pure Admin!</div>
@@ -184,13 +184,13 @@ console.log(greet('Pure Admin'));`;
 	<p class="mb-3">
 		Use native <code>gap</code> on the splitter root to add space between the panes and the gutter —
 		the JS subtracts it from the available space so percent constraints stay accurate. A thicker
-		gutter is opt-in via <code>--pa-splitter-gutter-size</code>.
+		gutter is opt-in via <code>--pc-splitter-gutter-size</code>.
 	</p>
 
 	<Splitter
 		orientation="horizontal"
 		splitterId="demo-spaced"
-		style="height: 280px; gap: 1.6rem; --pa-splitter-gutter-size: 1rem;"
+		style="height: 280px; gap: 1.6rem; --pc-splitter-gutter-size: 1rem;"
 	>
 		<SplitterPane size="40%" min="25%" max="75%" style="padding: 0;">
 			<Card titleText="Left card" style="height: 100%; margin: 0;">
@@ -205,7 +205,7 @@ console.log(greet('Pure Admin'));`;
 			<Card titleText="Right card" style="height: 100%; margin: 0;">
 				<p class="mb-0">
 					Drag the gutter — both cards reflow. The 10px gutter is set inline via
-					<code>--pa-splitter-gutter-size</code>; the default is 6px.
+					<code>--pc-splitter-gutter-size</code>; the default is 6px.
 				</p>
 			</Card>
 		</SplitterPane>
@@ -397,7 +397,7 @@ console.log(greet('Pure Admin'));`;
 		</SplitterPane>
 		<SplitterGutter ariaLabel="Resize editor" />
 		<SplitterPane style="padding: 0;">
-			<Card style="height: 100%; margin: 0; background: var(--pa-subtle-bg);">
+			<Card style="height: 100%; margin: 0; background: var(--pc-subtle-bg);">
 				<p class="text-sm text-secondary mb-0">Drag the gutter left/right to shrink and grow the editor card. Watch the action row in its header.</p>
 			</Card>
 		</SplitterPane>
@@ -473,7 +473,7 @@ console.log(greet('Pure Admin'));`;
 			orientation="horizontal"
 			splitterId={`demo-multi-pane-${paneCount}`}
 			isMinimizeMirror
-			style="height: 420px; border: 1px solid var(--pa-border-color); border-radius: var(--pa-border-radius); column-gap: 0.8rem; padding: 0.8rem; background: var(--pa-subtle-bg);"
+			style="height: 420px; border: 1px solid var(--pc-border-color); border-radius: var(--pc-border-radius); column-gap: 0.8rem; padding: 0.8rem; background: var(--pc-subtle-bg);"
 		>
 			{#each Array(paneCount) as _, i (i)}
 				{#if i > 0}

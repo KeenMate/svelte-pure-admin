@@ -84,7 +84,7 @@
 <!-- Centered Loaders -->
 <Card titleText="Centered Loaders" class="mb-6">
 
-	<div class="h-20x position-relative border border-dashed rounded">
+	<div class="hr-20 position-relative border border-dashed rounded">
 		<LoaderOverlay>
 			<Loader type="ring" size="lg" color="primary" />
 		</LoaderOverlay>
@@ -96,13 +96,13 @@
 
 	<Grid>
 		<Column size="100" md="1-2" class="mb-4">
-			<LoaderCenter class="h-15x border border-dashed rounded">
+			<LoaderCenter class="hr-15 border border-dashed rounded">
 				<Loader type="ring" size="lg" color="primary" />
 				<Paragraph class="mt-4 text-secondary">Loading data...</Paragraph>
 			</LoaderCenter>
 		</Column>
 		<Column size="100" md="1-2" class="mb-4">
-			<LoaderCenter class="h-15x border border-dashed rounded">
+			<LoaderCenter class="hr-15 border border-dashed rounded">
 				<Loader type="ring" size="lg" color="success" />
 				<Paragraph class="mt-4 text-secondary">Processing...</Paragraph>
 			</LoaderCenter>
@@ -119,7 +119,7 @@
 				{#snippet header()}
 					<Heading level={4}>Loading Card</Heading>
 				{/snippet}
-				<div class="pa-card__body h-15x position-relative">
+				<div class="pa-card__body hr-15 position-relative">
 					<LoaderOverlay>
 						<Loader type="ring" size="lg" color="primary" />
 					</LoaderOverlay>
@@ -131,7 +131,7 @@
 				{#snippet header()}
 					<Heading level={4}>Loading with Text</Heading>
 				{/snippet}
-				<div class="pa-card__body pa-loader-center h-15x">
+				<div class="pa-card__body pa-loader-center hr-15">
 					<Loader type="ring" size="lg" color="info" />
 					<Paragraph class="mt-4 text-secondary">Fetching data...</Paragraph>
 				</div>

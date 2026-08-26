@@ -86,7 +86,7 @@
 
 		<!-- Theme Color Variants -->
 		<Column size="100" class="mt-4">
-			<FormLabel class="mb-2"><strong>Theme Color Variants</strong> (using --pa-color-* CSS variables)</FormLabel>
+			<FormLabel class="mb-2"><strong>Theme Color Variants</strong> (using --pc-color-* CSS variables)</FormLabel>
 		</Column>
 		<Column size="100" md="1-3">
 			<FormGroup>

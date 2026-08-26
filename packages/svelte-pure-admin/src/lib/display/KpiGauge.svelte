@@ -36,7 +36,7 @@
 		barPercent?: number;
 		/** Tick position along the bar (e.g. `"80%"`). Default `"100%"` — the target sits at the right edge of the bar's 0→target scale. Override when the bar represents a wider scale and the target sits inside. */
 		tickPosition?: string;
-		/** Tick colour override (defaults to `--pa-text-color-1`). */
+		/** Tick colour override (defaults to `--pc-text-color-1`). */
 		tickColor?: string;
 		/** Left scale label (default "0"). */
 		scaleStartText?: string;
@@ -119,8 +119,8 @@
 
 	const barStyle = $derived(() => {
 		const parts: string[] = [];
-		if (tickPosition) parts.push(`--pa-kpi-gauge-tick-pos: ${tickPosition}`);
-		if (tickColor) parts.push(`--pa-kpi-gauge-tick-color: ${tickColor}`);
+		if (tickPosition) parts.push(`--pc-kpi-gauge-tick-pos: ${tickPosition}`);
+		if (tickColor) parts.push(`--pc-kpi-gauge-tick-color: ${tickColor}`);
 		return parts.join('; ');
 	});
 
