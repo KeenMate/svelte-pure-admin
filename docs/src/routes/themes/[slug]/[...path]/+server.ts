@@ -31,7 +31,7 @@ const MIME_TYPES: Record<string, string> = {
 	'.md': 'text/markdown; charset=utf-8'
 };
 
-export const GET: RequestHandler = async ({ params }) => {
+export const GET: RequestHandler = async ({ params, request }) => {
 	const { slug, path } = params;
 	if (!slug || !path) error(404, 'Not found');
 
@@ -52,18 +52,38 @@ export const GET: RequestHandler = async ({ params }) => {
 		error(400, 'Bad path');
 	}
 
-	if (!existsSync(filePath) || !statSync(filePath).isFile()) {
-		error(404, 'File not found');
+	if (!existsSync(filePath)) error(404, 'File not found');
+	const stat = statSync(filePath);
+	if (!stat.isFile()) error(404, 'File not found');
+
+	const mimeType = MIME_TYPES[extname(filePath).toLowerCase()] ?? 'application/octet-stream';
+
+	// The theme URL is unversioned (/themes/<id>/css/<id>.css), so a rebuild at the
+	// same id reuses the same URL. CSS + the manifest therefore must NOT be cached
+	// immutably or a rebuilt theme is served stale forever. Serve them with an ETag
+	// (size + mtime) and force revalidation so the browser gets a cheap 304 when
+	// unchanged and the fresh file the moment the theme is rebuilt. Fonts/images are
+	// heavy and effectively content-stable, so they keep the 1-year immutable cache.
+	const isRevalidated = filePath.endsWith('.css') || filePath.endsWith('theme.json');
+	const etag = `"${stat.size.toString(16)}-${Math.floor(stat.mtimeMs).toString(16)}"`;
+	const cacheControl = isRevalidated
+		? 'public, max-age=0, must-revalidate'
+		: 'public, max-age=31536000, immutable';
+
+	// 304 fast-path — answer from the stat alone, no file read.
+	if (isRevalidated && request.headers.get('if-none-match') === etag) {
+		return new Response(null, {
+			status: 304,
+			headers: { etag, 'cache-control': cacheControl }
+		});
 	}
 
 	const body = readFileSync(filePath);
-	const mimeType = MIME_TYPES[extname(filePath).toLowerCase()] ?? 'application/octet-stream';
+	const headers: Record<string, string> = {
+		'content-type': mimeType,
+		'cache-control': cacheControl
+	};
+	if (isRevalidated) headers.etag = etag;
 
-	return new Response(body, {
-		headers: {
-			'content-type': mimeType,
-			// 1 year for CSS/fonts (immutable per theme version); manifests revalidate per-request
-			'cache-control': filePath.endsWith('theme.json') ? 'no-cache' : 'public, max-age=31536000, immutable'
-		}
-	});
+	return new Response(body, { headers });
 };
