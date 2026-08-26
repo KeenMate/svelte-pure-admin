@@ -654,12 +654,12 @@ Broad phantom scan of all of `layout/` (25 files) + `typography/` (6) against co
 `main.css`. Almost everything clean — the scan's other "not in core" hits were all false
 positives: `data-pa-fit-*` / `data-pa-splitter-*` **attribute** fragments, `--pa-local-
 sidebar-*` / `--pa-splitter-*` **CSS-var** names, and dynamic modifier stems
-(`pa-col-md-`, `pa-offset-md-`). Cleared genuinely:
+(`pc-col-md-`, `pc-offset-md-`). Cleared genuinely:
 - **`pa-layout__sidebar--resizable`** (0 CSS hits) is a deliberate **JS activation hook** —
   core's `src/js/sidebar-resize.js` does `querySelector('.pa-layout__sidebar--resizable')`.
   CSS-less by design; the wrapper emitting it is correct. ✅
-- **`Column`** — `pa-col` / `pa-col-{size}` / `pa-col-{sm,md,lg,xl}-{n}` / `pa-offset-{n}` /
-  `pa-offset-{bp}-{n}` all present in core (incl. non-responsive `pa-offset-5..50`). ✅
+- **`Column`** — `pc-col` / `pc-col-{size}` / `pc-col-{sm,md,lg,xl}-{n}` / `pc-offset-{n}` /
+  `pc-offset-{bp}-{n}` all present in core (incl. non-responsive `pc-offset-5..50`). ✅
 - **`pa-container-{sm,md,lg,xl,2xl}`** (Layout / SettingsPanel body classes) — all real. ✅
 - **Typography all faithful:** `Heading` (`<h1..h6>` + optional `pa-text--{start|center|
   end}`), `Paragraph` (`pa-text--{secondary|xs|sm|lg|xl|caption|lead}` — `Size` is
@@ -721,7 +721,7 @@ fixes) and confirmed each residual against raw core selectors. Findings — all 
 **✅ Verified faithful (no change):** `ProfilePanel` (role chip is already `pa-badge`; the
 `__role` scan hit was a comment), `CompositeBadge` base + `--{variant}` + `--label-*`,
 `pa-tabs__container` (benign BEM base; `--bordered`/`--card` real), `Spinner` (`size` already
-`'xs'`-only), `Column` (`pa-col*`/`pa-offset*` incl. non-responsive), `pa-container-*`,
+`'xs'`-only), `Column` (`pc-col*`/`pc-offset*` incl. non-responsive), `pa-container-*`,
 `DateInput`/`Input`/`NumberInput` (`pa-input--color-{N}` real).
 
 **The lib now emits no phantom `pa-*` class**, save three deliberate, documented cases:

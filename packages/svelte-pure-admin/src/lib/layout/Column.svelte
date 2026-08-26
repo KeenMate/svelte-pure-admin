@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Column Component (Svelte 5)
-	 * Wrapper for native pa-col-* grid columns
+	 * Wrapper for native pc-col-* grid columns
 	 *
 	 * Supports:
 	 * - Percentage widths: "5", "10", "15"... "100" (5% increments)
@@ -74,26 +74,26 @@
 	const classes = $derived(() => {
 		const base: string[] = [];
 
-		// Base size - if no size specified, use 'pa-col' for auto-sizing
+		// Base size - if no size specified, use 'pc-col' for auto-sizing
 		if (size) {
-			base.push(`pa-col-${size}`);
+			base.push(`pc-col-${size}`);
 		} else if (!sm && !md && !lg && !xl) {
-			// Only add pa-col if no responsive sizes are set either
-			base.push('pa-col');
+			// Only add pc-col if no responsive sizes are set either
+			base.push('pc-col');
 		}
 
 		// Responsive sizes
-		if (sm) base.push(`pa-col-sm-${sm}`);
-		if (md) base.push(`pa-col-md-${md}`);
-		if (lg) base.push(`pa-col-lg-${lg}`);
-		if (xl) base.push(`pa-col-xl-${xl}`);
+		if (sm) base.push(`pc-col-sm-${sm}`);
+		if (md) base.push(`pc-col-md-${md}`);
+		if (lg) base.push(`pc-col-lg-${lg}`);
+		if (xl) base.push(`pc-col-xl-${xl}`);
 
 		// Offsets
-		if (offset) base.push(`pa-offset-${offset}`);
-		if (offsetSm) base.push(`pa-offset-sm-${offsetSm}`);
-		if (offsetMd) base.push(`pa-offset-md-${offsetMd}`);
-		if (offsetLg) base.push(`pa-offset-lg-${offsetLg}`);
-		if (offsetXl) base.push(`pa-offset-xl-${offsetXl}`);
+		if (offset) base.push(`pc-offset-${offset}`);
+		if (offsetSm) base.push(`pc-offset-sm-${offsetSm}`);
+		if (offsetMd) base.push(`pc-offset-md-${offsetMd}`);
+		if (offsetLg) base.push(`pc-offset-lg-${offsetLg}`);
+		if (offsetXl) base.push(`pc-offset-xl-${offsetXl}`);
 
 		// Custom classes
 		if (className) base.push(className);

@@ -288,7 +288,7 @@
 			icon: '🌓',
 			steps: [],
 			onComplete: () => {
-				document.body.classList.toggle('pa-mode-light');
+				document.body.classList.toggle('pc-mode-light');
 			}
 		},
 		{

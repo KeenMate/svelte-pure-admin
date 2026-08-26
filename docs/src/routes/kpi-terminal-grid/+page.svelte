@@ -308,15 +308,15 @@
 <br />
 
 <!-- ============================================================
-     2. Layout test — 1×3 using page grid (.pa-col-1-3)
+     2. Layout test — 1×3 using page grid (.pc-col-1-3)
      Standalone tiles in page-grid columns — no terminal-grid chrome,
      no tabs. Tests how a single tile renders at one-third of the
      viewport width (typical "stat strip" placement).
      ============================================================ -->
 
-<Heading level={3}>1×3 · <Code>.pa-col-1-3</Code> columns</Heading>
+<Heading level={3}>1×3 · <Code>.pc-col-1-3</Code> columns</Heading>
 <Paragraph>
-	Each tile in its own <Code>.pa-col-1-3</Code> (33% page-grid column) as a <em>standalone</em>
+	Each tile in its own <Code>.pc-col-1-3</Code> (33% page-grid column) as a <em>standalone</em>
 	mini-card — no shared terminal-grid chrome, no tabs. Tests how a single tile renders at one-third
 	of the viewport width, the typical "stat strip" placement.
 </Paragraph>
@@ -401,7 +401,7 @@
      per column. No terminal-grid chrome, no tabs.
      ============================================================ -->
 
-<Heading level={3}>2×3 stack · <Code>.pa-col-25</Code> + <Code>.pa-col-45</Code> (asymmetric, 30% empty)</Heading>
+<Heading level={3}>2×3 stack · <Code>.pc-col-25</Code> + <Code>.pc-col-45</Code> (asymmetric, 30% empty)</Heading>
 <Paragraph>
 	Two page-grid columns: 25% wide on the left (narrow stress test), 45% wide on the right (mid-width).
 	Each holds three standalone tiles stacked vertically. The remaining 30% of the row is intentionally

@@ -533,9 +533,9 @@ console.log(greet('Pure Admin'));`;
 	<div class="mt-3 text-sm text-secondary">{storageStatus}</div>
 </Card>
 
-<div class="pa-row">
+<div class="pc-row">
 	<!-- Markup reference -->
-	<div class="pa-col-100 pa-col-lg-50">
+	<div class="pc-col-100 pc-col-lg-50">
 		<Card class="mb-4">
 			{#snippet title()}Markup{/snippet}
 			<pre class="pa-code"><code>{codeMarkup}</code></pre>
@@ -551,7 +551,7 @@ console.log(greet('Pure Admin'));`;
 	</div>
 
 	<!-- API -->
-	<div class="pa-col-100 pa-col-lg-50">
+	<div class="pc-col-100 pc-col-lg-50">
 		<Card class="mb-4">
 			{#snippet title()}Data attributes{/snippet}
 			<p class="text-sm mb-2"><strong>On root:</strong></p>

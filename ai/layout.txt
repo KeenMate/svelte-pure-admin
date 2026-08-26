@@ -470,7 +470,7 @@ Footer with vertical end section:
 
 GRID
 ----
-Row container for the column grid system. Renders <div class="pa-row">.
+Row container for the column grid system. Renders <div class="pc-row">.
 Uses CSS flexbox with modifier classes for alignment, gutters, and gap.
 
 Props:
@@ -537,7 +537,7 @@ Numeric gap (1-20):
 
 COLUMN
 ------
-Grid column with responsive breakpoints. Renders <div class="pa-col-*">.
+Grid column with responsive breakpoints. Renders <div class="pc-col-*">.
 
 Supports percentage widths (5% increments: 5, 10, 15, ..., 100),
 fraction widths (1-2, 1-3, 2-3, 1-4, 3-4, etc.), and auto width.
@@ -906,7 +906,7 @@ CRITICAL REMINDERS
 - navStart and navEnd render inside <ul>, so provide <li> elements
 - Footer uses logical directions (start/end) for RTL support
 - Grid sameHeight is useful for card grids where cards have different content lengths
-- Column with no size prop and no responsive sizes renders as pa-col (auto width)
+- Column with no size prop and no responsive sizes renders as pc-col (auto width)
 - All components accept class prop for custom CSS classes
 
 NEXT STEPS

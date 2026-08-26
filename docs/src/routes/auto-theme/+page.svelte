@@ -127,7 +127,7 @@ function handleOSThemeChange(e: MediaQueryListEvent) {
       resolvedMode = themeMode;
     }
 
-    document.body.classList.add('pa-mode-' + resolvedMode);
+    document.body.classList.add('pc-mode-' + resolvedMode);
   })();
 <\/script>`;
 
@@ -151,8 +151,8 @@ const themeMode = localStorage.getItem('theme-mode') || 'light';`;
 }
 
 function applyThemeToDOM(resolvedMode: 'light' | 'dark') {
-  document.body.classList.remove('pa-mode-light', 'pa-mode-dark');
-  document.body.classList.add(\`pa-mode-\${resolvedMode}\`);
+  document.body.classList.remove('pc-mode-light', 'pc-mode-dark');
+  document.body.classList.add(\`pc-mode-\${resolvedMode}\`);
 }`;
 
 	const codeUsageBasic = `// Using the SettingsPanel component
@@ -425,7 +425,7 @@ getResolvedThemeMode('auto') checks prefers-color-scheme
          ↓
 Returns 'light' or 'dark' based on OS
          ↓
-Applies pa-mode-light or pa-mode-dark to body
+Applies pc-mode-light or pc-mode-dark to body
          ↓
 MediaQueryList listener watches for OS changes
          ↓

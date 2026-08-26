@@ -122,10 +122,10 @@
 <br />
 
 <!-- ============================================================
-     2. Layout test — 1×3 page grid (.pa-col-1-3)
+     2. Layout test — 1×3 page grid (.pc-col-1-3)
      ============================================================ -->
 
-<Heading level={3}>1×3 · <Code>.pa-col-1-3</Code> columns</Heading>
+<Heading level={3}>1×3 · <Code>.pc-col-1-3</Code> columns</Heading>
 <Paragraph>
 	Three smaller cards side-by-side. Each card uses the default <Code>KpiGaugeList</Code> (no
 	<Code>gridLayout</Code> modifier) — at ~400 px wide the cell-min threshold forces a single
@@ -161,7 +161,7 @@
      3. Layout test — page grid 25% + 45% (asymmetric, 30% empty)
      ============================================================ -->
 
-<Heading level={3}>2×3 stack · <Code>.pa-col-25</Code> + <Code>.pa-col-45</Code> (asymmetric, 30% empty)</Heading>
+<Heading level={3}>2×3 stack · <Code>.pc-col-25</Code> + <Code>.pc-col-45</Code> (asymmetric, 30% empty)</Heading>
 <Paragraph>
 	Two page-grid columns: 25% wide on the left (narrow stress test — each gauge gets ~280–320 px),
 	45% on the right. Each holds three gauges with the default <Code>KpiGaugeList</Code>. Both cards

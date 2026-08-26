@@ -145,14 +145,14 @@ LIGHT / DARK / AUTO MODE
 -------------------------
 SettingsPanel provides three theme modes:
 
-  light  - Forces light mode: body gets class pa-mode-light
-  dark   - Forces dark mode: body gets class pa-mode-dark
+  light  - Forces light mode: body gets class pc-mode-light
+  dark   - Forces dark mode: body gets class pc-mode-dark
   auto   - Follows OS preference via prefers-color-scheme media query
 
 How auto mode works internally:
 
   1. Checks window.matchMedia('(prefers-color-scheme: dark)').matches
-  2. Applies pa-mode-light or pa-mode-dark accordingly
+  2. Applies pc-mode-light or pc-mode-dark accordingly
   3. Listens for OS theme changes via mediaQuery.addEventListener('change', ...)
   4. Updates DOM class automatically when OS preference changes
 
@@ -168,8 +168,8 @@ Manual dark mode (without SettingsPanel):
         : 'light';
     }
 
-    document.body.classList.remove('pa-mode-light', 'pa-mode-dark');
-    document.body.classList.add(`pa-mode-${resolvedMode}`);
+    document.body.classList.remove('pc-mode-light', 'pc-mode-dark');
+    document.body.classList.add(`pc-mode-${resolvedMode}`);
   }
 
   // Apply dark mode
@@ -531,7 +531,7 @@ IMPORTANT NOTES
 - SettingsPanel persists all settings to localStorage automatically.
 - SettingsPanel applies settings to DOM on mount (loads from localStorage).
 - The 'auto' theme mode uses prefers-color-scheme and listens for OS changes.
-- pa-mode-light / pa-mode-dark classes on body control light/dark mode.
+- pc-mode-light / pc-mode-dark classes on body control light/dark mode.
 - Container width classes (pa-container-sm/md/lg/xl/2xl) go on body.
 - Font size classes go on <html>. Font family classes go on <body>.
 - Sidebar classes go on the .pa-layout__sidebar element or on body.

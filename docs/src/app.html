@@ -166,7 +166,7 @@
 				// Apply theme mode from localStorage
 				// Supports: 'light', 'dark', 'auto' (follows OS preference)
 				// For themes with dark :root defaults (like Audi), explicitly apply
-				// pa-mode-light to override and prevent dark flash on light mode reload
+				// pc-mode-light to override and prevent dark flash on light mode reload
 				var themeMode = localStorage.getItem('theme-mode') || 'light';
 				var resolvedMode;
 				if (themeMode === 'auto') {
@@ -175,7 +175,7 @@
 				} else {
 					resolvedMode = themeMode;
 				}
-				document.body.classList.add('pa-mode-' + resolvedMode);
+				document.body.classList.add('pc-mode-' + resolvedMode);
 
 				// Apply font size from localStorage
 				var fontSize = localStorage.getItem('font-size');

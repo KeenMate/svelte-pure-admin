@@ -334,8 +334,8 @@
 	// Apply resolved theme to DOM
 	function applyThemeToDOM(resolvedMode: 'light' | 'dark') {
 		if (typeof document === 'undefined') return;
-		document.body.classList.remove('pa-mode-light', 'pa-mode-dark');
-		document.body.classList.add(`pa-mode-${resolvedMode}`);
+		document.body.classList.remove('pc-mode-light', 'pc-mode-dark');
+		document.body.classList.add(`pc-mode-${resolvedMode}`);
 	}
 
 	// Handle OS theme change when in auto mode

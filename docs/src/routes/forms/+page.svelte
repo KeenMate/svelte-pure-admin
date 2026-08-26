@@ -709,7 +709,7 @@
 
 	{#snippet footer()}
 		<Paragraph class="pa-text--sm pa-text--secondary m-0">
-			<strong>Layout pattern:</strong> Each field uses <Code>.pa-form-group--horizontal</Code> (label left, input right) inside <Code>pa-col-*</Code> columns.
+			<strong>Layout pattern:</strong> Each field uses <Code>.pa-form-group--horizontal</Code> (label left, input right) inside <Code>pc-col-*</Code> columns.
 			Line 1: equal widths (1/3 each).
 			Line 2: varying sizes (1/4 + 5/12 + 1/3).
 			Line 3: very different sizes (1/2 + 1/3 + 1/6).

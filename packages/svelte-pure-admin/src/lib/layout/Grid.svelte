@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Pure Admin Grid Component (Svelte 5)
-	 * Wrapper for native pa-row grid system
+	 * Wrapper for native pc-row grid system
 	 *
 	 * Supports modifiers for:
 	 * - Gutters: noGutter removes spacing between columns
@@ -47,11 +47,11 @@
 
 	// Build class string
 	const classes = $derived(() => {
-		const base = ['pa-row'];
-		if (noGutter) base.push('pa-row--no-gutter');
-		if (justify) base.push(`pa-row--${justify}`);
-		if (align) base.push(`pa-row--${align}`);
-		if (sameHeight) base.push('pa-row--same-height');
+		const base = ['pc-row'];
+		if (noGutter) base.push('pc-row--no-gutter');
+		if (justify) base.push(`pc-row--${justify}`);
+		if (align) base.push(`pc-row--${align}`);
+		if (sameHeight) base.push('pc-row--same-height');
 		// Gap: both string and number produce gap-{value} utility class
 		if (gap !== undefined && gap !== null) base.push(`gap-${gap}`);
 		if (className) base.push(className);

@@ -89,7 +89,7 @@ Sync with `@keenmate/pure-admin-core` **v2.9.0-rc08 → v2.9.0-rc15** (core rc09
   - **`CompositeBadge` / `CompositeBadgeGroup` — `buttonVariant` excludes `danger`.** Core ships `pa-composite-badge--btn-{primary|secondary|success|warning|info|light|dark}` — the button section has **no** `--btn-danger` (the base and `--label-` sets do). Narrowed the type to a new `CompositeButtonVariant` (= `BadgeVariant` minus `danger`) so it can't emit a dead class; migrated the one docs usage.
   - **`CommandPalette` loader — `pa-spinner--xs`.** Its hand-rolled loading spinner hardcoded `pa-spinner--sm`, but core's spinner ships only the `--xs` size modifier; corrected to `--xs`.
   - **`ThemeReady` — private loader class off the `pa-` prefix.** It's a wrapper-only lifecycle component with no core `pa-theme-ready` contract, so its scoped centering host renamed `pa-theme-ready__default-loader` → `theme-ready-loader` — it no longer masquerades as a framework class a consumer might try to target globally.
-- **`AppHeader` drops the phantom `pa-app-header__logo`** (Layout/Typography cluster contract audit). Core's `.pa-app-header` styles only its `<h1>` wordmark + `&__version` — it has **no** logo-image slot (no `__logo` class, no `img` rule; `snippets/layout.html`'s brand is a bare `<h1>`). The config-driven brand fallback emitted `<img class="pa-app-header__logo">`, a class core never styles; it's now a bare `<img>` (consumer-sized). Raised a core follow-up to bless a height-constrained `pa-app-header__logo` slot. The rest of the layout + typography cluster is faithful (`Column` `pa-col*`/`pa-offset*`, `pa-container-*`, `Heading`/`Paragraph`/`Label` `pa-text--*`/`pa-label--*` unions all map to real core classes; `pa-layout__sidebar--resizable` is a deliberate CSS-less JS hook, not a phantom).
+- **`AppHeader` drops the phantom `pa-app-header__logo`** (Layout/Typography cluster contract audit). Core's `.pa-app-header` styles only its `<h1>` wordmark + `&__version` — it has **no** logo-image slot (no `__logo` class, no `img` rule; `snippets/layout.html`'s brand is a bare `<h1>`). The config-driven brand fallback emitted `<img class="pa-app-header__logo">`, a class core never styles; it's now a bare `<img>` (consumer-sized). Raised a core follow-up to bless a height-constrained `pa-app-header__logo` slot. The rest of the layout + typography cluster is faithful (`Column` `pc-col*`/`pc-offset*`, `pa-container-*`, `Heading`/`Paragraph`/`Label` `pa-text--*`/`pa-label--*` unions all map to real core classes; `pa-layout__sidebar--resizable` is a deliberate CSS-less JS hook, not a phantom).
 - **`CommandPalette` drops three invented `pa-command-palette__*` classes** (Display cluster contract audit). (1) A dead input **syntax-highlighter** (`tokenize` / `getHighlightedHtml` / `escapeHtml` + the `Token` / `TokenType` types) was never called, but its scoped `<style>` shipped `__token` / `__token--command|context|prompt|value` — core-prefixed classes core doesn't define. Removed the dead code, the types, and the styles. (2) The **error** state rendered a scoped-styled `__error` / `__error-icon` (core has **no** error state — only `__empty`, the centered muted "no results" text); it now renders through core's real `__empty` container with the real `text-danger` utility for the tint, so the whole scoped `<style>` block is gone. (3) The resolved-token **badge remove** was a `<span>&times;</span>` with a click handler — `snippets/command-palette.html` blesses `<button class="pa-badge__remove" aria-label="Remove"><span class="pa-icon pa-icon--x">`; it's now that button (focusable, labelled, masked-icon glyph like every other close affordance). The `__tokens` / `__token-prompt` container, the `--sm` / `--lg` / `--xl` size presets, and every other emitted class were already faithful. (Known unimplemented core features — not markup bugs: `--fullscreen` mode, `__pagination`, `__section` result-group dividers, a visible `__close` button.)
 - **`KpiTerminalTile`'s sparkline host no longer adds an extra layout box** (KPI cluster contract audit). The consumer's chart is scanned for `<circle>` dots by the `kpiSparklineDots` action, which needs a host element — but core's terminal tile has the `<svg class="pa-kpi-tile__spark">` as a *direct* flex child of `.pa-kpi-tile` (no wrapper), whereas the wrapper hosted the action on a plain `<div>`, inserting a structural box core doesn't have. The host `<div>` is now `display: contents`, so it hosts the action but contributes no box — the SVG is the effective direct child, matching core's flat structure. (The `pa-kpi-tile__spark` class itself is correctly the consumer's to apply to their SVG, exactly as the core demo and the docs route do.) This is the KPI cluster's only markup fix — every other Kpi* component's classes and dynamic sentiment/grid/layout modifiers already map exactly to core's per-block vocabulary.
 - **Snippet gold-standard re-audit — validated every emitted component against the freshly-audited core `snippets/*.html`** (core `d423d05` brought all 39 snippets up to the badges.html gold standard + an adversarial two-round review). Fanned out over all 39 snippets; the lib was already faithful for the vast majority, and the sweep cleared the remaining phantoms + canonicalised a few shapes:
@@ -137,7 +137,7 @@ Dependency-only refresh — sync `@keenmate/pure-admin-core` **v2.9.0-rc06 → v
 
 - Peer dependency `@keenmate/pure-admin-core` bumped `^2.9.0-rc06` → `^2.9.0-rc08`. Upstream deltas are non-breaking for us:
   - **core rc07** — `.text-truncate` on a text-only `.pa-btn` ellipses again (regressed under rc06's flex model); the `.pa-overflow` "more" `[⋮]` trigger no longer clips next to a long sibling title.
-  - **core rc08** — the previously inert `.border` / `.rounded` utilities now render real borders / radius (behavior change, but the library emits neither class); core's `--base-*` / utility / `.pa-row` grid foundation is now single-sourced from the new `@keenmate/pure-css` package — a build-time dependency of core only, with compiled `main.css` byte-identical, so no consumer action is needed.
+  - **core rc08** — the previously inert `.border` / `.rounded` utilities now render real borders / radius (behavior change, but the library emits neither class); core's `--base-*` / utility / `.pc-row` grid foundation is now single-sourced from the new `@keenmate/pure-css` package — a build-time dependency of core only, with compiled `main.css` byte-identical, so no consumer action is needed.
 
 ### Fixed
 
@@ -179,7 +179,7 @@ Canvas charts in KPI components are now safe across theme stylesheet swaps and s
 - **`<ThemeReady>`** (`config/ThemeReady.svelte`) — wrapper that renders children only when the active theme stylesheet has finished loading (or definitively failed). Default loader is a centred `Spinner`; consumers can supply a custom `loader` snippet sized to the gated content's footprint to avoid layout shift. Self-bootstraps the tracker so it works without `PureAdminProvider`
 - **`themeReady`** — `Readable<boolean>` store, `true` when the cascade is safe to sample, `false` while a theme stylesheet swap is in flight. Defaults to `true` so apps without our wiring still render normally
 - **`initThemeReadyTracker()`** — idempotent, SSR-safe initializer that wires `themeReady` to the lifecycle of `<link id="pa-theme-css">`. Called automatically by `PureAdminProvider.onMount` and by `<ThemeReady>` on first instance (so init runs before child chart effects sample their initial colour)
-- **`chartColorSync`** Svelte action (`display/kpi-actions.ts`) — re-fires a callback with the host element's resolved `color` whenever the theme stylesheet `load`s after a swap, or the `pa-mode-*` class on `<html>` / `<body>` flips. Use on canvas-based charts (Chart.js, ECharts, etc.) that cache stroke / fill at draw time and would otherwise freeze on theme changes. Composes with `<ThemeReady>` — the gate handles first-paint and theme swaps, the action covers in-place light/dark toggles where the link isn't swapped
+- **`chartColorSync`** Svelte action (`display/kpi-actions.ts`) — re-fires a callback with the host element's resolved `color` whenever the theme stylesheet `load`s after a swap, or the `pc-mode-*` class on `<html>` / `<body>` flips. Use on canvas-based charts (Chart.js, ECharts, etc.) that cache stroke / fill at draw time and would otherwise freeze on theme changes. Composes with `<ThemeReady>` — the gate handles first-paint and theme swaps, the action covers in-place light/dark toggles where the link isn't swapped
 
 ### Changed — library
 
@@ -2247,26 +2247,26 @@ export const load = () => {
 ### Fixed
 
 #### Column Component Auto-Sizing
-Fixed Column component to add `pa-col` class by default when no size or responsive props are specified.
+Fixed Column component to add `pc-col` class by default when no size or responsive props are specified.
 
 **Problem:** Columns without explicit size props didn't get any class, breaking the pure-admin flex grid auto-sizing behavior.
 
-**Solution:** Added logic to output `pa-col` class when `size`, `sm`, `md`, `lg`, and `xl` props are all undefined.
+**Solution:** Added logic to output `pc-col` class when `size`, `sm`, `md`, `lg`, and `xl` props are all undefined.
 
 ```typescript
 // Before: No class output when no size specified
-// After: Outputs 'pa-col' for flex auto-sizing
+// After: Outputs 'pc-col' for flex auto-sizing
 if (size) {
-    base.push(`pa-col-${size}`);
+    base.push(`pc-col-${size}`);
 } else if (!sm && !md && !lg && !xl) {
-    base.push('pa-col');
+    base.push('pc-col');
 }
 ```
 
 **Use Case:** Theme color grids where columns should auto-size evenly:
 ```svelte
 <Grid>
-  <Column>Color 1</Column>  <!-- Now gets pa-col class -->
+  <Column>Color 1</Column>  <!-- Now gets pc-col class -->
   <Column>Color 2</Column>
   <Column>Color 3</Column>
 </Grid>
@@ -2283,21 +2283,21 @@ Fixed incorrect prop names in docs lists page to match BasicList component API.
 #### Dark Mode FOUC with Audi Theme
 Fixed flash of dark mode on page reload when using light mode with the Audi theme.
 
-**Problem:** The FOUC prevention script in `app.html` only added `pa-mode-dark` class when dark mode was saved, but didn't handle light mode. Since the Audi theme uses `:root, .pa-mode-dark` for dark defaults, pages would briefly flash dark before SettingsPanel mounted and applied `pa-mode-light`.
+**Problem:** The FOUC prevention script in `app.html` only added `pc-mode-dark` class when dark mode was saved, but didn't handle light mode. Since the Audi theme uses `:root, .pc-mode-dark` for dark defaults, pages would briefly flash dark before SettingsPanel mounted and applied `pc-mode-light`.
 
-**Solution:** Updated the blocking script to also apply `pa-mode-light` class when light mode is saved (or no preference), ensuring the override is in place before CSS renders.
+**Solution:** Updated the blocking script to also apply `pc-mode-light` class when light mode is saved (or no preference), ensuring the override is in place before CSS renders.
 
 ```javascript
 // Before: Only handled dark mode
 if (themeMode === 'dark') {
-    document.body.classList.add('pa-mode-dark');
+    document.body.classList.add('pc-mode-dark');
 }
 
 // After: Handles both modes
 if (themeMode === 'dark') {
-    document.body.classList.add('pa-mode-dark');
+    document.body.classList.add('pc-mode-dark');
 } else {
-    document.body.classList.add('pa-mode-light');
+    document.body.classList.add('pc-mode-light');
 }
 ```
 
@@ -2585,10 +2585,10 @@ First release candidate of @keenmate/svelte-pure-admin.
 Updated Grid component with row modifiers to match pure-admin-core snippets.
 
 **New Props:**
-- `noGutter?: boolean` - Remove spacing between columns (`pa-row--no-gutter`)
+- `noGutter?: boolean` - Remove spacing between columns (`pc-row--no-gutter`)
 - `justify?: 'center' | 'end' | 'between' | 'around'` - Horizontal alignment of columns
 - `align?: 'top' | 'middle' | 'bottom'` - Vertical alignment of columns
-- `sameHeight?: boolean` - Force all columns to equal height (`pa-row--same-height`)
+- `sameHeight?: boolean` - Force all columns to equal height (`pc-row--same-height`)
 
 **Usage:**
 ```svelte
@@ -2629,7 +2629,7 @@ Verified component alignment after pure-admin-core workspace migration and updat
 - **Tabs/TabItem** - Supports all styles, sizes, alignments, and overflow modes
 
 **No Invalid Classes Found:**
-- Searched for deprecated `pa-col-md-33`, `pa-col-md-67` classes - none found
+- Searched for deprecated `pc-col-md-33`, `pc-col-md-67` classes - none found
 - All grid classes use valid fraction or percentage values
 
 ---
@@ -2928,19 +2928,19 @@ const result = await dialogService.custom<'save' | 'discard' | 'cancel'>({
 Migrated from PureCSS grid to native Pure Admin flexbox grid system.
 
 **Grid Component** (`src/lib/layout/Grid.svelte`):
-- Changed output class from `pure-g` to `pa-row`
+- Changed output class from `pure-g` to `pc-row`
 - Native flexbox container for responsive layouts
 - Added `style?: string` prop for inline styles
 
 **Column Component** (`src/lib/layout/Column.svelte`):
 - Complete rewrite for new grid system
-- Changed from `pure-u-*` to `pa-col-*` classes
+- Changed from `pure-u-*` to `pc-col-*` classes
 - **Percentage sizes** (5% increments): `'5' | '10' | '15' | ... | '100'`
 - **Fraction sizes**: `'1-2' | '1-3' | '2-3' | '1-4' | '3-4' | '1-5' | ... | '11-12'`
 - **Auto width**: `'auto'`
 - **Responsive breakpoints**: `sm`, `md`, `lg`, `xl` props
 - Added `style?: string` prop for inline styles
-- Example: `<Column size="100" md="50">` renders `pa-col-100 pa-col-md-50`
+- Example: `<Column size="100" md="50">` renders `pc-col-100 pc-col-md-50`
 
 **Pages Updated:**
 - All route pages updated to use `size="100"` instead of invalid `size="1"`

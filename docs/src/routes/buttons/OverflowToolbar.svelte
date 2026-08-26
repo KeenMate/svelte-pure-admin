@@ -210,10 +210,10 @@
 		</div>
 
 		<h4 class="mt-4">In card headers</h4>
-		<p class="text-muted mb-1">In a card header, use the card-flavored alias <code>.pa-card__actions--overflow</code> on the <code>.pa-card__actions</code> slot itself — the buttons and split button become its direct children (no inner wrapper). It auto-inits like a standalone <code>.pa-overflow</code>, appending its own <code>[⋮]</code> more-menu, and the header title yields before the actions collapse. Laid out three-up (<code>pa-col-lg-1-3</code>) so each card is already narrow — resize the browser window to watch each toolbar consume and spit out action buttons live, each collapsing at its own breakpoint.</p>
+		<p class="text-muted mb-1">In a card header, use the card-flavored alias <code>.pa-card__actions--overflow</code> on the <code>.pa-card__actions</code> slot itself — the buttons and split button become its direct children (no inner wrapper). It auto-inits like a standalone <code>.pa-overflow</code>, appending its own <code>[⋮]</code> more-menu, and the header title yields before the actions collapse. Laid out three-up (<code>pc-col-lg-1-3</code>) so each card is already narrow — resize the browser window to watch each toolbar consume and spit out action buttons live, each collapsing at its own breakpoint.</p>
 
-		<div class="pa-row mt-2">
-			<div class="pa-col-100 pa-col-lg-1-3">
+		<div class="pc-row mt-2">
+			<div class="pc-col-100 pc-col-lg-1-3">
 				<div class="pa-card">
 					<div class="pa-card__header">
 						<div class="pa-card__title minw-45">
@@ -265,7 +265,7 @@
 				</div>
 			</div>
 
-			<div class="pa-col-100 pa-col-lg-1-3">
+			<div class="pc-col-100 pc-col-lg-1-3">
 				<div class="pa-card">
 					<div class="pa-card__header">
 						<div class="pa-card__title">
@@ -317,7 +317,7 @@
 				</div>
 			</div>
 
-			<div class="pa-col-100 pa-col-lg-1-3">
+			<div class="pc-col-100 pc-col-lg-1-3">
 				<div class="pa-card">
 					<div class="pa-card__header">
 						<div class="pa-card__title minw-60">

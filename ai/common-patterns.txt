@@ -212,7 +212,7 @@ Prevent close with callback:
 
 5. GRID LAYOUT PATTERNS
 -------------------------
-The Grid system uses pa-row and column classes.
+The Grid system uses pc-row and column classes.
 
 Two-column layout:
 
