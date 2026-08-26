@@ -565,13 +565,6 @@
 		{/snippet}
 
 		{#snippet center()}
-			<FitSlot priority={25} tag="div">
-				<NavbarSearch
-					placeholder="Search..."
-					onclick={() => (showCommandPalette = true)}
-				/>
-			</FitSlot>
-
 			{#if $page.data.pageTitle}
 				<!-- Wrap the page title in a FitSlot to have it degrade (here: hide at
 				     priority 20, between the version and search). -->
@@ -582,6 +575,16 @@
 		{/snippet}
 
 		{#snippet end()}
+			<!-- Compact Ctrl+K search pill: opens the command palette. Lives in the
+			     end zone before the notification bell, mirroring the pure-admin demo —
+			     keeping it out of the center zone so it never overlaps the page title. -->
+			<FitSlot priority={25} tag="div">
+				<NavbarSearch
+					placeholder="Search..."
+					onclick={() => (showCommandPalette = true)}
+				/>
+			</FitSlot>
+
 			<NavMenu>
 				<NavItem href="/alerts">⚠️ Alerts</NavItem>
 				<NavItem href="/tables">📋 Tables</NavItem>
