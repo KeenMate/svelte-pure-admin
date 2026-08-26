@@ -6,17 +6,17 @@ Svelte 5 component library for Pure Admin CSS framework — 100+ ready-to-use co
 
 ## What's New in 1.9.0
 
-Sync with `@keenmate/pure-admin-core` **v2.7.2 → v2.9.0-rc08** — new interactive wrappers, overflow toolbars, and the unified button model. **Requires `@keenmate/pure-admin-core` ≥ 2.9.0-rc08.**
+Sync with `@keenmate/pure-admin-core` **v2.7.2 → v2.9.0-rc16** — a universal three-zone Navbar, priority-driven header fit, a full search suite, and a foundation-wide `--pa-*` → `--pc-*` de-brand. **Requires `@keenmate/pure-admin-core` ≥ 2.9.0-rc16 and themes rebuilt at rc16.**
 
-- **`Splitter` + `SplitterPane` + `SplitterGutter`** — resizable N-pane layouts over core's `splitter.js`: drag / keyboard resize, collapse-to-rail, and `localStorage` persistence. Root `onresize` / `oncollapse` / `onexpand` callbacks; per-pane `size` / `min` / `max` / `isMinimizable`
-- **`RangeGroup`** — compact multi-range filter: one toggle summarising N numeric sliders in a Floating-UI panel. Reactive `bind:values`, one-param URL sync via `qsKey` (`?filters=age:25..60,children:gte:2`), `immediate` / `apply` modes, and pluggable codec / query-string adapters (History, hash, or `svelte-spa-router`)
-- **`Stat` fit-mode** — `isFit` + `contextText` opt into square fit-to-box tiles whose number scales to the tile and whose label / change / context rows reveal progressively by size
-- **`Card` overflow actions** — `isActionsOverflow` progressively collapses header actions into a "…" more-menu when space is tight; the header also emits core's canonical `.pa-card__title-text` / `.pa-card__description` structure
-- **`SplitButton` speaks core's rc06 menu model** — joins the shared `window.PaMenus` registry so only one menu (Svelte split button, raw-core split button, or `.pa-overflow` more-menu) is ever open at once; adds the `data-pa-keep-open` opt-out for items that spawn their own popover; and now dismisses only on a real menu-item click. `SplitButtonItem` forwards `data-*` / `aria-*` to its button
-- **Buttons centered by default** (core rc06 unified content model) — full-width icon+label buttons that used to left-align now center; add `align="start"` for the old look. `Button` now wraps text in `.pa-btn__label` so `align="center"` / `"justify"` behave exactly like core
-- **`ProfilePanel`** role chip migrated to `.pa-badge` (the bespoke `.pa-profile-panel__role` rule was dropped upstream)
+- **BREAKING — foundation de-branded `--pa-*` → `--pc-*`.** Every runtime CSS variable, the grid classes (`.pa-row` / `.pa-col*` → `.pc-*`), and the light/dark mode classes (`.pa-mode-*` → `.pc-mode-*`) drop the `pa-` brand (tracking pure-css rc04); the rem-height utilities `h-Nx` → `hr-N`. All emitted markup + inline `style="--pa-…"` bindings are migrated — apps must boundary-aware-replace `--pa-` → `--pc-` in their own markup / overrides and rebuild themes at rc16.
+- **BREAKING — `Navbar` reshaped to a universal three-zone schema** (`start` / `center` / `end`): a fixed burger plus three open zones you fill freely, with the app-identity / menu / page-title pieces extracted into composable **`AppHeader`** / **`NavMenu`** / **`PageHeader`**. The legacy `pa-header__*` block was renamed wholesale to `pa-navbar__*` / `pa-app-header` / `pa-page-header` / `pa-navmenu` (no aliases).
+- **`FitSlot` + `FitStep` — composable Navbar Fit.** Wrap any header slot to opt it into priority-driven degradation: when the row can't fit, slots hide / step down / relocate to the sidebar lowest-priority-first, then restore as space returns. **`NavMenu`** adds responsive item collapse (`collapse="menu" | "sidebar"`).
+- **A full search suite** — page-level **`SearchResults`**, inline live-search **`NavbarSearchField`** (single round-trip, grouped autocomplete), type-and-go **`NavbarSearchInput`** / **`SidebarSearch`**, plus **`CommandPalette`** size presets + runtime resize. New **`SidebarSection`** headings, **`SidebarDivider`** rules, and `NavItem` active state.
+- **`Sidebar` drag-to-resize** now drives core's shipped `sidebar-resize.js` — fixing a dead handle in the tablet band — and the `SettingsPanel` "Resizable" toggle is now functional.
+- **BREAKING — required is now attribute-driven.** Mark the control (`<Input required>`); core draws the asterisk. The `required` / `isRequired` props on `FormLabel` / `FormField` / `FormGroup` are **removed**. `Tabs` gains **`wrapLabels`** for multi-line, height-levelled tab titles.
+- **BREAKING — full contract audit.** Every emitted class was verified against core; invented `pa-*` phantom classes were cleared library-wide and **four fully-phantom components removed** (`MetricList` / `StatusList` / `ActivityFeed` / `QuickActions` → use `Fields`/`Table`, `Badge`, `List`/`Timeline`, `ButtonGroup`). `Badge` `themeColor` now emits the real `pa-badge--color-N`.
 
-See [CHANGELOG.md](./CHANGELOG.md#unreleased) for the full list and behavior-change notes.
+See [CHANGELOG.md](./CHANGELOG.md) for the full list and behavior-change notes.
 
 ## What's New in 1.8.0
 

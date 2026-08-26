@@ -30,6 +30,12 @@
 	let cardTabsActive = $state('card-tab-1');
 	let inlineTabsActive = $state('inline-tab-1');
 	let inlineOnlyActive = $state('inline-only-1');
+	// Wrap-labels + per-tab width (real-world) examples
+	let wlAutoActive = $state('wl-auto-1');
+	let wlWrapActive = $state('wl-wrap-1');
+	let rwWrapActive = $state('rw-tab-1');
+	let rwGrowActive = $state('rw1-tab-1');
+	let rwCenterActive = $state('rwc-tab-1');
 </script>
 
 <Paragraph>Tab navigation components for organizing content into separate sections.</Paragraph>
@@ -190,7 +196,7 @@
 		<!-- Fixed Width Tabs -->
 		<Card titleText="Fixed Width Tabs">
 			<Alert variant="info">
-				<strong>Available widths:</strong> Use <code>pa-tabs__item--w-1x</code> through <code>pa-tabs__item--w-10x</code> for 1rem to 10rem min-width.
+				<strong>Fixed widths:</strong> the <code>width</code> / <code>height</code> props (<code>"1x"</code>–<code>"10x"</code>) emit the rem min-size utilities <code>minwr-1</code>–<code>minwr-10</code> / <code>minhr-1</code>–<code>minhr-10</code> (1rem–10rem) on the tab button. Core has no <code>pa-tabs__item--w-Nx</code> modifier — the min-size utilities are the canonical per-tab width contract. For elastic sizing pass <code>maxwr-*</code> / <code>wr-*</code> via <code>class</code>, optionally with <code>wrapLabels</code> on <code>&lt;Tabs&gt;</code>.
 			</Alert>
 
 			<Heading level={4}>6x Width (6rem each)</Heading>
@@ -243,6 +249,102 @@
 		</Card>
 	</Column>
 </Grid>
+
+<!-- Wrap Long Labels -->
+<Heading level={3} class="mt-4 mb-4">Wrap Long Labels</Heading>
+<Card titleText="Wrap Long Labels">
+	<Alert variant="info">
+		<strong>The problem:</strong> an irregular label set like <em>Orders / Invoices / Delivery sheets / Complaints and missed items</em> looks bad both ways — <code>align="full"</code> stretches the short tabs into dead space, and plain auto width leaves the long one huge and the edge ragged. Set <code>wrapLabels</code> to let the long title wrap, and cap it with a <code>maxwr-*</code> utility (via <code>class</code>) to choose the wrap point. The row then keeps every tab as tall as the wrapped one — no zig-zag — via the flex row's default <code>align-items: stretch</code>.
+	</Alert>
+
+	<Heading level={4}>Default (auto width, no wrap) — ragged, long tab dominates</Heading>
+	<Tabs>
+		<TabItem active={wlAutoActive === 'wl-auto-1'} onclick={() => (wlAutoActive = 'wl-auto-1')}>Orders</TabItem>
+		<TabItem active={wlAutoActive === 'wl-auto-2'} onclick={() => (wlAutoActive = 'wl-auto-2')}>Invoices</TabItem>
+		<TabItem active={wlAutoActive === 'wl-auto-3'} onclick={() => (wlAutoActive = 'wl-auto-3')}>Delivery sheets</TabItem>
+		<TabItem active={wlAutoActive === 'wl-auto-4'} onclick={() => (wlAutoActive = 'wl-auto-4')}>Complaints and missed items</TabItem>
+	</Tabs>
+	<TabsContent>
+		<TabPanel active={wlAutoActive === 'wl-auto-1'} id="wl-auto-1"><Paragraph>Orders content.</Paragraph></TabPanel>
+		<TabPanel active={wlAutoActive === 'wl-auto-2'} id="wl-auto-2"><Paragraph>Invoices content.</Paragraph></TabPanel>
+		<TabPanel active={wlAutoActive === 'wl-auto-3'} id="wl-auto-3"><Paragraph>Delivery sheets content.</Paragraph></TabPanel>
+		<TabPanel active={wlAutoActive === 'wl-auto-4'} id="wl-auto-4"><Paragraph>Complaints content.</Paragraph></TabPanel>
+	</TabsContent>
+
+	<Heading level={4} class="mt-6">With <code>wrapLabels</code> + <code>maxwr-15</code> on the long tab — tidy, level</Heading>
+	<Tabs wrapLabels>
+		<TabItem active={wlWrapActive === 'wl-wrap-1'} onclick={() => (wlWrapActive = 'wl-wrap-1')}>Orders</TabItem>
+		<TabItem active={wlWrapActive === 'wl-wrap-2'} onclick={() => (wlWrapActive = 'wl-wrap-2')}>Invoices</TabItem>
+		<TabItem active={wlWrapActive === 'wl-wrap-3'} onclick={() => (wlWrapActive = 'wl-wrap-3')}>Delivery sheets</TabItem>
+		<TabItem active={wlWrapActive === 'wl-wrap-4'} onclick={() => (wlWrapActive = 'wl-wrap-4')} class="maxwr-15">Complaints and missed items</TabItem>
+	</Tabs>
+	<TabsContent>
+		<TabPanel active={wlWrapActive === 'wl-wrap-1'} id="wl-wrap-1"><Paragraph>Orders content — the long tab wraps to two lines; the short tabs stretch to match its height.</Paragraph></TabPanel>
+		<TabPanel active={wlWrapActive === 'wl-wrap-2'} id="wl-wrap-2"><Paragraph>Invoices content.</Paragraph></TabPanel>
+		<TabPanel active={wlWrapActive === 'wl-wrap-3'} id="wl-wrap-3"><Paragraph>Delivery sheets content.</Paragraph></TabPanel>
+		<TabPanel active={wlWrapActive === 'wl-wrap-4'} id="wl-wrap-4"><Paragraph>Complaints content.</Paragraph></TabPanel>
+	</TabsContent>
+</Card>
+
+<!-- Per-Tab Width: Real-World Example -->
+<Heading level={3} class="mt-4 mb-4">Per-Tab Width — Real-World Example</Heading>
+<Card titleText="Per-Tab Width — Real-World Example">
+	<Alert variant="info">
+		A mixed label set like <em>User / Order / Invoice / Packages / Deliveries and returns</em> has a too-narrow first tab and a too-wide last one. Give every tab a <code>minwr-*</code> floor (the <code>width</code> prop, e.g. <code>width="8x"</code>) so the short ones stop looking cramped, and cap the long one with a <code>maxwr-*</code> utility (plus <code>wrapLabels</code> so it wraps) — the row then stays tidy and level.
+	</Alert>
+
+	<Heading level={4}>Floor every tab at 8rem (<code>width="8x"</code>), cap + wrap the long one (<code>maxwr-15</code>)</Heading>
+	<Tabs wrapLabels>
+		<TabItem active={rwWrapActive === 'rw-tab-1'} onclick={() => (rwWrapActive = 'rw-tab-1')} width="8x">User</TabItem>
+		<TabItem active={rwWrapActive === 'rw-tab-2'} onclick={() => (rwWrapActive = 'rw-tab-2')} width="8x">Order</TabItem>
+		<TabItem active={rwWrapActive === 'rw-tab-3'} onclick={() => (rwWrapActive = 'rw-tab-3')} width="8x">Invoice</TabItem>
+		<TabItem active={rwWrapActive === 'rw-tab-4'} onclick={() => (rwWrapActive = 'rw-tab-4')} width="8x">Packages</TabItem>
+		<TabItem active={rwWrapActive === 'rw-tab-5'} onclick={() => (rwWrapActive = 'rw-tab-5')} width="8x" class="maxwr-15">Deliveries and returns</TabItem>
+	</Tabs>
+	<TabsContent>
+		<TabPanel active={rwWrapActive === 'rw-tab-1'} id="rw-tab-1"><Heading level={4}>User</Heading><Paragraph>Account holder details.</Paragraph></TabPanel>
+		<TabPanel active={rwWrapActive === 'rw-tab-2'} id="rw-tab-2"><Heading level={4}>Order</Heading><Paragraph>Order summary and line items.</Paragraph></TabPanel>
+		<TabPanel active={rwWrapActive === 'rw-tab-3'} id="rw-tab-3"><Heading level={4}>Invoice</Heading><Paragraph>Billing and payment status.</Paragraph></TabPanel>
+		<TabPanel active={rwWrapActive === 'rw-tab-4'} id="rw-tab-4"><Heading level={4}>Packages</Heading><Paragraph>Parcels in this shipment.</Paragraph></TabPanel>
+		<TabPanel active={rwWrapActive === 'rw-tab-5'} id="rw-tab-5"><Heading level={4}>Deliveries and returns</Heading><Paragraph>Tracking, delivery attempts and returns — the long tab wraps to two lines while the short tabs hold their 8rem floor and stretch to match its height.</Paragraph></TabPanel>
+	</TabsContent>
+
+	<Heading level={4} class="mt-6">Prefer one line? Drop <code>wrapLabels</code> and let the long tab grow past the floor</Heading>
+	<Tabs>
+		<TabItem active={rwGrowActive === 'rw1-tab-1'} onclick={() => (rwGrowActive = 'rw1-tab-1')} width="8x">User</TabItem>
+		<TabItem active={rwGrowActive === 'rw1-tab-2'} onclick={() => (rwGrowActive = 'rw1-tab-2')} width="8x">Order</TabItem>
+		<TabItem active={rwGrowActive === 'rw1-tab-3'} onclick={() => (rwGrowActive = 'rw1-tab-3')} width="8x">Invoice</TabItem>
+		<TabItem active={rwGrowActive === 'rw1-tab-4'} onclick={() => (rwGrowActive = 'rw1-tab-4')} width="8x">Packages</TabItem>
+		<TabItem active={rwGrowActive === 'rw1-tab-5'} onclick={() => (rwGrowActive = 'rw1-tab-5')} width="8x">Deliveries and returns</TabItem>
+	</Tabs>
+	<TabsContent>
+		<TabPanel active={rwGrowActive === 'rw1-tab-1'} id="rw1-tab-1"><Paragraph>Same 8rem floor, no cap — the four short tabs are uniform and only “Deliveries and returns” grows to fit its text.</Paragraph></TabPanel>
+		<TabPanel active={rwGrowActive === 'rw1-tab-2'} id="rw1-tab-2"><Paragraph>Order.</Paragraph></TabPanel>
+		<TabPanel active={rwGrowActive === 'rw1-tab-3'} id="rw1-tab-3"><Paragraph>Invoice.</Paragraph></TabPanel>
+		<TabPanel active={rwGrowActive === 'rw1-tab-4'} id="rw1-tab-4"><Paragraph>Packages.</Paragraph></TabPanel>
+		<TabPanel active={rwGrowActive === 'rw1-tab-5'} id="rw1-tab-5"><Paragraph>Deliveries and returns.</Paragraph></TabPanel>
+	</TabsContent>
+
+	<Heading level={4} class="mt-6">Center the label inside each tab — add <code>justify-content-center</code> via <code>class</code></Heading>
+	<Tabs wrapLabels>
+		<TabItem active={rwCenterActive === 'rwc-tab-1'} onclick={() => (rwCenterActive = 'rwc-tab-1')} width="8x" class="justify-content-center">User</TabItem>
+		<TabItem active={rwCenterActive === 'rwc-tab-2'} onclick={() => (rwCenterActive = 'rwc-tab-2')} width="8x" class="justify-content-center">Order</TabItem>
+		<TabItem active={rwCenterActive === 'rwc-tab-3'} onclick={() => (rwCenterActive = 'rwc-tab-3')} width="8x" class="justify-content-center">Invoice</TabItem>
+		<TabItem active={rwCenterActive === 'rwc-tab-4'} onclick={() => (rwCenterActive = 'rwc-tab-4')} width="8x" class="justify-content-center">Packages</TabItem>
+		<TabItem active={rwCenterActive === 'rwc-tab-5'} onclick={() => (rwCenterActive = 'rwc-tab-5')} width="8x" class="maxwr-15 justify-content-center">Deliveries and returns</TabItem>
+	</Tabs>
+	<TabsContent>
+		<TabPanel active={rwCenterActive === 'rwc-tab-1'} id="rwc-tab-1"><Paragraph>Same floored tabs, but the label is centered within each tab instead of start-aligned.</Paragraph></TabPanel>
+		<TabPanel active={rwCenterActive === 'rwc-tab-2'} id="rwc-tab-2"><Paragraph>Order.</Paragraph></TabPanel>
+		<TabPanel active={rwCenterActive === 'rwc-tab-3'} id="rwc-tab-3"><Paragraph>Invoice.</Paragraph></TabPanel>
+		<TabPanel active={rwCenterActive === 'rwc-tab-4'} id="rwc-tab-4"><Paragraph>Packages.</Paragraph></TabPanel>
+		<TabPanel active={rwCenterActive === 'rwc-tab-5'} id="rwc-tab-5"><Paragraph>Deliveries and returns.</Paragraph></TabPanel>
+	</TabsContent>
+
+	<Alert variant="info" class="mt-4">
+		<strong>Note:</strong> when a tab is wider than its text (via <code>minwr-*</code> / <code>wr-*</code>), the label is <em>start-aligned</em> by default. Add the <code>justify-content-center</code> utility — the tab item is a flexbox — to center it (or <code>justify-content-end</code> to end-align). That utility ships in <code>@keenmate/pure-css</code>. It is <em>not</em> the same as <code>align="centered"</code> (<code>pa-tabs--centered</code>), which centers the whole tab group within the bar rather than the label inside each tab.
+	</Alert>
+</Card>
 
 <!-- Two Column Grid: Pills Style + Pills with Icons -->
 <Grid>
