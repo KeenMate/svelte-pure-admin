@@ -19,6 +19,7 @@ export async function loadCoreJs(
 		| 'navbar-collapse'
 		| 'navbar-dropdown'
 		| 'navbar-fit'
+		| 'container-breakpoint'
 		| 'sidebar-resize'
 ): Promise<void> {
 	if (typeof window === 'undefined') return;
@@ -42,7 +43,10 @@ export async function loadCoreJs(
 			await import('@keenmate/pure-admin-core/js/navbar-dropdown.js');
 			break;
 		case 'navbar-fit':
-			await import('@keenmate/pure-admin-core/js/navbar-fit.js');
+			await import('@keenmate/pure-admin-core/js/fit.js');
+			break;
+		case 'container-breakpoint':
+			await import('@keenmate/pure-admin-core/js/container-breakpoint.js');
 			break;
 		case 'sidebar-resize':
 			await import('@keenmate/pure-admin-core/js/sidebar-resize.js');

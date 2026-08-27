@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.9.0-rc04] - 2026-08-28
+
+Sync with `@keenmate/pure-admin-core` **v2.9.0-rc16 → v2.9.0-rc17**, wrapping its new Container Breakpoint engine and the fit-engine additions (container-generic init, group opt-in / opt-out). `svelte-check` passes clean against rc17.
+
+### Added — library
+
+- **`ContainerBreakpoint`** (`layout/ContainerBreakpoint.svelte`) — reactive wrapper over core's new Container Breakpoint engine (`container-breakpoint.js`). Maps the wrapper's own inline size to a named `mode` from author-declared `steps` (rem by default, or `unit="px"`) and hands it to a `{ mode }` snippet param, so you `{#if mode === '…'}` and Svelte **mounts only the branch that shows** — the off-screen branch (a chart, a date-picker, a fetch) is never constructed. Where `FitSlot` is content-measured (renders every variant, hides with a class), this is threshold-declared, so the losers needn't exist. Reflects `[data-mode]`; descendants marked `data-pa-show="mode …"` are shown/hidden via the shared `.d-none`; `onchange(mode, prev)` fires on every flip (use for lazy `import()`); a `hysteresis` dead-band prevents boundary flapping. Adds the `'container-breakpoint'` loader case to `internal/core-js.ts` and the `pureAdmin.components.containerBreakpoint` + `config.containerBreakpoint` typings.
+- **`FitContainer`** (`layout/FitContainer.svelte`) — arms any horizontal flex row (toolbar, filter bar, card actions) with the now-container-generic fit engine: sets `data-pa-fit-auto` so every direct child folds without tagging each, and boots the engine on mount. `defaultPriority` → `data-pa-fit-default-priority`; children opt out with `data-pa-fit-ignore`, or take an explicit strategy via a nested `FitSlot`. The 1-D row-fold companion to `ContainerBreakpoint`'s 2-D swap.
+
+### Changed — library
+
+- **Bumped `@keenmate/pure-admin-core` peer/dev to `^2.9.0-rc17`.** rc17 renamed core's `navbar-fit.js` → `fit.js`; the `internal/core-js.ts` loader's `'navbar-fit'` case already resolves to `fit.js`, and `FitContainer` prefers the new `pureAdmin.components.fit` (falling back to the `navFit` alias). `FitSlot` / `FitStep` doc comments updated to the `fit.js` name.
+
+### Docs
+
+- **New "Responsive Fit" page** (`/container-breakpoint`) — mount-on-demand chart↔KPI with a live mount/destroy log, a multi-level grid → tabs → icon-tabs card, and a `FitContainer` toolbar.
+
 ## [1.9.0-rc03] - 2026-08-26
 
 **BREAKING — foundation namespace migrated `pa-` → `pc-`.** Tracking pure-css rc04 /

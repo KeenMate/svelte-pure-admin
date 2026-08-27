@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * FitStep — one ranked variant inside a `<FitSlot strategy="steps">` (core
-	 * Navbar Fit, `navbar-fit.js`). The engine shows the largest step that fits and
+	 * Navbar Fit, `fit.js`). The engine shows the largest step that fits and
 	 * climbs down the ladder (0 → 1 → 2 … → hidden) as the header narrows.
 	 *
 	 * You only order the steps by writing them widest-first; this component derives

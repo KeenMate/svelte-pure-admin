@@ -59,6 +59,8 @@ export { default as AppHeader } from './layout/AppHeader.svelte';
 export { default as PageHeader } from './layout/PageHeader.svelte';
 export { default as FitSlot } from './layout/FitSlot.svelte';
 export { default as FitStep } from './layout/FitStep.svelte';
+export { default as FitContainer } from './layout/FitContainer.svelte';
+export { default as ContainerBreakpoint } from './layout/ContainerBreakpoint.svelte';
 export { default as Sidebar } from './layout/Sidebar.svelte';
 export { default as SidebarItem } from './layout/SidebarItem.svelte';
 export { default as SidebarSection } from './layout/SidebarSection.svelte';

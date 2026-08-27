@@ -62,19 +62,48 @@ declare global {
 		 * library drives are typed; all optional (defined by whichever module loads first).
 		 */
 		pureAdmin?: {
-			config?: { mobileBreakpoint?: number };
+			config?: {
+				mobileBreakpoint?: number;
+				fit?: { defaultPriority?: number };
+				containerBreakpoint?: { hysteresis?: number; hiddenClass?: string };
+			};
 			events?: {
 				emit: (name: string, detail?: unknown) => void;
 				on?: (name: string, handler: (detail: unknown) => void) => void;
 			};
 			components?: {
 				/**
-				 * Priority-driven header degradation — @keenmate/pure-admin-core/js/navbar-fit.js
-				 * (core v2.9.0-rc12). Generalises the nav-collapse priority idea to EVERY header
-				 * slot (brand wordmark, version tag, page title, search box): when the row can't
-				 * fit, slots degrade one at a time — lowest `data-pa-fit-priority` first — via a
-				 * `data-pa-fit` strategy (`hide` | `steps` | `sidebar`), restoring as space returns.
+				 * Container Breakpoint engine — @keenmate/pure-admin-core/js/container-breakpoint.js
+				 * (core v2.9.0-rc17). Maps an element's inline size to a NAMED mode from declared
+				 * rem/px thresholds and fires only on a flip, so a wrapper can mount on demand.
+				 * Reflects [data-mode], toggles .d-none on [data-pa-show] children, dispatches
+				 * a `pa:breakpoint` CustomEvent. Hysteresis dead-band stops boundary flapping.
 				 */
+				containerBreakpoint?: {
+					observe: (
+						el: HTMLElement,
+						opts: {
+							steps: Record<string, number> | Array<{ name: string; min: number }>;
+							unit?: 'rem' | 'px';
+							hysteresis?: number;
+							initial?: string;
+							hiddenClass?: string;
+							attribute?: string | false;
+							emitEvent?: boolean;
+						},
+						cb?: (mode: string, prev: string | null, detail: unknown) => void
+					) => { current: () => string; remeasure: () => void; destroy: () => void } | null;
+					init: (el: HTMLElement) => unknown;
+					initAll: (scope?: ParentNode) => void;
+					relayoutAll: () => void;
+				};
+				/** Container-generic fit engine (alias of navFit) — core v2.9.0-rc17 fit.js. */
+				fit?: {
+					init: (container: HTMLElement) => void;
+					initAll: (scope?: ParentNode) => void;
+					relayoutAll: () => void;
+				};
+				/** Priority-driven header degradation (canonical name: `fit`) — core fit.js. */
 				navFit?: {
 					/** Idempotent — wire one fit container (default `.pa-navbar__inner`). */
 					init: (container: HTMLElement) => void;

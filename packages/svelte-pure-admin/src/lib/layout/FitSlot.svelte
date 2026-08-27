@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * FitSlot — declare a header slot's Navbar Fit behaviour (core v2.9.0-rc12,
-	 * `navbar-fit.js`). Compose these inside a `<Navbar>`'s zones (brand, page
+	 * `fit.js`). Compose these inside a `<Navbar>`'s zones (brand, page
 	 * title, search, custom actions); the engine — which `Navbar` initialises on
 	 * `.pa-navbar__inner` — degrades the participating slots one at a time, LOWEST
 	 * `priority` first, until the header row fits, then restores as space returns.
