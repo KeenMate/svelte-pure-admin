@@ -50,7 +50,13 @@ function readThemes(themesRoot: string): ThemeOption[] {
 			const defaultVariant = manifest.colorVariants?.find((v) => !v.id) ?? manifest.colorVariants?.[0];
 			const cssRelative = resolveCssRelative(themeDir, id, defaultVariant?.file);
 			if (!cssRelative) continue; // No CSS on disk → skip rather than ship a 404
-			themes.push({ id, name, cssPath: `/themes/${id}/${cssRelative}` });
+			// ?v= token: one-time cache-buster for browsers that cached theme CSS as
+			// `immutable` under the bare URL (they'd never revalidate it). MUST match the
+			// token hard-coded in app.html's initial <link>, or the two disagree and the
+			// theme CSS is fetched twice on first paint (SettingsPanel re-assigns href).
+			// Constant by design: ongoing freshness comes from the ETag + must-revalidate
+			// headers on the theme route, not from bumping this token.
+			themes.push({ id, name, cssPath: `/themes/${id}/${cssRelative}?v=rc16` });
 		} catch {
 			// Skip malformed manifests rather than failing the whole build
 		}

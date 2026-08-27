@@ -30,7 +30,13 @@
 				link.rel = 'stylesheet';
 				// Registry-extracted layout: themes/<id>/css/<id>.css
 				// (manifest currently mis-declares dist/ — see +layout.server.ts probe)
-				link.href = '/themes/' + theme + '/css/' + theme + '.css';
+				// The ?v= token is a one-time cache-buster: earlier builds served theme
+				// CSS as `immutable`, so browsers that cached it never revalidate a bare
+				// URL. Changing the URL forces one fresh fetch (now served with ETag +
+				// must-revalidate). MUST match the token appended to cssPath in
+				// +layout.server.ts, or SettingsPanel/theme-ready re-assign the href on
+				// mount and double-load the CSS.
+				link.href = '/themes/' + theme + '/css/' + theme + '.css?v=rc16';
 				document.currentScript.parentNode.insertBefore(link, document.currentScript);
 			})();
 		</script>

@@ -20,7 +20,7 @@
 		KpiHeroSide
 	} from '@keenmate/svelte-pure-admin';
 	import Sparkline from '$lib/charts/Sparkline.svelte';
-	import ConfigDisplay from './ConfigDisplay.svelte';
+	// import ConfigDisplay from './ConfigDisplay.svelte';
 
 	// Sparkline data — values are "higher = more / better" (Chart.js draws bigger y higher).
 	const productSparks = {
@@ -34,7 +34,8 @@
 	const revenueTrend = [720, 730, 745, 755, 770, 780, 795, 810, 820, 830, 838, 845, 847];
 </script>
 
-<ConfigDisplay />
+<!-- <ConfigDisplay /> — demo config overlay, hidden -->
+
 
 <!-- Dashboard Header -->
 <Grid>
