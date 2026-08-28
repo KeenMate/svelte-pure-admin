@@ -8,16 +8,19 @@ import { getThemesDir } from '$lib/server/paths';
 // Per-request — must NOT be prerendered. The on-demand installer needs to run live.
 export const prerender = false;
 
-interface ThemeManifestVariant {
-	id?: string;
-	name?: string;
-	file?: string;
-}
+// Shape of a theme's theme.json, as far as this loader cares. `colorVariants`
+// has two forms in the wild — the current array (each variant carrying its own
+// `modes`) and the legacy `{ supported }` object — and both are handed to the
+// SettingsPanel verbatim; ThemeOption's readers normalise them.
+type ThemeManifestVariants = ThemeOption['colorVariants'];
 
 interface ThemeManifest {
 	id?: string;
 	name?: string;
-	colorVariants?: ThemeManifestVariant[];
+	colorVariants?: ThemeManifestVariants;
+	modes?: ThemeOption['modes'];
+	modeCssClass?: string;
+	variantCssClass?: string;
 }
 
 // Resolve the actual CSS path on disk. The CLI's registry extraction puts files
@@ -47,7 +50,20 @@ function readThemes(themesRoot: string): ThemeOption[] {
 			const manifest = JSON.parse(readFileSync(manifestPath, 'utf-8')) as ThemeManifest;
 			const id = manifest.id ?? entry;
 			const name = manifest.name ?? entry;
-			const defaultVariant = manifest.colorVariants?.find((v) => !v.id) ?? manifest.colorVariants?.[0];
+			const variants = Array.isArray(manifest.colorVariants) ? manifest.colorVariants : [];
+			const defaultVariant = variants.find((v) => !v.id) ?? variants[0];
+			// Project the array form down to the fields the panel actually reads —
+			// manifests carry a `colors` swatch blob per mode that would otherwise
+			// ride along in every page's SSR payload for all 15 themes.
+			const slimVariants = Array.isArray(manifest.colorVariants)
+				? manifest.colorVariants.map((v) => ({
+						id: v.id,
+						name: v.name,
+						description: v.description,
+						file: v.file,
+						modes: v.modes?.map((m) => ({ id: m.id, name: m.name, default: m.default }))
+					}))
+				: manifest.colorVariants;
 			const cssRelative = resolveCssRelative(themeDir, id, defaultVariant?.file);
 			if (!cssRelative) continue; // No CSS on disk → skip rather than ship a 404
 			// ?v= token: one-time cache-buster for browsers that cached theme CSS as
@@ -56,7 +72,18 @@ function readThemes(themesRoot: string): ThemeOption[] {
 			// theme CSS is fetched twice on first paint (SettingsPanel re-assigns href).
 			// Constant by design: ongoing freshness comes from the ETag + must-revalidate
 			// headers on the theme route, not from bumping this token.
-			themes.push({ id, name, cssPath: `/themes/${id}/${cssRelative}?v=rc16` });
+			// Pass the manifest's mode / colour-variant declarations through as well:
+			// the SettingsPanel drives its Mode and Color Variant selectors off them
+			// instead of assuming a fixed light/dark pair and a `pc-mode-{mode}` class.
+			themes.push({
+				id,
+				name,
+				cssPath: `/themes/${id}/${cssRelative}?v=rc16`,
+				colorVariants: slimVariants,
+				modes: manifest.modes,
+				modeCssClass: manifest.modeCssClass,
+				variantCssClass: manifest.variantCssClass
+			});
 		} catch {
 			// Skip malformed manifests rather than failing the whole build
 		}

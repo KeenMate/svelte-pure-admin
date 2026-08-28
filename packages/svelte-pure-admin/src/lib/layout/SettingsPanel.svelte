@@ -15,10 +15,21 @@
 	import type { ThemeOption } from './types';
 	import { _ } from '../i18n';
 	import { loadCoreJs } from '../internal/core-js';
+	import {
+		getDefaultMode,
+		getDefaultVariant,
+		getModeCssClass,
+		getModes,
+		getVariantCssClass,
+		getVariants,
+		optionLabel
+	} from '../internal/theme-manifest';
 
 	interface SettingsPanelState {
 		theme: string;
 		themeMode: string;
+		/** Colour variant id from the theme manifest; '' = the theme's default. */
+		colorVariant: string;
 		sidebarBehavior: string;
 		sidebarCollapsed: boolean;
 		sidebarResizable: boolean;
@@ -48,6 +59,7 @@
 	let settings = $state<SettingsPanelState>({
 		theme: defaultTheme || (availableThemes.length > 0 ? availableThemes[0].id : ''),
 		themeMode: 'light',
+		colorVariant: '',
 		sidebarBehavior: 'hide',
 		sidebarCollapsed: false,
 		sidebarResizable: false,
@@ -61,6 +73,47 @@
 		sidebarMode: ''
 	});
 
+	// Modes offered when a theme ships no manifest data (id/name/cssPath only).
+	// Keeps the pre-manifest behaviour for hosts that never pass `colorVariants`.
+	const FALLBACK_MODES: { id: string; name: string }[] = [
+		{ id: 'light', name: 'Light' },
+		{ id: 'dark', name: 'Dark' }
+	];
+
+	// The manifest behind the current selection, and what it declares.
+	let selectedTheme = $derived(availableThemes.find((t) => t.id === settings.theme) ?? null);
+	let variantOptions = $derived(getVariants(selectedTheme));
+	let modeOptions = $derived.by(() => {
+		const modes = getModes(selectedTheme, settings.colorVariant);
+		return modes.length > 0 ? modes : FALLBACK_MODES;
+	});
+	// Mirror pure-admin: a section with nothing to choose between is hidden.
+	let showVariantSection = $derived(variantOptions.length > 1);
+	let showModeSection = $derived(modeOptions.length > 1);
+	// "Auto" only makes sense when the OS preference has both ends to map onto.
+	let showAutoMode = $derived(
+		modeOptions.some((m) => m.id === 'light') && modeOptions.some((m) => m.id === 'dark')
+	);
+
+	// Re-validate variant + mode against a theme's manifest. Keeps the stored
+	// choice when the new theme still supports it, otherwise falls back to the
+	// manifest default — a variant/mode from the previous theme must not stick.
+	function reconcileThemeSelection(storedVariant?: string, storedMode?: string) {
+		const variants = getVariants(selectedTheme);
+		const wantedVariant = storedVariant ?? settings.colorVariant;
+		settings.colorVariant = variants.some((v) => (v.id || '') === wantedVariant)
+			? wantedVariant
+			: getDefaultVariant(selectedTheme);
+
+		const modes = getModes(selectedTheme, settings.colorVariant);
+		if (modes.length === 0) return; // No manifest — leave the fallback light/dark/auto choice alone
+		const wantedMode = storedMode ?? settings.themeMode;
+		const hasLight = modes.some((m) => m.id === 'light');
+		const hasDark = modes.some((m) => m.id === 'dark');
+		const isValid = wantedMode === 'auto' ? hasLight && hasDark : modes.some((m) => m.id === wantedMode);
+		settings.themeMode = isValid ? wantedMode : getDefaultMode(selectedTheme, settings.colorVariant);
+	}
+
 	// Load settings from localStorage and URL params
 	function loadSettings() {
 		if (typeof window === 'undefined') return;
@@ -72,7 +125,16 @@
 		} else if (availableThemes.length > 0) {
 			settings.theme = defaultTheme || availableThemes[0].id;
 		}
-		settings.themeMode = localStorage.getItem('theme-mode') || 'light';
+		// Variant + mode come from the theme's manifest, with the stored values as
+		// the preference. `null` (never chosen) lets the manifest default win —
+		// pure-admin's themes are dark-first, so a blanket 'light' would fight them.
+		reconcileThemeSelection(
+			localStorage.getItem('color-variant') ?? undefined,
+			localStorage.getItem('theme-mode') ?? undefined
+		);
+		if (!localStorage.getItem('theme-mode') && getModes(selectedTheme, settings.colorVariant).length === 0) {
+			settings.themeMode = 'light';
+		}
 		settings.fontSize = localStorage.getItem('font-size') || 'default';
 		settings.fontFamily = localStorage.getItem('font-family') || 'default';
 		settings.sidebarCollapsed = localStorage.getItem('sidebar-hidden') === 'true';
@@ -117,9 +179,12 @@
 			}
 		}
 
-		// Theme mode (light/dark/auto)
-		const resolvedMode = getResolvedThemeMode(settings.themeMode);
-		applyThemeToDOM(resolvedMode);
+		// Colour variant — manifest-driven class on <body>, applied before the mode
+		// so anything listening for the change sees the final appearance.
+		applyColorVariant();
+
+		// Theme mode (manifest-declared modes, or the light/dark/auto fallback)
+		applyThemeToDOM(getResolvedThemeMode(settings.themeMode));
 
 		// Set up listener for auto mode
 		setupAutoThemeListener();
@@ -251,6 +316,7 @@
 			localStorage.setItem('theme', settings.theme);
 		}
 		localStorage.setItem('theme-mode', settings.themeMode);
+		localStorage.setItem('color-variant', settings.colorVariant);
 		localStorage.setItem('font-size', settings.fontSize);
 		localStorage.setItem('font-family', settings.fontFamily);
 		localStorage.setItem('sidebar-hidden', settings.sidebarCollapsed.toString());
@@ -283,7 +349,12 @@
 		if (availableThemes.length > 0) {
 			settings.theme = defaultTheme || availableThemes[0].id;
 		}
-		settings.themeMode = 'light';
+		// Back to the theme's own defaults, not a hardcoded light/no-variant pair.
+		settings.colorVariant = getDefaultVariant(selectedTheme);
+		settings.themeMode =
+			getModes(selectedTheme, settings.colorVariant).length > 0
+				? getDefaultMode(selectedTheme, settings.colorVariant)
+				: 'light';
 		settings.fontSize = 'default';
 		settings.fontFamily = 'default';
 		settings.sidebarCollapsed = false;
@@ -299,6 +370,7 @@
 		if (typeof localStorage !== 'undefined') {
 			localStorage.removeItem('theme');
 			localStorage.removeItem('theme-mode');
+			localStorage.removeItem('color-variant');
 			localStorage.removeItem('font-size');
 			localStorage.removeItem('font-family');
 			localStorage.removeItem('sidebar-hidden');
@@ -319,47 +391,100 @@
 
 	// Media query for OS theme preference (used in auto mode)
 	let mediaQuery: MediaQueryList | null = null;
+	// Unsubscribe handle for the core bus subscription (preferred over our own query).
+	let offSystemMode: (() => void) | null = null;
 
-	// Resolve 'auto' to actual light/dark based on OS preference
-	function getResolvedThemeMode(mode: string): 'light' | 'dark' {
-		if (mode === 'auto') {
-			if (typeof window !== 'undefined') {
-				return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-			}
-			return 'light'; // Default to light on server
-		}
-		return mode as 'light' | 'dark';
+	// The OS colour-scheme preference. core's pure-admin.js owns the single
+	// prefers-color-scheme watcher and publishes it as pureAdmin.colorScheme —
+	// read that when present instead of opening a second matchMedia.
+	function systemMode(): 'light' | 'dark' {
+		if (typeof window === 'undefined') return 'light';
+		const fromCore = window.pureAdmin?.colorScheme?.mode;
+		if (fromCore === 'light' || fromCore === 'dark') return fromCore;
+		return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 	}
 
-	// Apply resolved theme to DOM
-	function applyThemeToDOM(resolvedMode: 'light' | 'dark') {
+	// Resolve 'auto' to actual light/dark based on OS preference
+	function getResolvedThemeMode(mode: string): string {
+		return mode === 'auto' ? systemMode() : mode;
+	}
+
+	// Tell anything that snapshots CSS variables at draw time (charts, canvas,
+	// SVG) that the theme's appearance changed and it should re-read. Mirrors
+	// pure-admin's notifyThemeChange: a window event plus the shared core bus.
+	function notifyThemeChange(detail: { kind: 'mode' | 'variant'; mode?: string; variant?: string }) {
+		if (typeof window === 'undefined') return;
+		window.dispatchEvent(new CustomEvent('pa:theme-change', { detail }));
+		window.pureAdmin?.events?.emit('theme:change', detail);
+	}
+
+	// Apply resolved theme to DOM, using the manifest's mode class pattern
+	// (`modeCssClass`, default `pc-mode-{mode}`) rather than assuming one.
+	function applyThemeToDOM(resolvedMode: string) {
 		if (typeof document === 'undefined') return;
-		document.body.classList.remove('pc-mode-light', 'pc-mode-dark');
-		document.body.classList.add(`pc-mode-${resolvedMode}`);
+		const pattern = getModeCssClass(selectedTheme);
+		// Clear every class the pattern could have produced — the theme's own
+		// modes plus the light/dark defaults, so switching themes leaves nothing behind.
+		const candidates = new Set([...modeOptions.map((m) => m.id), 'light', 'dark']);
+		for (const id of candidates) {
+			document.body.classList.remove(pattern.replace('{mode}', id));
+		}
+		document.body.classList.add(pattern.replace('{mode}', resolvedMode));
+		// data-theme is what web components (web-grid et al.) key off.
+		document.body.dataset.theme = resolvedMode;
+		notifyThemeChange({ kind: 'mode', mode: resolvedMode });
+	}
+
+	// Apply the colour-variant class, using the manifest's `variantCssClass`
+	// pattern (default `pa-color-{variant}`). The default variant has an empty
+	// id and therefore no class of its own.
+	function applyColorVariant() {
+		if (typeof document === 'undefined') return;
+		const pattern = getVariantCssClass(selectedTheme);
+		for (const variant of variantOptions) {
+			if (variant.id) document.body.classList.remove(pattern.replace('{variant}', variant.id));
+		}
+		if (settings.colorVariant) {
+			document.body.classList.add(pattern.replace('{variant}', settings.colorVariant));
+		}
+		notifyThemeChange({ kind: 'variant', variant: settings.colorVariant });
 	}
 
 	// Handle OS theme change when in auto mode
-	function handleOSThemeChange(e: MediaQueryListEvent) {
+	function handleOSThemeChange() {
 		if (settings.themeMode === 'auto') {
-			applyThemeToDOM(e.matches ? 'dark' : 'light');
+			applyThemeToDOM(systemMode());
 		}
 	}
 
-	// Set up listener for OS theme changes when in auto mode
-	function setupAutoThemeListener() {
-		if (typeof window === 'undefined') return;
-
-		// Clean up previous listener
+	// Drop whichever auto-mode subscription is currently live.
+	function teardownAutoThemeListener() {
+		if (offSystemMode) {
+			offSystemMode();
+			offSystemMode = null;
+		}
 		if (mediaQuery) {
 			mediaQuery.removeEventListener('change', handleOSThemeChange);
 			mediaQuery = null;
 		}
+	}
 
-		// Set up new listener if in auto mode
-		if (settings.themeMode === 'auto') {
-			mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-			mediaQuery.addEventListener('change', handleOSThemeChange);
+	// Subscribe to OS theme changes while (and only while) auto mode is active.
+	// Prefer core's 'colorscheme:change' topic so the page keeps one watcher;
+	// fall back to our own matchMedia when core JS isn't loaded.
+	function setupAutoThemeListener() {
+		if (typeof window === 'undefined') return;
+
+		teardownAutoThemeListener();
+		if (settings.themeMode !== 'auto') return;
+
+		const bus = window.pureAdmin?.events;
+		if (bus?.on) {
+			offSystemMode = bus.on('colorscheme:change', handleOSThemeChange) ?? null;
+			if (offSystemMode) return;
 		}
+		mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		mediaQuery.addEventListener('change', handleOSThemeChange);
 	}
 
 	// Watch for settings changes (only after mount to avoid overwriting loaded values)
@@ -368,6 +493,7 @@
 			// Access all settings to track them
 			settings.theme;
 			settings.themeMode;
+			settings.colorVariant;
 			settings.fontSize;
 			settings.fontFamily;
 			settings.sidebarCollapsed;
@@ -393,11 +519,8 @@
 
 		return () => {
 			document.removeEventListener('click', handleClickOutside);
-			// Clean up media query listener
-			if (mediaQuery) {
-				mediaQuery.removeEventListener('change', handleOSThemeChange);
-				mediaQuery = null;
-			}
+			// Clean up whichever auto-mode subscription is live
+			teardownAutoThemeListener();
 		};
 	});
 </script>
@@ -413,7 +536,12 @@
 		{#if availableThemes.length > 0}
 			<div class="pa-settings-panel__section">
 				<label class="pa-settings-panel__label" for="settings-theme">Theme</label>
-				<select id="settings-theme" class="pa-settings-panel__select" bind:value={settings.theme}>
+				<select
+					id="settings-theme"
+					class="pa-settings-panel__select"
+					bind:value={settings.theme}
+					onchange={() => reconcileThemeSelection()}
+				>
 					{#each availableThemes as theme (theme.id)}
 						<option value={theme.id}>{theme.name}</option>
 					{/each}
@@ -421,15 +549,38 @@
 			</div>
 		{/if}
 
-		<!-- Theme Mode -->
-		<div class="pa-settings-panel__section">
-			<label class="pa-settings-panel__label" for="settings-themeMode">Theme Mode</label>
-			<select id="settings-themeMode" class="pa-settings-panel__select" bind:value={settings.themeMode}>
-				<option value="light">Light</option>
-				<option value="dark">Dark</option>
-				<option value="auto">Auto (System)</option>
-			</select>
-		</div>
+		<!-- Color Variant — only when the theme declares more than one -->
+		{#if showVariantSection}
+			<div class="pa-settings-panel__section">
+				<label class="pa-settings-panel__label" for="settings-colorVariant">Color Variant</label>
+				<select
+					id="settings-colorVariant"
+					class="pa-settings-panel__select"
+					bind:value={settings.colorVariant}
+					onchange={() => reconcileThemeSelection(settings.colorVariant)}
+				>
+					{#each variantOptions as variant (variant.id)}
+						<option value={variant.id ?? ''} title={variant.description}>{optionLabel(variant)}</option>
+					{/each}
+				</select>
+			</div>
+		{/if}
+
+		<!-- Theme Mode — options come from the theme manifest; hidden when there's
+		     only one mode to pick, and "Auto" appears only if both light and dark exist -->
+		{#if showModeSection}
+			<div class="pa-settings-panel__section">
+				<label class="pa-settings-panel__label" for="settings-themeMode">Theme Mode</label>
+				<select id="settings-themeMode" class="pa-settings-panel__select" bind:value={settings.themeMode}>
+					{#each modeOptions as mode (mode.id)}
+						<option value={mode.id}>{optionLabel(mode)}</option>
+					{/each}
+					{#if showAutoMode}
+						<option value="auto">Auto (System)</option>
+					{/if}
+				</select>
+			</div>
+		{/if}
 
 		<!-- Container Width -->
 		<div class="pa-settings-panel__section">

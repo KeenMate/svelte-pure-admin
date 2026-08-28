@@ -172,16 +172,28 @@
 				// Apply theme mode from localStorage
 				// Supports: 'light', 'dark', 'auto' (follows OS preference)
 				// For themes with dark :root defaults (like Audi), explicitly apply
-				// pc-mode-light to override and prevent dark flash on light mode reload
-				var themeMode = localStorage.getItem('theme-mode') || 'light';
-				var resolvedMode;
-				if (themeMode === 'auto') {
-					// Check OS preference for auto mode
-					resolvedMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-				} else {
-					resolvedMode = themeMode;
+				// pc-mode-light to override and prevent dark flash on light mode reload.
+				// With NO stored mode (first visit) apply nothing: the theme's own :root
+				// default is its manifest default, which is exactly what SettingsPanel
+				// will pick on mount — forcing 'light' here would flash on dark-first themes.
+				var themeMode = localStorage.getItem('theme-mode');
+				if (themeMode) {
+					var resolvedMode;
+					if (themeMode === 'auto') {
+						// Check OS preference for auto mode
+						resolvedMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+					} else {
+						resolvedMode = themeMode;
+					}
+					document.body.classList.add('pc-mode-' + resolvedMode);
 				}
-				document.body.classList.add('pc-mode-' + resolvedMode);
+
+				// Apply the colour variant the same way — SettingsPanel re-applies it on
+				// mount, but without this the default variant paints first and swaps.
+				var colorVariant = localStorage.getItem('color-variant');
+				if (colorVariant) {
+					document.body.classList.add('pa-color-' + colorVariant);
+				}
 
 				// Apply font size from localStorage
 				var fontSize = localStorage.getItem('font-size');

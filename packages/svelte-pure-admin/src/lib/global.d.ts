@@ -69,8 +69,16 @@ declare global {
 			};
 			events?: {
 				emit: (name: string, detail?: unknown) => void;
-				on?: (name: string, handler: (detail: unknown) => void) => void;
+				/** Subscribe to a topic; returns an unsubscribe function. */
+				on?: (name: string, handler: (detail: unknown) => void) => (() => void) | void;
+				off?: (name: string, handler: (detail: unknown) => void) => void;
 			};
+			/**
+			 * The single owner of the OS light/dark preference — pure-admin.js keeps one
+			 * prefers-color-scheme watcher and publishes it here plus a 'colorscheme:change'
+			 * event, so consumers following "auto" mode read this instead of opening their own.
+			 */
+			colorScheme?: { mode?: 'light' | 'dark' };
 			components?: {
 				/**
 				 * Container Breakpoint engine — @keenmate/pure-admin-core/js/container-breakpoint.js

@@ -82,7 +82,13 @@ export type {
 	SplitterResizeDetail,
 	SplitterToggleDetail
 } from './layout/splitter-context';
-export type { ThemeOption } from './layout/types';
+export type {
+	ThemeOption,
+	ThemeModeOption,
+	ThemeColorVariantOption,
+	ThemeColorVariantsLegacy,
+	ThemeModesLegacy
+} from './layout/types';
 
 // Form Components
 export { default as Form } from './forms/Form.svelte';

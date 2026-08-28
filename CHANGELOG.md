@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — library
+
+- **Manifest-driven Theme Mode + Color Variant selectors in `SettingsPanel`.** The panel now derives its theme controls from each theme's `theme.json` instead of hardcoding a light/dark/auto list — closing the gap with pure-admin's demo panel (`demo/js/settings-panel.js`, which gets the same data from `GET /api/themes/manifests`).
+  - **New Color Variant selector** — rendered only when the theme declares more than one variant, and applies the manifest's `variantCssClass` (default `pa-color-{variant}`) to `<body>`; persisted as `color-variant`. Variants share one CSS file, so the class *is* the switch: `dark` (blue / green / red), `ayu`, `gruvbox` and `tokyo-night` gain a control that was previously unreachable.
+  - **Theme Mode options come from the manifest** — a single-mode theme (`dracula`, `cobalt2`, `darkmatter`, `night-owl`, `one-dark`) hides the section and pins that mode instead of offering a Light option that does nothing, and **"Auto (System)" appears only when the theme has both light and dark**. With nothing stored, the theme's own default mode wins (`audi` is dark-first; the panel used to force it to light).
+  - **`ThemeOption` widened** with the manifest's `colorVariants` / `modes` / `modeCssClass` / `variantCssClass`, plus the new exported `ThemeModeOption` / `ThemeColorVariantOption` / `ThemeColorVariantsLegacy` / `ThemeModesLegacy` types. All optional — a `ThemeOption` carrying only `id` / `name` / `cssPath` still works and falls back to the previous light/dark/auto list.
+  - **`internal/theme-manifest.ts`** (new) normalises the two manifest schemas in the wild — current (`colorVariants` array, each variant carrying its own `modes`) and legacy (`colorVariants.supported` + a top-level `modes.supported`) — behind `getVariants` / `getModes` / `getDefaultMode` / `getDefaultVariant` / `getModeCssClass` / `getVariantCssClass` / `optionLabel`.
+- **`pa:theme-change` / `theme:change` events.** Changing mode or variant now dispatches a `pa:theme-change` `CustomEvent` on `window` **and** emits `theme:change` on core's shared bus (`window.pureAdmin.events`), with a `{ kind: 'mode' | 'variant', … }` detail — so code that snapshots CSS variables at draw time (charts, canvas, SVG) can re-read. Mirrors upstream's `notifyThemeChange`.
+
+### Changed — library
+
+- **Mode and variant classes follow the manifest's patterns**, not a hardcoded `pc-mode-{mode}`: `applyThemeToDOM` reads `modeCssClass` (legacy `modes.cssClass`) and clears every class the pattern could have produced before applying the new one, so switching themes leaves nothing behind. It also sets `body.dataset.theme`, which web components (web-grid et al.) key off.
+- **Auto mode uses core's single OS-preference watcher.** `SettingsPanel` now reads `window.pureAdmin.colorScheme.mode` and subscribes to `colorscheme:change`, only opening its own `matchMedia` when core JS isn't loaded — core's `pure-admin.js` owns the one `prefers-color-scheme` query. `Window['pureAdmin']` typings gain `colorScheme`, `events.off`, and an unsubscribe return on `events.on`.
+- **`SettingsPanel` re-validates variant + mode on theme switch**, keeping the stored choice when the new theme supports it and falling back to that theme's manifest default otherwise — a variant or mode from the previous theme can no longer stick.
+
+### Docs
+
+- **`+layout.server.ts` passes the manifest through** to `SettingsPanel`, projecting the variant array down to the fields the panel reads — the per-mode `colors` swatch blobs (29 objects across the 15 installed themes) no longer ride along in every page's SSR payload.
+- **`app.html` first paint** applies the stored `color-variant` class pre-hydration, and with **no** stored theme mode now applies no mode class at all: a theme's `:root` default is its manifest default, so the old `|| 'light'` fallback flashed on dark-first themes.
+
 ## [1.9.0-rc04] - 2026-08-28
 
 Sync with `@keenmate/pure-admin-core` **v2.9.0-rc16 → v2.9.0-rc17**, wrapping its new Container Breakpoint engine and the fit-engine additions (container-generic init, group opt-in / opt-out). `svelte-check` passes clean against rc17.
