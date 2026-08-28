@@ -2,10 +2,10 @@
 	/**
 	 * NavMenu — a navbar menu (`.pa-navmenu`) placed inside a `Navbar` zone. Renders
 	 * `<nav class="pa-navmenu"><ul>…</ul></nav>` and owns its responsive collapse:
-	 * when `collapse` is set it drives core `navbar-collapse.js` on itself, folding
-	 * its lowest-priority items out as the header narrows and restoring them as it
-	 * widens. Per-item config lives on the `NavItem` children (`navPriority` /
-	 * `navCollapse="hide"` / `navIcon`).
+	 * when `collapse` is set it drives the one core Fit engine (`fit.js`,
+	 * `data-pa-fit-nav`) on itself, folding its lowest-priority items out as the
+	 * header narrows and restoring them as it widens. Per-item config lives on the
+	 * `NavItem` children (`navPriority` / `navCollapse="hide"` / `navIcon`).
 	 *
 	 * A menu's side is decided purely by which zone it sits in — core rc14 dropped the
 	 * old `--start` / `--end` modifiers. Children are `NavItem`s.
@@ -15,7 +15,7 @@
 
 	interface Props {
 		/**
-		 * Responsive collapse target (core `navbar-collapse.js`):
+		 * Responsive collapse target (core Fit engine, `data-pa-fit-nav`):
 		 * - `'menu'` — items fold into a generated "More ▾" dropdown (self-contained).
 		 * - `'sidebar'` — items are rebuilt as native `.pa-sidebar__*` markup under a
 		 *   section heading in the sidebar (needs a sidebar on the page).
@@ -50,10 +50,11 @@
 	let navElement = $state<HTMLElement | null>(null);
 
 	onMount(() => {
-		// Progressive collapse is opt-in per menu; init core's engine on this nav.
+		// Progressive collapse is opt-in per menu; init the one Fit engine's nav
+		// path on this nav (fit.js reads data-pa-fit-nav).
 		if (!collapse || !navElement) return;
-		loadCoreJs('navbar-collapse').then(() => {
-			if (navElement) window.PaNavCollapse?.init(navElement);
+		loadCoreJs('navbar-fit').then(() => {
+			if (navElement) window.pureAdmin?.components?.fit?.initNav(navElement);
 		});
 	});
 
@@ -67,11 +68,11 @@
 <nav
 	class={classes()}
 	bind:this={navElement}
-	data-pa-nav-collapse={collapse}
-	data-pa-nav-more-label={moreLabel}
-	data-pa-nav-collapse-target={collapseTarget}
-	data-pa-nav-collapse-label={collapseLabel}
-	data-pa-nav-collapse-icon={collapseIcon}
+	data-pa-fit-nav={collapse}
+	data-pa-fit-nav-more-label={moreLabel}
+	data-pa-fit-nav-target={collapseTarget}
+	data-pa-fit-nav-label={collapseLabel}
+	data-pa-fit-nav-icon={collapseIcon}
 >
 	<ul>
 		{@render children?.()}

@@ -38,13 +38,6 @@ declare global {
 		};
 		/** Alias of PaOverflow kept for the card-actions-overflow name. */
 		PaCardActionsOverflow?: Window['PaOverflow'];
-		/** Responsive navbar collapse — @keenmate/pure-admin-core/js/navbar-collapse.js */
-		PaNavCollapse?: {
-			/** Idempotent single-nav init on a `.pa-navmenu[data-pa-nav-collapse]` element. */
-			init: (nav: HTMLElement) => void;
-			/** Init every uninitialised collapse nav under `scope` (default document). */
-			initAll: (scope?: ParentNode) => void;
-		};
 		/**
 		 * Touch support for navbar hover dropdowns — @keenmate/pure-admin-core/js/navbar-dropdown.js.
 		 * Attaches global click/keydown listeners at module eval; `init` only (re)applies
@@ -105,11 +98,23 @@ declare global {
 					initAll: (scope?: ParentNode) => void;
 					relayoutAll: () => void;
 				};
-				/** Container-generic fit engine (alias of navFit) — core v2.9.0-rc17 fit.js. */
+				/**
+				 * Container-generic fit engine (alias of navFit) — core v2.9.0-rc17 fit.js.
+				 * Also owns nav collapse (the former navbar-collapse.js): initNav wires a
+				 * `.pa-navmenu[data-pa-fit-nav]` so its items fold into a sink.
+				 */
 				fit?: {
 					init: (container: HTMLElement) => void;
 					initAll: (scope?: ParentNode) => void;
 					relayoutAll: () => void;
+					/** Wire one nav's item-collapse (`.pa-navmenu[data-pa-fit-nav]`). */
+					initNav: (nav: HTMLElement) => void;
+					/** Wire every fit-managed nav under `scope`. */
+					initAllNav: (scope?: ParentNode) => void;
+					/** Re-fold every fit-managed nav. */
+					relayoutAllNav: () => void;
+					/** Register a relocation sink `{ out, in }` by name. */
+					registerSink: (name: string, sink: unknown) => void;
 				};
 				/** Priority-driven header degradation (canonical name: `fit`) — core fit.js. */
 				navFit?: {

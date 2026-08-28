@@ -16,7 +16,6 @@ export async function loadCoreJs(
 		| 'range-group'
 		| 'pa-stat-fit'
 		| 'overflow'
-		| 'navbar-collapse'
 		| 'navbar-dropdown'
 		| 'navbar-fit'
 		| 'container-breakpoint'
@@ -35,9 +34,6 @@ export async function loadCoreJs(
 			break;
 		case 'overflow':
 			await import('@keenmate/pure-admin-core/js/overflow.js');
-			break;
-		case 'navbar-collapse':
-			await import('@keenmate/pure-admin-core/js/navbar-collapse.js');
 			break;
 		case 'navbar-dropdown':
 			await import('@keenmate/pure-admin-core/js/navbar-dropdown.js');

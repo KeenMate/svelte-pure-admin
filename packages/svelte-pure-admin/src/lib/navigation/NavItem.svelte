@@ -13,13 +13,13 @@
 		isActive?: boolean;
 		/**
 		 * Collapse priority when the parent nav has `navCollapse` set. Lowest drops
-		 * first (default 0). Maps to `data-pa-nav-priority`. See {@link Navbar}.
+		 * first (default 0). Maps to `data-pa-fit-nav-priority`. See {@link Navbar}.
 		 */
 		navPriority?: number;
 		/**
 		 * Per-item collapse behaviour when the parent nav has `navCollapse` set.
 		 * `'hide'` — don't relocate this item to the menu/sidebar; just hide it when
-		 * it doesn't fit. Maps to `data-pa-nav-collapse="hide"`.
+		 * it doesn't fit. Maps to `data-pa-fit-nav="hide"`.
 		 */
 		navCollapse?: 'hide';
 		/** Icon shown when this item is folded into the sidebar (sidebar collapse mode). Maps to `data-pa-nav-icon`. */
@@ -60,8 +60,8 @@
 {#if hasDropdown}
 	<li
 		class={classes()}
-		data-pa-nav-priority={navPriority}
-		data-pa-nav-collapse={navCollapse}
+		data-pa-fit-nav-priority={navPriority}
+		data-pa-fit-nav={navCollapse}
 		data-pa-nav-icon={navIcon}
 	>
 		<a href={href || '#'} class="pa-navmenu__link">
@@ -74,8 +74,8 @@
 {:else}
 	<li
 		class={classes()}
-		data-pa-nav-priority={navPriority}
-		data-pa-nav-collapse={navCollapse}
+		data-pa-fit-nav-priority={navPriority}
+		data-pa-fit-nav={navCollapse}
 		data-pa-nav-icon={navIcon}
 	>
 		<a href={href || '#'}>
