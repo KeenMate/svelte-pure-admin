@@ -1,5 +1,5 @@
 export const load = () => {
 	return {
-		pageTitle: 'Responsive Fit'
+		pageTitle: 'Fit to Size'
 	};
 };

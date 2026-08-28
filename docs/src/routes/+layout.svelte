@@ -791,7 +791,7 @@
 						<SidebarItem href="/splitter" labelText="Splitter" active={$page.url.pathname === '/splitter'}>
 							{#snippet icon()}•{/snippet}
 						</SidebarItem>
-						<SidebarItem href="/container-breakpoint" labelText="Responsive Fit" active={$page.url.pathname === '/container-breakpoint'}>
+						<SidebarItem href="/container-breakpoint" labelText="Fit to Size" active={$page.url.pathname === '/container-breakpoint'}>
 							{#snippet icon()}•{/snippet}
 						</SidebarItem>
 					{/snippet}

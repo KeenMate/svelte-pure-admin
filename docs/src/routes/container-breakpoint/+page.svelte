@@ -1,187 +1,500 @@
 <script lang="ts">
 	import {
+		Badge,
+		Callout,
+		Card,
 		ContainerBreakpoint,
+		DotLeaders,
+		DotLeadersItem,
 		FitContainer,
 		FitSlot,
 		FitStep,
-		Card
+		Sparkline,
+		SparklineBar,
+		Stat,
+		TabItem,
+		Tabs
 	} from '@keenmate/svelte-pure-admin';
 	import MountLog from './MountLog.svelte';
 
-	// Demo 1 — chart↔KPI, mount on demand. A width slider drives the stage; the
-	// card inside measures its own width and swaps mode. The "chart" branch is a
-	// MountLog that records mount/destroy so you can see it's only built in `wide`.
-	let w1 = $state(640);
-	let mode1 = $state('kpi');
-	let logs = $state<string[]>(['(waiting — the panel is not built until the card reaches wide)']);
+	// Every stage is width-driven by its own slider so the whole page can be
+	// exercised without resizing the browser (mirrors pure-admin's Fit to Size demo).
+	let w1 = $state(360); // §1 toolbar — fit.js
+	let w2 = $state(640); // §2 chart ↔ KPI — CSS @container
+	let w3 = $state(760); // §3 rich card — CSS @container
+	let w4 = $state(760); // §4 rich card — ContainerBreakpoint engine
+
+	// §4 mount log — proves the chart branch is CONSTRUCTED, not just revealed.
+	let mode4 = $state('tabs');
+	let logs = $state<string[]>(['(waiting — the chart is not built until the card reaches grid)']);
 	function log(msg: string) {
 		logs = [msg, ...logs].slice(0, 8);
 	}
 
-	// Demo 2 — one card, three levels (grid → tabs → icons), no JS in the page.
-	let w2 = $state(760);
-	let tab = $state<'orders' | 'stock' | 'sales'>('orders');
+	// Shared demo data for the product card in §2/§3/§4.
 	const panels = {
 		orders: { icon: 'fa-cart-shopping', label: 'Orders', n: '1,204' },
 		stock: { icon: 'fa-boxes-stacked', label: 'Stock', n: '8,450' },
 		sales: { icon: 'fa-chart-line', label: 'Sales', n: '$847K' }
 	} as const;
+	type PanelKey = keyof typeof panels;
+	const panelKeys = Object.keys(panels) as PanelKey[];
+
+	const rows: Record<PanelKey, { label: string; value: string }[]> = {
+		orders: [
+			{ label: 'Open', value: '38' },
+			{ label: 'Shipped today', value: '12' },
+			{ label: 'Backordered', value: '3' }
+		],
+		stock: [
+			{ label: 'On hand', value: '8,450' },
+			{ label: 'Reserved', value: '620' },
+			{ label: 'Reorder point', value: '2,000' }
+		],
+		sales: [
+			{ label: 'This month', value: '$847K' },
+			{ label: 'Last month', value: '$753K' },
+			{ label: 'Best week', value: '$241K' }
+		]
+	};
+
+	// One tab selection per stage — §3 and §4 render independent cards.
+	let tab3 = $state<PanelKey>('orders');
+	let tab4 = $state<PanelKey>('orders');
+
+	const trend = [38, 44, 41, 52, 49, 61, 58, 67, 72, 69, 78, 84];
 </script>
 
 <div class="pa-page-content">
-	<h1>Responsive Fit</h1>
+	<h1>Fit to Size</h1>
 	<p class="text-muted">
-		Two tools for making a component adapt to the space it's given — matched to
-		cost. <code>ContainerBreakpoint</code> maps an element's width to a named
-		<em>mode</em> so you <code>{'{#if}'}</code> on it and Svelte <strong>mounts only
-		the branch that shows</strong> (never building the off-screen one).
-		<code>FitContainer</code> folds a 1-D toolbar row, shrinking items as space
-		runs out. Both wrap the <code>@keenmate/pure-admin-core</code> engines
-		(v2.9.0-rc17).
+		Three ways to make a component adapt to the space it is given — and the
+		point of this page is <em>which one to reach for</em>. A CSS
+		<code>@container</code> query costs nothing and should be the default.
+		<code>FitContainer</code> / <code>FitSlot</code> fold a <strong>1-D row</strong>
+		whose overflow depends on measured content, not a threshold you can name up
+		front. <code>ContainerBreakpoint</code> maps width to a named <em>mode</em> so
+		you <code>{'{#if}'}</code> on it and Svelte <strong>mounts only the branch that
+		shows</strong> — the one thing CSS cannot do, because a hidden branch is still
+		built. §3 and §4 are deliberately the <strong>same card</strong>, done both ways.
 	</p>
 
-	<!-- ============================================================ -->
-	<h2 class="mt-5">1 · Mount on demand — build the expensive branch only when it shows</h2>
+	<Callout variant="info" class="mb-4">
+		<strong>The vocabulary.</strong> Under the hood these wrap core's
+		<code>fit.js</code> and <code>container-breakpoint.js</code> (v2.9.0-rc17).
+		<code>FitSlot</code> makes an element a slot (<code>strategy="hide|steps|sidebar"</code>
+		→ <code>data-pa-fit</code>) and <code>priority</code> orders them — lower folds
+		first. <code>FitContainer</code> sets <code>data-pa-fit-auto</code>, so
+		<em>every</em> direct child folds without tagging each, and its
+		<code>defaultPriority</code> is the fallback rank; a child pins itself out
+		with <code>data-pa-fit-ignore</code>. <strong>Drag the sliders</strong> — or
+		open this page on a narrow phone — to watch each stage fold.
+	</Callout>
+
+	<!-- ============================================================
+	     §1 — Toolbar row: fit.js (content-measured, 1-D)
+	     ============================================================ -->
+	<h2 class="mt-5">1 · Card toolbar — shrink, don't lose</h2>
 	<p class="text-muted">
-		The <code>chart</code> branch below is a stand-in for a Chart.js instance: it
-		logs when it mounts and when it's destroyed. Drag the slider — the panel is
-		<strong>constructed only when the card enters <code>chart</code> mode and
-		destroyed when it leaves</strong>. That's the thing a CSS
-		<code>@container</code> can't do — it would keep the hidden branch in the DOM.
+		A <code>steps</code> slot degrades <strong>full label → icon-only → gone</strong>
+		instead of vanishing outright, so an action stays reachable as an icon before
+		it is dropped. <strong>Save</strong> is pinned full
+		(<code>data-pa-fit-ignore</code>); <strong>Duplicate</strong> and
+		<strong>Export</strong> shrink to icons (higher priority survives longer);
+		<strong>Delete</strong> is untagged, so it inherits the container's
+		<code>defaultPriority={20}</code> and drops first.
 	</p>
 
-	<div class="d-flex align-items-center gap-2 my-3">
-		<span class="text-muted">Card width</span>
-		<input type="range" min="260" max="720" bind:value={w1} style="flex:1" />
-		<output style="min-width:5ch;text-align:end">{w1}px</output>
-		<span class="pa-badge pa-badge--primary">mode: {mode1}</span>
+	<div class="stage-slider">
+		<span class="text-muted">Container width</span>
+		<input type="range" min="200" max="720" bind:value={w1} aria-label="Example 1 width" />
+		<output>{w1}px</output>
 	</div>
 
-	<div style="max-width:{w1}px; border:1px dashed var(--pc-border-color); border-radius:8px">
-		<ContainerBreakpoint
-			steps={{ kpi: 0, chart: 45 }}
-			initial="kpi"
-			onchange={(m) => (mode1 = m)}
-		>
-			{#snippet children({ mode })}
-				<Card>
-					<div class="d-flex align-items-center gap-3" style="padding:0.5rem">
-						<div class="flex-1" style="min-width:0">
-							<span class="pa-badge pa-badge--color-3">Beverages</span>
-							<h4 class="mt-2 mb-1">Arabica Cold Brew</h4>
-							<div class="text-muted"><code>SKU-4471</code> · 1 L bottle</div>
+	<div class="stage" style="max-width:{w1}px">
+		<Card>
+			<FitContainer class="fit-toolbar" defaultPriority={20}>
+				<button class="pa-btn pa-btn--primary" data-pa-fit-ignore>
+					<span class="pa-btn__icon">💾</span> Save
+				</button>
+				<FitSlot strategy="steps" priority={40} tag="button" class="pa-btn">
+					<FitStep><span class="pa-btn__icon">⧉</span> Duplicate</FitStep>
+					<FitStep><span class="pa-btn__icon">⧉</span></FitStep>
+				</FitSlot>
+				<FitSlot strategy="steps" priority={30} tag="button" class="pa-btn">
+					<FitStep><span class="pa-btn__icon">⬇️</span> Export</FitStep>
+					<FitStep><span class="pa-btn__icon">⬇️</span></FitStep>
+				</FitSlot>
+				<button class="pa-btn"><span class="pa-btn__icon">🗑️</span> Delete</button>
+			</FitContainer>
+			<p class="stage-note">
+				Drag left: Delete drops → Export shrinks to its icon, then drops →
+				Duplicate shrinks → only Save remains, always full.
+			</p>
+		</Card>
+	</div>
+
+	<!-- ============================================================
+	     §2 — chart ↔ KPI: pure CSS container query, no JS
+	     ============================================================ -->
+	<h2 class="mt-5">2 · Product card — chart ↔ KPI</h2>
+	<p class="text-muted">
+		A different job needs a different tool. Swapping a <strong>sparkline</strong>
+		for a compact <strong>KPI</strong> is a 2-D layout change, not a 1-D row fold —
+		so this one is a plain CSS <strong>container query</strong> on the card, with
+		<em>no engine at all</em>. The left half stays product identity; the right half
+		shows the trend while there is room and swaps to a <code>Stat</code> once the
+		card narrows past <code>45rem</code> (450px).
+	</p>
+
+	<div class="stage-slider">
+		<span class="text-muted">Container width</span>
+		<input type="range" min="260" max="720" bind:value={w2} aria-label="Example 2 width" />
+		<output>{w2}px</output>
+	</div>
+
+	<div class="stage" style="max-width:{w2}px">
+		<div class="cq">
+			<Card>
+				<div class="prod__split">
+					<div class="prod__ident">
+						<Badge themeColor={3}>Beverages</Badge>
+						<h4 class="prod__title">Arabica Cold Brew</h4>
+						<div class="prod__meta"><code>SKU-4471</code> · 1 L bottle</div>
+					</div>
+					<div class="prod__figure">
+						<!-- Both branches exist in the DOM; the query only reveals one.
+						     That is exactly the limitation §4 removes. -->
+						<div class="cq-wide">
+							<Sparkline>
+								{#each trend as v}<SparklineBar value={v} />{/each}
+							</Sparkline>
+							<div class="text-muted stage-note mt-1">Revenue · 12 weeks</div>
 						</div>
-						<div style="flex:0 0 auto">
-							{#if mode === 'chart'}
-								<MountLog label="Revenue chart" {log} />
-							{:else}
-								<div class="pa-stat">
-									<div class="pa-stat__icon pa-stat__icon--success">📈</div>
-									<div class="pa-stat__content">
-										<div class="pa-stat__number">$847K</div>
-										<div class="pa-stat__label">Revenue</div>
-									</div>
-								</div>
-							{/if}
+						<div class="cq-narrow">
+							<Stat number="$847K" labelText="Revenue" changeText="+12.5%" changeDirection="positive" />
 						</div>
 					</div>
-				</Card>
-			{/snippet}
-		</ContainerBreakpoint>
-	</div>
-
-	<div class="pa-card mt-2">
-		<div class="pa-card__body">
-			<strong>Mount log</strong>
-			<ul class="mt-1 mb-0" style="font-family:var(--pc-font-family-mono,monospace);font-size:1.2rem">
-				{#each logs as line}<li>{line}</li>{/each}
-			</ul>
+				</div>
+			</Card>
 		</div>
 	</div>
 
-	<!-- ============================================================ -->
-	<h2 class="mt-5">2 · Multi-level — grid → tabs → icon tabs</h2>
+	<!-- ============================================================
+	     §3 — rich card, three levels: still pure CSS
+	     ============================================================ -->
+	<h2 class="mt-5">3 · Rich product card — degrade on multiple levels</h2>
 	<p class="text-muted">
-		One <code>ContainerBreakpoint</code> with three modes. Wide → the three
-		panels sit side-by-side; medium → they collapse into tabs; narrow → the tab
-		labels drop to icons. Thresholds are <strong>rem</strong>
-		(<code>34</code> = 340px, <code>64</code> = 640px at pure-admin's 10px root).
+		The real power shows when one card restyles on <strong>several axes at once</strong>.
+		A single container query with three widths: as it narrows, the three data
+		panels (<strong>Orders · Stock · Sales</strong>) collapse from a
+		<strong>3-column grid</strong> into <strong>tabs</strong>, then the tab labels
+		drop to <strong>icons only</strong>; in step, the header sheds its supplier,
+		then its packaging line and trend badge. Every visible piece — <code>Badge</code>,
+		<code>Stat</code>, <code>Tabs</code>, <code>DotLeaders</code> — is a real
+		component; only the layout switches.
 	</p>
 
-	<div class="d-flex align-items-center gap-2 my-3">
-		<span class="text-muted">Card width</span>
-		<input type="range" min="260" max="880" bind:value={w2} style="flex:1" />
-		<output style="min-width:5ch;text-align:end">{w2}px</output>
+	<div class="stage-slider">
+		<span class="text-muted">Container width</span>
+		<input type="range" min="260" max="880" bind:value={w3} aria-label="Example 3 width" />
+		<output>{w3}px</output>
 	</div>
 
-	<div style="max-width:{w2}px; border:1px dashed var(--pc-border-color); border-radius:8px">
-		<ContainerBreakpoint steps={{ icons: 0, tabs: 34, grid: 64 }} initial="tabs">
+	<div class="stage" style="max-width:{w3}px">
+		<div class="cq">
+			<Card>
+				<div class="prod__header">
+					<div style="min-width:0">
+						<Badge themeColor={3}>Beverages</Badge>
+						<h4 class="prod__title">Arabica Cold Brew</h4>
+						<div class="prod__meta">
+							<code>SKU-4471</code><span class="cq-pkg"> · 1 L bottle · 12 per case</span
+							><span class="cq-sup"> · Yirgacheffe Co-op</span>
+						</div>
+					</div>
+					<div class="prod__price">
+						<div class="prod__price-num">$4.80</div>
+						<span class="cq-trend"><Badge variant="success">▲ 12.5%</Badge></span>
+					</div>
+				</div>
+
+				<!-- Grid layout: all three panels at once -->
+				<div class="cq-grid prod__panels">
+					{#each panelKeys as key (key)}
+						<div class="prod__panel">
+							<h5 class="prod__panel-title">{panels[key].label}</h5>
+							<DotLeaders>
+								{#each rows[key] as row (row.label)}
+									<DotLeadersItem labelText={row.label} valueText={row.value} />
+								{/each}
+							</DotLeaders>
+						</div>
+					{/each}
+				</div>
+
+				<!-- Tab layout: one panel at a time (labels drop to icons at the narrow step) -->
+				<div class="cq-tabs">
+					<Tabs>
+						{#each panelKeys as key (key)}
+							<TabItem active={tab3 === key} onclick={() => (tab3 = key)}>
+								{#snippet icon()}<i class="fa-solid {panels[key].icon}"></i>{/snippet}
+								<span class="cq-tablabel">{panels[key].label}</span>
+							</TabItem>
+						{/each}
+					</Tabs>
+					<div class="mt-3">
+						<DotLeaders>
+							{#each rows[tab3] as row (row.label)}
+								<DotLeadersItem labelText={row.label} valueText={row.value} />
+							{/each}
+						</DotLeaders>
+					</div>
+				</div>
+			</Card>
+		</div>
+	</div>
+
+	<!-- ============================================================
+	     §4 — the same card on the engine: mount on demand
+	     ============================================================ -->
+	<h2 class="mt-5">4 · The same card, on the engine — with a chart it builds on demand</h2>
+	<p class="text-muted">
+		This is §3's card again — the same three-level degrade, the same header
+		trimming — but driven by <code>ContainerBreakpoint</code> instead of a CSS
+		<code>@container</code>. Why bother, if CSS already did it? Because in §3
+		<strong>every branch is in the DOM at every width</strong>. Here the branches
+		are <code>{'{#if}'}</code>-gated, so Svelte constructs only the one on screen:
+		the grid-only <strong>revenue chart</strong> is <em>built when the card
+		reaches <code>grid</code> and destroyed when it leaves</em>. Watch the log.
+	</p>
+
+	<Callout variant="info" class="mb-3">
+		<strong>What the numbers mean.</strong> The values in <code>steps</code> are
+		<strong>rem</strong> — minimum widths of the <em>card itself</em> (its content-box
+		inline size), not the viewport and not percentages. pure-admin's root
+		font-size is <code>10px</code>, so <code>34</code> = 340px and <code>64</code> =
+		640px — the same numbers as §3's <code>@container</code> breakpoints. The engine
+		picks the <strong>largest</strong> mode whose width the card has passed
+		(700px → <code>grid</code>, 500px → <code>tabs</code>). Prefer pixels? Pass
+		<code>unit="px"</code> and write <code>{'{ icons: 0, tabs: 340, grid: 640 }'}</code> —
+		identical behaviour. Percent is deliberately not a unit: "does this layout fit"
+		is an absolute-pixel question (label widths, gaps, padding); for
+		viewport-relative rules reach for a CSS media query instead.
+	</Callout>
+
+	<div class="stage-slider">
+		<span class="text-muted">Container width</span>
+		<input type="range" min="260" max="880" bind:value={w4} aria-label="Example 4 width" />
+		<output>{w4}px</output>
+		<Badge variant="primary">mode: {mode4}</Badge>
+	</div>
+
+	<div class="stage" style="max-width:{w4}px">
+		<ContainerBreakpoint
+			steps={{ icons: 0, tabs: 34, grid: 64 }}
+			initial="tabs"
+			onchange={(m) => (mode4 = m)}
+		>
 			{#snippet children({ mode })}
 				<Card>
-					<div style="padding:0.5rem">
-						{#if mode === 'grid'}
-							<div class="d-flex gap-3">
-								{#each Object.values(panels) as p}
-									<div class="flex-1">
-										<h5 class="mb-1">{p.label}</h5>
-										<div class="pa-stat">
-											<div class="pa-stat__content">
-												<div class="pa-stat__number">{p.n}</div>
-												<div class="pa-stat__label">{p.label} · 30d</div>
-											</div>
-										</div>
-									</div>
-								{/each}
+					<div class="prod__header">
+						<div style="min-width:0">
+							<Badge themeColor={3}>Beverages</Badge>
+							<h4 class="prod__title">Arabica Cold Brew</h4>
+							<div class="prod__meta">
+								<code>SKU-4471</code>{#if mode !== 'icons'}<span> · 1 L bottle · 12 per case</span
+									>{/if}{#if mode === 'grid'}<span> · Yirgacheffe Co-op</span>{/if}
 							</div>
-						{:else}
-							<div class="pa-tabs pa-tabs--full">
-								{#each Object.entries(panels) as [key, p]}
-									<button
-										class="pa-tabs__item"
-										class:pa-tabs__item--active={tab === key}
-										onclick={() => (tab = key as typeof tab)}
-									>
-										<i class="fa-solid {p.icon}"></i>
-										{#if mode === 'tabs'}<span>{p.label}</span>{/if}
-									</button>
-								{/each}
-							</div>
-							<div class="mt-3 pa-stat">
-								<div class="pa-stat__content">
-									<div class="pa-stat__number">{panels[tab].n}</div>
-									<div class="pa-stat__label">{panels[tab].label} · 30d</div>
-								</div>
-							</div>
-						{/if}
+						</div>
+						<div class="prod__price">
+							<div class="prod__price-num">$4.80</div>
+							{#if mode !== 'icons'}<Badge variant="success">▲ 12.5%</Badge>{/if}
+						</div>
 					</div>
+
+					{#if mode === 'grid'}
+						<!-- Only built in `grid` — MountLog stands in for a Chart.js instance -->
+						<MountLog label="Revenue chart" {log} />
+						<div class="prod__panels mt-3">
+							{#each panelKeys as key (key)}
+								<div class="prod__panel">
+									<h5 class="prod__panel-title">{panels[key].label}</h5>
+									<DotLeaders>
+										{#each rows[key] as row (row.label)}
+											<DotLeadersItem labelText={row.label} valueText={row.value} />
+										{/each}
+									</DotLeaders>
+								</div>
+							{/each}
+						</div>
+					{:else}
+						<Tabs>
+							{#each panelKeys as key (key)}
+								<TabItem active={tab4 === key} onclick={() => (tab4 = key)}>
+									{#snippet icon()}<i class="fa-solid {panels[key].icon}"></i>{/snippet}
+									{#if mode === 'tabs'}<span>{panels[key].label}</span>{/if}
+								</TabItem>
+							{/each}
+						</Tabs>
+						<div class="mt-3">
+							<DotLeaders>
+								{#each rows[tab4] as row (row.label)}
+									<DotLeadersItem labelText={row.label} valueText={row.value} />
+								{/each}
+							</DotLeaders>
+						</div>
+					{/if}
 				</Card>
 			{/snippet}
 		</ContainerBreakpoint>
 	</div>
 
-	<!-- ============================================================ -->
-	<h2 class="mt-5">3 · FitContainer — fold a toolbar row</h2>
-	<p class="text-muted">
-		A 1-D row that degrades as it narrows. <strong>Save</strong> is pinned
-		(<code>data-pa-fit-ignore</code>); <strong>Duplicate</strong> and
-		<strong>Export</strong> shrink label → icon (<code>FitSlot strategy="steps"</code>,
-		higher priority survives longer); <strong>Delete</strong> is untagged, so it
-		inherits the container's default priority and folds first. Narrow the window
-		to watch it fold.
-	</p>
-
-	<Card>
-		<FitContainer class="d-flex align-items-center gap-2" defaultPriority={20}>
-			<button class="pa-btn pa-btn--primary" data-pa-fit-ignore>💾 Save</button>
-			<FitSlot strategy="steps" priority={40} tag="button" class="pa-btn">
-				<FitStep>⧉ Duplicate</FitStep>
-				<FitStep>⧉</FitStep>
-			</FitSlot>
-			<FitSlot strategy="steps" priority={30} tag="button" class="pa-btn">
-				<FitStep>⬇️ Export</FitStep>
-				<FitStep>⬇️</FitStep>
-			</FitSlot>
-			<button class="pa-btn">🗑️ Delete</button>
-		</FitContainer>
+	<Card class="mt-2">
+		<strong>Mount log</strong>
+		<ul class="mount-log">
+			{#each logs as line, i (i + line)}<li>{line}</li>{/each}
+		</ul>
 	</Card>
 </div>
+
+<style>
+	/* --- stage chrome shared by all four examples --- */
+	.stage-slider {
+		display: flex;
+		align-items: center;
+		gap: 0.8rem;
+		margin: 1.2rem 0;
+	}
+	.stage-slider input[type='range'] {
+		flex: 1;
+	}
+	.stage-slider output {
+		min-width: 6ch;
+		text-align: end;
+		font-variant-numeric: tabular-nums;
+	}
+	.stage {
+		/* No padding: the stage's inner width IS the measured width, so the slider
+		   readout matches the thresholds the callouts talk about. */
+		border: 1px dashed var(--pc-border-color);
+		border-radius: 0.8rem;
+		overflow: hidden;
+	}
+	.stage-note {
+		margin: 0.8rem 0 0;
+		color: var(--pc-text-color-2);
+		font-size: var(--pc-font-size-sm, 1.4rem);
+	}
+	.mount-log {
+		margin: 0.4rem 0 0;
+		padding-inline-start: 1.6rem;
+		font-family: var(--pc-font-family-mono, monospace);
+		font-size: 1.2rem;
+	}
+
+	/* --- the toolbar row fit.js measures (§1) --- */
+	.stage :global(.fit-toolbar) {
+		display: flex;
+		align-items: center;
+		gap: 0.8rem;
+		overflow: hidden;
+	}
+
+	/* --- product card pieces, shared by §2 / §3 / §4 --- */
+	.prod__title {
+		margin: 0.6rem 0 0.2rem;
+	}
+	.prod__meta {
+		color: var(--pc-text-color-2);
+		font-size: var(--pc-font-size-sm, 1.4rem);
+	}
+	.prod__split,
+	.prod__header {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 1.6rem;
+	}
+	.prod__figure {
+		flex: 0 0 auto;
+	}
+	.prod__price {
+		text-align: end;
+		flex: 0 0 auto;
+	}
+	.prod__price-num {
+		font-size: 2.4rem;
+		font-weight: 600;
+	}
+	.prod__panel-title {
+		margin: 0 0 0.4rem;
+	}
+	.prod__panels {
+		margin-top: 1.6rem;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1.6rem;
+	}
+	.prod__panels .prod__panel + .prod__panel {
+		padding-inline-start: 1.6rem;
+		border-inline-start: 1px solid var(--pc-border-color);
+	}
+
+	/*
+	 * --- §2 / §3: the CSS-only mechanism ---
+	 * `.cq` is the query container; the `cq-*` classes are its branches. Note
+	 * that every branch stays in the DOM at every width — hidden, but built.
+	 * §4 replaces this whole block with `{#if mode === …}`.
+	 */
+	.cq {
+		container-type: inline-size;
+	}
+
+	/* §2 — chart ↔ KPI at 45rem */
+	.cq-wide {
+		display: none;
+	}
+	@container (min-width: 45rem) {
+		.cq-wide {
+			display: block;
+		}
+		.cq-narrow {
+			display: none;
+		}
+	}
+
+	/* §3 — three levels: icons (<34rem) → tabs (<64rem) → grid (≥64rem) */
+	.cq-grid {
+		display: none;
+	}
+	.cq-pkg,
+	.cq-sup {
+		display: none;
+	}
+	.cq-tablabel {
+		display: none;
+	}
+	@container (min-width: 34rem) {
+		.cq-tablabel,
+		.cq-pkg {
+			display: inline;
+		}
+	}
+	@container (min-width: 64rem) {
+		.cq-grid {
+			display: grid;
+		}
+		.cq-tabs {
+			display: none;
+		}
+		.cq-sup {
+			display: inline;
+		}
+	}
+	@container (max-width: 33.99rem) {
+		.cq-trend {
+			display: none;
+		}
+	}
+</style>
