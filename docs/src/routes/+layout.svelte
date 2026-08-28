@@ -36,7 +36,7 @@
 	} from '@keenmate/svelte-pure-admin';
 	import type { PureAdminConfig, Command, SearchContext, SearchResult, ThemeOption } from '@keenmate/svelte-pure-admin';
 	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
+	import { goto, afterNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { version as libVersion } from '../../../packages/svelte-pure-admin/package.json';
 	import '../app.css';
@@ -96,6 +96,26 @@
 		}
 	}
 
+	// Close the mobile sidebar drawer (overlay). No-op on desktop where the
+	// sidebar is docked, not an overlay. Kept here (app-level) because the
+	// mobile drawer state lives in this layout — the library Sidebar/Navbar are
+	// dumb, mirroring pure-admin where the mobile-drawer JS lives in the demo,
+	// not core.
+	function closeMobileSidebar() {
+		if (!sidebarMobileVisible) return;
+		sidebarMobileVisible = false;
+		if (typeof document !== 'undefined') {
+			document.body.classList.remove('sidebar-visible');
+		}
+	}
+
+	// Bug A: SvelteKit navigates client-side (goto), so unlike the full-page
+	// reload in the mustache demo the drawer would otherwise stay open over the
+	// new page. Close it after every navigation.
+	afterNavigate(() => {
+		closeMobileSidebar();
+	});
+
 	function toggleProfilePanel() {
 		showProfilePanel = !showProfilePanel;
 		if (showProfilePanel) {
@@ -117,6 +137,18 @@
 	// Handle click outside to close panels
 	function handleClickOutside(event: MouseEvent) {
 		const target = event.target as HTMLElement;
+
+		// Bug B: close the mobile drawer when tapping the scrim. The backdrop is a
+		// CSS `::before` on `body.sidebar-visible`, so the tap reports as the body
+		// / `.pa-layout` element — anything OUTSIDE the sidebar itself. Exclude the
+		// burger (it owns its own toggle; otherwise the opening tap re-closes).
+		if (sidebarMobileVisible) {
+			const insideSidebar = target.closest('.pa-layout__sidebar');
+			const burger = target.closest('.pa-navbar__burger, .burger-menu');
+			if (!insideSidebar && !burger) {
+				closeMobileSidebar();
+			}
+		}
 
 		// Check if click is outside notification panel
 		if (showNotifications) {
