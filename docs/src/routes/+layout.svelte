@@ -290,6 +290,7 @@
 		{
 			shortcut: '/go',
 			aliases: ['/goto', '/nav', '/navigate'],
+			hotkey: 'Alt+G',
 			name: 'Go to Page',
 			description: 'Navigate to a page',
 			icon: '🚀',
@@ -325,6 +326,7 @@
 		{
 			shortcut: '/theme',
 			aliases: ['/dark', '/light'],
+			hotkey: 'Alt+T',
 			name: 'Toggle Theme',
 			description: 'Switch between light and dark mode',
 			icon: '🌓',
@@ -335,6 +337,7 @@
 		},
 		{
 			shortcut: '/sidebar',
+			hotkey: 'Alt+B',
 			name: 'Toggle Sidebar',
 			description: 'Show or hide the sidebar',
 			icon: '📐',
@@ -345,6 +348,7 @@
 		},
 		{
 			shortcut: '/settings',
+			hotkey: 'Alt+S',
 			name: 'Open Settings',
 			description: 'Open the settings panel',
 			icon: '⚙️',
