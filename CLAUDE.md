@@ -101,6 +101,8 @@ Since core 2.9.0-rc04 the framework ships interactive behaviours as IIFEs under 
 
 **Wrapper mechanics:** dynamic-import the IIFE inside `onMount` via `internal/core-js.ts` (SSR-safe — the IIFEs read `document` at eval time). `tsconfig.json` maps `@keenmate/pure-admin-core/js/*` to `internal/core-js.stub.d.ts` so `checkJs` doesn't lint the (symlinked, therefore in-program) core JS; the `window.Pa*` APIs are typed in `global.d.ts`. Init helpers that scan *descendants* (`PaRangeGroup`, `PaStatFit`) are given a `display:contents` host to init on.
 
+**Import via the public `/js/*` subpath, never the physical `/src/js/`.** The four app-shell engines that moved down into `@keenmate/pure-css` (`pure-css.js` foundation runtime, `navbar-dropdown.js`, `fit.js`, `container-breakpoint.js`, `sidebar-resize.js`) are imported as `@keenmate/pure-css/js/<name>.js`. pure-css **rc06** tightened its `exports` map to expose only `./js/*` (mapped internally to `./src/js/*`) and hard-blocks reaching into `./src/*` — importing `@keenmate/pure-css/src/js/pure-css.js` fails the vite/rollup build with `Missing "./src/js/pure-css.js" specifier`. The `tsconfig.json` stub mapping key is likewise `@keenmate/pure-css/js/*` → `internal/core-js.stub.d.ts`. (This mirrors how `pure-admin-core/js/*` was always imported.)
+
 ## Breaking changes
 
 Version-by-version breaking-change history lives in `CHANGELOG.md` (this repo) and `../pure-admin/packages/core/CHANGELOG.md` (upstream). Notable currently-load-bearing items already captured in the rules above (logical directions, runes-only, lowercase event handlers).
