@@ -563,14 +563,16 @@
 		{#snippet center()}
 			{#if searchPosition === 'navbar-inline'}
 				<!-- A) Inline navbar search: a live search box with its own results
-				     dropdown (independent of the Ctrl+K palette). Swaps the page title. -->
-				<FitSlot priority={20} tag="div">
-					<NavbarSearchField
-						placeholder="Search pages…"
-						{globalSearch}
-						onselect={handleGlobalSelect}
-					/>
-				</FitSlot>
+				     dropdown (independent of the Ctrl+K palette). Rendered DIRECTLY in the
+				     center zone — no FitSlot wrapper — so the field's `width:100%` /
+				     `max-width` resolves against the zone and it fills the bar like the
+				     pure-admin demo; a wrapper collapses it to content width. Mirrors the
+				     demo, where the inline field carries no data-pc-fit (only the title does). -->
+				<NavbarSearchField
+					placeholder="Search pages…"
+					{globalSearch}
+					onselect={handleGlobalSelect}
+				/>
 			{:else if $page.data.pageTitle}
 				<!-- Wrap the page title in a FitSlot to have it degrade (here: hide at
 				     priority 20, between the version and search). -->
