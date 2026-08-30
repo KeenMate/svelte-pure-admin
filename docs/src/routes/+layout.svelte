@@ -252,6 +252,8 @@
 		{ id: 'data-visualization', title: 'Data Visualization', path: '/data-visualization', icon: '📈' },
 		{ id: 'range-group', title: 'Range Group', path: '/range-group', icon: '🎚️' },
 		{ id: 'splitter', title: 'Splitter', path: '/splitter', icon: '↔️' },
+		{ id: 'responsivity', title: 'Responsivity — how it works', path: '/responsivity', icon: '📐' },
+		{ id: 'container-breakpoint', title: 'Fit to Size', path: '/container-breakpoint', icon: '↔️' },
 		{ id: 'timeline-simple', title: 'Timeline Simple', path: '/timeline-simple', icon: '⏱️' },
 		{ id: 'timeline-block', title: 'Timeline Block', path: '/timeline-block', icon: '📦' },
 		{ id: 'timeline-feed', title: 'Timeline Feed', path: '/timeline-feed', icon: '📰' },
@@ -821,6 +823,16 @@
 							{#snippet icon()}•{/snippet}
 						</SidebarItem>
 						<SidebarItem href="/splitter" labelText="Splitter" active={$page.url.pathname === '/splitter'}>
+							{#snippet icon()}•{/snippet}
+						</SidebarItem>
+					{/snippet}
+				</SidebarItem>
+
+				<!-- Responsivity -->
+				<SidebarItem labelText="Responsivity" hasSubmenu={true}>
+					{#snippet icon()}📐{/snippet}
+					{#snippet submenu()}
+						<SidebarItem href="/responsivity" labelText="How It Works" active={$page.url.pathname === '/responsivity'}>
 							{#snippet icon()}•{/snippet}
 						</SidebarItem>
 						<SidebarItem href="/container-breakpoint" labelText="Fit to Size" active={$page.url.pathname === '/container-breakpoint'}>

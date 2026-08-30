@@ -20,6 +20,9 @@
 			"@keenmate/pure-admin-core/js/*": [
 				"../packages/svelte-pure-admin/src/lib/internal/core-js.stub.d.ts"
 			],
+			"@keenmate/pure-css/js/*": [
+				"../packages/svelte-pure-admin/src/lib/internal/core-js.stub.d.ts"
+			],
 			"@keenmate/svelte-pure-admin": [
 				"../packages/svelte-pure-admin/src/lib"
 			],
