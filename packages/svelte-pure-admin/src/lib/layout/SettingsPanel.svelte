@@ -4,8 +4,9 @@
 	 * Based on pure-admin demo settings-panel.mustache
 	 *
 	 * Provides runtime-configurable settings:
-	 * - Theme and theme mode (light/dark/auto)
-	 * - Layout width and sidebar options
+	 * - Theme, theme mode (light/dark/auto) and colour variant
+	 * - Layout width, search-box placement and command-palette size
+	 * - Sidebar mode / behavior / resizable
 	 * - Display options (compact mode, RTL mode)
 	 * - Profile panel options
 	 * - Font size and family
@@ -31,7 +32,6 @@
 		/** Colour variant id from the theme manifest; '' = the theme's default. */
 		colorVariant: string;
 		sidebarBehavior: string;
-		sidebarCollapsed: boolean;
 		sidebarResizable: boolean;
 		compactMode: boolean;
 		rtlMode: boolean;
@@ -41,6 +41,10 @@
 		fontFamily: string;
 		containerWidth: string;
 		sidebarMode: string;
+		/** Search-box placement preview; '' = off. */
+		searchPosition: string;
+		/** Command-palette size preset; '' = the 608px default. */
+		commandPaletteSize: string;
 	}
 
 	interface Props {
@@ -61,7 +65,6 @@
 		themeMode: 'light',
 		colorVariant: '',
 		sidebarBehavior: 'hide',
-		sidebarCollapsed: false,
 		sidebarResizable: false,
 		compactMode: false,
 		rtlMode: false,
@@ -70,7 +73,9 @@
 		fontSize: 'default',
 		fontFamily: 'default',
 		containerWidth: 'fluid',
-		sidebarMode: ''
+		sidebarMode: '',
+		searchPosition: '',
+		commandPaletteSize: ''
 	});
 
 	// Modes offered when a theme ships no manifest data (id/name/cssPath only).
@@ -137,7 +142,6 @@
 		}
 		settings.fontSize = localStorage.getItem('font-size') || 'default';
 		settings.fontFamily = localStorage.getItem('font-family') || 'default';
-		settings.sidebarCollapsed = localStorage.getItem('sidebar-hidden') === 'true';
 		settings.sidebarBehavior = localStorage.getItem('sidebar-behavior') || 'hide';
 		settings.sidebarResizable = localStorage.getItem('sidebar-resizable') === 'true';
 		settings.compactMode = localStorage.getItem('compact-mode') === 'true';
@@ -147,6 +151,8 @@
 		settings.profileIconOnlyTabs = localStorage.getItem('profile-icon-only-tabs') === 'true';
 		settings.containerWidth = localStorage.getItem('container-width') || 'fluid';
 		settings.sidebarMode = localStorage.getItem('sidebar-mode') || '';
+		settings.searchPosition = localStorage.getItem('search-position') || '';
+		settings.commandPaletteSize = localStorage.getItem('command-palette-size') || '';
 
 		applySettings();
 	}
@@ -225,20 +231,22 @@
 			document.body.classList.add(`font-family-${settings.fontFamily}`);
 		}
 
-		// Sidebar collapsed
-		if (settings.sidebarCollapsed) {
-			document.body.classList.add('sidebar-hidden');
-		} else {
-			document.body.classList.remove('sidebar-hidden');
-		}
+		// Search-box placement + command-palette size (mirror the demo panel).
+		applySearchPosition(settings.searchPosition);
+		applyCommandPaletteSize(settings.commandPaletteSize);
 
-		// Sidebar behavior
+		// Sidebar behavior — one control for hide / icon-collapse / full. The
+		// standalone "Collapsed" checkbox was folded into this in the demo:
+		// "Hide Completely" fully hides the sidebar (body.sidebar-hidden), "Show
+		// Icons Only" swaps it to the icon rail, and the empty default shows it full.
+		document.body.classList.toggle('sidebar-hidden', settings.sidebarBehavior === 'hide');
+
 		const sidebar = document.querySelector('.pc-layout__sidebar');
 		if (sidebar) {
-			sidebar.classList.remove('pc-layout__sidebar--icon-collapse');
-			if (settings.sidebarBehavior === 'icon-collapse') {
-				sidebar.classList.add('pc-layout__sidebar--icon-collapse');
-			}
+			sidebar.classList.toggle(
+				'pc-layout__sidebar--icon-collapse',
+				settings.sidebarBehavior === 'icon-collapse'
+			);
 
 			// Sidebar resizable — mirror pure-admin's settings panel: toggle the
 			// class AND drive core's sidebar-resize.js. init() creates + binds the
@@ -319,7 +327,9 @@
 		localStorage.setItem('color-variant', settings.colorVariant);
 		localStorage.setItem('font-size', settings.fontSize);
 		localStorage.setItem('font-family', settings.fontFamily);
-		localStorage.setItem('sidebar-hidden', settings.sidebarCollapsed.toString());
+		// `sidebar-hidden` is now derived from the behavior (the standalone Collapsed
+		// checkbox was removed) — "Hide Completely" is the fully-hidden state.
+		localStorage.setItem('sidebar-hidden', (settings.sidebarBehavior === 'hide').toString());
 		localStorage.setItem('sidebar-behavior', settings.sidebarBehavior);
 		localStorage.setItem('sidebar-resizable', settings.sidebarResizable.toString());
 		localStorage.setItem('compact-mode', settings.compactMode.toString());
@@ -329,6 +339,11 @@
 		localStorage.setItem('profile-icon-only-tabs', settings.profileIconOnlyTabs.toString());
 		localStorage.setItem('container-width', settings.containerWidth);
 		localStorage.setItem('sidebar-mode', settings.sidebarMode);
+		if (settings.searchPosition) localStorage.setItem('search-position', settings.searchPosition);
+		else localStorage.removeItem('search-position');
+		if (settings.commandPaletteSize)
+			localStorage.setItem('command-palette-size', settings.commandPaletteSize);
+		else localStorage.removeItem('command-palette-size');
 	}
 
 	// Toggle panel
@@ -357,7 +372,6 @@
 				: 'light';
 		settings.fontSize = 'default';
 		settings.fontFamily = 'default';
-		settings.sidebarCollapsed = false;
 		settings.sidebarBehavior = 'hide';
 		settings.sidebarResizable = false;
 		settings.compactMode = false;
@@ -366,6 +380,8 @@
 		settings.profileIconOnlyTabs = false;
 		settings.containerWidth = 'fluid';
 		settings.sidebarMode = '';
+		settings.searchPosition = '';
+		settings.commandPaletteSize = '';
 
 		if (typeof localStorage !== 'undefined') {
 			localStorage.removeItem('theme');
@@ -382,6 +398,8 @@
 			localStorage.removeItem('profile-icon-only-tabs');
 			localStorage.removeItem('container-width');
 			localStorage.removeItem('sidebar-mode');
+			localStorage.removeItem('search-position');
+			localStorage.removeItem('command-palette-size');
 		}
 
 		applySettings();
@@ -450,6 +468,33 @@
 		notifyThemeChange({ kind: 'variant', variant: settings.colorVariant });
 	}
 
+	// Search-box placement — record the choice on `<body data-search-position>` for
+	// any CSS/JS that keys off it, then re-settle the header (revealing/hiding a
+	// search trigger changes its content, so the fit engine must re-run). The host
+	// app reveals its own entry point (inline field, compact pill, sidebar item, …)
+	// from the `onsettingschange` callback; '' clears the attribute.
+	function applySearchPosition(pos: string) {
+		if (typeof document === 'undefined') return;
+		if (pos) document.body.dataset.searchPosition = pos;
+		else delete document.body.dataset.searchPosition;
+		window.pureAdmin?.components?.navFit?.relayoutAll?.();
+	}
+
+	// Command-palette width — swap the size preset modifier on the palette shell
+	// (`#commandPalette`). Each preset just sets `--pc-command-palette-width`; no
+	// modifier = the 608px default. Inert until a palette with that id is mounted.
+	function applyCommandPaletteSize(size: string) {
+		if (typeof document === 'undefined') return;
+		const palette = document.getElementById('commandPalette');
+		if (!palette) return;
+		palette.classList.remove(
+			'pa-command-palette--sm',
+			'pa-command-palette--lg',
+			'pa-command-palette--xl'
+		);
+		if (size) palette.classList.add(`pa-command-palette--${size}`);
+	}
+
 	// Handle OS theme change when in auto mode
 	function handleOSThemeChange() {
 		if (settings.themeMode === 'auto') {
@@ -496,7 +541,6 @@
 			settings.colorVariant;
 			settings.fontSize;
 			settings.fontFamily;
-			settings.sidebarCollapsed;
 			settings.sidebarBehavior;
 			settings.sidebarResizable;
 			settings.compactMode;
@@ -505,6 +549,8 @@
 			settings.profileIconOnlyTabs;
 			settings.containerWidth;
 			settings.sidebarMode;
+			settings.searchPosition;
+			settings.commandPaletteSize;
 
 			saveSettings();
 			applySettings();
@@ -595,6 +641,32 @@
 			</select>
 		</div>
 
+		<!-- Search Box placement — previews the search entry points. The host reveals
+		     its own affordance from the onsettingschange callback / body[data-search-position]. -->
+		<div class="pa-settings-panel__section">
+			<label class="pa-settings-panel__label" for="settings-searchPosition">Search Box</label>
+			<select id="settings-searchPosition" class="pa-settings-panel__select" bind:value={settings.searchPosition}>
+				<option value="">Off</option>
+				<option value="navbar-inline">Navbar — inline search (A)</option>
+				<option value="navbar-compact">Navbar — compact, opens palette (B)</option>
+				<option value="sidebar">Sidebar — opens palette (C)</option>
+				<option value="navbar-typeahead">Navbar — type &amp; go → /search (D)</option>
+				<option value="sidebar-typeahead">Sidebar — type &amp; go → /search (E)</option>
+			</select>
+		</div>
+
+		<!-- Command Palette width — sets the --sm/--lg/--xl preset on the palette shell. -->
+		<div class="pa-settings-panel__section">
+			<label class="pa-settings-panel__label" for="settings-commandPaletteSize">Command Palette</label>
+			<select id="settings-commandPaletteSize" class="pa-settings-panel__select" bind:value={settings.commandPaletteSize}>
+				<option value="">Default (608px)</option>
+				<option value="sm">Small (480px)</option>
+				<option value="lg">Large (768px)</option>
+				<option value="xl">Extra Large (896px)</option>
+			</select>
+			<small class="pa-settings-panel__hint">Press Ctrl+K to preview the palette.</small>
+		</div>
+
 		<!-- Sidebar Mode -->
 		<div class="pa-settings-panel__section">
 			<label class="pa-settings-panel__label" for="settings-sidebarMode">Sidebar Mode</label>
@@ -613,14 +685,11 @@
 			</select>
 		</div>
 
-		<!-- Sidebar Options -->
+		<!-- Sidebar Options — the "Collapsed" checkbox was removed; full hide now lives
+		     in Sidebar Behavior → "Hide Completely". -->
 		<div class="pa-settings-panel__section">
 			<span class="pa-settings-panel__label">Sidebar</span>
 			<div class="pa-settings-panel__checkbox-group">
-				<label class="pa-settings-panel__checkbox">
-					<input type="checkbox" bind:checked={settings.sidebarCollapsed} />
-					<span>Collapsed</span>
-				</label>
 				<label class="pa-settings-panel__checkbox">
 					<input type="checkbox" bind:checked={settings.sidebarResizable} />
 					<span>Resizable</span>
