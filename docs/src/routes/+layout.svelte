@@ -64,11 +64,19 @@
 	// These would typically be app-level config, but we wire them up for demo purposes
 	let profileHasAvatar = $state(true);
 	let profileIconOnlyTabs = $state(false);
+	// The command-palette size is Svelte-native here (our palette has no #commandPalette
+	// id for the panel's DOM hook), so drive its `size` prop from the settings state.
+	let commandPaletteSize = $state<'sm' | 'lg' | 'xl' | undefined>(undefined);
 
 	// Handle settings changes from SettingsPanel
-	function handleSettingsChange(settings: { profileHasAvatar: boolean; profileIconOnlyTabs: boolean }) {
+	function handleSettingsChange(settings: {
+		profileHasAvatar: boolean;
+		profileIconOnlyTabs: boolean;
+		commandPaletteSize: string;
+	}) {
 		profileHasAvatar = settings.profileHasAvatar;
 		profileIconOnlyTabs = settings.profileIconOnlyTabs;
+		commandPaletteSize = (settings.commandPaletteSize || undefined) as 'sm' | 'lg' | 'xl' | undefined;
 	}
 	let favorites = $state([
 		{ id: 1, href: '/', icon: '📊', label: 'Dashboard' },
@@ -529,6 +537,7 @@
 	<DialogContainer />
 	<CommandPalette
 		bind:show={showCommandPalette}
+		size={commandPaletteSize}
 		{commands}
 		{contexts}
 		{globalSearch}
