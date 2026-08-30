@@ -235,12 +235,10 @@
 		applySearchPosition(settings.searchPosition);
 		applyCommandPaletteSize(settings.commandPaletteSize);
 
-		// Sidebar behavior — one control for hide / icon-collapse / full. The
-		// standalone "Collapsed" checkbox was folded into this in the demo:
-		// "Hide Completely" fully hides the sidebar (body.sidebar-hidden), "Show
-		// Icons Only" swaps it to the icon rail, and the empty default shows it full.
-		document.body.classList.toggle('sidebar-hidden', settings.sidebarBehavior === 'hide');
-
+		// Sidebar behavior — the collapse STYLE only: "Show Icons Only" swaps the
+		// sidebar to its icon rail. The actual shown/hidden state (body.sidebar-hidden)
+		// is runtime state owned by the host's burger + pre-hydration script, so the
+		// panel must NOT force it here — doing so hid the sidebar on every reload.
 		const sidebar = document.querySelector('.pc-layout__sidebar');
 		if (sidebar) {
 			sidebar.classList.toggle(
@@ -327,9 +325,9 @@
 		localStorage.setItem('color-variant', settings.colorVariant);
 		localStorage.setItem('font-size', settings.fontSize);
 		localStorage.setItem('font-family', settings.fontFamily);
-		// `sidebar-hidden` is now derived from the behavior (the standalone Collapsed
-		// checkbox was removed) — "Hide Completely" is the fully-hidden state.
-		localStorage.setItem('sidebar-hidden', (settings.sidebarBehavior === 'hide').toString());
+		// `sidebar-hidden` is written only by the behavior-select change handler
+		// (mirrors pure-admin) — never on load/other changes, or it would re-hide
+		// the sidebar on every reload.
 		localStorage.setItem('sidebar-behavior', settings.sidebarBehavior);
 		localStorage.setItem('sidebar-resizable', settings.sidebarResizable.toString());
 		localStorage.setItem('compact-mode', settings.compactMode.toString());
@@ -401,6 +399,10 @@
 			localStorage.removeItem('search-position');
 			localStorage.removeItem('command-palette-size');
 		}
+
+		// Reset clears the stored hidden state too (pure-admin reloads to a visible
+		// sidebar); un-hide now since we don't reload. applySettings won't touch it.
+		if (typeof document !== 'undefined') document.body.classList.remove('sidebar-hidden');
 
 		applySettings();
 	}
@@ -493,6 +495,35 @@
 			'pa-command-palette--xl'
 		);
 		if (size) palette.classList.add(`pa-command-palette--${size}`);
+	}
+
+	// Sidebar behavior change — mirrors pure-admin's settings-panel.js handler. This
+	// is the ONLY place that flips `body.sidebar-hidden`: "Hide Completely" hides now,
+	// "Show Icons Only" swaps to the icon rail and un-hides. Applying it here (not on
+	// load) is what makes the shown/hidden state persist across reloads — the
+	// pre-hydration script restores the stored value; the panel must not re-force it.
+	function onSidebarBehaviorChange() {
+		if (typeof document === 'undefined') return;
+		const behavior = settings.sidebarBehavior;
+		const sidebar = document.querySelector('.pc-layout__sidebar');
+		const burgerMenu = document.querySelector('.burger-menu');
+		if (!sidebar) return;
+		sidebar.classList.remove('pc-layout__sidebar--icon-collapse');
+		document.body.classList.remove('sidebar-hidden');
+		if (behavior === 'icon-collapse') {
+			sidebar.classList.add('pc-layout__sidebar--icon-collapse');
+			burgerMenu?.classList.remove('active');
+			localStorage.setItem('sidebar-hidden', 'false');
+		} else if (behavior === 'hide') {
+			document.body.classList.add('sidebar-hidden');
+			burgerMenu?.classList.remove('active');
+			localStorage.setItem('sidebar-hidden', 'true');
+		} else {
+			burgerMenu?.classList.add('active');
+			localStorage.setItem('sidebar-hidden', 'false');
+		}
+		localStorage.setItem('sidebar-behavior', behavior);
+		window.pureAdmin?.events?.emit('sidebar:mode', { mode: behavior });
 	}
 
 	// Handle OS theme change when in auto mode
@@ -679,7 +710,12 @@
 		<!-- Sidebar Behavior -->
 		<div class="pa-settings-panel__section">
 			<label class="pa-settings-panel__label" for="settings-sidebarBehavior">Sidebar Behavior</label>
-			<select id="settings-sidebarBehavior" class="pa-settings-panel__select" bind:value={settings.sidebarBehavior}>
+			<select
+				id="settings-sidebarBehavior"
+				class="pa-settings-panel__select"
+				bind:value={settings.sidebarBehavior}
+				onchange={onSidebarBehaviorChange}
+			>
 				<option value="hide">Hide Completely</option>
 				<option value="icon-collapse">Show Icons Only</option>
 			</select>
