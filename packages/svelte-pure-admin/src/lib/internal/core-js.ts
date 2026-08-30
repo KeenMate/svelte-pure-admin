@@ -40,20 +40,20 @@ export async function loadCoreJs(
 		// pure-css foundation runtime must evaluate FIRST — import it before each
 		// engine (idempotent: the runtime self-guards with `if (!pc.events)` etc.).
 		case 'navbar-dropdown':
-			await import('@keenmate/pure-css/src/js/pure-css.js');
-			await import('@keenmate/pure-css/src/js/navbar-dropdown.js');
+			await import('@keenmate/pure-css/js/pure-css.js');
+			await import('@keenmate/pure-css/js/navbar-dropdown.js');
 			break;
 		case 'navbar-fit':
-			await import('@keenmate/pure-css/src/js/pure-css.js');
-			await import('@keenmate/pure-css/src/js/fit.js');
+			await import('@keenmate/pure-css/js/pure-css.js');
+			await import('@keenmate/pure-css/js/fit.js');
 			break;
 		case 'container-breakpoint':
-			await import('@keenmate/pure-css/src/js/pure-css.js');
-			await import('@keenmate/pure-css/src/js/container-breakpoint.js');
+			await import('@keenmate/pure-css/js/pure-css.js');
+			await import('@keenmate/pure-css/js/container-breakpoint.js');
 			break;
 		case 'sidebar-resize':
-			await import('@keenmate/pure-css/src/js/pure-css.js');
-			await import('@keenmate/pure-css/src/js/sidebar-resize.js');
+			await import('@keenmate/pure-css/js/pure-css.js');
+			await import('@keenmate/pure-css/js/sidebar-resize.js');
 			break;
 	}
 }
