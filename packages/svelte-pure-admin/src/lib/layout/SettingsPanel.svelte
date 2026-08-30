@@ -233,11 +233,11 @@
 		}
 
 		// Sidebar behavior
-		const sidebar = document.querySelector('.pa-layout__sidebar');
+		const sidebar = document.querySelector('.pc-layout__sidebar');
 		if (sidebar) {
-			sidebar.classList.remove('pa-layout__sidebar--icon-collapse');
+			sidebar.classList.remove('pc-layout__sidebar--icon-collapse');
 			if (settings.sidebarBehavior === 'icon-collapse') {
-				sidebar.classList.add('pa-layout__sidebar--icon-collapse');
+				sidebar.classList.add('pc-layout__sidebar--icon-collapse');
 			}
 
 			// Sidebar resizable — mirror pure-admin's settings panel: toggle the
@@ -246,13 +246,13 @@
 			// teardown — its init() recreates it when re-enabled, since the detached
 			// handle's parentNode is then null).
 			if (settings.sidebarResizable) {
-				sidebar.classList.add('pa-layout__sidebar--resizable');
+				sidebar.classList.add('pc-layout__sidebar--resizable');
 				loadCoreJs('sidebar-resize').then(() => {
 					window.pureAdmin?.components?.sidebarResize?.init();
 				});
 			} else {
-				sidebar.classList.remove('pa-layout__sidebar--resizable');
-				sidebar.querySelector('.pa-sidebar-resize')?.remove();
+				sidebar.classList.remove('pc-layout__sidebar--resizable');
+				sidebar.querySelector('.pc-sidebar-resize')?.remove();
 			}
 		}
 
@@ -265,11 +265,11 @@
 
 		// Container width
 		document.body.classList.remove(
-			'pa-container-sm',
-			'pa-container-md',
-			'pa-container-lg',
-			'pa-container-xl',
-			'pa-container-2xl'
+			'pc-container-sm',
+			'pc-container-md',
+			'pc-container-lg',
+			'pc-container-xl',
+			'pc-container-2xl'
 		);
 		if (settings.containerWidth && settings.containerWidth !== 'fluid') {
 			document.body.classList.add(`pa-container-${settings.containerWidth}`);
@@ -277,9 +277,9 @@
 
 		// Sidebar mode (sticky)
 		if (settings.sidebarMode === 'sticky') {
-			document.body.classList.add('pa-layout--sticky');
+			document.body.classList.add('pc-layout--sticky');
 		} else {
-			document.body.classList.remove('pa-layout--sticky');
+			document.body.classList.remove('pc-layout--sticky');
 		}
 
 		// Profile panel - avatar visibility (hasAvatar: true = show, false = hide)

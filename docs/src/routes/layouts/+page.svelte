@@ -234,17 +234,17 @@
 				<code>strategy="steps"</code> holds a ladder of <code>FitStep</code> variants
 				(widest first) that shrinks <code>Svelte Pure Admin → SPA → gone</code>. FitStep
 				auto-numbers the ladder and hides the non-first steps for a correct first paint —
-				no <code>data-pa-fit-step</code> or <code>pa-fit-hidden</code> to hand-author.
+				no <code>data-pc-fit-step</code> or <code>pc-fit-hidden</code> to hand-author.
 			</Paragraph>
 			<CodeBlock>{`<Navbar>
   {#snippet start()}
     <AppHeader>
       <h1>
-        <FitSlot strategy="steps" priority={30} class="pa-app-header__name">
+        <FitSlot strategy="steps" priority={30} class="pc-app-header__name">
           <FitStep>Svelte Pure Admin</FitStep>
           <FitStep>SPA</FitStep>
         </FitSlot>
-        <FitSlot priority={10} class="pa-app-header__version">v1.9.0</FitSlot>
+        <FitSlot priority={10} class="pc-app-header__version">v1.9.0</FitSlot>
       </h1>
     </AppHeader>
   {/snippet}

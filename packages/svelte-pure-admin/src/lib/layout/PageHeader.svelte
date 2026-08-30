@@ -1,6 +1,6 @@
 <script lang="ts">
 	/**
-	 * PageHeader — the page-title block (`.pa-page-header`) for a `Navbar` zone
+	 * PageHeader — the page-title block (`.pc-page-header`) for a `Navbar` zone
 	 * (typically CENTER). A thin structural wrapper (core gives it truncation /
 	 * flexing); to have the title degrade as the header narrows, wrap it in a
 	 * `FitSlot` (e.g. a `steps` ladder, long title → short → gone).
@@ -15,7 +15,7 @@
 	let { class: className = '', children }: Props = $props();
 
 	const classes = $derived(() => {
-		const base = ['pa-page-header'];
+		const base = ['pc-page-header'];
 		if (className) base.push(className);
 		return base.join(' ');
 	});

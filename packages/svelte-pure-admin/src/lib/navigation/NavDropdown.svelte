@@ -17,8 +17,8 @@
 
 	// Build class string
 	const classes = $derived(() => {
-		const base = ['pa-navmenu__dropdown'];
-		if (level2) base.push('pa-navmenu__dropdown--level2');
+		const base = ['pc-navmenu__dropdown'];
+		if (level2) base.push('pc-navmenu__dropdown--level2');
 		if (className) base.push(className);
 		return base.join(' ');
 	});

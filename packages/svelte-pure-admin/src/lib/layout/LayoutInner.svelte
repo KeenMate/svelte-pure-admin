@@ -17,7 +17,7 @@
 
 	// Build class string
 	const classes = $derived(() => {
-		const base = ['pa-layout__inner'];
+		const base = ['pc-layout__inner'];
 		if (className) base.push(className);
 		return base.join(' ');
 	});

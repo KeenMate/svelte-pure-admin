@@ -140,11 +140,11 @@
 
 		// Bug B: close the mobile drawer when tapping the scrim. The backdrop is a
 		// CSS `::before` on `body.sidebar-visible`, so the tap reports as the body
-		// / `.pa-layout` element — anything OUTSIDE the sidebar itself. Exclude the
+		// / `.pc-layout` element — anything OUTSIDE the sidebar itself. Exclude the
 		// burger (it owns its own toggle; otherwise the opening tap re-closes).
 		if (sidebarMobileVisible) {
-			const insideSidebar = target.closest('.pa-layout__sidebar');
-			const burger = target.closest('.pa-navbar__burger, .burger-menu');
+			const insideSidebar = target.closest('.pc-layout__sidebar');
+			const burger = target.closest('.pc-navbar__burger, .burger-menu');
 			if (!insideSidebar && !burger) {
 				closeMobileSidebar();
 			}
@@ -161,7 +161,7 @@
 
 		// Check if click is outside profile panel
 		if (showProfilePanel) {
-			const profileBtn = target.closest('.pa-navbar__profile-btn');
+			const profileBtn = target.closest('.pc-navbar__profile-btn');
 			const profilePanel = target.closest('.pa-profile-panel');
 			if (!profileBtn && !profilePanel) {
 				showProfilePanel = false;
@@ -184,9 +184,9 @@
 
 		// Apply sidebar icon-collapse class to sidebar element (can't be done in blocking script)
 		const sidebarBehavior = localStorage.getItem('sidebar-behavior') || 'hide';
-		const sidebar = document.querySelector('.pa-layout__sidebar');
+		const sidebar = document.querySelector('.pc-layout__sidebar');
 		if (sidebar && sidebarBehavior === 'icon-collapse') {
-			sidebar.classList.add('pa-layout__sidebar--icon-collapse');
+			sidebar.classList.add('pc-layout__sidebar--icon-collapse');
 		}
 
 		// Initialize ProfilePanel settings from localStorage
@@ -200,16 +200,16 @@
 			document.removeEventListener('click', handleClickOutside);
 
 			// Remove container width classes
-			document.body.classList.remove('pa-container-sm', 'pa-container-md', 'pa-container-lg', 'pa-container-xl', 'pa-container-2xl');
+			document.body.classList.remove('pc-container-sm', 'pc-container-md', 'pc-container-lg', 'pc-container-xl', 'pc-container-2xl');
 			// Remove sidebar mode class
-			document.body.classList.remove('pa-layout--sticky');
+			document.body.classList.remove('pc-layout--sticky');
 			// Remove localStorage-based classes
 			document.documentElement.classList.remove('font-size-small', 'font-size-large', 'font-size-xlarge');
 			document.body.classList.remove('font-family-serif', 'font-family-mono', 'font-family-delivery', 'font-family-cuprum', 'font-family-fira-sans-condensed', 'font-family-manrope', 'font-family-martel', 'font-family-maven-pro', 'font-family-monda', 'font-family-play', 'font-family-signika', 'font-family-yanone-kaffeesatz');
 			document.body.classList.remove('sidebar-hidden', 'compact-mode', 'sidebar-icon-collapse');
-			const sidebar = document.querySelector('.pa-layout__sidebar');
+			const sidebar = document.querySelector('.pc-layout__sidebar');
 			if (sidebar) {
-				sidebar.classList.remove('pa-layout__sidebar--icon-collapse');
+				sidebar.classList.remove('pc-layout__sidebar--icon-collapse');
 			}
 		};
 	});
@@ -550,11 +550,11 @@
 			     variant and hides the non-first ones for a correct first paint. -->
 			<AppHeader>
 				<h1>
-					<FitSlot strategy="steps" priority={30} class="pa-app-header__name">
+					<FitSlot strategy="steps" priority={30} class="pc-app-header__name">
 						<FitStep>Svelte Pure Admin</FitStep>
 						<FitStep>SPA</FitStep>
 					</FitSlot>
-					<FitSlot priority={10} class="pa-app-header__version">v{libVersion}</FitSlot>
+					<FitSlot priority={10} class="pc-app-header__version">v{libVersion}</FitSlot>
 				</h1>
 			</AppHeader>
 

@@ -21,7 +21,7 @@
 
 <Paragraph>Pure Admin Visual framework provides a comprehensive set of components for building data-focused admin interfaces.</Paragraph>
 
-<div class="pa-layout-container">
+<div class="pc-layout-container">
 	<!-- Component Categories Overview -->
 	<Grid>
 		<!-- Form Components -->

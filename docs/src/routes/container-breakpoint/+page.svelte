@@ -83,11 +83,11 @@
 		<strong>The vocabulary.</strong> Under the hood these wrap core's
 		<code>fit.js</code> and <code>container-breakpoint.js</code> (v2.9.0-rc17).
 		<code>FitSlot</code> makes an element a slot (<code>strategy="hide|steps|sidebar"</code>
-		→ <code>data-pa-fit</code>) and <code>priority</code> orders them — lower folds
-		first. <code>FitContainer</code> sets <code>data-pa-fit-auto</code>, so
+		→ <code>data-pc-fit</code>) and <code>priority</code> orders them — lower folds
+		first. <code>FitContainer</code> sets <code>data-pc-fit-auto</code>, so
 		<em>every</em> direct child folds without tagging each, and its
 		<code>defaultPriority</code> is the fallback rank; a child pins itself out
-		with <code>data-pa-fit-ignore</code>. <strong>Drag the sliders</strong> — or
+		with <code>data-pc-fit-ignore</code>. <strong>Drag the sliders</strong> — or
 		open this page on a narrow phone — to watch each stage fold.
 	</Callout>
 
@@ -99,7 +99,7 @@
 		A <code>steps</code> slot degrades <strong>full label → icon-only → gone</strong>
 		instead of vanishing outright, so an action stays reachable as an icon before
 		it is dropped. <strong>Save</strong> is pinned full
-		(<code>data-pa-fit-ignore</code>); <strong>Duplicate</strong> and
+		(<code>data-pc-fit-ignore</code>); <strong>Duplicate</strong> and
 		<strong>Export</strong> shrink to icons (higher priority survives longer);
 		<strong>Delete</strong> is untagged, so it inherits the container's
 		<code>defaultPriority={20}</code> and drops first.
@@ -114,7 +114,7 @@
 	<div class="stage" style="max-width:{w1}px">
 		<Card>
 			<FitContainer class="fit-toolbar" defaultPriority={20}>
-				<button class="pa-btn pa-btn--primary" data-pa-fit-ignore>
+				<button class="pa-btn pa-btn--primary" data-pc-fit-ignore>
 					<span class="pa-btn__icon">💾</span> Save
 				</button>
 				<FitSlot strategy="steps" priority={40} tag="button" class="pa-btn">

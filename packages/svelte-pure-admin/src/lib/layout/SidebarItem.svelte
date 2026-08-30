@@ -54,16 +54,16 @@
 
 	// Build class string for item
 	const itemClasses = $derived(() => {
-		const base = ['pa-sidebar__item'];
-		if (isOpen && hasSubmenu) base.push('pa-sidebar__item--open');
+		const base = ['pc-sidebar__item'];
+		if (isOpen && hasSubmenu) base.push('pc-sidebar__item--open');
 		if (className) base.push(className);
 		return base.join(' ');
 	});
 
 	// Build class string for link
 	const linkClasses = $derived(() => {
-		const base = ['pa-sidebar__link'];
-		if (active) base.push('pa-sidebar__link--active');
+		const base = ['pc-sidebar__link'];
+		if (active) base.push('pc-sidebar__link--active');
 		return base.join(' ');
 	});
 
@@ -81,24 +81,24 @@
 
 	// Build submenu class
 	const submenuClasses = $derived(() => {
-		const base = ['pa-sidebar__submenu'];
-		if (isOpen) base.push('pa-sidebar__submenu--open');
+		const base = ['pc-sidebar__submenu'];
+		if (isOpen) base.push('pc-sidebar__submenu--open');
 		return base.join(' ');
 	});
 </script>
 
 <li class={itemClasses()}>
 	{#if hasSubmenu}
-		<button class="pa-sidebar__toggle" onclick={toggleSubmenu}>
+		<button class="pc-sidebar__toggle" onclick={toggleSubmenu}>
 			{#if icon}
-				<span class="pa-sidebar__icon">
+				<span class="pc-sidebar__icon">
 					{@render icon()}
 				</span>
 			{:else if shouldKeepIconSpace}
-				<span class="pa-sidebar__icon"></span>
+				<span class="pc-sidebar__icon"></span>
 			{/if}
-			<span class="pa-sidebar__label">{labelText}</span>
-			<span class="pa-sidebar__chevron">›</span>
+			<span class="pc-sidebar__label">{labelText}</span>
+			<span class="pc-sidebar__chevron">›</span>
 		</button>
 
 		{#if submenu}
@@ -109,24 +109,24 @@
 	{:else if href}
 		<a {href} class={linkClasses()} {onclick}>
 			{#if icon}
-				<span class="pa-sidebar__icon">
+				<span class="pc-sidebar__icon">
 					{@render icon()}
 				</span>
 			{:else if shouldKeepIconSpace}
-				<span class="pa-sidebar__icon"></span>
+				<span class="pc-sidebar__icon"></span>
 			{/if}
-			<span class="pa-sidebar__label">{labelText}</span>
+			<span class="pc-sidebar__label">{labelText}</span>
 		</a>
 	{:else}
 		<button class={linkClasses()} {onclick}>
 			{#if icon}
-				<span class="pa-sidebar__icon">
+				<span class="pc-sidebar__icon">
 					{@render icon()}
 				</span>
 			{:else if shouldKeepIconSpace}
-				<span class="pa-sidebar__icon"></span>
+				<span class="pc-sidebar__icon"></span>
 			{/if}
-			<span class="pa-sidebar__label">{labelText}</span>
+			<span class="pc-sidebar__label">{labelText}</span>
 		</button>
 	{/if}
 </li>

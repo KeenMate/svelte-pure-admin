@@ -35,17 +35,25 @@ export async function loadCoreJs(
 		case 'overflow':
 			await import('@keenmate/pure-admin-core/js/overflow.js');
 			break;
+		// The four app-shell engines moved DOWN into @keenmate/pure-css (Stage C).
+		// They register on window.pureCss and read its event bus / config, so the
+		// pure-css foundation runtime must evaluate FIRST — import it before each
+		// engine (idempotent: the runtime self-guards with `if (!pc.events)` etc.).
 		case 'navbar-dropdown':
-			await import('@keenmate/pure-admin-core/js/navbar-dropdown.js');
+			await import('@keenmate/pure-css/src/js/pure-css.js');
+			await import('@keenmate/pure-css/src/js/navbar-dropdown.js');
 			break;
 		case 'navbar-fit':
-			await import('@keenmate/pure-admin-core/js/fit.js');
+			await import('@keenmate/pure-css/src/js/pure-css.js');
+			await import('@keenmate/pure-css/src/js/fit.js');
 			break;
 		case 'container-breakpoint':
-			await import('@keenmate/pure-admin-core/js/container-breakpoint.js');
+			await import('@keenmate/pure-css/src/js/pure-css.js');
+			await import('@keenmate/pure-css/src/js/container-breakpoint.js');
 			break;
 		case 'sidebar-resize':
-			await import('@keenmate/pure-admin-core/js/sidebar-resize.js');
+			await import('@keenmate/pure-css/src/js/pure-css.js');
+			await import('@keenmate/pure-css/src/js/sidebar-resize.js');
 			break;
 	}
 }

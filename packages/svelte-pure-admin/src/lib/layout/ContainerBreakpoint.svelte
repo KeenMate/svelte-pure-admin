@@ -25,7 +25,7 @@
 	 *     {/snippet}
 	 *   </ContainerBreakpoint>
 	 *
-	 * Children can also carry `data-pa-show="wide comfy"` — the engine toggles the
+	 * Children can also carry `data-pc-show="wide comfy"` — the engine toggles the
 	 * shared `.d-none` on the ones out of mode (a class you can watch in devtools).
 	 * Use that for cheap pieces you don't want to gate with `{#if}`; use `{#if}` for
 	 * the ones whose construction cost you want to avoid.
@@ -51,7 +51,7 @@
 		/** Mode rendered before the first measure (SSR / first paint). Defaults to
 		 *  the first key of `steps`. */
 		initial?: string;
-		/** Utility class toggled on `[data-pa-show]` children out of mode. Defaults
+		/** Utility class toggled on `[data-pc-show]` children out of mode. Defaults
 		 *  to the engine's `.d-none`. */
 		hiddenClass?: string;
 		/** Wrapper element tag (default `div`). */
@@ -86,7 +86,7 @@
 	// Captured once — a breakpoint observer is configured at mount, not reconfigured
 	// reactively. Svelte owns `data-mode` (bound on the element below), so
 	// `attribute: false` avoids a second writer; the engine still toggles `.d-none`
-	// on `data-pa-show` children and calls us back on every flip.
+	// on `data-pc-show` children and calls us back on every flip.
 	const observeOpts = { steps, unit, hysteresis, initial, hiddenClass, attribute: false as const };
 
 	onMount(() => {

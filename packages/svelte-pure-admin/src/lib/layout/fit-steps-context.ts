@@ -2,7 +2,7 @@
  * Shared Svelte-context contract between `FitSlot` (steps mode) and its `FitStep`
  * children. `FitSlot` seeds one counter per steps slot; each `FitStep`, at init,
  * pulls the next 0-based index in DOM order (0 = largest/default) so authors never
- * hand-number `data-pa-fit-step`.
+ * hand-number `data-pc-fit-step`.
  */
 
 /** Context key (module-scoped Symbol — one shared instance across both components). */

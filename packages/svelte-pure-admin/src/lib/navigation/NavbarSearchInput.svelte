@@ -1,6 +1,6 @@
 <script lang="ts">
 	/**
-	 * NavbarSearchInput — "type-and-go" navbar search (core `.pa-navbar-search--input`,
+	 * NavbarSearchInput — "type-and-go" navbar search (core `.pc-navbar-search--input`,
 	 * v2.9.0-rc15). A real `<input>` in the pill shell wrapped in a `<form>` whose
 	 * native GET submit navigates to a results page on Enter — NO dropdown, NO palette.
 	 *
@@ -37,18 +37,18 @@
 	}: Props = $props();
 
 	const classes = $derived(() => {
-		const base = ['pa-navbar-search', 'pa-navbar-search--input'];
+		const base = ['pc-navbar-search', 'pc-navbar-search--input'];
 		if (className) base.push(className);
 		return base.join(' ');
 	});
 </script>
 
 <form class={classes()} {action} {method} role="search">
-	<span class="pa-navbar-search__icon" aria-hidden="true">🔍</span>
+	<span class="pc-navbar-search__icon" aria-hidden="true">🔍</span>
 	<input
 		type="search"
 		{name}
-		class="pa-navbar-search__field"
+		class="pc-navbar-search__field"
 		bind:value
 		{placeholder}
 		autocomplete="off"

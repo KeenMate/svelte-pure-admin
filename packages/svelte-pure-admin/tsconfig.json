@@ -14,7 +14,8 @@
 		"lib": ["ES2022", "DOM", "DOM.Iterable"],
 		"types": ["svelte"],
 		"paths": {
-			"@keenmate/pure-admin-core/js/*": ["./src/lib/internal/core-js.stub.d.ts"]
+			"@keenmate/pure-admin-core/js/*": ["./src/lib/internal/core-js.stub.d.ts"],
+			"@keenmate/pure-css/src/js/*": ["./src/lib/internal/core-js.stub.d.ts"]
 		}
 	},
 	"include": ["src/**/*"],

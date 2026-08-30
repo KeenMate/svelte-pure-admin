@@ -3,7 +3,7 @@
 	 * FitSlot — declare a header slot's Navbar Fit behaviour (core v2.9.0-rc12,
 	 * `fit.js`). Compose these inside a `<Navbar>`'s zones (brand, page
 	 * title, search, custom actions); the engine — which `Navbar` initialises on
-	 * `.pa-navbar__inner` — degrades the participating slots one at a time, LOWEST
+	 * `.pc-navbar__inner` — degrades the participating slots one at a time, LOWEST
 	 * `priority` first, until the header row fits, then restores as space returns.
 	 *
 	 * This is the whole responsive-header mechanism: nothing fit-aware is baked into
@@ -15,11 +15,11 @@
 	 *               first); it climbs down 0 → 1 → 2 … → hidden. Use for
 	 *               wordmark → monogram, or a search pill → just its icon.
 	 * - `sidebar` — the slot relocates into the sidebar, restored on widen
-	 *               (`sidebarTarget` overrides the default `.pa-sidebar__nav > ul`).
+	 *               (`sidebarTarget` overrides the default `.pc-sidebar__nav > ul`).
 	 *
 	 * `FitSlot` renders THE measured element itself (not a wrapper around it), so
 	 * pass `class` to make it also carry the styled class — e.g.
-	 * `<FitSlot class="pa-app-header__version" priority={10}>`.
+	 * `<FitSlot class="pc-app-header__version" priority={10}>`.
 	 */
 	import { setContext } from 'svelte';
 	import { FIT_STEPS_KEY, createFitStepsContext } from './fit-steps-context';
@@ -29,7 +29,7 @@
 	interface Props {
 		/** How the slot yields when the row can't fit it (default `'hide'`). */
 		strategy?: FitStrategy;
-		/** Degrade order — lower degrades first (maps to `data-pa-fit-priority`). */
+		/** Degrade order — lower degrades first (maps to `data-pc-fit-priority`). */
 		priority?: number;
 		/** Element tag to render (default `span`; use `div` for block content). */
 		tag?: string;
@@ -59,9 +59,9 @@
 <svelte:element
 	this={tag}
 	class={className || undefined}
-	data-pa-fit={strategy}
-	data-pa-fit-priority={priority}
-	data-pa-fit-sidebar-target={strategy === 'sidebar' ? sidebarTarget : undefined}
+	data-pc-fit={strategy}
+	data-pc-fit-priority={priority}
+	data-pc-fit-sidebar-target={strategy === 'sidebar' ? sidebarTarget : undefined}
 >
 	{@render children?.()}
 </svelte:element>

@@ -557,7 +557,7 @@
 	</Card>
 </div>
 
-<div class="pa-layout-container">
+<div class="pc-layout-container">
 	<p class="mb-6">
 		Enhanced command palette with <strong>/commands</strong> for actions and
 		<strong>:contexts</strong> for search. Press

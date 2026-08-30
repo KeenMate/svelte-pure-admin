@@ -25,9 +25,9 @@
 
 	// Core defines no size modifiers for the pill trigger — only `--field` and
 	// `--input` exist (see core `_command-palette.scss`). The trigger is the base
-	// `.pa-navbar-search`; a consumer sizes the zone via `class` if needed.
+	// `.pc-navbar-search`; a consumer sizes the zone via `class` if needed.
 	const classes = $derived(() => {
-		const base = ['pa-navbar-search'];
+		const base = ['pc-navbar-search'];
 		if (className) base.push(className);
 		return base.join(' ');
 	});
@@ -44,9 +44,9 @@
 	onclick={handleClick}
 	aria-label={$_('pureAdmin.a11y.openSearch')}
 >
-	<span class="pa-navbar-search__icon">🔍</span>
-	<span class="pa-navbar-search__placeholder">{placeholder}</span>
-	<span class="pa-navbar-search__shortcut">
+	<span class="pc-navbar-search__icon">🔍</span>
+	<span class="pc-navbar-search__placeholder">{placeholder}</span>
+	<span class="pc-navbar-search__shortcut">
 		<kbd>Ctrl</kbd>
 		<kbd>K</kbd>
 	</span>

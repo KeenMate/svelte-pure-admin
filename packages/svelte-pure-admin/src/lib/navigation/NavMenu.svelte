@@ -1,9 +1,9 @@
 <script lang="ts">
 	/**
-	 * NavMenu — a navbar menu (`.pa-navmenu`) placed inside a `Navbar` zone. Renders
-	 * `<nav class="pa-navmenu"><ul>…</ul></nav>` and owns its responsive collapse:
+	 * NavMenu — a navbar menu (`.pc-navmenu`) placed inside a `Navbar` zone. Renders
+	 * `<nav class="pc-navmenu"><ul>…</ul></nav>` and owns its responsive collapse:
 	 * when `collapse` is set it drives the one core Fit engine (`fit.js`,
-	 * `data-pa-fit-nav`) on itself, folding its lowest-priority items out as the
+	 * `data-pc-fit-nav`) on itself, folding its lowest-priority items out as the
 	 * header narrows and restoring them as it widens. Per-item config lives on the
 	 * `NavItem` children (`navPriority` / `navCollapse="hide"` / `navIcon`).
 	 *
@@ -15,17 +15,17 @@
 
 	interface Props {
 		/**
-		 * Responsive collapse target (core Fit engine, `data-pa-fit-nav`):
+		 * Responsive collapse target (core Fit engine, `data-pc-fit-nav`):
 		 * - `'menu'` — items fold into a generated "More ▾" dropdown (self-contained).
-		 * - `'sidebar'` — items are rebuilt as native `.pa-sidebar__*` markup under a
+		 * - `'sidebar'` — items are rebuilt as native `.pc-sidebar__*` markup under a
 		 *   section heading in the sidebar (needs a sidebar on the page).
 		 * Only a menu in the START zone is actually shrinkable (the core CSS contract
-		 * makes just `.pa-navbar__start` shrink). Unset = the menu hides on mobile (legacy).
+		 * makes just `.pc-navbar__start` shrink). Unset = the menu hides on mobile (legacy).
 		 */
 		collapse?: 'menu' | 'sidebar';
 		/** Label for the generated "More" trigger (menu collapse mode). */
 		moreLabel?: string;
-		/** Sidebar `<ul>` selector to inject into (sidebar mode; default: first `.pa-sidebar__nav > ul`). */
+		/** Sidebar `<ul>` selector to inject into (sidebar mode; default: first `.pc-sidebar__nav > ul`). */
 		collapseTarget?: string;
 		/** Heading for the injected sidebar group (sidebar mode). */
 		collapseLabel?: string;
@@ -51,7 +51,7 @@
 
 	onMount(() => {
 		// Progressive collapse is opt-in per menu; init the one Fit engine's nav
-		// path on this nav (fit.js reads data-pa-fit-nav).
+		// path on this nav (fit.js reads data-pc-fit-nav).
 		if (!collapse || !navElement) return;
 		loadCoreJs('navbar-fit').then(() => {
 			if (navElement) window.pureAdmin?.components?.fit?.initNav(navElement);
@@ -59,7 +59,7 @@
 	});
 
 	const classes = $derived(() => {
-		const base = ['pa-navmenu'];
+		const base = ['pc-navmenu'];
 		if (className) base.push(className);
 		return base.join(' ');
 	});
@@ -68,11 +68,11 @@
 <nav
 	class={classes()}
 	bind:this={navElement}
-	data-pa-fit-nav={collapse}
-	data-pa-fit-nav-more-label={moreLabel}
-	data-pa-fit-nav-target={collapseTarget}
-	data-pa-fit-nav-label={collapseLabel}
-	data-pa-fit-nav-icon={collapseIcon}
+	data-pc-fit-nav={collapse}
+	data-pc-fit-nav-more-label={moreLabel}
+	data-pc-fit-nav-target={collapseTarget}
+	data-pc-fit-nav-label={collapseLabel}
+	data-pc-fit-nav-icon={collapseIcon}
 >
 	<ul>
 		{@render children?.()}

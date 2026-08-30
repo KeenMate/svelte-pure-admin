@@ -41,7 +41,7 @@ declare global {
 		/**
 		 * Touch support for navbar hover dropdowns — @keenmate/pure-admin-core/js/navbar-dropdown.js.
 		 * Attaches global click/keydown listeners at module eval; `init` only (re)applies
-		 * ARIA attributes on `.pa-navmenu__item--has-dropdown` parents under `scope`.
+		 * ARIA attributes on `.pc-navmenu__item--has-dropdown` parents under `scope`.
 		 */
 		PaNavDropdown?: {
 			/** Close every open navbar dropdown. */
@@ -77,8 +77,8 @@ declare global {
 				 * Container Breakpoint engine — @keenmate/pure-admin-core/js/container-breakpoint.js
 				 * (core v2.9.0-rc17). Maps an element's inline size to a NAMED mode from declared
 				 * rem/px thresholds and fires only on a flip, so a wrapper can mount on demand.
-				 * Reflects [data-mode], toggles .d-none on [data-pa-show] children, dispatches
-				 * a `pa:breakpoint` CustomEvent. Hysteresis dead-band stops boundary flapping.
+				 * Reflects [data-mode], toggles .d-none on [data-pc-show] children, dispatches
+				 * a `pc:breakpoint` CustomEvent. Hysteresis dead-band stops boundary flapping.
 				 */
 				containerBreakpoint?: {
 					observe: (
@@ -101,13 +101,13 @@ declare global {
 				/**
 				 * Container-generic fit engine (alias of navFit) — core v2.9.0-rc17 fit.js.
 				 * Also owns nav collapse (the former navbar-collapse.js): initNav wires a
-				 * `.pa-navmenu[data-pa-fit-nav]` so its items fold into a sink.
+				 * `.pc-navmenu[data-pc-fit-nav]` so its items fold into a sink.
 				 */
 				fit?: {
 					init: (container: HTMLElement) => void;
 					initAll: (scope?: ParentNode) => void;
 					relayoutAll: () => void;
-					/** Wire one nav's item-collapse (`.pa-navmenu[data-pa-fit-nav]`). */
+					/** Wire one nav's item-collapse (`.pc-navmenu[data-pc-fit-nav]`). */
 					initNav: (nav: HTMLElement) => void;
 					/** Wire every fit-managed nav under `scope`. */
 					initAllNav: (scope?: ParentNode) => void;
@@ -118,7 +118,7 @@ declare global {
 				};
 				/** Priority-driven header degradation (canonical name: `fit`) — core fit.js. */
 				navFit?: {
-					/** Idempotent — wire one fit container (default `.pa-navbar__inner`). */
+					/** Idempotent — wire one fit container (default `.pc-navbar__inner`). */
 					init: (container: HTMLElement) => void;
 					/** Wire every fit container under `scope` (default document). */
 					initAll: (scope?: ParentNode) => void;
@@ -127,11 +127,11 @@ declare global {
 				};
 				/** Sidebar drag-to-resize — @keenmate/pure-admin-core/js/sidebar-resize.js */
 				sidebarResize?: {
-					/** Idempotent — finds `.pa-layout__sidebar--resizable`, creates + binds the handle. */
+					/** Idempotent — finds `.pc-layout__sidebar--resizable`, creates + binds the handle. */
 					init: () => void;
 					/** Reset to the stylesheet default width. */
 					reset: () => void;
-					/** Set the sidebar width in px (flags `body.pa-sidebar-resized`). */
+					/** Set the sidebar width in px (flags `body.pc-sidebar-resized`). */
 					setWidth: (width: number) => void;
 					/** Current sidebar width in px. */
 					getWidth: () => number;

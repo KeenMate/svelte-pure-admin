@@ -4,9 +4,9 @@
 	 * Based on @keenmate/pure-admin-core snippets/layout.html
 	 *
 	 * THREE-SECTION LAYOUT (v1.0.0-rc06, renamed in v1.4.2):
-	 * - .pa-footer__start - Copyright (stays anchored to inline-start)
-	 * - .pa-footer__center - Optional center content (flexible, fills space)
-	 * - .pa-footer__end - Version info, links (stays anchored to inline-end)
+	 * - .pc-footer__start - Copyright (stays anchored to inline-start)
+	 * - .pc-footer__center - Optional center content (flexible, fills space)
+	 * - .pc-footer__end - Version info, links (stays anchored to inline-end)
 	 *
 	 * Auto-config: When no left snippet is provided, uses config.app.copyright
 	 */
@@ -41,15 +41,15 @@
 
 	// Build class string
 	const classes = $derived(() => {
-		const base = ['pa-layout__footer'];
+		const base = ['pc-layout__footer'];
 		if (className) base.push(className);
 		return base.join(' ');
 	});
 
 	// Build end section classes
 	const endClasses = $derived(() => {
-		const base = ['pa-footer__end'];
-		if (endVertical) base.push('pa-footer__end--vertical');
+		const base = ['pc-footer__end'];
+		if (endVertical) base.push('pc-footer__end--vertical');
 		return base.join(' ');
 	});
 
@@ -62,7 +62,7 @@
 <footer class={classes()}>
 	{#if useThreeSectionLayout()}
 		<!-- Start Section (stays anchored to inline-start) -->
-		<div class="pa-footer__start">
+		<div class="pc-footer__start">
 			{#if start}
 				{@render start()}
 			{:else if config().app.copyright}
@@ -71,7 +71,7 @@
 		</div>
 
 		<!-- Center Section (flexible, fills space) -->
-		<div class="pa-footer__center">
+		<div class="pc-footer__center">
 			{#if center}
 				{@render center()}
 			{/if}

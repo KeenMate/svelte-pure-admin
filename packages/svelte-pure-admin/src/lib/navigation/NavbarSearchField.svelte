@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * NavbarSearchField — inline LIVE search box for a `Navbar` zone (core pattern
-	 * `.pa-navbar-search--field`, v2.9.0-rc12). Unlike `NavbarSearch` (a pill that
+	 * `.pc-navbar-search--field`, v2.9.0-rc12). Unlike `NavbarSearch` (a pill that
 	 * just *opens* the command palette), this is a real `<input>` with its own
 	 * anchored `.pa-search-autocomplete` results dropdown.
 	 *
@@ -82,7 +82,7 @@
 	let requestId = 0; // guards against out-of-order async responses
 
 	const classes = $derived(() => {
-		const base = ['pa-navbar-search', 'pa-navbar-search--field'];
+		const base = ['pc-navbar-search', 'pc-navbar-search--field'];
 		if (className) base.push(className);
 		return base.join(' ');
 	});
@@ -215,10 +215,10 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class={classes()} bind:this={rootElement}>
-	<span class="pa-navbar-search__icon" aria-hidden="true">🔍</span>
+	<span class="pc-navbar-search__icon" aria-hidden="true">🔍</span>
 	<input
 		type="text"
-		class="pa-navbar-search__field"
+		class="pc-navbar-search__field"
 		{placeholder}
 		{value}
 		oninput={handleInput}
