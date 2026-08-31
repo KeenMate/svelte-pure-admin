@@ -28,7 +28,9 @@
 	 * Children can also carry `data-pc-show="wide comfy"` — the engine toggles the
 	 * shared `.d-none` on the ones out of mode (a class you can watch in devtools).
 	 * Use that for cheap pieces you don't want to gate with `{#if}`; use `{#if}` for
-	 * the ones whose construction cost you want to avoid.
+	 * the ones whose construction cost you want to avoid. For a declarative version
+	 * of the show/hide case that keeps children mounted (so form state survives),
+	 * wrap them in {@link Breaker}: `<Breaker {mode} show="comfy wide">…</Breaker>`.
 	 *
 	 * Thresholds are `rem` by default (resolved against the live `:root` font-size,
 	 * `10px` in pure-admin → `34` = 340px); pass `unit="px"` for raw pixels. The

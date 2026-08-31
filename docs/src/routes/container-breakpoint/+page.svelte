@@ -356,6 +356,16 @@
 			{#each logs as line, i (i + line)}<li>{line}</li>{/each}
 		</ul>
 	</Card>
+
+	<Callout variant="info" class="mt-4">
+		<strong>Cheap, stateful pieces?</strong> When you just want to show/hide content by
+		mode — and keep its state (form field values, scroll position) — wrap it in
+		<code>&lt;Breaker {'{mode}'} show="comfy wide"&gt;</code> instead of an
+		<code>{'{#if}'}</code>. It stays mounted and toggles <code>.d-none</code>, so nothing
+		is lost when a block leaves and re-enters view. Reach for <code>{'{#if mode === …}'}</code>
+		only when you want to avoid <em>building</em> an expensive branch off-screen (§4). Both
+		read the same reactive <code>mode</code> from <code>ContainerBreakpoint</code>'s snippet.
+	</Callout>
 </div>
 
 <style>
