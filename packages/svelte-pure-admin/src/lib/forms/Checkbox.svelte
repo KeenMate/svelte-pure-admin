@@ -21,6 +21,8 @@
 		isIndeterminate?: boolean;
 		/** Disabled state */
 		disabled?: boolean;
+		/** Required field — core turns the native `required` attribute into the asterisk */
+		required?: boolean;
 		/** Use X mark instead of checkmark when checked */
 		isXMark?: boolean;
 		/** Checkbox size */
@@ -45,6 +47,7 @@
 		checked = $bindable(false),
 		isIndeterminate = false,
 		disabled = false,
+		required = false,
 		isXMark = false,
 		size,
 		id,
@@ -85,6 +88,7 @@
 		{name}
 		{value}
 		{disabled}
+		{required}
 		{onchange}
 	/>
 	<span class="pa-checkbox__box"></span>

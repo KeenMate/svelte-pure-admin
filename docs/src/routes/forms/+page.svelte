@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import {
 		Card,
 		Form,
@@ -19,6 +20,7 @@
 		InputGroupAppend,
 		Button,
 		ButtonGroup,
+		Callout,
 		Grid,
 		Column,
 		Table,
@@ -72,11 +74,19 @@
 	// Checkboxes
 	let check1 = $state(true);
 	let check2 = $state(false);
-	let check3 = $state(false);
 
 	// Radios
 	let radioGroup = $state('a');
 	let radioSizes = $state('xs');
+
+	// Tri-state demo
+	let twoState = $state(true);
+	let triCycle = $state(0); // 0 unchecked · 1 checked · 2 indeterminate
+	const triChecked = $derived(triCycle === 1);
+	const triIndeterminate = $derived(triCycle === 2);
+	function cycleTri() {
+		triCycle = (triCycle + 1) % 3;
+	}
 
 	// Checkbox sizes
 	let checkXs = $state(true);
@@ -84,6 +94,15 @@
 	let checkDefault = $state(true);
 	let checkLg = $state(true);
 	let checkXl = $state(true);
+
+	// Label position — radio groups
+	let rlEnd = $state('1');
+	let rlStart = $state('1');
+	let rlTop = $state('1');
+
+	// Orientation & required — radio groups
+	let radioHoriz = $state('low');
+	let reqPriority = $state('');
 
 	// Horizontal form
 	let hFname = $state('');
@@ -95,66 +114,115 @@
 	let hAddress = $state('');
 	let hCity = $state('');
 	let hZip = $state('');
+
+	// Live size measurement — mirrors the vanilla demo's inline script that
+	// reads the rendered input/button offsetHeight per row of the sizes table.
+	let sizesRef: HTMLElement;
+	let measured = $state<{ input: string; button: string }[]>([]);
+	onMount(() => {
+		const rows = sizesRef.querySelectorAll('tbody tr');
+		measured = Array.from(rows).map((row) => {
+			const input = row.querySelector('.pa-input') as HTMLElement | null;
+			const button = row.querySelector('.pa-btn') as HTMLElement | null;
+			return {
+				input: input ? `${input.offsetHeight}px` : '-',
+				button: button ? `${button.offsetHeight}px` : '-'
+			};
+		});
+	});
 </script>
 
 <Paragraph>Complete set of form elements with various styles and states for data input.</Paragraph>
 
 <!-- Input Sizes Reference -->
 <Card titleText="Input Sizes Reference" hasPadding={false}>
-	<Table isStriped>
-		<thead>
-			<tr>
-				<th>Size</th>
-				<th>Class</th>
-				<th>Font Size</th>
-				<th>Padding</th>
-				<th>Height</th>
-				<th>Example</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td><strong>XS</strong></td>
-				<td><Code>.pa-input--xs</Code></td>
-				<td>1.2rem (12px)</td>
-				<td>0.6rem 0.8rem</td>
-				<td>~31px</td>
-				<td><Input type="text" size="xs" placeholder="Extra small" class="w-140" /></td>
-			</tr>
-			<tr>
-				<td><strong>SM</strong></td>
-				<td><Code>.pa-input--sm</Code></td>
-				<td>1.4rem (14px)</td>
-				<td>0.8rem 0.8rem</td>
-				<td>~33px</td>
-				<td><Input type="text" size="sm" placeholder="Small" class="w-140" /></td>
-			</tr>
-			<tr>
-				<td><strong>Default</strong></td>
-				<td><Code>.pa-input</Code></td>
-				<td>1.4rem (14px)</td>
-				<td>0.8rem 0.8rem</td>
-				<td>~35px</td>
-				<td><Input type="text" placeholder="Default" class="w-140" /></td>
-			</tr>
-			<tr>
-				<td><strong>LG</strong></td>
-				<td><Code>.pa-input--lg</Code></td>
-				<td>1.6rem (16px)</td>
-				<td>0.8rem 0.8rem</td>
-				<td>~38px</td>
-				<td><Input type="text" size="lg" placeholder="Large" class="w-140" /></td>
-			</tr>
-			<tr>
-				<td><strong>XL</strong></td>
-				<td><Code>.pa-input--xl</Code></td>
-				<td>1.8rem (18px)</td>
-				<td>0.8rem 0.8rem</td>
-				<td>~41px</td>
-				<td><Input type="text" size="xl" placeholder="Extra large" class="w-140" /></td>
-			</tr>
-		</tbody>
-	</Table>
+	<div bind:this={sizesRef}>
+		<Table isStriped>
+			<thead>
+				<tr>
+					<th>Size</th>
+					<th>Class</th>
+					<th>Font Size</th>
+					<th>Padding (v/h)</th>
+					<th>Input + Button</th>
+					<th>Input Height</th>
+					<th>Button Height</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><strong>XS</strong></td>
+					<td><Code>--xs</Code></td>
+					<td>1.2rem (12px)</td>
+					<td>0.6rem / 0.8rem</td>
+					<td>
+						<div class="d-flex align-items-center gap-sm">
+							<div style="width: 120px;"><Input type="text" size="xs" placeholder="Extra small" /></div>
+							<Button variant="primary" size="xs">Submit</Button>
+						</div>
+					</td>
+					<td>{measured[0]?.input ?? '-'}</td>
+					<td>{measured[0]?.button ?? '-'}</td>
+				</tr>
+				<tr>
+					<td><strong>SM</strong></td>
+					<td><Code>--sm</Code></td>
+					<td>1.4rem (14px)</td>
+					<td>0.8rem / 0.8rem</td>
+					<td>
+						<div class="d-flex align-items-center gap-sm">
+							<div style="width: 120px;"><Input type="text" size="sm" placeholder="Small" /></div>
+							<Button variant="primary" size="sm">Submit</Button>
+						</div>
+					</td>
+					<td>{measured[1]?.input ?? '-'}</td>
+					<td>{measured[1]?.button ?? '-'}</td>
+				</tr>
+				<tr>
+					<td><strong>Default</strong></td>
+					<td>(none)</td>
+					<td>1.4rem (14px)</td>
+					<td>0.8rem / 0.8rem</td>
+					<td>
+						<div class="d-flex align-items-center gap-sm">
+							<div style="width: 120px;"><Input type="text" placeholder="Default" /></div>
+							<Button variant="primary">Submit</Button>
+						</div>
+					</td>
+					<td>{measured[2]?.input ?? '-'}</td>
+					<td>{measured[2]?.button ?? '-'}</td>
+				</tr>
+				<tr>
+					<td><strong>LG</strong></td>
+					<td><Code>--lg</Code></td>
+					<td>1.6rem (16px)</td>
+					<td>0.8rem / 0.8rem</td>
+					<td>
+						<div class="d-flex align-items-center gap-sm">
+							<div style="width: 120px;"><Input type="text" size="lg" placeholder="Large" /></div>
+							<Button variant="primary" size="lg">Submit</Button>
+						</div>
+					</td>
+					<td>{measured[3]?.input ?? '-'}</td>
+					<td>{measured[3]?.button ?? '-'}</td>
+				</tr>
+				<tr>
+					<td><strong>XL</strong></td>
+					<td><Code>--xl</Code></td>
+					<td>1.8rem (18px)</td>
+					<td>0.8rem / 0.8rem</td>
+					<td>
+						<div class="d-flex align-items-center gap-sm">
+							<div style="width: 120px;"><Input type="text" size="xl" placeholder="Extra large" /></div>
+							<Button variant="primary" size="xl">Submit</Button>
+						</div>
+					</td>
+					<td>{measured[4]?.input ?? '-'}</td>
+					<td>{measured[4]?.button ?? '-'}</td>
+				</tr>
+			</tbody>
+		</Table>
+	</div>
 </Card>
 
 <!-- Form with Buttons in Header -->
@@ -180,14 +248,14 @@
 			<Column size="100" md="50">
 				<FormGroup>
 					<FormLabel for="text-input">Text Input</FormLabel>
-					<Input id="text-input" placeholder="Enter text" bind:value={textInput} />
+					<Input id="text-input" placeholder="Enter text" required bind:value={textInput} />
 				</FormGroup>
 			</Column>
 
 			<Column size="100" md="50">
 				<FormGroup>
 					<FormLabel for="email-input">Email Input</FormLabel>
-					<Input type="email" id="email-input" placeholder="user@example.com" bind:value={emailInput} />
+					<Input type="email" id="email-input" placeholder="user@example.com" required bind:value={emailInput} />
 				</FormGroup>
 			</Column>
 
@@ -208,7 +276,7 @@
 			<Column size="100" md="50">
 				<FormGroup>
 					<FormLabel for="basic-select">Select Dropdown</FormLabel>
-					<Select id="basic-select" bind:value={basicSelect}>
+					<Select id="basic-select" required bind:value={basicSelect}>
 						<option>Choose an option...</option>
 						<option>Option 1</option>
 						<option>Option 2</option>
@@ -227,7 +295,7 @@
 			<Column size="100">
 				<FormGroup>
 					<FormLabel for="textarea">Textarea (Full Width)</FormLabel>
-					<Textarea id="textarea" placeholder="Enter your message here..." bind:value={textareaValue} />
+					<Textarea id="textarea" placeholder="Enter your message here..." required bind:value={textareaValue} />
 				</FormGroup>
 			</Column>
 		</Grid>
@@ -545,8 +613,8 @@
 	</Form>
 </Card>
 
-<!-- Checkboxes and Radio Buttons -->
-<Card titleText="Checkboxes and Radio Buttons">
+<!-- Checkboxes and Radio Buttons — basics + tri-state -->
+<Card titleText="Checkboxes & Radio Buttons">
 	<Form>
 		<FormGroup>
 			<FormLabel>Checkboxes (Custom Tri-State)</FormLabel>
@@ -564,6 +632,163 @@
 				<Radio name="radio-group" value="b" bind:group={radioGroup} labelText="Choice B" />
 				<Radio name="radio-group" value="c" disabled labelText="Choice C (disabled)" />
 			</RadioGroup>
+		</FormGroup>
+
+		<FormGroup>
+			<FormLabel>Two-state &amp; Three-state (indeterminate)</FormLabel>
+			<CheckboxGroup>
+				<!-- Two-state: a normal checkbox -->
+				<Checkbox id="cb-two" labelText="Two-state (checked / unchecked)" bind:checked={twoState} />
+				<!-- Static indeterminate -->
+				<Checkbox id="cb-indet" labelText="Indeterminate (mixed) — static" isIndeterminate />
+				<!-- Three-state cycler: click cycles unchecked → checked → indeterminate -->
+				<Checkbox
+					id="cb-tri"
+					labelText="Three-state — click to cycle"
+					checked={triChecked}
+					isIndeterminate={triIndeterminate}
+					onchange={cycleTri}
+				/>
+			</CheckboxGroup>
+		</FormGroup>
+	</Form>
+</Card>
+
+<!-- Label position — each sub-demo gets its own heading -->
+<Card
+	titleText="Label Position"
+	descriptionText="One position per group. End/start stack; top reads best in an auto-flow grid."
+>
+	<Form>
+		<FormGroup class="mb-2xl">
+			<FormLabel>Checkbox · label end &amp; start</FormLabel>
+			<Grid>
+				<Column size="100" md="1-2">
+					<CheckboxGroup>
+						<Checkbox id="lp-ce-1" class="pa-checkbox--label-end" labelText="End · Option 1" checked />
+						<Checkbox id="lp-ce-2" class="pa-checkbox--label-end" labelText="End · Option 2" />
+						<Checkbox id="lp-ce-3" class="pa-checkbox--label-end" labelText="End · Option 3" checked />
+					</CheckboxGroup>
+				</Column>
+				<Column size="100" md="1-2">
+					<CheckboxGroup>
+						<Checkbox id="lp-cs-1" class="pa-checkbox--label-start" labelText="Start · Option 1" checked />
+						<Checkbox id="lp-cs-2" class="pa-checkbox--label-start" labelText="Start · Option 2" />
+						<Checkbox id="lp-cs-3" class="pa-checkbox--label-start" labelText="Start · Option 3" checked />
+					</CheckboxGroup>
+				</Column>
+			</Grid>
+		</FormGroup>
+
+		<FormGroup class="mb-2xl">
+			<FormLabel>Checkbox · label top (auto-flow grid, 6 options)</FormLabel>
+			<CheckboxGroup class="pa-checkbox-group--grid">
+				<Checkbox id="lp-ct-1" class="pa-checkbox--label-top" labelText="Top · Option 1" checked />
+				<Checkbox id="lp-ct-2" class="pa-checkbox--label-top" labelText="Top · Option 2" />
+				<Checkbox id="lp-ct-3" class="pa-checkbox--label-top" labelText="Top · Option 3" checked />
+				<Checkbox id="lp-ct-4" class="pa-checkbox--label-top" labelText="Top · Option 4" />
+				<Checkbox id="lp-ct-5" class="pa-checkbox--label-top" labelText="Top · Option 5" checked />
+				<Checkbox id="lp-ct-6" class="pa-checkbox--label-top" labelText="Top · Option 6" />
+			</CheckboxGroup>
+		</FormGroup>
+
+		<FormGroup class="mb-2xl">
+			<FormLabel>Radio · label end &amp; start</FormLabel>
+			<Grid>
+				<Column size="100" md="1-2">
+					<RadioGroup>
+						<Radio name="rl-end" value="1" class="pa-radio--label-end" bind:group={rlEnd} labelText="End · Option 1" />
+						<Radio name="rl-end" value="2" class="pa-radio--label-end" bind:group={rlEnd} labelText="End · Option 2" />
+						<Radio name="rl-end" value="3" class="pa-radio--label-end" bind:group={rlEnd} labelText="End · Option 3" />
+					</RadioGroup>
+				</Column>
+				<Column size="100" md="1-2">
+					<RadioGroup>
+						<Radio name="rl-start" value="1" class="pa-radio--label-start" bind:group={rlStart} labelText="Start · Option 1" />
+						<Radio name="rl-start" value="2" class="pa-radio--label-start" bind:group={rlStart} labelText="Start · Option 2" />
+						<Radio name="rl-start" value="3" class="pa-radio--label-start" bind:group={rlStart} labelText="Start · Option 3" />
+					</RadioGroup>
+				</Column>
+			</Grid>
+		</FormGroup>
+
+		<FormGroup>
+			<FormLabel>Radio · label top (auto-flow grid, 6 options)</FormLabel>
+			<RadioGroup class="pa-radio-group--grid">
+				<Radio name="rl-top" value="1" class="pa-radio--label-top" bind:group={rlTop} labelText="Top · Option 1" />
+				<Radio name="rl-top" value="2" class="pa-radio--label-top" bind:group={rlTop} labelText="Top · Option 2" />
+				<Radio name="rl-top" value="3" class="pa-radio--label-top" bind:group={rlTop} labelText="Top · Option 3" />
+				<Radio name="rl-top" value="4" class="pa-radio--label-top" bind:group={rlTop} labelText="Top · Option 4" />
+				<Radio name="rl-top" value="5" class="pa-radio--label-top" bind:group={rlTop} labelText="Top · Option 5" />
+				<Radio name="rl-top" value="6" class="pa-radio--label-top" bind:group={rlTop} labelText="Top · Option 6" />
+			</RadioGroup>
+		</FormGroup>
+	</Form>
+</Card>
+
+<!-- Orientation & required -->
+<Card titleText="Orientation &amp; Required">
+	<Callout variant="info" headingText="How the required asterisk is placed">
+		{#snippet icon()}💡{/snippet}
+		<p>
+			The danger <strong>*</strong> is driven by the native <Code>required</Code> attribute — no class
+			needed. Where it lands depends on the field's shape:
+		</p>
+		<ul>
+			<li>
+				<strong>Simple fields</strong> (input / select / textarea) → the group's <Code>&lt;label&gt;</Code>,
+				via <Code>.pa-form-group:has(:required) &gt; label</Code>.
+			</li>
+			<li>
+				<strong>Grouped choices</strong> (radios/checkboxes inside a <Code>.pa-radio-group</Code> /
+				<Code>.pa-checkbox-group</Code>) → the requirement belongs to the group, so the
+				<strong>*</strong> sits once on the group <strong>heading</strong> and the per-option markers
+				are suppressed. See <em>Priority</em> below.
+			</li>
+			<li>
+				<strong>Standalone choice</strong> (a lone <Code>.pa-checkbox</Code> / <Code>.pa-radio</Code>,
+				e.g. a consent box with no <Code>*-group</Code> wrapper) → the <strong>*</strong> sits on its
+				<strong>own</strong> option label. See <em>I accept the terms</em> below.
+			</li>
+			<li>
+				<strong>Complex widgets</strong> with no native control (image browser, dropzone, web component)
+				→ add <Code>.pa-form-group--required</Code> to the group as the explicit trigger.
+			</li>
+		</ul>
+		<p class="mb-0">
+			The first “Horizontal orientation” group has no <Code>required</Code>, so it shows no marker.
+		</p>
+	</Callout>
+	<Form>
+		<FormGroup>
+			<FormLabel>Horizontal orientation</FormLabel>
+			<CheckboxGroup class="pa-checkbox-group--horizontal">
+				<Checkbox id="ho-red" labelText="Red" checked />
+				<Checkbox id="ho-green" labelText="Green" />
+				<Checkbox id="ho-blue" labelText="Blue" />
+			</CheckboxGroup>
+			<RadioGroup class="pa-radio-group--horizontal">
+				<Radio name="radio-horiz" value="low" bind:group={radioHoriz} labelText="Low" />
+				<Radio name="radio-horiz" value="medium" bind:group={radioHoriz} labelText="Medium" />
+				<Radio name="radio-horiz" value="high" bind:group={radioHoriz} labelText="High" />
+			</RadioGroup>
+		</FormGroup>
+
+		<!-- Grouped choice: the requirement belongs to the group ("pick one"),
+		     so the asterisk sits once on the GROUP HEADING — the options stay clean. -->
+		<FormGroup>
+			<FormLabel>Priority (required group)</FormLabel>
+			<RadioGroup class="pa-radio-group--horizontal">
+				<Radio name="req-priority" value="low" required bind:group={reqPriority} labelText="Low" />
+				<Radio name="req-priority" value="medium" required bind:group={reqPriority} labelText="Medium" />
+				<Radio name="req-priority" value="high" required bind:group={reqPriority} labelText="High" />
+			</RadioGroup>
+		</FormGroup>
+
+		<!-- Standalone consent checkbox (no *-group wrapper): the requirement IS
+		     this one control, so the asterisk sits on its OWN option label. -->
+		<FormGroup>
+			<Checkbox id="consent" required labelText="I accept the terms" />
 		</FormGroup>
 	</Form>
 </Card>
@@ -647,7 +872,7 @@
 			</Column>
 
 			<!-- Department -->
-			<Column size="100" md="1-3">
+			<Column size="100" md="5-12">
 				<FormGroup isHorizontal>
 					<FormLabel for="h-dept">Department</FormLabel>
 					<Select id="h-dept" bind:value={hDept}>

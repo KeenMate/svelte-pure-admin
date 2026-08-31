@@ -19,6 +19,8 @@
 		value: string | number;
 		/** Disabled state */
 		disabled?: boolean;
+		/** Required field — core turns the native `required` attribute into the group asterisk */
+		required?: boolean;
 		/** Radio name (group name) */
 		name: string;
 		/** Radio size */
@@ -37,6 +39,7 @@
 		group = $bindable(),
 		value,
 		disabled = false,
+		required = false,
 		name,
 		size,
 		labelText,
@@ -64,6 +67,7 @@
 		{value}
 		{name}
 		{disabled}
+		{required}
 		{onchange}
 	/>
 	{#if labelSnippet}
